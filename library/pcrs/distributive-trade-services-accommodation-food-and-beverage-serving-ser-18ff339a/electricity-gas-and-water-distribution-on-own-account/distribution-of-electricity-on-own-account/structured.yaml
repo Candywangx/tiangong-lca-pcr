@@ -1,10 +1,1363 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "69112"
-  title: "Distribution of electricity (on own account)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.electricity-gas-and-water-distribution-on-own-account.distribution-of-electricity-on-own-account"
+  classification_refs: "CPC 3.0 69112; narrower"
+  covered_products: "Own-account AC network distribution service characterized by named customer delivery energy; necessary operational control and existing-meter maintenance"
+  excluded_products: "Generation commodity; upstream transmission; end use; new meter installation; independent meter reading; storage/conversion; independent ancillary services"
+  representative_product: "AC distribution service delivering 1 kWh accepted at declared customer handoffs, inlet, voltage and quality conditions"
+  production_route: "Metered entry → distribution transformation/conveyance/control → metered customer acceptance; necessary maintenance in parallel"
+  market_state: "Delivered distribution service with energy, quality and responsibility records; tariff is not an inventory quantity"
+functional_unit:
+  what: "Service of delivering electricity through the declared AC distribution network"
+  how_much: "1 kWh active energy accepted at customer handoff; annual accepted customer total is Q"
+  how_well: "Actual supply-contract inlet/outlet voltage, frequency, reliability and accepted quality; no invented universal limits"
+  how_long_or_cycle: "One complete consecutive 12-month operating period, including outages, faults and maintenance burdens; unserved demand does not increase output"
+  reference_flow_link: "accepted_distribution"
+system_boundary:
+  rules:
+    - rule_id: boundary_service
+      applies_to: "foreground_system_boundary"
+      rule: "Foreground comprises operation between the named AC inlet and customer acceptance gates, plus operator-responsible on-site servicing. Transmission, generation of accepted commodity Q, end use, new-meter installation, independent meter reading, storage/conversion and independent ancillary services remain excluded. Necessary protection/control and existing-meter maintenance remain included."
+      source_ids:
+        - un-cpc-69112
+        - epa-electricity-delivery
+    - rule_id: boundary_foreground
+      applies_to: "foreground_system_boundary"
+      rule: "Inventory exchanges crossing those foreground gates and actual releases. Purchased specific equipment, materials and services enter as defined products with one primary property/unit. Do not expand supplier manufacture, mining, delivery travel, roads/tools/vehicles or receiver treatment internals. Capital is retained only as specified commissioned network assets with measured mass and one supported lifetime share; upstream inventories matching that commissioned gate supply its background burden. This foreground choice is not a claim of zero background burden or a source-mandated EPD boundary."
+      source_ids: []
+    - rule_id: boundary_loss_commodity
+      applies_to: "foreground_system_boundary"
+      rule: "Link upstream generation once for technical losses L_s, physically confirmed nonaccepted delivery F and auxiliary A_s attributable to this service. Generated commodity Q is linked separately once by a combined commodity system. Other-network export X retains its own commodity and conveyance burden; do not divide that burden by customer Q. A supplied electricity dataset already including this segment losses/assets cannot be stacked with this service."
+      source_ids: []
+    - rule_id: boundary_atomic
+      applies_to: "foreground_system_boundary"
+      rule: "Atomic means one defined measurable object with one primary flow property and one preferred unit, not chemical decomposition of complete equipment or one characterized waste carrier. Independent inputs remain separate even if both use kg. Different media, directions, gas formulations and independently supplied services require separate cards. Actual absent exchanges require evidence; unknown is not absent."
+      source_ids: []
+    - rule_id: boundary_gas
+      applies_to: "foreground_system_boundary"
+      rule: "Use the actually owned/operated equipment and cylinder stock boundary, including measured gas entering/leaving inside accepted equipment. Integral initial SF6/oil is within the commissioned asset input, never a second purchased material input. All foreground release events including servicing remain measured by species. Supplier preacceptance commissioning/filling and receiver destruction are outside this gate. An unresolved boundary or missing charge/composition prevents a complete balance. Regulatory thresholds are not cutoffs."
+      source_ids:
+        - epa-sf6-balance
+    - rule_id: boundary_waste
+      applies_to: "foreground_system_boundary"
+      rule: "Waste ends at actual documented external handover. Record one characterized carrier, its origin, opening/generation/dispatch/closing stock, receiver gate and downstream linkage requirement; retained stock is not an observed future handover. No paired receiver inputs or invented off-site reagents/emissions. A complete lifecycle model may later link a matching treatment dataset once; do not confuse this foreground-only dataset with a complete treatment footprint. Treatment physically inside the operator gate must be explicitly added with its own actual exchanges before completeness."
+      source_ids: []
+    - rule_id: boundary_interfaces
+      applies_to: "foreground_system_boundary"
+      rule: "Separate co-located storage, conversion and independently supplied ancillary services with meters and asset/work-order gates. Internal cycling does not increase Q. Missing separation prevents completion. Background product/service coverage must specify supplied resources/stages and exclusions, so actual operator-provided resources are recorded once while included supplier resources are not repeated."
+      source_ids:
+        - un-cpc-69112
+boundary_abstraction:
+  declared_starting_condition: "Existing named AC network receives energy at metered inlet; capital inputs are accepted commissioned assets, not burden-free existing stock"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Declared AC distribution subset of CPC 69112; narrower, with original excluded routes retained"
+  recursive_input_rule: "Other-network interfaces and background input products/services are recorded once at declared gates; no supplier/receiver recursion"
+  upstream_dataset_requirement: "Gate-matched generation for service loss/auxiliary energy, specific material/equipment/service supply, and external carrier treatment linked separately as background"
+  disclosure: "Foreground gates; exclusions; Q/balance; actual assets and service shares; provider resource coverage; waste stocks/handover; unbound identity and background gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted AC electricity distribution service"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-11da-a746-0800200c9a66"
+  reference_unit: "kWh"
+  required_qualifiers:
+    - "Network/asset/inlet/customer-point IDs"
+    - "own-account responsibility"
+    - "AC and voltage/frequency"
+    - "overhead/underground topology and line length"
+    - "transformer/switchgear media and ratings"
+    - "customer class"
+    - "12-month start/end/timezone"
+    - "quality and outage records"
+    - "Q and loss ledger"
+    - "imports/exports/reverse flows"
+    - "outsourcing coverage"
+    - "retained commissioned-asset lifetime shares and supplier coverage"
+    - "supply region/provider/upstream boundary"
+    - "interfaces with excluded storage and ancillary services"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_energy
+    applies_to: "accepted_distribution"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Use cp_energy: Q is accepted active energy at named customer points, not inlet energy, apparent energy, capacity, fees or meter-reading count. Q must be positive. Adopt the Net calorific value property and energy unit group already used by an official electrical-service record as an energy-throughput service convention; this is not combustion heat. The service product UUID remains unbound and cannot borrow a transformation-service identity with different voltage boundaries."
+  - id: energy_conversion
+    applies_to: "aux_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the verified electricity flow property; kWh × 3.6 = MJ. This is the electrical-energy reporting convention, not a claim that electricity has a combustion heating value. Convert the numerator only and retain the same reference denominator."
+  - id: material_conversion
+    applies_to: "sf6_makeup; oil_makeup; waste_oil; sf6_for_destruction; recovered_sf6_product; sf6_air; oil_soil"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Liquid volume-to-mass needs batch density at applicable temperature; gas containers need tare removal and measured composition conversion to species mass. Never multiply pure-species mass by concentration again. Missing or negative reconciliation results cannot be set to zero."
+process_map:
+  - id: operation
+    name: "Distribution operation and delivery"
+    inclusion: "required"
+    inclusion_condition: "Actual operated network; individual card conditions apply"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+  - id: assets
+    name: "Specific commissioned network assets and actual retirement handover"
+    inclusion: "required"
+    inclusion_condition: "Actual corresponding configuration and retained capital responsibility"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+  - id: maintenance
+    name: "Specific externally purchased on-site network services"
+    inclusion: "conditional"
+    inclusion_condition: "Actual contracted service matching its card; own work is screened separately"
+    role: "foreground_production"
+    quantitative_reference: "per declared reference flow"
+process_inventory:
+  - id: operation
+    label: "Distribution operation and delivery"
+    inputs:
+      product:
+        - row_id: loss_electricity
+          role: "Electricity at distribution-network inlet"
+          name: "Electricity at distribution-network inlet"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Electricity needed for attributable technical loss L_s and physically evidenced nonaccepted delivery F. Record inlet voltage, supplier, region and delivered gate; accepted commodity Q is a separate ledger. Do not substitute a final-customer-voltage electricity inventory."
+          amount:
+            expression: "(L_s + F) / Q kWh per reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: aux_electricity
+          role: "Alternating current 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Attributable purchased auxiliary AC at the point of use for protection, communications, control, cooling and responsible offices. Record voltage/provider/region and net external gate. Exclude electricity already included in a purchased specific service and technical losses. The historical official identity leaves voltage and supplier unspecified."
+          amount:
+            expression: "3.6 A_s / Q MJ per reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: sf6_makeup
+          role: "Sulfur hexafluoride"
+          name: "Sulfur hexafluoride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when pure SF6 is actually separately supplied for operating equipment: measured net consumed SF6, purity and equipment specified. Integral initial charge in a commissioned device is already inside that device input. Internal recovered gas is a stock transfer. A purchased insulating mixture requires its own total-mixture-mass card, not pure-species purchase."
+          amount:
+            expression: "Attributable net operational consumption / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - epa-sf6-balance
+            ranges: []
+        - row_id: oil_makeup
+          role: "Mineral transformer insulating oil"
+          name: "Mineral transformer insulating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual separately supplied mineral insulating oil consumed in operation. Identify grade and batch, exclude integral initial oil in commissioned transformers and internally recirculated oil. Other liquid formulations require independent cards."
+          amount:
+            expression: "Attributable net operational oil consumption / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_distribution
+          role: "Accepted AC electricity distribution service"
+          name: "Accepted AC electricity distribution service"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "The reference service at named customer acceptance points; generated commodity is separate. Internal transfers, exports, reverse injections, rejected delivery and unserved demand do not increase accepted Q."
+          amount:
+            expression: "1 kWh"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: recovered_sf6_product
+          role: "Recovered SF6 insulating gas"
+          name: "Recovered SF6 insulating gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual characterized SF6 batch accepted by an external receiver for reuse at foreground handover. Weigh total stream without cylinder tare; composition/specification/acceptance determine identity. Retained internal recovery is stock; rejected batch is waste. No automatic credit."
+          amount:
+            expression: "Attributable accepted recovered gas stream mass / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - epa-sf6-balance
+            ranges: []
+      waste:
+        - row_id: waste_oil
+          role: "Spent mineral transformer insulating oil"
+          name: "Spent mineral transformer insulating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual operational spent oil carrier at documented external handover, with composition, contamination and receiver. Exclude oil still contained in a retired transformer and oil released to soil. Retained waste is closing stock, not a fictitious dispatch. Receiver treatment internals are outside foreground."
+          amount:
+            expression: "Attributable actual external handover mass / Q kg; track generation and stock separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: sf6_for_destruction
+          role: "Spent SF6 insulating gas for destruction"
+          name: "Spent SF6 insulating gas for destruction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual total characterized gas-carrier mass handed to the external receiver as waste, including composition/contamination and net gas mass excluding cylinder tare. Pure SF6 species content is a separate balance field, not an additional waste output. No assumed downstream destruction emissions or future receipt."
+          amount:
+            expression: "Attributable actual external waste-gas handover mass / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - epa-sf6-balance
+            ranges: []
+      elementary:
+        - row_id: sf6_air
+          role: "Sulfur hexafluoride to air"
+          name: "Sulfur hexafluoride to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual pure SF6 species mass released to air within the operated network and servicing gates. Reconcile calibrated species stock/event balance; exclude supplier preacceptance filling, accepted intact gas handover and receiver treatment emissions. Unknown residual is not zero or assumed release."
+          amount:
+            expression: "Attributable foreground SF6 air-release species mass / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - epa-sf6-balance
+            ranges: []
+        - row_id: oil_soil
+          role: "Mineral insulating oil to soil"
+          name: "Mineral insulating oil to soil"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only incident mineral insulating oil actually reaching soil after recovery. Contaminated soil is a waste carrier and cannot duplicate its contained released oil. Other actual receiving media require separate cards."
+          amount:
+            expression: "Attributed measured unrecovered oil reaching soil / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_spill
+              source_ids: []
+            ranges: []
+  - id: assets
+    label: "Specific commissioned network assets and actual retirement handover"
+    inputs:
+      product:
+        - row_id: distribution_transformer
+          role: "Mineral-oil-filled copper-wound AC distribution transformer"
+          name: "Mineral-oil-filled copper-wound AC distribution transformer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual installed asset matching this specific identity (model, rated capacity, inlet/outlet voltages, copper winding and mineral-oil fill). Different configurations require their own defined card. Apply inv_asset_gate in section 8."
+          amount:
+            expression: "sum_j(a_j × original accepted net asset mass_j) / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: distribution_switchgear
+          role: "SF6-insulated AC distribution switchgear"
+          name: "SF6-insulated AC distribution switchgear"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual installed asset matching this specific identity (model, voltage/current rating, enclosure and contained gas composition/charge). Different configurations require their own defined card. Apply inv_asset_gate in section 8."
+          amount:
+            expression: "sum_j(a_j × original accepted net asset mass_j) / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: distribution_cable
+          role: "XLPE-insulated aluminium AC distribution cable"
+          name: "XLPE-insulated aluminium AC distribution cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual installed asset matching this specific identity (model, rated voltage, conductor cross-section, sheath, length and net mass). Different configurations require their own defined card. Apply inv_asset_gate in section 8."
+          amount:
+            expression: "sum_j(a_j × original accepted net asset mass_j) / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: distribution_pole
+          role: "Prestressed concrete distribution pole"
+          name: "Prestressed concrete distribution pole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual installed asset matching this specific identity (model, dimensions, reinforcement, design load and net mass). Different configurations require their own defined card. Apply inv_asset_gate in section 8."
+          amount:
+            expression: "sum_j(a_j × original accepted net asset mass_j) / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: distribution_meter
+          role: "Static AC electricity meter"
+          name: "Static AC electricity meter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the actual installed asset matching this specific identity (model, accuracy class, connection type and net mass). Different configurations require their own defined card. Apply inv_asset_gate in section 8."
+          amount:
+            expression: "sum_j(a_j × original accepted net asset mass_j) / Q kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: retired_distribution_transformer
+          role: "Discarded mineral-oil-filled copper-wound ac distribution transformer"
+          name: "Discarded mineral-oil-filled copper-wound ac distribution transformer"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed oil/gas and separated components are excluded from this carrier when recorded separately. Apply inv_retired_carrier in section 8."
+          amount:
+            expression: "sum_j(a_j × actual retired-carrier handover mass_j) / Q kg; preserve original asset ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: retired_distribution_switchgear
+          role: "Discarded sf6-insulated ac distribution switchgear"
+          name: "Discarded sf6-insulated ac distribution switchgear"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed oil/gas and separated components are excluded from this carrier when recorded separately. Apply inv_retired_carrier in section 8."
+          amount:
+            expression: "sum_j(a_j × actual retired-carrier handover mass_j) / Q kg; preserve original asset ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: retired_distribution_cable
+          role: "Discarded xlpe-insulated aluminium ac distribution cable"
+          name: "Discarded xlpe-insulated aluminium ac distribution cable"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed oil/gas and separated components are excluded from this carrier when recorded separately. Apply inv_retired_carrier in section 8."
+          amount:
+            expression: "sum_j(a_j × actual retired-carrier handover mass_j) / Q kg; preserve original asset ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: retired_distribution_pole
+          role: "Discarded prestressed concrete distribution pole"
+          name: "Discarded prestressed concrete distribution pole"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed oil/gas and separated components are excluded from this carrier when recorded separately. Apply inv_retired_carrier in section 8."
+          amount:
+            expression: "sum_j(a_j × actual retired-carrier handover mass_j) / Q kg; preserve original asset ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+        - row_id: retired_distribution_meter
+          role: "Discarded static ac electricity meter"
+          name: "Discarded static ac electricity meter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed oil/gas and separated components are excluded from this carrier when recorded separately. Apply inv_retired_carrier in section 8."
+          amount:
+            expression: "sum_j(a_j × actual retired-carrier handover mass_j) / Q kg; preserve original asset ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: maintenance
+    label: "Specific externally purchased on-site network services"
+    inputs:
+      product:
+        - row_id: meter_calibration
+          role: "On-site static AC electricity-meter calibration service"
+          name: "On-site static AC electricity-meter calibration service"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "Only when purchased externally for actual responsible work: existing meters, named accuracy test protocol and signed calibration acceptance. Do not inventory provider internals or repeat included supplies. Apply inv_technician_service in section 8."
+          amount:
+            expression: "sum_w(attributed accepted technician-hours_w) / Q h"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_work
+              source_ids: []
+            ranges: []
+        - row_id: sf6_servicing
+          role: "On-site SF6 switchgear leak-test and recovery service"
+          name: "On-site SF6 switchgear leak-test and recovery service"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "Only when purchased externally for actual responsible work: named SF6 equipment, leak-test/recovery method and signed work acceptance. Do not inventory provider internals or repeat included supplies. Apply inv_technician_service in section 8."
+          amount:
+            expression: "sum_w(attributed accepted technician-hours_w) / Q h"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_work
+              source_ids: []
+            ranges: []
+        - row_id: vegetation_clearance
+          role: "Distribution-line mechanical vegetation-clearance service"
+          name: "Distribution-line mechanical vegetation-clearance service"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "Only when purchased externally for actual responsible work: named line corridor, mechanical clearance method and accepted cleared extent. Do not inventory provider internals or repeat included supplies. Apply inv_technician_service in section 8."
+          amount:
+            expression: "sum_w(attributed accepted technician-hours_w) / Q h"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_work
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_network
+    applies_to: "foreground_burden_allocation"
+    rule: "Assign loss, auxiliary, customer and inter-network services first by meters/work orders. Shared variable losses use calibrated service-specific load/network models; shared fixed standby/assets use this service occupied design peak capacity-time. Keep raw kW, h, beneficiary IDs and shares summing to one for the period. Like denominators do not make unlike voltage/gate services equivalent."
+    source_ids: []
+  - rule_id: allocate_assets
+    applies_to: "foreground_burden_allocation"
+    rule: "For each original asset j retain beneficiary-period service cohorts k and the same occupied design capacity-time driver u (design kW times occupied h). Initially a_jk = u_k / supported all-beneficiary lifetime U. Freeze accepted historical postings on a life/utilization revision: F_prev_all is the sum of fractions already booked across all beneficiaries and periods; each future interval uses a_jk = (1 - F_prev_all) × u_current / U_remaining_all, where the positive evidenced remaining capacity-time includes that interval and every remaining beneficiary. Require 0 <= F_prev_all <= 1 and 0 <= u_current <= U_remaining_all; cumulative provisional fractions across all beneficiaries must not exceed one. Update the balance after each posting; a revised life must not restart the original mass. At actual final retirement calculate w_jk = u_actual_k / sum_all_lifetime_actual_u across all original cohorts and delta_jk = w_jk - F_booked_jk. Preserve original records and issue versioned corrections to each original cohort and its own accepted Q_k; delta may be positive or negative, never a negative physical exchange or substitution credit. The final shares sum to one and apply consistently to the original asset, its one-time capital-site source events and actual retirement carriers; each source quantity retains its own previously booked fractions (zero for newly observed quantities). Never charge the residual to the disposal-period Q. Unknown/nonpositive denominators or unsupported prior shares require resolution, never equal splitting or a current-Q fallback. No second service share. Long-lived replacements receive new original keys; current consumables are not capital. Unsupported future fate is not measured retirement. Final capital settlement and source/original-denominator revisions follow capital_source_amendment; recurring components do not receive lifetime allocation."
+    source_ids: []
+  - rule_id: allocate_services
+    applies_to: "foreground_burden_allocation"
+    rule: "Specific purchased work uses directly evidenced service hours first. For shared work, service share is this network accepted technician-hours / total accepted technician-hours for that order; record each beneficiary and assign once. Provider resources included in the service background are not also foreground material/energy inputs. Own-work resources are direct foreground exchanges; wages or internal labour hours are not a purchased environmental flow."
+    source_ids: []
+  - rule_id: allocate_recovery
+    applies_to: "foreground_burden_allocation"
+    rule: "No automatic recovery credit. Accepted recovered product, waste, retained inventory, return and rejection are distinct. Original waste cohorts persist across storage/dispatch periods and cannot shift historic retirement mass or burden wholesale to current Q. Record background handover obligations explicitly without expanding receivers."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_energy
+      process_id: "operation"
+      flow_role: "Accepted delivery, inlet losses and auxiliary electricity"
+      record_type: "meter_and_settlement"
+      raw_fields: "meter ID/gate; voltage; active kWh; I,D,X,A_int,A_ext; reverse injection; Q; physical rejected F evidence; load-model L; service partition; interval/timezone; corrections; calibration; outage; uncertainty"
+      collection_method: "Collect synchronized inlet, inter-network, auxiliary and customer meter intervals; reconcile acceptance and operations monthly. Obtain positive Q and calibrated technical-loss model or adequate meters. Separate residual R from actual loss and physical F. Aggregate attributable totals, then calc_normalize once."
+      unit: "kWh"
+      frequency: "Original intervals; monthly reconciliation"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Declared network and all interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, wiring/multipliers, settlement, timestamps and model validation"
+    - protocol_id: cp_material
+      process_id: "operation"
+      flow_role: "Operational makeup insulating oil"
+      record_type: "stock_and_weighing"
+      raw_fields: "batch/grade; asset; initial-fill/makeup distinction; opening/closing stock; external receipts/returns; withdrawals; internal recovery; gross/tare; density and temperature unique source-event ID; operational/capital tag; original asset key; a_j or current beneficiary share; original service cohort/Q;"
+      collection_method: "Weigh every movement at stock/servicing gates; volume converts only using applicable batch density and temperature. Net consumption = opening + received - closing - externally returned/disbursed, adjusted by documented separately accounted stock destinations; reconcile withdrawals, waste and release, cancel internal transfers. Aggregate attributed actual makeup, divide once by Q. Apply calc_site_attribution once to source events; retain raw unallocated physical QA separately."
+      unit: "kg"
+      frequency: "Each movement; monthly reconciliation"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Equipment and oil store"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrated scales, batch sheets, receipts and work orders"
+    - protocol_id: cp_gas
+      process_id: "operation"
+      flow_role: "SF6 supplies, recovery, waste and release"
+      record_type: "species_mass_balance"
+      raw_fields: "event ID/date; equipment/cylinder; state; purity/species fraction; gross/tare/net stream mass; opening/closing container and equipment species stock; accepted equipment-contained acquisitions/disbursements; makeup; internal recovery; external accepted product/waste handover; stock responsibility; release route/uncertainty unique source-event ID; operational/capital tag; original asset key; a_j or current beneficiary share; original service cohort/Q;"
+      collection_method: "At each servicing and both year ends weigh containers and measure/verify equipment charge and composition; classify every event against the actual foreground acceptance/handover gate. Reconcile calc_gas, external total-stream cards and pure-species balance separately. Include contractor releases inside the gate; exclude supplier preacceptance and receiver posthandover events. Missing charge, identity, negative/unexplained balance is an explicit gap. Apply calc_site_attribution once to source events; retain raw unallocated physical QA separately."
+      unit: "kg"
+      frequency: "Each event and both year ends"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Equipment, cylinders and operator-responsible servicing gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrated weighing, composition tests, charge records and signed receiver receipts"
+    - protocol_id: cp_spill
+      process_id: "operation"
+      flow_role: "Oil release to soil"
+      record_type: "incident_mass_balance"
+      raw_fields: "event/date; equipment; composition; escaped/recovered oil; compartment; contaminated-soil carrier mass and oil content; uncertainty unique source-event ID; operational/capital tag; original asset key; a_j or current beneficiary share; original service cohort/Q;"
+      collection_method: "Investigate each incident at actual location, reconcile escaped oil with recovered stock/waste and unrecovered receiving medium. Record oil species/carrier once, not full soil plus its contained oil as duplicate releases. Aggregate actual unrecovered soil oil and divide by Q. Unknown fate remains unresolved. Apply calc_site_attribution once to source events; retain raw unallocated physical QA separately."
+      unit: "kg"
+      frequency: "Each incident; annual reconciliation"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Network incident location"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Incident reports, sampling, recovery manifests and mass balance"
+    - protocol_id: cp_waste
+      process_id: "operation"
+      flow_role: "Operational oil waste external handover"
+      record_type: "handover_stock_records"
+      raw_fields: "original cohort; carrier identity/composition/state; generation/opening/dispatch/closing kg; receiver and gate; receipt date/quantity; retained stock; removed fill overlap; source responsibility unique source-event ID; operational/capital tag; original asset key; a_j or current beneficiary share; original service cohort/Q;"
+      collection_method: "Weigh and characterize each batch at generation and actual handover; retain stock/origin ledger monthly. Resolve differences between dispatch and receiver weighing; do not fabricate future receipts. Aggregate original-cohort actual handover once per applicable service share; disclose stored quantities and matching background treatment requirement. Apply calc_site_attribution once to source events; retain raw unallocated physical QA separately."
+      unit: "kg"
+      frequency: "Each batch and monthly stock close"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Operator store to external handover gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrated weighing, carrier analyses, receiver receipts and stock ledger"
+    - protocol_id: cp_assets
+      process_id: "assets"
+      flow_role: "Specific commissioned assets and actual retired carriers"
+      record_type: "asset_mass_and_service_ledger"
+      raw_fields: "original asset ID; model/specification; acceptance date/site/gate; supplied-stage coverage; integral initial oil/gas; net kg; weighing or count×verified model mass; kW,h occupied capacity-time per service/all beneficiaries/all periods; supported life/use and revisions; previous shares; actual retirement kg/state/receipt; separated fill mass; uncertainty; revision date/version; F_prev_all; u_current; U_remaining_all; actual lifetime u_actual_k; source-specific F_booked_jk; w_jk; signed delta_jk; original cohort Q_k and correction links; ; source-specific B/version and original N fields in cp_capital_amendment"
+      collection_method: "At opening, each change, each life revision and final retirement, verify asset model and accepted mass using calibrated weighing or count times verified model mass. Collect all beneficiaries and intervals with design kW and occupied h, retain immutable previous postings and remaining-life evidence, and calculate allocate_assets using the frozen-history remaining balance. At actual final retirement reconcile all actual lifetime drivers, w_jk, signed corrections and each original cohort Q_k, separately for original assets, capital-site events and actual carriers; archive versioned corrections without altering raw physical records. Unknown/nonpositive driver or Q denominators block results. Measure actual handover kg and separated fills; no hypothetical separation, supplier internals or receiver internals. Complete cp_capital_amendment reconciliation for final settlement and source/denominator revisions."
+      unit: "kg"
+      frequency: "Opening; each change/life revision/handover; annual close; final retirement"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Named network asset acceptance and retirement gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Asset specifications, calibration/drawing mass, acceptance, lifetime basis, allocation and receiver ledger"
+    - protocol_id: cp_capital_amendment
+      process_id: "assets"
+      flow_role: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      record_type: "versioned_original_source_and_cohort_ledger"
+      raw_fields: "asset_ID; source_ID and original row_ID/native unit; original acceptance/event gate; full measured source quantity and old/new versions; measurement/calibration/state basis; each original beneficiary-period/driver unit/u_actual; period b where applicable; all past/future beneficiaries; F_prev_all and remaining_driver; accepted g/F_booked; raw booked B; old normalized result/original N and corrected N; background model versions/scope; actual final retirement evidence; A_new/delta_A/replacement/deduplication links"
+      collection_method: "Collect original records at asset/supplier acceptance, actual site events and receiver handover gates as applicable; verify full quantities through the existing cp_assets weighing/configuration-count/length/driver measurement and calibration methods. At every source/life/model/denominator revision and final retirement, compare old/new records for every original cohort and apply capital_source_amendment. Reconcile all-beneficiary fractions, source totals and each amendment link; the service data custodian reviews and signs the reconciliation. Prove nonoccurrence by complete event registers/zero-activity evidence, never absence-as-zero; retain unresolved identities, measurement uncertainty and incomplete causes."
+      unit: "source-native units; fixed driver units; original reference units"
+      frequency: "each acceptance/event/revision/final retirement; annual reconciliation"
+      temporal_coverage: "complete original asset history and original service cohorts; evidenced remaining life"
+      site_scope: "existing foreground gates and capital-source responsibility only"
+      aggregation_rule: "once per original reference flow"
+      quality_evidence: "raw measurement/calibration; signed acceptance/event/receiver records; source/model versions; all-beneficiary and revision reconciliation ledger"
+    - protocol_id: cp_work
+      process_id: "maintenance"
+      flow_role: "Specific purchased services"
+      record_type: "accepted_technician_hours"
+      raw_fields: "work order/provider; one specific service ID; asset/location; scope/acceptance criterion; technician ID; start/end/breaks; accepted on-site h; beneficiary/time assignment; coverage matrix for provider energy/material/travel/tools and operator-supplied gas/oil; acceptance evidence unique source-event ID; operational/capital tag; original asset key; a_j or current beneficiary share; original service cohort/Q;"
+      collection_method: "Collect each technician timesheet and signed work acceptance at site; sum individual accepted on-site hours after breaks. Allocate shared work by accepted hours once. Verify background service exact gate/coverage; separate operator supplies and actual outputs, and remove duplicate included provider resources. Own staff hours are activity records only; screen actual own-work materials/releases separately. Apply calc_site_attribution once to source events; retain raw unallocated physical QA separately."
+      unit: "h"
+      frequency: "Each work order; monthly reconciliation"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Specified network work location and contract gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Signed timesheets, test/work protocol, acceptance and resource coverage matrix"
+    - protocol_id: cp_screen
+      process_id: "operation"
+      flow_role: "Actual foreground applicability and added identities"
+      record_type: "applicability_and_completeness"
+      raw_fields: "site/asset/work order; occurred/absent/unknown; actual exchange/specification; supplier gate; raw property/unit; independent card/protocol/formula; uncertainty and responsible collector"
+      collection_method: "At opening, each change and year close screen actual operation, own maintenance, other asset configurations, direct energy/chemicals, waste and releases. Retain evidenced conditional core cards only; add each actual uncovered foreground object with one property/unit and executable collection/calculation before a complete dataset. Do not request supplier or receiver internals or prelist hypothetical pollutants. Unknown identity or quantity is a gap, never zero."
+      unit: "actual exchange unit"
+      frequency: "Opening; each change; year close"
+      temporal_coverage: "Same complete consecutive 12 months; linked original asset/cohort records retained"
+      site_scope: "Operated foreground gates only"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Specifications, work orders, purchases, observations and absence evidence"
+  calculation_rules:
+    - id: calc_reference
+      applies_to: "accepted_distribution"
+      rule: "Q = sum accepted forward active kWh at named customer points for the complete same 12 months, including evidenced authorized unbilled delivery. Q>0. Reverse flows, rejected energy and unserved demand are separate; reference output = 1 kWh."
+      inputs:
+        - cp_energy
+      output: "Q; 1 kWh"
+      source_ids: []
+    - id: calc_energy
+      applies_to: "loss_electricity; aux_electricity"
+      rule: "I = D + X + A_int + L + R; I includes actual reverse injections to the network. D is physical customer delivery, X is other-network export, A_int is auxiliary drawn inside inlet meters; separately purchased auxiliary A_ext is outside I. A=A_int+A_ext. Determine L by calibrated model or sufficient metering, not residual relabelling. Attribute L,A,D to this service versus X under allocate_network, yielding L_s,A_s,D_s. F=D_s-Q only with physical delivery/acceptance evidence. Meter error and unknown R cannot become L,F or zero. Loss inlet burden=(L_s+F)/Q kWh; auxiliary burden=3.6 A_s/Q MJ; kWh×3.6=MJ."
+      inputs:
+        - cp_energy
+        - I
+        - D
+        - X
+        - A_int
+        - A_ext
+        - L
+        - R
+        - Q
+      output: "L_s; A_s; F; service electricity inputs"
+      source_ids:
+        - ea-distribution-losses
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "For each card calculate raw attributable foreground-period total in its single preferred unit, then divide by the same service cohort accepted Q once. Original-cohort asset/site-event corrections use that original Q_k under allocate_assets, never substitute current Q. Failed or zero-output individual tasks remain assigned to their evidenced original service cohort and its positive accepted Q; they do not add Q or disappear. If no positive accepted Q exists for the responsible service cohort, retain raw totals and an unresolved gap and do not produce a unit-reference result; never shift them to an unrelated successful cohort. Multiply site activity by a supplied factor only after checking its denominator and gate. Already normalized values are not divided again. Internal inputs/intermediates, losses, asset kg and technician h are not fixed to final output 1. Reference amount is dimensionless 1 with unit kWh."
+      inputs:
+        - cp_energy
+        - "attributed totals"
+      output: "amount per 1 kWh accepted service"
+      source_ids: []
+    - id: calc_gas
+      applies_to: "sf6_makeup; sf6_for_destruction; recovered_sf6_product; sf6_air"
+      rule: "E = S_open + B_open + P - S_close - B_close - T for pure SF6 species, where S is container stock, B is measured equipment charge, P is all external species entering the actual foreground gate including accepted equipment-contained charge, and T is all actual external species leaving including equipment-contained gas, recovered product and waste. Cancel internal recovery/transfers. Convert a measured whole stream to species mass once using measured composition; do not repeat a species fraction on pure mass. Reconcile unique in-gate release events and uncertainty; E is a QA balance until negative/unexplained residual is resolved, not an automatic emission factor. SF6_air = attributed actual in-gate release species total/Q. Product/waste gas cards use their measured total carrier masses, while sf6_makeup excludes integral accepted asset fill. Preacceptance supplier and posthandover receiver releases are not in this balance."
+      inputs:
+        - cp_gas
+        - "species stocks"
+        - "species acquisitions"
+        - "species disbursements and event evidence"
+      output: "QA species balance; actual kg SF6/Q and external stream kg/Q"
+      source_ids:
+        - epa-sf6-balance
+    - id: calc_assets
+      applies_to: "all assets process rows"
+      rule: "For each original asset j and service cohort k use a_jk (a_j in card quantities) from allocate_assets once: X_ik = sum_j(a_jk × M_ij), where M_ij is original accepted whole-device net kg matching the exact card. Count converts using verified model-specific net kg/item; drawing/density conversion requires applicable state, density and uncertainty; never assume a device mass. Actual retirement carrier mass is measured at handover, not inferred from future fate or a BOM. At final retirement use w_jk for each actual carrier and asset; correction for source quantity M_ij is (w_jk - F_booked_jk) × M_ij, with F_booked_jk taken from that source quantity ledger. Thus a newly measured carrier with no prior posting uses F_booked_jk=0. Preserve raw physical mass and original postings; versioned corrections amend original cohort results using that cohort Q_k once, not disposal-year Q. A negative correction reverses an over-allocation only; it is not negative physical mass or an avoided-burden credit. No nested supplier capital or second service share. Require supported positive lifetime driver and original cohort Q_k; unresolved denominators block per-reference results. Apply capital_source_amendment for final settlement, source quantity/model-version corrections and original-denominator changes; any delta-fraction times source-quantity expression here is conditional on its unchanged-source/model requirements."
+      inputs:
+        - cp_assets
+        - "original asset mass"
+        - "lifetime capacity-time"
+        - "previous allocation"
+        - "actual retirement"
+      output: "Attributable specific asset and actual retirement-carrier kg/Q"
+      source_ids: []
+    - id: capital_source_amendment
+      applies_to: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      rule: "Within this entry's declared applies_to scope, apply the complete ordered rule group: capital_source_amendment_history; capital_source_amendment_final_shares; capital_source_amendment_source_revision; capital_source_amendment_normalization; capital_source_amendment_scope. Use this entry's inputs, reference denominator and output; all definitions, conditions, exclusions and completion requirements across that group apply jointly. These components form one method, not additional exchanges or repeated allocation. Reading only a component is insufficient for completion. Follow the existing ownership and deduplication rules when one event appears in more than one entry."
+      inputs:
+        - cp_capital_amendment
+        - cp_assets
+        - capital_source_amendment_history
+        - capital_source_amendment_final_shares
+        - capital_source_amendment_source_revision
+        - capital_source_amendment_normalization
+        - capital_source_amendment_scope
+      output: "attributed totals in source-native units; normalize once by original N_c"
+      source_ids: []
+    - id: calc_work
+      applies_to: "all maintenance process rows"
+      rule: "H_w=sum_technicians(accepted on-site end-start-break hours), not elapsed crew time after an additional head-count multiplier. Direct work uses assigned H_w; shared work uses H_w×this-network accepted-hours/total-order accepted-hours once. The exact specific service input=sum attributed H_w/Q h. Confirm provider coverage matrix and separately provided operator resources before linking background service. Quantity acceptance confirms performed in-scope hours, not successful maintenance outcome. Include evidenced failed, rejected and rework hours actually consumed, even when the work result was not accepted; record disputes/credits separately without erasing physical service. Failed delivery does not increase Q. Before normalization apply calc_site_attribution to each source task total, keeping raw performed hours and its original asset/service cohort."
+      inputs:
+        - cp_work
+        - "accepted technician-hours and assignment"
+      output: "Specific service h/Q"
+      source_ids: []
+    - id: calc_waste
+      applies_to: "waste_oil; sf6_for_destruction; all retired asset carriers"
+      rule: "For each original carrier cohort, opening stock + actual generated - actual external handover - documented conversion/internal reuse = closing stock, with actual measured loss separately accounted. Handed-over carrier mass is counted once at external gate, with original responsibility and applicable asset share; unsent stock remains stock, not an assumed receipt. Removed oil/gas/parts cannot also remain in complete-device mass. Background treatment links match the actual carrier/gate once; no receiver internal flow cards."
+      inputs:
+        - cp_waste
+        - cp_gas
+        - cp_assets
+      output: "Stock reconciliation and actual external kg/Q"
+      source_ids: []
+    - id: calc_site_attribution
+      applies_to: "actual in-gate source events"
+      rule: "Record each actual in-gate gas, material, spill, service and waste source event with unique ID, original asset, original service cohort and operational/capital classification. Recurring work uses its measured current beneficiary share once. An identifiable original-asset retirement or one-time postacceptance capital-site task follows the same original-asset allocation ledger and final w_jk under allocate_assets; preserve each event quantity and its own booked shares, and correct by delta_jk times that event quantity in versioned original-cohort results/Q_k. No whole charge to event-year Q, extra lifetime/parent share or negative physical flow from negative correction. Apply the share to actual resources, contracted work and releases before calc_normalize; asset rows already weighted by calc_assets and other already attributed quantities have weight 1 here. Assign failed/zero-output tasks to their original service cohort before normalization; unsupported or nonpositive Q_k blocks the result rather than erasing consumption. Supplier manufacture/installation/filling before commissioned acceptance remains background. Unallocated annual physical gas balance is QA only; do not add event-weighted releases to it again. Actual carrier handover retains original source cohort; unoccurred events remain unobserved. Final capital settlement and source/original-denominator revisions follow capital_source_amendment; recurring components do not receive lifetime allocation."
+      inputs:
+        - cp_gas
+        - cp_material
+        - cp_spill
+        - cp_work
+        - cp_assets
+        - cp_waste
+        - Q
+      output: "Once-attributed actual site-event totals/Q"
+      source_ids: []
+    - id: capital_source_amendment_history
+      applies_to: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      rule: "Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. This rule completes the existing frozen-history/remaining-life policy; it does not require retrospective replacement of historical life fractions at every life revision. Keep the original asset key, each native-unit source s and version, exact product/event gate, all beneficiary-period cohorts c, immutable raw measurements and accepted postings. Before actual final retirement, life/utilization revisions freeze historical fractions and allocate only the remaining fraction using the existing evidenced remaining driver; require 0<=F_prev_all<=1 and include the current interval and all future beneficiaries in the positive remaining denominator. A late first-observed capital source uses each historical accepted fraction and the same remaining ledger, not a full event-year charge. Use the existing occupied design kW times occupied hours for all original beneficiary-period cohorts."
+      inputs:
+        - cp_capital_amendment
+        - cp_assets
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: capital_source_amendment_final_shares
+      applies_to: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      rule: "Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. At actual final retirement set w_c=u_actual_c/U_final with U_final=sum_all_original_beneficiaries(u_actual)>0; all final shares sum to one, including non-study/failed/standby responsibilities already prescribed by the original driver. A transfer to continued use is not final retirement. Zero or unknown lifetime activity, unsupported prior fractions or missing original cohorts prevents final allocation; retain raw totals and the gap, never equal-split or invent use."
+      inputs:
+        - cp_capital_amendment
+        - cp_assets
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: capital_source_amendment_source_revision
+      applies_to: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      rule: "Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. For source correction before retirement use each original cohort accepted fraction g_c; at final retirement use g_c=w_c. Q_s,new is the evidenced FULL source quantity before allocation in its original card unit, not a remaining unallocated balance or a previously weighted amount. B_s,c is the actual previously booked attributed raw quantity for that source/cohort, with its quantity/model version and previous normalized result. Calculate A_s,c,new=Q_s,new*g_c and delta_A_s,c=A_s,c,new-B_s,c. A newly observed source has B=0 where unposted; a correction to an existing source replaces that source ID, not an additional purchase or disposal event. The shortcut (g_new-F_booked)*Q_s is valid only when the source quantity and linked model version are unchanged and B=F_booked*Q_s; otherwise use A_new-B. Reconcile physical gross receipt/stock/transfer/handover separately; signed corrections are model amendments, never negative physical exchanges or substitution credits. For a changed linked supply/treatment model, replace the affected original-cohort inventory/results even if delta_A=0; remove the previous model contribution and record both versions and scope."
+      inputs:
+        - cp_capital_amendment
+        - cp_assets
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: capital_source_amendment_normalization
+      applies_to: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      rule: "Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Normalize the complete revised attributed amount once by the original cohort current verified reference denominator N_c (Q, D or A as locally named). If N_c itself changes, replace the complete old normalized result; do not add delta_A/new_N to a result based on old_N. Zero-output events retain their already prescribed causal parent; a parent without positive N_c retains raw attributed totals and an incomplete normalized result, never shifts to an unrelated positive-output period."
+      inputs:
+        - cp_capital_amendment
+        - cp_assets
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: capital_source_amendment_scope
+      applies_to: "original-asset sources and their one-time capital-event components; excludes recurring operating components"
+      rule: "Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Apply this to each actual capital-origin source covered by the existing gates, including separately counted initial fill, post-acceptance capital-site events and actual retirement carriers where present; do not create new sources, extend background boundaries, duplicate included supply stages or apply lifetime fractions to routine operation. These are explicit candidate accounting rules, not claimed numerical requirements of the cited classification or technical sources."
+      inputs:
+        - cp_capital_amendment
+        - cp_assets
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_coverage
+      applies_to: "all inventory rows"
+      requirement: "A named operator collector owns each protocol and original record. Record what, location, timestamps, raw unit, calibrated method, frequency and coverage. Each conditional card is occurred/absent/unknown with specification/work evidence; actual additions need exact individual card, protocol and formula before completeness. No supplier-material catalogue or speculative emission defaults."
+      evidence: "cp_screen; original evidence"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Unbound flow identities stay explicit per row until direct official records with immutable evidence hash match object, state, type/direction/role, property/unit and receiving compartment. Only the historical point-of-use Alternating current binding is retained; no fresh server verification is claimed. A search hit or similar name does not bind the service or capital equipment."
+      evidence: "official direct-record evidence; manifest unresolved_flow_identities"
+    - id: quality_missing
+      applies_to: "all inventory rows"
+      requirement: "Missing quantities, unknown identities, unsupported mass/lifetime/density or unexplained balances are not zero. Report gap, responsible collector, resolution method and uncertainty; withhold a complete dataset until critical gaps close. Estimates require explicit site-specific basis, range and sensitivity, never an unmarked default or compliance limit."
+      evidence: "all protocols; gap register"
+    - id: quality_background_gates
+      applies_to: "all product and waste rows"
+      requirement: "Verify each matched background input/treatment boundary, resource coverage, reference property/unit and dataset denominator. Capital asset gate includes its preacceptance manufacture/delivery/installation/initial fill; do not add those internals separately. Specific work services include only contracted declared resources. Disclose unlinked background burdens and foreground-only comparability limits."
+      evidence: "gate and coverage matrix; supplier/receiver specifications"
+    - id: inv_asset_gate
+      applies_to: "distribution_transformer; distribution_switchgear; distribution_cable; distribution_pole; distribution_meter"
+      requirement: "The product gate is accepted commissioned asset at its declared network position; supplied manufacture, delivery, installation and integral initial filling before that gate are background and are not expanded. Net whole-device mass includes integral parts/fill, excludes packaging and separately supplied replacements. Use original asset mass and one service-period asset share, not current-year purchase mass alone."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_retired_carrier
+      applies_to: "retired_distribution_transformer; retired_distribution_switchgear; retired_distribution_cable; retired_distribution_pole; retired_distribution_meter"
+      requirement: "Only actual corresponding retired physical asset handed over as waste at the external foreground gate, with its real condition, retained fill and contamination. Measure net carrier mass; do not infer separation or mass from the original BOM. Keep original asset responsibility and retirement allocation; no current-year whole-retirement charge or future receiving input."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_technician_service
+      applies_to: "meter_calibration; sf6_servicing; vegetation_clearance"
+      requirement: "One h is one accepted on-site technician-hour, excluding breaks; crew hours are summed, not elapsed time multiplied twice. Contract identifies included provider travel, portable tools, energy and consumables and its exact upstream gate. SF6/oil separately supplied by the operator remain separate inputs; captured gas, waste handover and operator releases remain actual foreground outputs. Own staff time is not a purchased service; record actual own-work exchanges through cp_screen instead."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require all qualifiers, positive Q and unique 1 kWh service output. Validate customer acceptance, no commodity UUID substitution, and separation of rejected, reverse, internal, exported and unserved energy. Unlike voltage, quality or gates are not interchangeable."
+    source_ids:
+      - un-cpc-69112
+  - rule_id: validate_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check I,D,X,A_int,A_ext,L,R,Q, service attribution and physical F evidence. No auxiliary double count, residual renamed loss or unallocated export divided by Q. Unresolved critical residuals and unseparated excluded interfaces prevent completeness."
+    source_ids:
+      - ea-distribution-losses
+  - rule_id: validate_foreground
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check one concrete object/property/unit per card, actual occurrence, executable protocol and no stale supplier/treatment chains. Confirm complete-device/integral-fill, provider-service/resources, waste/contained-substance and internal/external deduplication. Recheck asset measured kg, lifetime all-user/all-period denominator and retirement true-up once; absent background inventories are disclosed, not treated as zero."
+    source_ids: []
+  - rule_id: validate_capital_amendment
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify the original driver, freeze/remaining ledger, actual final w, each source full Q_s/B/version, original N and whole normalized-result replacement under capital_source_amendment. Recalculate unchanged-quantity share corrections, changed quantity with unchanged share, changed model with zero physical delta, corrected original N and zero-output cases; verify mutually exclusive capital/recurring components and all beneficiaries. Missing traceable old postings or positive denominators remains incomplete; prohibit disposal-year fallback, negative physical flows, duplicate normalization or second shares."
+    source_ids: []
+  - rule_id: validate_gas
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile pure-species stock and actual in-gate SF6 event totals, total-stream product/waste masses and original equipment-contained acquisitions/disbursements. No nameplate-as-charge, default leakage, repeated composition fraction, false future receipt or receiver destruction emissions in the foreground balance."
+    source_ids:
+      - epa-sf6-balance
+  - rule_id: validate_projection
+    applies_to: "foreground_dataset_conformance"
+    rule: "All boundary/allocation/card/protocol/calculation/quality duties must project from supported source tables into structured and machine guidance with valid row/protocol references. Compare actual semantics and bilingual conditions/formulas, not only schema/fingerprints. Atomic/localized markers and a passing check do not approve methodology, translation for publication or full CPC scope."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "distribution_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared foreground AC distribution service combined once with gate-matched background input/treatment inventories and separately generated accepted commodity"
+  excluded_use: "Complete delivered-electricity commodity footprint without background links; storage/independent ancillary services; comparisons across unlike gates/voltage; publication approval"
+  required_metadata: "All qualifiers; Q/balance; foreground gates; retained asset masses/lifetime shares; service coverage; actual waste handover/stocks; identity and source evidence"
+  required_quality_disclosure: "Unbound UUIDs, unlinked background datasets, residual R, meter/model/mass/lifetime uncertainty, excluded interfaces and allocation sensitivity"
+  update_trigger: "Changed topology/voltage/customers/responsibility, asset or service configuration, gas/loss correction, gates or background coverage"
+data_sources:
+  - id: "un-cpc-69112"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0, subclass 69112 explanatory note. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/69112"
+    used_for: "Own-account distribution/meter maintenance; generation/transmission/meter-installation/independent-reading exclusions; broader subclass includes storage/ancillaries excluded here"
+  - id: "epa-electricity-delivery"
+    type: "official_guidance"
+    reference: "US EPA, Electricity Delivery and its Environmental Impacts, updated 2026-07-14. https://www.epa.gov/energy/electricity-delivery-and-its-environmental-impacts"
+    used_for: "Distribution/transformer/line-maintenance and SF6 screening; illustrative voltage is not a universal limit"
+  - id: "ea-distribution-losses"
+    type: "official_guidance"
+    reference: "New Zealand Electricity Authority, Distribution losses, web snapshot 2026-10-27, Types of losses. https://www.ea.govt.nz/industry/distribution/distribution-losses/"
+    used_for: "Technical, nontechnical, reconciliation-loss and unaccounted-energy distinctions; no default loss rate"
+  - id: "epa-sf6-balance"
+    type: "official_guidance"
+    reference: "US EPA, Subpart DD Information Sheet, How Must GHG Emissions Be Calculated?, web snapshot 2026-10-27. https://www.epa.gov/ghgreporting/subpart-dd-information-sheet"
+    used_for: "Species mass-balance basis using container stock, acquisition/disbursement and equipment change; measured-stock form is a conservation restatement, not a claim of statutory US reporting compliance"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8ec927854d9d9c4a98bcf8b30cc2ca47513a17d7dd57a8d273a4601209b50b9d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5588"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5588
+          line: 55
+          column: 1
+        end:
+          offset: 10264
+          line: 78
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Existing named AC network receives energy at metered inlet; capital inputs are accepted commissioned assets, not burden-free existing stock |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Declared AC distribution subset of CPC 69112; narrower, with original excluded routes retained |\n| recursive_input_rule | Other-network interfaces and background input products/services are recorded once at declared gates; no supplier/receiver recursion |\n| upstream_dataset_requirement | Gate-matched generation for service loss/auxiliary energy, specific material/equipment/service supply, and external carrier treatment linked separately as background |\n| disclosure | Foreground gates; exclusions; Q/balance; actual assets and service shares; provider resource coverage; waste stocks/handover; unbound identity and background gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_service` | Foreground comprises operation between the named AC inlet and customer acceptance gates, plus operator-responsible on-site servicing. Transmission, generation of accepted commodity Q, end use, new-meter installation, independent meter reading, storage/conversion and independent ancillary services remain excluded. Necessary protection/control and existing-meter maintenance remain included. | un-cpc-69112; epa-electricity-delivery |\n| `boundary_foreground` | Inventory exchanges crossing those foreground gates and actual releases. Purchased specific equipment, materials and services enter as defined products with one primary property/unit. Do not expand supplier manufacture, mining, delivery travel, roads/tools/vehicles or receiver treatment internals. Capital is retained only as specified commissioned network assets with measured mass and one supported lifetime share; upstream inventories matching that commissioned gate supply its background burden. This foreground choice is not a claim of zero background burden or a source-mandated EPD boundary. |  |\n| `boundary_loss_commodity` | Link upstream generation once for technical losses L_s, physically confirmed nonaccepted delivery F and auxiliary A_s attributable to this service. Generated commodity Q is linked separately once by a combined commodity system. Other-network export X retains its own commodity and conveyance burden; do not divide that burden by customer Q. A supplied electricity dataset already including this segment losses/assets cannot be stacked with this service. |  |\n| `boundary_atomic` | Atomic means one defined measurable object with one primary flow property and one preferred unit, not chemical decomposition of complete equipment or one characterized waste carrier. Independent inputs remain separate even if both use kg. Different media, directions, gas formulations and independently supplied services require separate cards. Actual absent exchanges require evidence; unknown is not absent. |  |\n| `boundary_gas` | Use the actually owned/operated equipment and cylinder stock boundary, including measured gas entering/leaving inside accepted equipment. Integral initial SF6/oil is within the commissioned asset input, never a second purchased material input. All foreground release events including servicing remain measured by species. Supplier preacceptance commissioning/filling and receiver destruction are outside this gate. An unresolved boundary or missing charge/composition prevents a complete balance. Regulatory thresholds are not cutoffs. | epa-sf6-balance |\n| `boundary_waste` | Waste ends at actual documented external handover. Record one characterized carrier, its origin, opening/generation/dispatch/closing stock, receiver gate and downstream linkage requirement; retained stock is not an observed future handover. No paired receiver inputs or invented off-site reagents/emissions. A complete lifecycle model may later link a matching treatment dataset once; do not confuse this foreground-only dataset with a complete treatment footprint. Treatment physically inside the operator gate must be explicitly added with its own actual exchanges before completeness. |  |\n| `boundary_interfaces` | Separate co-located storage, conversion and independently supplied ancillary services with meters and asset/work-order gates. Internal cycling does not increase Q. Missing separation prevents completion. Background product/service coverage must specify supplied resources/stages and exclusions, so actual operator-provided resources are recorded once while included supplier resources are not repeated. | un-cpc-69112 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 8
+              column: 1
+            end:
+              offset: 303
+              line: 8
+              column: 47
+          text: "# Distribution of electricity (on own account)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5588
+              line: 55
+              column: 1
+            end:
+              offset: 5609
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_28179"
+      family: "allocation"
+      span:
+        start:
+          offset: 28179
+          line: 463
+          column: 1
+        end:
+          offset: 31469
+          line: 472
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocate_network` | Assign loss, auxiliary, customer and inter-network services first by meters/work orders. Shared variable losses use calibrated service-specific load/network models; shared fixed standby/assets use this service occupied design peak capacity-time. Keep raw kW, h, beneficiary IDs and shares summing to one for the period. Like denominators do not make unlike voltage/gate services equivalent. |  |\n| `allocate_assets` | For each original asset j retain beneficiary-period service cohorts k and the same occupied design capacity-time driver u (design kW times occupied h). Initially a_jk = u_k / supported all-beneficiary lifetime U. Freeze accepted historical postings on a life/utilization revision: F_prev_all is the sum of fractions already booked across all beneficiaries and periods; each future interval uses a_jk = (1 - F_prev_all) × u_current / U_remaining_all, where the positive evidenced remaining capacity-time includes that interval and every remaining beneficiary. Require 0 <= F_prev_all <= 1 and 0 <= u_current <= U_remaining_all; cumulative provisional fractions across all beneficiaries must not exceed one. Update the balance after each posting; a revised life must not restart the original mass. At actual final retirement calculate w_jk = u_actual_k / sum_all_lifetime_actual_u across all original cohorts and delta_jk = w_jk - F_booked_jk. Preserve original records and issue versioned corrections to each original cohort and its own accepted Q_k; delta may be positive or negative, never a negative physical exchange or substitution credit. The final shares sum to one and apply consistently to the original asset, its one-time capital-site source events and actual retirement carriers; each source quantity retains its own previously booked fractions (zero for newly observed quantities). Never charge the residual to the disposal-period Q. Unknown/nonpositive denominators or unsupported prior shares require resolution, never equal splitting or a current-Q fallback. No second service share. Long-lived replacements receive new original keys; current consumables are not capital. Unsupported future fate is not measured retirement. Final capital settlement and source/original-denominator revisions follow capital_source_amendment; recurring components do not receive lifetime allocation. |  |\n| `allocate_services` | Specific purchased work uses directly evidenced service hours first. For shared work, service share is this network accepted technician-hours / total accepted technician-hours for that order; record each beneficiary and assign once. Provider resources included in the service background are not also foreground material/energy inputs. Own-work resources are direct foreground exchanges; wages or internal labour hours are not a purchased environmental flow. |  |\n| `allocate_recovery` | No automatic recovery credit. Accepted recovered product, waste, retained inventory, return and rejection are distinct. Original waste cohorts persist across storage/dispatch periods and cannot shift historic retirement mass or burden wholesale to current Q. Record background handover obligations explicitly without expanding receivers. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 8
+              column: 1
+            end:
+              offset: 303
+              line: 8
+              column: 47
+          text: "# Distribution of electricity (on own account)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 28179
+              line: 463
+              column: 1
+            end:
+              offset: 28219
+              line: 463
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_63428"
+      family: "validation"
+      span:
+        start:
+          offset: 63428
+          line: 520
+          column: 1
+        end:
+          offset: 65986
+          line: 531
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require all qualifiers, positive Q and unique 1 kWh service output. Validate customer acceptance, no commodity UUID substitution, and separation of rejected, reverse, internal, exported and unserved energy. Unlike voltage, quality or gates are not interchangeable. | un-cpc-69112 |\n| `validate_balance` | Check I,D,X,A_int,A_ext,L,R,Q, service attribution and physical F evidence. No auxiliary double count, residual renamed loss or unallocated export divided by Q. Unresolved critical residuals and unseparated excluded interfaces prevent completeness. | ea-distribution-losses |\n| `validate_foreground` | Check one concrete object/property/unit per card, actual occurrence, executable protocol and no stale supplier/treatment chains. Confirm complete-device/integral-fill, provider-service/resources, waste/contained-substance and internal/external deduplication. Recheck asset measured kg, lifetime all-user/all-period denominator and retirement true-up once; absent background inventories are disclosed, not treated as zero. |  |\n| validate_capital_amendment | Verify the original driver, freeze/remaining ledger, actual final w, each source full Q_s/B/version, original N and whole normalized-result replacement under capital_source_amendment. Recalculate unchanged-quantity share corrections, changed quantity with unchanged share, changed model with zero physical delta, corrected original N and zero-output cases; verify mutually exclusive capital/recurring components and all beneficiaries. Missing traceable old postings or positive denominators remains incomplete; prohibit disposal-year fallback, negative physical flows, duplicate normalization or second shares. |  |\n| `validate_gas` | Reconcile pure-species stock and actual in-gate SF6 event totals, total-stream product/waste masses and original equipment-contained acquisitions/disbursements. No nameplate-as-charge, default leakage, repeated composition fraction, false future receipt or receiver destruction emissions in the foreground balance. | epa-sf6-balance |\n| `validate_projection` | All boundary/allocation/card/protocol/calculation/quality duties must project from supported source tables into structured and machine guidance with valid row/protocol references. Compare actual semantics and bilingual conditions/formulas, not only schema/fingerprints. Atomic/localized markers and a passing check do not approve methodology, translation for publication or full CPC scope. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 257
+              line: 8
+              column: 1
+            end:
+              offset: 303
+              line: 8
+              column: 47
+          text: "# Distribution of electricity (on own account)"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 63428
+              line: 520
+              column: 1
+            end:
+              offset: 63450
+              line: 520
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_service"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 6613
+          line: 70
+          column: 1
+        end:
+          offset: 7070
+          line: 70
+          column: 458
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 7071
+          line: 71
+          column: 1
+        end:
+          offset: 7701
+          line: 71
+          column: 631
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_loss_commodity"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 7702
+          line: 72
+          column: 1
+        end:
+          offset: 8190
+          line: 72
+          column: 489
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 8191
+          line: 73
+          column: 1
+        end:
+          offset: 8627
+          line: 73
+          column: 437
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_gas"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 8628
+          line: 74
+          column: 1
+        end:
+          offset: 9202
+          line: 74
+          column: 575
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 9203
+          line: 75
+          column: 1
+        end:
+          offset: 9816
+          line: 75
+          column: 614
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 9817
+          line: 76
+          column: 1
+        end:
+          offset: 10262
+          line: 76
+          column: 446
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocate_network"
+      identity_kind: "explicit"
+      unit_id: "normative_28179"
+      source_span:
+        start:
+          offset: 28273
+          line: 467
+          column: 1
+        end:
+          offset: 28691
+          line: 467
+          column: 419
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocate_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_28179"
+      source_span:
+        start:
+          offset: 28692
+          line: 468
+          column: 1
+        end:
+          offset: 30613
+          line: 468
+          column: 1922
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocate_services"
+      identity_kind: "explicit"
+      unit_id: "normative_28179"
+      source_span:
+        start:
+          offset: 30614
+          line: 469
+          column: 1
+        end:
+          offset: 31100
+          line: 469
+          column: 487
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocate_recovery"
+      identity_kind: "explicit"
+      unit_id: "normative_28179"
+      source_span:
+        start:
+          offset: 31101
+          line: 470
+          column: 1
+        end:
+          offset: 31467
+          line: 470
+          column: 367
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 63504
+          line: 524
+          column: 1
+        end:
+          offset: 63810
+          line: 524
+          column: 307
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 63811
+          line: 525
+          column: 1
+        end:
+          offset: 64109
+          line: 525
+          column: 299
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_foreground"
+      identity_kind: "explicit"
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 64110
+          line: 526
+          column: 1
+        end:
+          offset: 64562
+          line: 526
+          column: 453
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_capital_amendment"
+      identity_kind: "explicit"
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 64563
+          line: 527
+          column: 1
+        end:
+          offset: 65209
+          line: 527
+          column: 647
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_gas"
+      identity_kind: "explicit"
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 65210
+          line: 528
+          column: 1
+        end:
+          offset: 65563
+          line: 528
+          column: 354
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_projection"
+      identity_kind: "explicit"
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 65564
+          line: 529
+          column: 1
+        end:
+          offset: 65984
+          line: 529
+          column: 421
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 5588
+          line: 55
+          column: 1
+        end:
+          offset: 5609
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5588"
+      source_span:
+        start:
+          offset: 5637
+          line: 59
+          column: 1
+        end:
+          offset: 6559
+          line: 66
+          column: 180
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_28179"
+      source_span:
+        start:
+          offset: 28179
+          line: 463
+          column: 1
+        end:
+          offset: 28219
+          line: 463
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_63428"
+      source_span:
+        start:
+          offset: 63428
+          line: 520
+          column: 1
+        end:
+          offset: 63450
+          line: 520
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8ec927854d9d9c4a98bcf8b30cc2ca47513a17d7dd57a8d273a4601209b50b9d"
+  generated_content_sha256: "sha256:3b62084aeda333de7dd19954c61c49a0fdddf9918cb26c5d040041108d537055"

@@ -1,10 +1,1833 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "68013"
-  title: "Post office counter services"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.postal-and-courier-services.post-office-counter-services"
+  classification_refs: "CPC 3.0 68013; narrower coverage of a defined counter-acceptance family"
+  covered_products: "Manual post-office counter acceptance of one registered or certified letter or packet, with an individual acceptance record and sender receipt; each mail form and acceptance procedure is a separate dataset stratum"
+  excluded_products: "Standalone stamp sales; recipient pickup; financial, passport and retail services; self-service kiosks; door collection; sorting, storage after counter handoff, linehaul, delivery and delivery verification"
+  representative_product: "One barcoded registered letter accepted at an attended counter, with verified eligibility, recorded custody acceptance and issued sender receipt"
+  production_route: "Check eligibility and requested service; weigh where required; verify or apply individual identifier; record acceptance and payment status; issue receipt; hand over to the defined outgoing counter handoff point"
+  market_state: "Completed counter-acceptance service at the stated office, period, mail form and procedure; no claim of completed transportation or delivery"
+functional_unit:
+  what: "Manual acceptance and documented custody handoff of a registered or certified mailpiece"
+  how_much: "1 accepted mailpiece transaction; one customer session containing several mailpieces counts each independently accepted identifier once"
+  how_well: "Declared service procedure and eligibility checks completed; valid acceptance event and sender receipt; delivery success is outside this function"
+  how_long_or_cycle: "From first counter handling of the presented mailpiece to acceptance receipt and handoff at the outgoing counter point; record elapsed handling time, accounting period and waiting/idle allocation"
+  reference_flow_link: "accepted_counter_transaction"
+system_boundary:
+  rules:
+    - rule_id: boundary_counter
+      applies_to: "foreground_system_boundary"
+      rule: "Include eligibility check, weighing, scanning/recording, receipt and any counter label actually applied, internal counter handoff, corrections and unsuccessful handling within the declared gate. A successful acceptance is not delivery."
+      source_ids:
+        - un-cpc-68013
+        - usps-package
+        - usps-extra-services
+    - rule_id: boundary_mail_money
+      applies_to: "foreground_system_boundary"
+      rule: "Mailpiece contents, packaging and prepaid stamps arrive in customer custody and are not consumed or produced by this service. Track custody/count transitions outside exchange inventory. Record only incremental counter materials actually supplied. Postage, cash, tax and insured value are monetary records, never material or elementary flows. If supplied by the onward-postal-service dataset, remove the same counter stage there before combining."
+      source_ids:
+        - un-cpc-68013
+        - usps-package
+    - rule_id: boundary_support
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributed counter electricity, equipment provision/upkeep/end-of-life, remote acceptance IT, premises and waste responsibilities once. Under boundary_atomic_support and foreground_interface_coverage, operator-responsible components use physical rows; independent remote IT and occupancy providers use svc_remote_acceptance_it and svc_premises_service. Keep the fixed technical scope, activity allocation and direct-scope exclusions. A compatible background service with a signed scope declaration is acceptable; an invoice alone does not establish coverage."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: boundary_exclusions
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude customer and employee travel/commuting, human metabolic energy, onward sorting/transport/storage/delivery and standalone stamp, financial or retail services; disclose these exclusions. Keep lighting, heating/cooling and cleaning caused by waiting-area occupation inside the premises inventory; customer waiting minutes themselves are not an emission flow."
+      source_ids: []
+    - rule_id: boundary_extension
+      applies_to: "foreground_system_boundary"
+      rule: "Before quantification screen each actual route for other paper forms, inks, sealing materials, packaging, fuels, water, refrigeration and releases. Every additional present exchange needs its own specific card, physical identity, unit and protocol; the listed cards are not a completeness exemption. If integrated in premises/equipment/IT background, locate it there once and document scope. Demonstrably absent conditional rows use not_applicable with dated evidence; unknown is never zero."
+      source_ids: []
+    - rule_id: boundary_atomic_support
+      applies_to: "supporting activities"
+      rule: "Each active exchange represents one defined material, equipment or service object with one primary property and unit. A service is not disallowed merely because it has upstream processes. Fix responsibility by provider, contract, site, event, gate and scope component before quantification. Operator-run processes and separately commissioned onsite tasks under operator inventory responsibility use foreground physical rows. Independently provided activities outside that responsibility use their specified service-interface rows; supplier manufacture, utilities, maintenance and waste remain in the matched background service, not extra foreground exchanges. A contract alone does not turn supplier internals into foreground. Do not change the product, route, custody gates or original reference denominator. Apply foreground_interface_method and foreground_interface_coverage; boundary changes need PCR review, not a data-availability choice. Ownership here means inventory responsibility, not legal title alone: rented equipment provision may be an external service while separately metered operator-run electricity remains foreground."
+      source_ids: []
+    - rule_id: foreground_interface_coverage
+      applies_to: "all support processes and overlaps"
+      rule: "Keep a signed scope-ownership matrix for each service contract and background dataset: exact gates, route/configuration, place/period, native reference unit, quality, supply/operation/empty/failure/maintenance/capital/terminal coverage, all-user allocation and foreground overlaps. Background coverage must preserve the existing lifecycle obligations and candidate allocation policies; it may be documented by a compatible dataset and supplier scope declaration without obtaining every internal exchange. Purchased quantity is measured at the interface; bundled independent services or incompatible units require separate concrete rows. For partial coverage partition by evidenced event/component first. Keep operator-owned assets, separately supplied energy/materials, customer-provided parts and operator-retained waste only in their own physical rows and exclude them from the supplier inventory. Suppress only identical covered supplier components; retain excluded real components through their own specific interface/physical rows. Never add the detailed counterpart to a service covering it; never erase burden because supplier detail is unavailable. Missing service-unit conversion, identity, coverage or a required complementary component blocks completeness, not zero. Existing narrower product applicability, physical stock balances, original-cohort corrections and receipt evidence remain mandatory for their actual owners."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Presented, already packaged mailpiece and installed counter; these are starting conditions, not burden-free new products"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Counter acceptance only, narrower than the whole CPC 68013 subclass"
+  recursive_input_rule: "Apply boundary_atomic_support: external activities enter through a defined single-unit service interface; do not recursively expand supplier internals. Foreground physical processes retain their existing cards and rules. Custody cargo is not a manufactured input."
+  upstream_dataset_requirement: "Keep a signed scope-ownership matrix for each service contract and background dataset: exact gates, route/configuration, place/period, native reference unit, quality, supply/operation/empty/failure/maintenance/capital/terminal coverage, all-user allocation and foreground overlaps. Background coverage must preserve the existing lifecycle obligations and candidate allocation policies; it may be documented by a compatible dataset and supplier scope declaration without obtaining every internal exchange. Purchased quantity is measured at the interface; bundled independent services or incompatible units require separate concrete rows. For partial coverage partition by evidenced event/component first. Keep operator-owned assets, separately supplied energy/materials, customer-provided parts and operator-retained waste only in their own physical rows and exclude them from the supplier inventory. Suppress only identical covered supplier components; retain excluded real components through their own specific interface/physical rows. Never add the detailed counterpart to a service covering it; never erase burden because supplier detail is unavailable. Missing service-unit conversion, identity, coverage or a required complementary component blocks completeness, not zero. Existing narrower product applicability, physical stock balances, original-cohort corrections and receipt evidence remain mandatory for their actual owners."
+  disclosure: "Office/period/stratum; acceptance gate; failures and corrections; customer travel exclusion; waiting/idle attribution; physical mail custody; service-provider overlaps; upstream and UUID gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Counter acceptance service for one registered or certified mailpiece"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "office and country"
+    - "accounting period"
+    - "mail form and size/mass band"
+    - "registered/certified acceptance procedure"
+    - "identifier and receipt criteria"
+    - "first/last counter gate"
+    - "number of items per session"
+    - "included equipment and facility-service boundary"
+    - "allocation drivers and upstream coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: ""
+    required_unit: "Item(s)"
+    rule: "Count completed unique mailpiece acceptance events N_s in the same stratum and period, not visits, stamps, attempted scans, financial turnover, hours or transported mass. Failed attempts and rework consume inputs without increasing N_s. N_s must be positive."
+  - id: measure_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "row-specific unit"
+    rule: "Collect raw period totals and activity drivers first. Divide each attributable period total by N_s exactly once. A source already expressed per completed mailpiece is not divided again; reconstruct its period total for reconciliation. No assumed conversion between mailpiece count, mass, time or money."
+  - id: measure_units
+    applies_to: "counter_electricity; receipt_paper; acceptance_label"
+    required_property_ref:
+      name: "Energy; Mass"
+      uuid: ""
+    required_unit: "MJ; kg"
+    rule: "For electricity convert recorded kWh to MJ by multiplying by 3.6 once. Paper and label mass uses calibrated weighing or verified mass per roll/label and actual stock movement. Weigh label product including its liner at purchase; separately measure liner waste. Do not apply density, moisture or dry-mass conversions without measured, applicable evidence."
+process_map:
+  - id: accept
+    name: "Attended verification, recording and acceptance handoff"
+    inclusion: "required"
+    inclusion_condition: "Actual route; individual card conditions apply"
+    role: "foreground_production"
+    quantitative_reference: "per reference flow"
+  - id: support_premises_service
+    name: "Support interface / foreground activity: Counter premises occupancy, excluding separately recorded site utilities"
+    inclusion: "conditional"
+    inclusion_condition: "Apply foreground_interface_method and foreground_interface_coverage to the actual responsibility. Existing physical-detail condition, only for its foreground component: Only the estate-period and zone-matched counter accommodation under allocation_premises_inventory; direct devices, plug loads, paper and remote IT excluded."
+    role: "support"
+    quantitative_reference: "allocation to accepted_counter_transaction"
+  - id: support_remote_acceptance_it
+    name: "Support interface / foreground activity: Remote execution of one configured postal acceptance request"
+    inclusion: "conditional"
+    inclusion_condition: "Apply foreground_interface_method and foreground_interface_coverage to the actual responsibility. Existing physical-detail condition, only for its foreground component: Executed remote barcode validation/record-write/acknowledgement requests for the declared acceptance endpoint; includes failures/retries, excludes ongoing delivery tracking."
+    role: "support"
+    quantitative_reference: "allocation to accepted_counter_transaction"
+process_inventory:
+  - id: accept
+    label: "Attended verification, recording and acceptance handoff"
+    inputs:
+      product:
+        - row_id: counter_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Use-point electricity for counter computer, scale, scanners and printers including active and standby/idle loads. Supply voltage, geography and generation mix remain separate upstream qualifiers; this flow identity does not supply an emission factor. Use calc_energy and calc_normalize for measured, attributed period electricity; cp_energy."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_energy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: receipt_paper
+          role: "Direct-thermal receipt paper"
+          name: "Direct-thermal receipt paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual thermal receipt paper supplied at this counter; include voided receipts and repeat prints. Ordinary forms or inkjet paper require separate specific rows when present. Use calc_stock and calc_normalize for net period paper consumed; cp_stock."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_stock."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: acceptance_label
+          role: "Direct-thermal paper label with acrylic adhesive and silicone-coated glassine release liner"
+          name: "Direct-thermal paper label with acrylic adhesive and silicone-coated glassine release liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on documented use of this exact label construction for counter acceptance. Verify acrylic adhesive and silicone-coated glassine liner against the supplier specification before using this card. This is one purchased composite product including that liner; never substitute an unknown label stock. Other construction needs a separate specific row. Use calc_stock and calc_normalize for whole-label-stock consumption, including its liner; cp_stock."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_stock."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stock
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: counter_computer
+          role: "Desktop computer with display"
+          name: "Desktop computer with display"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Actual installed counter computer, including its display and internal components but excluding separate scale, barcode scanner and printers. A laptop or integrated till has a distinct identity and requires its own row. Use calc_device and calc_normalize for attributable consumed complete-computer lifetime equivalents; cp_assets."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: counter_scale
+          role: "Electronic postal weighing scale"
+          name: "Electronic postal weighing scale"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional independent weighing scale actually used for the declared mail acceptance, with capacity and precision recorded; maintenance and calibration remain within its lifecycle coverage. Use calc_device and calc_normalize for attributable consumed scale lifetime equivalents; cp_assets."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: barcode_scanner
+          role: "Handheld barcode scanner"
+          name: "Handheld barcode scanner"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional independent scanner actually installed; exclude scanning components already included in the selected complete terminal. Use calc_device and calc_normalize for attributable consumed scanner lifetime equivalents; cp_assets."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: receipt_printer
+          role: "Direct-thermal receipt printer"
+          name: "Direct-thermal receipt printer"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional independent receipt printer, excluding receipt paper and operating electricity; do not count an integrated terminal printer again. Use calc_device and calc_normalize for attributable consumed receipt-printer lifetime equivalents; cp_assets."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: label_printer
+          role: "Direct-thermal label printer"
+          name: "Direct-thermal label printer"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional separately installed acceptance-label printer; if one physical printer serves both receipts and labels its serial number is assigned once and both workloads enter that one lifetime calculation. Use calc_device and calc_normalize for attributable consumed label-printer lifetime equivalents; cp_assets."
+          amount:
+            expression: "Attributable measured exchange amount per reference flow; cp_assets."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_counter_transaction
+          role: "Counter acceptance service for one registered or certified mailpiece"
+          name: "Counter acceptance service for one registered or certified mailpiece"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "One completed acceptance event of the declared stratum, not a customer visit, mail delivery or financial transaction."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_acceptance
+              source_ids:
+                - un-cpc-68013
+                - usps-extra-services
+            ranges: []
+      waste:
+        - row_id: receipt_paper_waste
+          role: "Discarded direct-thermal receipt paper"
+          name: "Discarded direct-thermal receipt paper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual receipt-paper waste generated at the counter, including original-event mass retained at period end. Use the calc_waste_origin result already normalized by the original N_s once; do not divide again through calc_normalize. Later dispatch only reconciles original-event stock and receiver evidence. Retain storage, transport and treatment in the original-event model with exact overlap exclusions."
+          amount:
+            expression: "Original-cohort/stratum attributed generated mass in this card's declared material and wet/dry basis / N_s, using the section 8 waste-origin method; includes retained waste and supported eventual treatment. Custody dispatch verifies the original event and is not another generation or later-cohort burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: glassine_liner_waste
+          role: "Silicone-coated glassine label release-liner waste"
+          name: "Silicone-coated glassine label release-liner waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Glassine release-liner waste generated at the counter after actual separation from the complete label, including retained original-event mass. Use the calc_waste_origin result already normalized by the original N_s once; do not divide again through calc_normalize. Later dispatch only reconciles original-event stock and receiver evidence. Retain storage, transport and treatment in the original-event model with exact overlap exclusions."
+          amount:
+            expression: "Original-cohort/stratum attributed generated mass in this card's declared material and wet/dry basis / N_s, using the section 8 waste-origin method; includes retained waste and supported eventual treatment. Custody dispatch verifies the original event and is not another generation or later-cohort burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+      elementary:
+        []
+  - id: support_premises_service
+    label: "Support interface / foreground activity: Counter premises occupancy, excluding separately recorded site utilities"
+    inputs:
+      product:
+        - row_id: svc_premises_service
+          role: "Counter premises occupancy"
+          name: "Counter premises occupancy"
+          flow_type: "product"
+          property_unit: "Area-time / m2*h"
+          description: "External interface only under boundary_atomic_support; one contract-defined counter premises occupancy, excluding separately recorded site utilities. Measurement: actual counter-area m2 * occupancy h during the complete counter reporting period; retain the original shared-space allocation. Fix provider, technology/configuration, gates, quality and included components per cp_interface_premises_service; use foreground_interface_coverage to exclude operator-owned or separately supplied components. No supplier-internal exchanges are additional foreground inputs. Allocation follows activity_premises_service for native activity attribution only, with foreground_interface_method; this does not require the physical inventory branch. UUID and property/unit-group support are unverified candidates. Calculation: calc_interface_premises_service."
+          amount:
+            expression: "sum(A_s,e * alpha_s,e) / N_s; native service unit m2*h; normalize once per reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_interface_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Only actual zonal/common supply after direct counter plug loads and remote IT are subtracted. Supply-meter electricity; retain location, voltage and technology; do not add appliance output electricity. Apply inv_premises_scope, inv_ac_basis in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit MJ; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_tap_water
+          role: "Tap water supplied to counter premises"
+          name: "Tap water supplied to counter premises"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Only actual zonal supply not already in another direct inventory. Metered incoming water, distinguish supply from wastewater and evaporation. Apply inv_premises_scope in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit m3; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_natural_gas
+          role: "Natural gas delivered for premises combustion"
+          name: "Natural gas delivered for premises combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Only evidenced natural-gas equipment and supply; Report MJ on a supplier-evidenced net (lower) calorific value (NCV/LHV) basis. Metered volume and calorific value must have identical temperature, pressure and moisture basis; use a documented conversion where they differ, never a generic multiplier. Fuel supply only, not a heat/combustion service; combustion emissions need independent identified species. Section 8 converts only the matched raw supply to NCV MJ, then applies the fixed premises/stratum share and N_s once. Apply inv_premises_scope in section 8."
+          amount:
+            expression: "sum_j(Q_gas_NCV_MJ_j * s_c,gas,j) / N_s"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_hot_water_heat
+          role: "Purchased district hot-water heat"
+          name: "Purchased district hot-water heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Only actual metered district hot-water heat; do not also count supplier fuel or circulating-water mass. A single energy carrier at delivered heat gate, not the complete premises package; retain matched supplier heat production inventory. Apply inv_premises_scope in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit MJ; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_building_gate
+          role: "Completed counter-premises building shell at handover"
+          name: "Completed counter-premises building shell at handover"
+          flow_type: "product"
+          property_unit: "Area / m2"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: production. Only actual independently delivered structure with area/component/construction gate defined. Construction gate only; no operating utilities, subsequent maintenance or EOL inside this product. The input Q_a is the original manufacture/construction-gate physical quantity before amortisation; apply f once as specified in lifetime_driver. Q_a is the original complete building-shell handover floor area, before amortisation. f=target-cohort/stratum attributed occupied/reserved floor-area-hours divided by the same asset full-lifetime occupied/reserved floor-area-hours; same asset, area and calendar-hour definition are mandatory. For premises_service the numerator is F_s; for premises use its attributed cohort area-hours. q_prod=Q_a*f/N_s; each full-lifecycle demolition stream Q_e uses identical f/N_s. Cohort/stratum shares are already in f and are not applied again. Missing lifetime/area boundary blocks completion. Apply inv_premises_scope, inv_asset_basis in section 8."
+          amount:
+            expression: "sum(Q_product_a * f_c,a) / N_s; native quantity unit m2; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: u_premises_service_sanitary_wastewater
+          role: "Counter-premises sanitary and water-cleaning wastewater to sewer"
+          name: "Counter-premises sanitary and water-cleaning wastewater to sewer"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Only one evidenced receiver/composition; separate any incompatible cleaning chemicals or receiving treatment. Measured/validated water balance, composition and receiving sewer; preserve the complete actual treatment chain, do not label as elementary water emission. Apply inv_premises_scope in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit m3; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_concrete_demolition
+          role: "Concrete demolition waste from counter premises"
+          name: "Concrete demolition waste from counter premises"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: eol. Only actual separately measured concrete receiver stream from the same lifetime building scope. Use the building capital fraction for EOL; do not charge whole current demolition tonnage to current transactions. Other demolition streams remain gaps until identified. Paired manufacture row u_premises_service_building_gate: use that asset serial/cohort and identical lifetime fraction; never period-transfer quantity as a second burden. Apply inv_premises_scope, inv_terminal_basis in section 8."
+          amount:
+            expression: "sum(R_terminal_a * f_c,a) / N_s; native quantity unit kg; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: u_premises_service_co2_fossil_air
+          role: "Fossil carbon dioxide from premises combustion to air"
+          name: "Fossil carbon dioxide from premises combustion to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Apply inv_premises_scope, inv_combustion_species in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit kg; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_no_air
+          role: "Nitrogen monoxide from premises combustion to air"
+          name: "Nitrogen monoxide from premises combustion to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Apply inv_premises_scope, inv_combustion_species in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit kg; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+        - row_id: u_premises_service_no2_air
+          role: "Nitrogen dioxide from premises combustion to air"
+          name: "Nitrogen dioxide from premises combustion to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. Apply inv_premises_scope, inv_combustion_species in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit kg; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_premises_service
+              source_ids: []
+            ranges: []
+  - id: support_remote_acceptance_it
+    label: "Support interface / foreground activity: Remote execution of one configured postal acceptance request"
+    inputs:
+      product:
+        - row_id: svc_remote_acceptance_it
+          role: "Remote execution of one configured postal acceptance request"
+          name: "Remote execution of one configured postal acceptance request"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "External interface only under boundary_atomic_support; one contract-defined remote execution of one configured postal acceptance request. Measurement: count unique executed request IDs at the contracted backend gate, including separately executed failed/retried requests; one item is one request execution, not one successful counter output. Fix provider, technology/configuration, gates, quality and included components per cp_interface_remote_acceptance_it; use foreground_interface_coverage to exclude operator-owned or separately supplied components. No supplier-internal exchanges are additional foreground inputs. Allocation follows activity_remote_acceptance_it for native activity attribution only, with foreground_interface_method; this does not require the physical inventory branch. UUID and property/unit-group support are unverified candidates. Calculation: calc_interface_remote_acceptance_it."
+          amount:
+            expression: "sum(A_s,e * alpha_s,e) / N_s; native service unit Item(s); normalize once per reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_interface_remote_acceptance_it
+              source_ids: []
+            ranges: []
+        - row_id: u_remote_acceptance_it_datacentre_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. A physical quantity from the exact acceptance operation resource pool. Electricity includes cooling only where the meter includes it, so do not add a second cooling electricity total. Complete hardware is factory gate only; maintenance and EOL are separate. Retired products require the full subsequent identified treatment chain. Apply inv_ac_basis, inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit MJ; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+        - row_id: u_remote_acceptance_it_network_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. A physical quantity from the exact acceptance operation resource pool. Electricity includes cooling only where the meter includes it, so do not add a second cooling electricity total. Complete hardware is factory gate only; maintenance and EOL are separate. Retired products require the full subsequent identified treatment chain. Apply inv_ac_basis, inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit MJ; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+        - row_id: u_remote_acceptance_it_cooling_makeup_water
+          role: "Datacentre cooling make-up water"
+          name: "Datacentre cooling make-up water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: use. A physical quantity from the exact acceptance operation resource pool. Electricity includes cooling only where the meter includes it, so do not add a second cooling electricity total. Complete hardware is factory gate only; maintenance and EOL are separate. Retired products require the full subsequent identified treatment chain. Apply inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(Q_physical_x,j * s_c,x,j) / N_s; native quantity unit m3; use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+        - row_id: u_remote_acceptance_it_server_gate
+          role: "Complete server at factory gate"
+          name: "Complete server at factory gate"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: production. The original independently delivered complete hardware product at factory gate, before amortisation. Excludes operation, maintenance/replacements and EOL. Use original physical Q_a and the linked lifetime_driver exactly once; do not use a provider-period consumed-life equivalent as Q_a. Q_a is the original delivered complete hardware count at factory gate, before amortisation. f=(provider-period installed calendar hours/documented full installed-calendar lifetime hours)*the evidenced endpoint-operation and stratum workload share. Reconcile all workload and idle capacity. q_prod=Q_a*f/N_s; the same asset terminal Q_e uses identical f/N_s. Do not apply workload shares again. Missing lifetime or workload-to-resource linkage blocks completion. Apply inv_asset_basis, inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(Q_product_a * f_c,a) / N_s; native quantity unit Item(s); use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+        - row_id: u_remote_acceptance_it_network_switch_gate
+          role: "Complete network switch at factory gate"
+          name: "Complete network switch at factory gate"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: production. The original independently delivered complete hardware product at factory gate, before amortisation. Excludes operation, maintenance/replacements and EOL. Use original physical Q_a and the linked lifetime_driver exactly once; do not use a provider-period consumed-life equivalent as Q_a. Q_a is the original delivered complete hardware count at factory gate, before amortisation. f=(provider-period installed calendar hours/documented full installed-calendar lifetime hours)*the evidenced endpoint-operation and stratum workload share. Reconcile all workload and idle capacity. q_prod=Q_a*f/N_s; the same asset terminal Q_e uses identical f/N_s. Do not apply workload shares again. Missing lifetime or workload-to-resource linkage blocks completion. Apply inv_asset_basis, inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(Q_product_a * f_c,a) / N_s; native quantity unit Item(s); use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: u_remote_acceptance_it_retired_server
+          role: "Decommissioned complete server to authorised receiver"
+          name: "Decommissioned complete server to authorised receiver"
+          flow_type: "waste"
+          property_unit: "Number of items / Item(s)"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: eol. An independently transferred retired complete hardware product; full downstream dismantling, residual streams, emissions and final treatment must be explicitly inventoried. Paired manufacture row u_remote_acceptance_it_server_gate: use that asset serial/cohort and identical lifetime fraction; never period-transfer quantity as a second burden. Apply inv_terminal_basis, inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(R_terminal_a * f_c,a) / N_s; native quantity unit Item(s); use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+        - row_id: u_remote_acceptance_it_retired_network_switch
+          role: "Decommissioned complete network switch to authorised receiver"
+          name: "Decommissioned complete network switch to authorised receiver"
+          flow_type: "waste"
+          property_unit: "Number of items / Item(s)"
+          description: "Foreground physical component only: apply foreground_interface_method and foreground_interface_coverage before this card; an external service covering this component uses its svc_ interface instead. Physical phase: eol. An independently transferred retired complete hardware product; full downstream dismantling, residual streams, emissions and final treatment must be explicitly inventoried. Paired manufacture row u_remote_acceptance_it_network_switch_gate: use that asset serial/cohort and identical lifetime fraction; never period-transfer quantity as a second burden. Apply inv_terminal_basis, inv_remote_it_scope in section 8."
+          amount:
+            expression: "sum(R_terminal_a * f_c,a) / N_s; native quantity unit Item(s); use the fixed physical-allocation rules in section 8, never the service activity as this exchange quantity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support_remote_acceptance_it
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "foreground_burden_allocation"
+    rule: "First use dedicated meters, tagged stock issue and device/request logs to avoid allocation. For remaining shared loads, allocate by the physical driver specified below across all office functions, including excluded services; charge only the target share. Never divide the whole office burden by target successful transactions."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: allocation_session
+    applies_to: "foreground_burden_allocation"
+    rule: "Measure direct piece handling first, using non-overlapping active intervals for each staffed window/resource. Allocate measured genuinely common session activity equally only among the actual pieces sharing that activity when the same mail form/procedure and equivalent demand on the activity are evidenced. Preserve common-activity ID, participating piece IDs and divisor. Do not copy full session time to every piece. Sum assigned piece seconds must equal actual resource-active session seconds, including failures/rework; record waiting separately. For heterogeneous procedures or unproven equal demands, time the distinct activity by piece/procedure or retain an allocation gap; never default to equal allocation."
+    source_ids: []
+  - rule_id: allocation_time
+    applies_to: "foreground_burden_allocation"
+    rule: "For each resource j and period define tagged active handling seconds T_sj for stratum s including successful, rejected, abandoned and reworked attempts. Unknown-type attempt time is allocated to strata in proportion to their tagged active seconds; retain its amount separately. Define w_sj as adjusted stratum seconds divided by adjusted seconds for every function served by j. If no tagged active seconds exist or causality is unproven, the shared-resource result is incomplete, not zero."
+    source_ids: []
+  - rule_id: allocation_idle
+    applies_to: "foreground_burden_allocation"
+    rule: "Use w_sj to assign resource j shared standby, idle, startup, shutdown and closed-period loads along with its shared active loads; do not drop those loads or divide by opening hours and again by throughput. Directly tagged failed/rework inputs stay with their stratum. A failed attempt creates no accepted output; all attributable failure inputs remain in the period numerator for the completed-output stratum. Disclose rates and sensitivity."
+    source_ids: []
+  - rule_id: allocation_premises
+    applies_to: "foreground_burden_allocation"
+    rule: "Map occupied floor areas without overlap. For a shared lobby or support area use its area multiplied by target counter scheduled staffed-window-hours divided by all functions scheduled staffed-window-hours using that area; include the full-area total in the reconciliation. Add directly reserved counter area. Multiply resulting effective area by all calendar hours in the accounting period, including closed hours, then assign strata using v_s, the adjusted active handling seconds for stratum s divided by adjusted active seconds of every transaction class using this reserved counter footprint, including stamp/financial/retail activities actually using it; this conditional share is not the whole-office share w_sj. This is F_s in m2*h; all office functions together must recover the full occupied area-hours. Zero denominator or missing floor/work schedule prevents completion."
+    source_ids: []
+  - rule_id: allocation_premises_inventory
+    applies_to: "foreground_burden_allocation"
+    rule: "For foreground-owned premises components only, apply the following physical method. External occupancy uses svc_premises_service with the same zoned beneficiary drivers and exclusions under foreground_interface_method; supplier internals are not foreground collection. The matched premises physical inventory uses one m2*h of the same occupied estate-period as its raw source denominator, never as a product exchange. Collect each metered energy carrier and fuel, water, cleaning product, refrigerant by species, maintenance material, building fabric/capital share and waste treatment separately. Submeter zones first; allocate residual lighting/HVAC/water/cleaning by serviced floor-area-calendar-hours, capital/fabric by reserved floor-area-calendar-hours and documented asset lifetime, and actual refrigerant loss by the same HVAC zone share. Keep each fuel combustion/emission species and compartment in that background. Exclude direct counter plug electricity, standalone devices, paper and remote IT already inventoried here. Match meter coverage and remove subcontract service overlaps before dividing background totals by estate occupied m2*h once. No generic rent-price conversion or unverified bundled service substitute."
+    source_ids: []
+  - rule_id: allocation_device
+    applies_to: "foreground_burden_allocation"
+    rule: "Each device serial number is charged once as consumed lifetime fraction: calendar hours installed in this period divided by evidenced total installed calendar lifetime, multiplied by w_sj across all functions served by that device; do not multiply by a second counter-use share. The equipment lifecycle dataset includes manufacture, replacements/repair and end-of-life, excludes operating electricity and paper. Integrated scanner/printer parts included in a complete computer/device are not also separate devices; separate peripherals require separate serial records. No default lifetime, device mass or utilization. Estimates need evidence, uncertainty and alternative-life sensitivity."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "foreground_burden_allocation"
+    rule: "Record actual receipt-paper and liner waste by stream and destination. Outsourced treatment is linked once to the measured waste output; do not add the same treatment as an input if it is already included in that link or premises background. No avoided-burden credit, financial revenue or waste-contained substance is added as a second physical output. Recovered paper remains a waste transfer here; apply and disclose recycled-content accounting consistently."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: allocation_waste_origin
+    applies_to: "foreground_burden_allocation"
+    rule: "Fix each ordinary solid-waste generation event to its original service cohort and stratum at generation, never at later dispatch. Directly trace the generating task first; shared generation uses the existing site/handling allocation driver over the recorded generation interval, including all customer and noncohort workloads. Preserve event ID, generation date, original shares and original reference denominator through storage and internal transfers. Acquired old waste is not new generation. Retained waste keeps its original treatment responsibility; dispatch-period service does not inherit it. For shared generation, split records at each fixed local-calendar-month boundary (68013 uses its already declared counter accounting period instead); apply the existing site task/handling driver within that exact generation interval, not the full later dispatch/cohort window. Direct event attribution takes precedence. Record site timezone before period assignment."
+    source_ids: []
+  - rule_id: allocation_atomic_physical
+    applies_to: "supporting physical inventory"
+    rule: "For each provider, site, configuration, event and accounting interval, partition every measured physical total into mutually exclusive inventory owners before selecting the study cohort. Use the fixed activity driver for that support process, with all users and failed work in the denominator. Direct causal attribution precedes shared allocation. Never multiply a cohort share a second time if already attributed. Keep service-level allocation quantities as raw drivers, not exchange quantities, and do not repeat division by the final reference count. Meter/stock, installed/replaced assets, internal transfers, generated waste and fate balances must reconcile at the same physical/time boundary. A complete product gate may retain its manufacturing background, but a lump service row may not be reintroduced under a different label."
+    source_ids: []
+  - rule_id: allocation_atomic_capital
+    applies_to: "manufacture; installation; terminal assets"
+    rule: "For each physical asset serial/cohort a, Q_a is its actual manufacturing/construction-gate quantity in the card unit. Set f_c,a=attributed physical lifetime activity_c,a/evidenced full-life all-user activity_a, using the process/asset-specific driver and identical configuration/capacity units. Manufacture q=sum(Q_a*f_c,a)/N_ref; each initial and whole-asset replacement creates its own asset cohort and enters once, not an additional current-period maintenance item. Installation physical quantities outside the asset product gate use that same installed-asset fraction. Terminal residual quantity in its own declared unit, evidenced from matched retirement or a prospective residual/reuse/retention plan, uses exactly the same f_c,a and original reference denominator; actual custody transfers only verify/update it. Earlier removed parts are excluded from terminal residual. Restate life and all original beneficiary cohorts under calc_capital_restatement; lifetime estimates need evidence and sensitivity, never numeric defaults. Genuine component repairs/replacements use actual causal events or the fixed provider maintenance-year shares, not another whole-life fraction. A whole component reused as a separately commissioned capital asset instead receives its own serial/lifetime register, never both treatments."
+    source_ids: []
+  - rule_id: allocation_capital_restatement
+    applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+    rule: "This PCR uses full restatement, not frozen historical shares or a retirement-period catch-up. All direct and supporting capital, reusable containers, installation outside the product gate and paired terminal sources follow calc_capital_restatement. Each specific activity rule fixes the driver and beneficiary shares; these are applied once. A complete asset background already including delivery/end-of-life follows the same restatement, without separate duplicate terminal exchanges. Routine component maintenance remains under its causal/period method."
+    source_ids: []
+  - rule_id: allocation_atomic_waste
+    applies_to: "operational and maintenance wastes"
+    rule: "Generated operational and maintenance waste retains its original generation event, provider/activity cohort, shares and original reference denominator through storage and transfers. Fixed shared-waste intervals are local calendar months with timezone declared; use same-interval causal activity and all users, unless an existing more specific maintenance-year or counter-period method applies. Reconcile closing=opening+generation+internal_in-internal_out-external_dispatch-evidenced_physical_loss on consistent material/moisture bases. Include supported eventual storage/transport/treatment for retained waste, with actual evidence or an explicitly evidenced compatible prospective route and uncertainty; unknown fate remains incomplete. Later receipts replace that original event model, not add a new dispatch-period burden. Asset terminal-waste uses its paired capital fraction instead. Waste carrier and its constituents, storage losses/releases and residual treatment cannot be counted twice; the same measured site/storage operation remains under one inventory owner."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_acceptance
+      process_id: "accept"
+      flow_role: "accepted output and handling driver"
+      record_type: "event_log"
+      raw_fields: "mailpiece_id; session_id; stratum; first/last gate timestamps; staffed window/resource ID; direct piece seconds; common session activity ID and seconds; participating piece IDs/count and equality evidence; allocated handling seconds; outcome; receipt_id; handoff_id; correction/attempt links; reason"
+      collection_method: "Capture at counter first handling, receipt issue and handoff; join acceptance, till and custody logs by mailpiece identifier, remove duplicate successful events, retain failed/reworked/abandoned events with elapsed active time and a null-output flag. Apply allocation_session before calculating T_sj; reconcile assigned piece seconds to actual resource-active session seconds. No personal customer identifier is required. Aggregation details: N_s is unique completed events in stratum s; calculate T_sj and w_sj by allocation_time; denominator is N_s once."
+      unit: "Item(s); s"
+      frequency: "each event; daily reconciliation"
+      temporal_coverage: "one complete stated accounting period; align all resources"
+      site_scope: "same office, all functions sharing resources"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "anonymized event/receipt/custody reconciliation; timestamp clock checks; missing logs register"
+    - protocol_id: cp_interface_premises_service
+      process_id: "support_premises_service"
+      flow_role: "svc_premises_service"
+      record_type: "service_interface_register"
+      raw_fields: "provider; contract/version; event ID; site/route/configuration; owner; scope component; native A_s,e and unit; alpha_s,e and all-user driver; original cohort/output denominator; inclusion/exclusion matrix; meter/time/count source; calibration; background reference/unit/period/allocation; correction and overlap links"
+      collection_method: "At the actual service acceptance/use interface collect actual counter-area m2 * occupancy h during the complete counter reporting period; retain the original shared-space allocation. Record every executed event, including failed/reworked events required by the original method. Verify units against calibrated mass/distance/area/time records or deduplicated execution logs as applicable; reconcile to invoices without substituting money for activity. At contract start/change the service data custodian signs the boundary/ownership and background compatibility matrix; reconcile monthly and at original cohort closure. Record zero occurrence only from complete event registers. Missing activity, unit conversion, background coverage or identity remains incomplete; preserve uncertainty and evidence. Supplier internal measurements are not required for an external interface."
+      unit: "m2*h"
+      frequency: "each event; monthly; contract change; cohort closure"
+      temporal_coverage: "same complete original reference cohort and actual service-event periods"
+      site_scope: "declared external service acceptance/use gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "signed contract/scope matrix; primary activity records; calibration; allocation and invoice reconciliation; verified background identity and documented gaps"
+    - protocol_id: cp_interface_remote_acceptance_it
+      process_id: "support_remote_acceptance_it"
+      flow_role: "svc_remote_acceptance_it"
+      record_type: "service_interface_register"
+      raw_fields: "provider; contract/version; event ID; site/route/configuration; owner; scope component; native A_s,e and unit; alpha_s,e and all-user driver; original cohort/output denominator; inclusion/exclusion matrix; meter/time/count source; calibration; background reference/unit/period/allocation; correction and overlap links"
+      collection_method: "At the actual service acceptance/use interface collect count unique executed request IDs at the contracted backend gate, including separately executed failed/retried requests; one item is one request execution, not one successful counter output. Record every executed event, including failed/reworked events required by the original method. Verify units against calibrated mass/distance/area/time records or deduplicated execution logs as applicable; reconcile to invoices without substituting money for activity. At contract start/change the service data custodian signs the boundary/ownership and background compatibility matrix; reconcile monthly and at original cohort closure. Record zero occurrence only from complete event registers. Missing activity, unit conversion, background coverage or identity remains incomplete; preserve uncertainty and evidence. Supplier internal measurements are not required for an external interface."
+      unit: "Item(s)"
+      frequency: "each event; monthly; contract change; cohort closure"
+      temporal_coverage: "same complete original reference cohort and actual service-event periods"
+      site_scope: "declared external service acceptance/use gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "signed contract/scope matrix; primary activity records; calibration; allocation and invoice reconciliation; verified background identity and documented gaps"
+    - protocol_id: cp_capital_restatement
+      process_id: "accept_support_premises_service_support_remote_acceptance_it"
+      flow_role: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      record_type: "versioned_asset_cohort_ledger"
+      raw_fields: "asset/source ID; source phase and native unit; original cohort/stratum and causal parent; original reference denominator and revision; all-user actual driver by original interval; fixed beneficiary shares; complete-life driver forecast/version and supporting records; manufacture/installation quantity; terminal net residual/route and version; previously booked attributed raw B and normalized result; recalculated f/A/q and signed correction; zero-use commissioning responsibility; overlap exclusions"
+      collection_method: "Apply foreground_interface_coverage to responsibility first. Interface activity, supplier gate/quality and compatibility evidence remain required; provider-internal physical/capital/species fields below are collected only for foreground-owned components. External components use the matching cp_interface_ protocol and compatible background evidence, without duplicating supplier internals. Join serial/source asset registers, activity meters, supplier product gates and the original result ledger; apply calc_capital_restatement on each change. Recompute using the original physical driver and all-user evidence without changing physical stocks. Reconcile old/new/correction and original denominator by source and original cohort; retain versions and calibration with the original record owner."
+      unit: "source-native units; original driver units; Item(s)"
+      frequency: "each acquisition/commissioning, activity, life/source revision and retirement; reconcile each original reporting period"
+      temporal_coverage: "complete asset life and all affected original cohorts"
+      site_scope: "all users of the same asset configuration; original product gate and separate installation/terminal sources"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "serial/source registers; calibration; life evidence; receiver records; original-cohort results and revision chain"
+    - protocol_id: cp_energy
+      process_id: "accept"
+      flow_role: "counter_electricity"
+      record_type: "meter_log"
+      raw_fields: "meter_id; circuit map; opening/closing kWh; intervals; dates; device state; direct/shared flag; T_sj; supply boundary"
+      collection_method: "Apply foreground_interface_coverage to responsibility first. Interface activity, supplier gate/quality and compatibility evidence remain required; provider-internal physical/capital/species fields below are collected only for foreground-owned components. External components use the matching cp_interface_ protocol and compatible background evidence, without duplicating supplier internals. Read calibrated plug/submeters by shift and period endpoints; include standby, shutdown and closed hours. Subtract only independently metered noncounter circuits and reconcile with parent supply; no invoice-minus-unknown residual. Aggregation details: direct tagged plus shared period amount times w_sj; calc_energy then calc_normalize."
+      unit: "kWh; MJ"
+      frequency: "interval/shift and period ends"
+      temporal_coverage: "same complete accounting period"
+      site_scope: "mapped counter circuits, all associated devices"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter serial/calibration and circuit inventory; supplier location/voltage/scope"
+    - protocol_id: cp_stock
+      process_id: "accept"
+      flow_role: "receipt_paper; acceptance_label"
+      record_type: "stock_ledger"
+      raw_fields: "stock_code; exact construction including adhesive and liner coating; opening/closing kg; receipts; transfers in/out; supplier/out-of-scope returns with destination and movement ID; internal unused-stock return; issued rolls/labels; measured mass; void/reprint issue; stock unit"
+      collection_method: "Apply foreground_interface_coverage to responsibility first. Interface activity, supplier gate/quality and compatibility evidence remain required; provider-internal physical/capital/species fields below are collected only for foreground-owned components. External components use the matching cp_interface_ protocol and compatible background evidence, without duplicating supplier internals. Weigh each stock product separately with calibrated scale at issue/return and period stocktake; alternatively verify representative roll/label mass by weighing a documented sample and retain sample variation. Reconcile purchases and stock movements by unique movement ID and destination. Internal unused rolls returned to the same stock boundary are already in closing inventory, so are not subtracted again. Supplier/out-of-scope unused returns must be disjoint from transfers out; no postage-value conversion. Aggregation details: calc_stock; direct issue by stratum, shared issue by w_sj only if physically justified; calc_normalize."
+      unit: "kg; roll; label"
+      frequency: "each movement and period stocktake"
+      temporal_coverage: "same complete accounting period"
+      site_scope: "counter stores and each directly tagged stratum; other functions separately"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "supplier construction/grammage, weighed samples, scales and stock ledger; unexplained discrepancy retained"
+    - protocol_id: cp_assets
+      process_id: "accept"
+      flow_role: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer"
+      record_type: "asset_register"
+      raw_fields: "serial; device model; component inclusion; installation/retirement; calendar lifetime; repairs; period installed hours; all served functional workload shares; w_sj; lifecycle dataset scope"
+      collection_method: "Apply foreground_interface_coverage to responsibility first. Interface activity, supplier gate/quality and compatibility evidence remain required; provider-internal physical/capital/species fields below are collected only for foreground-owned components. External components use the matching cp_interface_ protocol and compatible background evidence, without duplicating supplier internals. Inspect installed assets at opening/closing stocktakes, retain procurement/repair/retirement records and verify model/component coverage against lifecycle inventory. Justify expected lifetime if not retired and quantify its uncertainty. Aggregation details: calc_device then calc_normalize; one serial one total lifetime share across all functions."
+      unit: "Item(s); h"
+      frequency: "each installation/repair/retirement; period check"
+      temporal_coverage: "same period plus evidenced complete lifetime"
+      site_scope: "all devices serving counter including shared/integrated devices"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "asset/photos/model inventory; supplier/repair evidence; documented lifetime scenarios"
+    - protocol_id: cp_premises
+      process_id: "accept"
+      flow_role: "activity_premises_service"
+      record_type: "facility_inventory"
+      raw_fields: "zone_id; measured dedicated/shared m2; calendar hours; scheduled staffed-window-hours per function; zone meters by carrier; fuel/water/cleaning-material quantities; refrigerant species opening/closing/additions/recovery; maintenance and building asset quantities/lifetimes; wastes/destinations; direct counter exclusions; v_s"
+      collection_method: "Measure floor plan once and after changes; read zonal utilities at period endpoints and intervals, collect actual material issues and maintenance/refrigerant logs by event, inspect asset registers and waste records. Build the matching occupied-premises background under allocation_premises_inventory, retaining each carrier/material/species as its own exchange. Never infer absence from a missing invoice. Aggregation details: calc_premises; reconcile sum of all functions with estate occupied area-hours and zonal utilities; calc_normalize."
+      unit: "m2*h; carrier-specific energy/mass/volume; asset items"
+      frequency: "period; each material/service event; floor plan at changes"
+      temporal_coverage: "same complete period, all calendar hours including closed hours"
+      site_scope: "same occupied estate and zones serving all office functions"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "floor survey, work schedule, meters/calibration, material and service logs, background scope/crosswalk, no-overlap check"
+    - protocol_id: cp_remote
+      process_id: "accept"
+      flow_role: "activity_remote_acceptance_it"
+      record_type: "request_log"
+      raw_fields: "endpoint; provider; request_id; operation; stratum; success/failure/retry; timestamp; request count; bytes; background scope/unit"
+      collection_method: "Apply foreground_interface_coverage to responsibility first. Interface activity, supplier gate/quality and compatibility evidence remain required; provider-internal physical/capital/species fields below are collected only for foreground-owned components. External components use the matching cp_interface_ protocol and compatible background evidence, without duplicating supplier internals. Capture application/server request logs at execution; include successful and failed/retried calls, join to counter attempts without duplicating request IDs. Obtain provider activity inventory per matched operation with data transfer, computing/cooling and hardware boundaries. Unavailable inventory blocks full upstream coverage. Aggregation details: calc_remote then calc_normalize; request count is independent of N_s."
+      unit: "Item(s) requests; byte"
+      frequency: "each executed request; period reconciliation"
+      temporal_coverage: "same complete accounting period"
+      site_scope: "actual endpoints used for counter acceptance only"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "redacted request counts, provider scope/unit and allocation proof; failed-request coverage"
+    - protocol_id: cp_waste
+      process_id: "accept"
+      flow_role: "receipt_paper_waste; glassine_liner_waste"
+      record_type: "waste_transfer"
+      raw_fields: "stream; exact material; container tare/gross/net; stratum/direct/shared; date; destination; treatment inclusion; issued paper/liner mass; stock residual; generation_event_id; generation_time/site; source task/cohort/stratum; original allocation shares/reference denominator; generated mass and wet/dry/composition basis; opening/closing stock by origin; internal transfer IDs and both endpoints; external dispatch; evidenced physical loss/release; receiver and destination fractions; actual/prospective route and model version; evidence/uncertainty; receipt replacement status and revision chain"
+      collection_method: "Measure segregated generated mass at the generating point and record the responsible task/interval before storage; if generation is reconstructed from a complete stock balance, document all transfers, losses and measurement uncertainty and preserve original event provenance. Apply allocation_waste_origin and calc_waste_origin. At each transfer and period close reconcile origin-labelled stocks against calibration and receiver evidence. Require supported storage/transport/treatment coverage for retained mass; later receipts replace the original event model, never create a second dispatch-period burden. Segregate receipt paper and liner; reconcile generated waste with net stock issue and paper/labels transferred to customers; retain incompatible material identity/fate gaps."
+      unit: "kg"
+      frequency: "each transfer; period balance; every ordinary-waste generation and monthly origin-stock reconciliation"
+      temporal_coverage: "same complete accounting period; retain original generation ownership through eventual treatment evidence"
+      site_scope: "counter-generated waste only, separately attributed to strata"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "scale/tare logs, transfer note, treatment scope, material balance and unexplained residual"
+    - protocol_id: cp_support_premises_service
+      process_id: "support_premises_service"
+      flow_role: "u_premises_service_electricity; u_premises_service_tap_water; u_premises_service_natural_gas; u_premises_service_hot_water_heat; u_premises_service_building_gate; u_premises_service_sanitary_wastewater; u_premises_service_concrete_demolition; u_premises_service_co2_fossil_air; u_premises_service_no_air; u_premises_service_no2_air"
+      record_type: "physical_exchange_and_asset_register"
+      raw_fields: "event/asset/site/provider/configuration; exact product/substance; phase; Q_x,j and native unit; source intensity and activity basis; lifetime activity and f; terminal asset link and residual unit; stock and transfer IDs; original waste event/cohort; meter/calibration; all-user driver; overlap ownership; prospective route version; occurrence evidence; species identity/CAS, T and NO2-equivalent definition, source-matched molar a, molecular-mass provenance, direct species mass/factor and calibration; gas meter volume; temperature/pressure and reference state; moisture basis; batch-specific NCV and evidence; energy basis of supply dataset and combustion factor"
+      collection_method: "Collect only active foreground physical components under foreground_interface_method; external services use cp_interface_ protocols. Only the estate-period and zone-matched counter accommodation under allocation_premises_inventory; direct devices, plug loads, paper and remote IT excluded. Retain allocation_premises, allocation_premises_inventory, cp_premises, calc_premises and calc_normalize. Zone-submeter first. For residual operational lighting/HVAC/water/cleaning, use serviced floor-area-calendar-hour shares; for capital/fabric, reserved floor-area-calendar-hours plus evidenced asset lifetime. Compute F_s=(dedicated counter m2+shared m2*counter scheduled staffed-window-hours/all served functions scheduled staffed-window-hours)*all period calendar hours*v_s, where v_s is adjusted active handling seconds of stratum/all classes using this footprint. The physical provider total and its chosen zone/resource pool must recover the same estate-period; Use/maintenance q=provider same-period total*fixed pool-to-F_s share/N_s once. Capital and EOL have identical consumed-life fraction. Do not use whole-office w_sj as v_s or reapply estate intensity/F_s twice. Quantity convention: operational-period q=Q_period*a/N applies only to use and maintenance, where Q_period is a raw measured physical period/event total and a is its fixed reconciled allocation share. For production use raw manufacture/construction-gate physical asset quantity Q_a and q_prod=Q_a*f/N. For each linked terminal stream use that same asset cohort full-lifecycle terminal physical quantity Q_e and q_eol=Q_e*f/N with exactly the same f; Q_e is not a later-period whole dispatch. Here f already contains the asset lifetime-service fraction and the target cohort/stratum allocation, each once; do not multiply by a second operational share. Q_a and Q_e are never already amortised provider-period equivalents. If a supplier gives amortised equivalents, recover and verify the original asset cohort physical quantity and full-life denominator before applying this convention; never multiply an already consumed-life quantity by f again. N means the original D for 68011 or N_s for 68013, once. At each provider/source gate, collect event/asset/site/route/configuration and exact physical identity, condition of occurrence/non-occurrence, direction/type/receiving medium, raw quantity and unit, meter/tare/calibration, timestamps and timezone, complete accounting interval, source unit-inventory basis, all-user activity and cohort joins, manufacturing/installation/use/maintenance/EOL phase, original/remaining asset fractions, paired terminal residual provenance, stocks/transfers, receiver/fate and prospective-model revisions. Retain signed supplier scope and exact overlap crosswalk to existing direct rows. Obtain chemistry/BOM/species identity before adding a missing concrete row; an unbound candidate can await official identity but cannot be a plural collection. Measure all events, reconcile per local month/maintenance year as prescribed and review the complete asset/supplier inventory annually and at configuration/retirement changes. Unmeasured positive activity, unsupported future treatment or an unlisted actual exchange prevents completeness. Convert metered premises gas under calc_premises_gas_ncv. Use supply LCI and per-MJ factors on the same NCV basis; reject unconverted gross/unknown bases. Pass unallocated raw NCV MJ from the gas protocol to physical attribution. Restore same-scope raw totals from already allocated or reference-normalized supplier intensity first."
+      unit: "card-native units; raw m2*h"
+      frequency: "every event; local-month/maintenance-year reconciliation; annual/asset-change review"
+      temporal_coverage: "The same complete counter accounting period, including failures and rework inside the counter gate. Track original asset-life and original waste-event receipt/treatment evidence separately without extending the acceptance-service gate into downstream transport or returns"
+      site_scope: "same provider/site/configuration scope; all shared users"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated originals; signed scope and overlap map; asset/receipt lineage; uncertainty"
+    - protocol_id: cp_support_remote_acceptance_it
+      process_id: "support_remote_acceptance_it"
+      flow_role: "u_remote_acceptance_it_datacentre_electricity; u_remote_acceptance_it_network_electricity; u_remote_acceptance_it_cooling_makeup_water; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      record_type: "physical_exchange_and_asset_register"
+      raw_fields: "event/asset/site/provider/configuration; exact product/substance; phase; Q_x,j and native unit; source intensity and activity basis; lifetime activity and f; terminal asset link and residual unit; stock and transfer IDs; original waste event/cohort; meter/calibration; all-user driver; overlap ownership; prospective route version; occurrence evidence; species identity/CAS, T and NO2-equivalent definition, source-matched molar a, molecular-mass provenance, direct species mass/factor and calibration"
+      collection_method: "Collect only active foreground physical components under foreground_interface_method; external services use cp_interface_ protocols. Executed remote barcode validation/record-write/acknowledgement requests for the declared acceptance endpoint; includes failures/retries, excludes ongoing delivery tracking. Retain cp_remote, calc_remote and calc_normalize. Deduplicate actual request IDs and join request/stratum/endpoint/time/bytes and measured CPU/network/cooling workload. For each explicitly bounded provider-period resource pool, attribute its measured physical total by measured acceptance-operation workload/all served-operation workload, then the documented stratum request workload share; reconcile all other workloads and baseline/idle demand, never drop idle infrastructure or assume one request per accepted mailpiece. Use/maintenance q=provider same-period physical total*fixed attributable share/N_s once. For capital and EOL use the same f below, which already includes the evidenced installed-life fraction and operation share once. Request count/bytes alone is insufficient without provider evidence linking them to resource consumption; missing mapping blocks completion. Quantity convention: operational-period q=Q_period*a/N applies only to use and maintenance, where Q_period is a raw measured physical period/event total and a is its fixed reconciled allocation share. For production use raw manufacture/construction-gate physical asset quantity Q_a and q_prod=Q_a*f/N. For each linked terminal stream use that same asset cohort full-lifecycle terminal physical quantity Q_e and q_eol=Q_e*f/N with exactly the same f; Q_e is not a later-period whole dispatch. Here f already contains the asset lifetime-service fraction and the target cohort/stratum allocation, each once; do not multiply by a second operational share. Q_a and Q_e are never already amortised provider-period equivalents. If a supplier gives amortised equivalents, recover and verify the original asset cohort physical quantity and full-life denominator before applying this convention; never multiply an already consumed-life quantity by f again. N means the original D for 68011 or N_s for 68013, once. At each provider/source gate, collect event/asset/site/route/configuration and exact physical identity, condition of occurrence/non-occurrence, direction/type/receiving medium, raw quantity and unit, meter/tare/calibration, timestamps and timezone, complete accounting interval, source unit-inventory basis, all-user activity and cohort joins, manufacturing/installation/use/maintenance/EOL phase, original/remaining asset fractions, paired terminal residual provenance, stocks/transfers, receiver/fate and prospective-model revisions. Retain signed supplier scope and exact overlap crosswalk to existing direct rows. Obtain chemistry/BOM/species identity before adding a missing concrete row; an unbound candidate can await official identity but cannot be a plural collection. Measure all events, reconcile per local month/maintenance year as prescribed and review the complete asset/supplier inventory annually and at configuration/retirement changes. Unmeasured positive activity, unsupported future treatment or an unlisted actual exchange prevents completeness."
+      unit: "card-native units; raw Item(s) requests"
+      frequency: "every event; local-month/maintenance-year reconciliation; annual/asset-change review"
+      temporal_coverage: "The same complete counter accounting period, including failures and rework inside the counter gate. Track original asset-life and original waste-event receipt/treatment evidence separately without extending the acceptance-service gate into downstream transport or returns"
+      site_scope: "same provider/site/configuration scope; all shared users"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated originals; signed scope and overlap map; asset/receipt lineage; uncertainty"
+  calculation_rules:
+    - id: calc_energy
+      applies_to: "counter_electricity"
+      rule: "Period attributed energy = 3.6 * (direct tagged kWh + shared kWh * w_sj); apply calc_normalize once."
+      inputs:
+        - cp_energy
+        - allocation_time
+        - allocation_idle
+      output: "MJ period total"
+      source_ids: []
+    - id: foreground_interface_method
+      applies_to: "svc_premises_service; svc_remote_acceptance_it"
+      rule: "Before measurement classify every event/scope component as foreground physical or external service under boundary_atomic_support, with no overlap. Apply existing physical-card formulas, component rules and cp_support protocols only to the former, never demand an external provider BOM or internal meter ledger to activate a service interface. For a service row s collect raw A_s,e in its fixed native unit and alpha_s,e from the existing named activity allocation: direct cohort events have alpha=1; genuinely shared events retain the original all-user driver, failure/empty/standby treatment and event window. Allocated service amount T_s=sum(A_s,e*alpha_s,e); if the native activity ledger already contains cohort-attributed activity, alpha is already applied and must not be multiplied again. q_s=T_s/N_ref, with N_ref the original positive cohort reference output. Preserve raw totals for zero output and mark the unit result incomplete. Do not convert time, area, count or transport activity to energy or equipment mass without a separate evidenced relationship. Do not apply physical capital life fractions again to a service inventory that already contains its capital allocation. Quantities for background linkage equal q_s times an inventory per one identical service unit, once; an emission factor is not the service exchange quantity. All old physical-only instructions and service prohibitions apply only to the foreground physical branch; the service branch follows this rule and its explicit interface protocol. Incomplete or aborted service events retain their evidenced attributable burden. Do not silently discard them because the interface counts completed units: document an equivalent native service quantity supported by the contract and execution records, or add a separately identified partial-service row before claiming completeness; never assume a full unit or zero. A supplier value already per the final reference is not a raw A_s,e: recover its original total and denominator before recomputation, or prove exact equivalent normalization without dividing by the final denominator again. Any included supplier allocation is applied only once."
+      inputs:
+        - cp_interface_premises_service
+        - cp_interface_remote_acceptance_it
+      output: "native service units per original reference flow"
+      source_ids: []
+    - id: calc_interface_premises_service
+      applies_to: "svc_premises_service"
+      rule: "Apply foreground_interface_method. Native activity A_s,e (m2*h): actual counter-area m2 * occupancy h during the complete counter reporting period; retain the original shared-space allocation. Use the existing activity_premises_service beneficiary and event-window rules only for service activity attribution; the physical branch is not required. q_s=sum(A_s,e*alpha_s,e)/N_s once. A compatible supplier intensity must use exactly this unit, scope and original allocation policy; no standard activity per final output is assumed."
+      inputs:
+        - cp_interface_premises_service
+        - activity_premises_service
+      output: "m2*h/N_s"
+      source_ids: []
+    - id: calc_interface_remote_acceptance_it
+      applies_to: "svc_remote_acceptance_it"
+      rule: "Apply foreground_interface_method. Native activity A_s,e (Item(s)): count unique executed request IDs at the contracted backend gate, including separately executed failed/retried requests; one item is one request execution, not one successful counter output. Use the existing activity_remote_acceptance_it beneficiary and event-window rules only for service activity attribution; the physical branch is not required. q_s=sum(A_s,e*alpha_s,e)/N_s once. A compatible supplier intensity must use exactly this unit, scope and original allocation policy; no standard activity per final output is assumed."
+      inputs:
+        - cp_interface_remote_acceptance_it
+        - activity_remote_acceptance_it
+      output: "Item(s)/N_s"
+      source_ids: []
+    - id: calc_stock
+      applies_to: "receipt_paper; acceptance_label"
+      rule: "Net consumed stock = opening + receipts + transfers in - closing - supplier/out-of-scope unused returns - transfers out, all in kg for one stock construction. External-return movements and transfers out are mutually exclusive by movement ID; internal unused-stock returns stay in closing stock and are not deducted again. Allocate net consumption to strata using tagged issues, then justified shared-driver shares; include void/reprint use."
+      inputs:
+        - cp_stock
+      output: "kg period total"
+      source_ids: []
+    - id: calc_device
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer"
+      rule: "Consumed device equivalents = installed calendar hours in period / evidenced total installed calendar lifetime hours * w_sj; sum by distinct device serial number, then apply calc_normalize. Static lifetime ratios describe the current version only; life/source changes and final retirement must apply calc_capital_restatement to the original cohorts, not update only future denominators."
+      inputs:
+        - cp_assets
+        - allocation_device
+      output: "Item(s) lifetime equivalents period total"
+      source_ids: []
+    - id: calc_premises
+      applies_to: "activity_premises_service"
+      rule: "F_s = (directly reserved counter m2 + sum(shared-area m2 * counter scheduled staffed-window-hours / all served functions scheduled staffed-window-hours)) * accounting-period calendar hours * v_s. F_s remains raw area-time; apply the matched physical inventory intensity and fixed allocation to each physical row, then the final N_s denominator once. These are raw provider activity diagnostics only; they are not inventory exchanges. Distribute only the separately named physical rows in the corresponding support processes, using original raw activity and one final reference normalization. For gas, start from the raw NCV MJ converted under section 8, apply the premises resource-pool share and divide by N_s once."
+      inputs:
+        - cp_premises
+        - allocation_premises
+        - allocation_premises_inventory
+      output: "raw activity diagnostic: m2*h period total"
+      source_ids: []
+    - id: calc_premises_gas_ncv
+      applies_to: "u_premises_service_natural_gas"
+      rule: "For each metered zone and supply interval j, Q_gas_NCV_MJ_j=matched V_m3_j*NCV_MJ_per_m3_j. Retain raw MJ already reported on an NCV basis. A GCV-only value requires a same-supply, same-state, same-period evidenced NCV/GCV ratio or original volume and NCV; otherwise incomplete. Match supply inventories and per-MJ combustion factors to NCV. Return raw supply MJ before allocation or division by N_s."
+      inputs:
+        - cp_support_premises_service
+      output: "unallocated NCV MJ by zone and interval"
+      source_ids: []
+    - id: calc_remote
+      applies_to: "activity_remote_acceptance_it"
+      rule: "Period requests = distinct request IDs attributed to stratum s, including actual failed/retried operations; shared untagged requests use measured operation workload shares across all served functions, with uncertainty. Never set requests equal to successful mailpiece count. These are raw provider activity diagnostics only; they are not inventory exchanges. Distribute only the separately named physical rows in the corresponding support processes, using original raw activity and one final reference normalization."
+      inputs:
+        - cp_remote
+      output: "raw activity diagnostic: Item(s) requests period total"
+      source_ids: []
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "Each non-reference amount per reference flow = attributable period exchange total / N_s. For accepted_counter_transaction the output is 1 Item(s). For already-normalized inputs first recover and reconcile the matching period total; never divide twice. Ordinary waste calc_waste_origin already yields kg/N_s; do not normalize it a second time or replace original-period ownership by dispatch-period totals."
+      inputs:
+        - cp_acceptance
+        - "row-linked collection protocol"
+      output: "row unit per reference flow"
+      source_ids: []
+    - id: calc_waste_origin
+      applies_to: "receipt_paper_waste; glassine_liner_waste"
+      rule: "For each named ordinary solid-waste stream r and generation event j, A_c,r = sum_j(G_j,r*s_c,j), then q_c,r=A_c,r/original_reference_count once. G is measured generated mass, not dispatch mass. Reconcile each material and original event: closing = opening + generation + internal_in - internal_out - external_dispatch - evidenced_physical_loss. Record actual moisture/composition changes and mutually exclusive losses/releases; no invented residual and no full residual mass plus the same released constituent. Internal transfers preserve origin and do not create another exchange. Model the original cohort waste output and its required storage/transport/final treatment even while physically retained, using actual compatible receiver evidence or an explicitly evidenced material/composition/location-matched prospective route with uncertainty. Destination fractions close to one and enter once; no default recycling or zero treatment for retained mass. Unsupported fate stays incomplete. Keep observed custody stock/dispatch as a control ledger, not another inventory addition. Later receiver evidence replaces the same event prospective model and recomputes the original cohort with its original denominator; never add that mass/treatment to a later cohort. Include every necessary lifecycle leg once through a scope crosswalk; exclude site/storage energy and handling already included by site/service inventories. Capital terminal-waste lifetime fractions and wastewater balances retain their separate rules. original_reference_count=N_s for its original cohort/stratum. The generated-waste exchange is at the generation gate. Its linked complete waste-management inventory takes one kg on that same generated-mass basis through storage and all subsequent fates; final-treatment input is only the compatible measured/evidenced forecast residual after storage losses/moisture conversion, not the full original kg plus separate losses. Explicit storage releases replace the same included release in that linked inventory; a storage/handling operation already in site/service pools is removed from the waste link by a recorded scope crosswalk, never counted twice."
+      inputs:
+        - cp_waste
+        - allocation_waste_origin
+      output: "kg per original reference flow; origin stock/model ledger"
+      source_ids: []
+    - id: activity_premises_service
+      applies_to: "u_premises_service_electricity; u_premises_service_tap_water; u_premises_service_natural_gas; u_premises_service_hot_water_heat; u_premises_service_building_gate; u_premises_service_sanitary_wastewater; u_premises_service_concrete_demolition; u_premises_service_co2_fossil_air; u_premises_service_no_air; u_premises_service_no2_air"
+      rule: "Native activity definitions, allocation drivers and event windows also govern the matching calc_interface_ service rule; only the physical-quantity calculations and internal measurements below require the foreground physical branch under foreground_interface_method. Raw activity ledger only, not an exchange. Retain allocation_premises, allocation_premises_inventory, cp_premises, calc_premises and calc_normalize. Zone-submeter first. For residual operational lighting/HVAC/water/cleaning, use serviced floor-area-calendar-hour shares; for capital/fabric, reserved floor-area-calendar-hours plus evidenced asset lifetime. Compute F_s=(dedicated counter m2+shared m2*counter scheduled staffed-window-hours/all served functions scheduled staffed-window-hours)*all period calendar hours*v_s, where v_s is adjusted active handling seconds of stratum/all classes using this footprint. The physical provider total and its chosen zone/resource pool must recover the same estate-period; Use/maintenance q=provider same-period total*fixed pool-to-F_s share/N_s once. Capital and EOL have identical consumed-life fraction. Do not use whole-office w_sj as v_s or reapply estate intensity/F_s twice. Quantity convention: operational-period q=Q_period*a/N applies only to use and maintenance, where Q_period is a raw measured physical period/event total and a is its fixed reconciled allocation share. For production use raw manufacture/construction-gate physical asset quantity Q_a and q_prod=Q_a*f/N. For each linked terminal stream use that same asset cohort full-lifecycle terminal physical quantity Q_e and q_eol=Q_e*f/N with exactly the same f; Q_e is not a later-period whole dispatch. Here f already contains the asset lifetime-service fraction and the target cohort/stratum allocation, each once; do not multiply by a second operational share. Q_a and Q_e are never already amortised provider-period equivalents. If a supplier gives amortised equivalents, recover and verify the original asset cohort physical quantity and full-life denominator before applying this convention; never multiply an already consumed-life quantity by f again. N means the original D for 68011 or N_s for 68013, once. Any legacy per-reference activity diagnostic must first be restored to raw activity for physical disaggregation; never use it as an exchange or normalize twice."
+      inputs:
+        - cp_support_premises_service
+      output: "raw m2*h plus uniquely attributed physical totals, not a service product"
+      source_ids: []
+    - id: activity_remote_acceptance_it
+      applies_to: "u_remote_acceptance_it_datacentre_electricity; u_remote_acceptance_it_network_electricity; u_remote_acceptance_it_cooling_makeup_water; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Native activity definitions, allocation drivers and event windows also govern the matching calc_interface_ service rule; only the physical-quantity calculations and internal measurements below require the foreground physical branch under foreground_interface_method. Raw activity ledger only, not an exchange. Retain cp_remote, calc_remote and calc_normalize. Deduplicate actual request IDs and join request/stratum/endpoint/time/bytes and measured CPU/network/cooling workload. For each explicitly bounded provider-period resource pool, attribute its measured physical total by measured acceptance-operation workload/all served-operation workload, then the documented stratum request workload share; reconcile all other workloads and baseline/idle demand, never drop idle infrastructure or assume one request per accepted mailpiece. Use/maintenance q=provider same-period physical total*fixed attributable share/N_s once. For capital and EOL use the same f below, which already includes the evidenced installed-life fraction and operation share once. Request count/bytes alone is insufficient without provider evidence linking them to resource consumption; missing mapping blocks completion. Quantity convention: operational-period q=Q_period*a/N applies only to use and maintenance, where Q_period is a raw measured physical period/event total and a is its fixed reconciled allocation share. For production use raw manufacture/construction-gate physical asset quantity Q_a and q_prod=Q_a*f/N. For each linked terminal stream use that same asset cohort full-lifecycle terminal physical quantity Q_e and q_eol=Q_e*f/N with exactly the same f; Q_e is not a later-period whole dispatch. Here f already contains the asset lifetime-service fraction and the target cohort/stratum allocation, each once; do not multiply by a second operational share. Q_a and Q_e are never already amortised provider-period equivalents. If a supplier gives amortised equivalents, recover and verify the original asset cohort physical quantity and full-life denominator before applying this convention; never multiply an already consumed-life quantity by f again. N means the original D for 68011 or N_s for 68013, once. Any legacy per-reference activity diagnostic must first be restored to raw activity for physical disaggregation; never use it as an exchange or normalize twice."
+      inputs:
+        - cp_support_remote_acceptance_it
+      output: "raw Item(s) requests plus uniquely attributed physical totals, not a service product"
+      source_ids: []
+    - id: calc_atomic_physical
+      applies_to: "u_premises_service_electricity; u_premises_service_tap_water; u_premises_service_natural_gas; u_premises_service_hot_water_heat; u_premises_service_building_gate; u_premises_service_sanitary_wastewater; u_premises_service_concrete_demolition; u_premises_service_co2_fossil_air; u_premises_service_no_air; u_premises_service_no2_air; u_remote_acceptance_it_datacentre_electricity; u_remote_acceptance_it_network_electricity; u_remote_acceptance_it_cooling_makeup_water; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Foreground physical branch only under foreground_interface_method; service quantities use their interface rule. For operational physical flow x in matched provider interval j, recover Q_x,j in that card native physical unit from metering, stock balance, work orders or a compatible species/material-specific unit inventory. If source intensity is per activity unit, first Q_x,j=intensity_x,j*actual_all_user_activity_j; do not use money, a generic service emission basket, or an already per-reference amount without recovering its original basis. Then q_x=sum_j(Q_x,j*s_c,x,j)/N_ref once, with the fixed process driver and all-user shares. Electricity kWh converts to MJ by 3.6 once when the card uses MJ; other count/mass/volume conversions need measured configured unit mass, density, concentration and moisture as applicable. A shared meter or upstream product/service covering the same quantity/period/scope is removed by a measured overlap crosswalk, not by an assumed fraction. For the natural-gas row, Q_x,j is raw Q_gas_NCV_MJ_j from calc_premises_gas_ncv and s_c,gas,j is the fixed zone-to-stratum share under allocation_premises_inventory. Use either the metered total or its equivalent reconstruction from matched intensity, then divide by N_s once."
+      inputs:
+        - cp_support_premises_service
+        - cp_support_remote_acceptance_it
+      output: "card-native physical unit per original reference flow"
+      source_ids: []
+    - id: calc_atomic_capital
+      applies_to: "u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Foreground physical branch only under foreground_interface_method; service quantities use their interface rule. For each physical asset serial/cohort a, Q_a is its actual manufacturing/construction-gate quantity in the card unit. Set f_c,a=attributed physical lifetime activity_c,a/evidenced full-life all-user activity_a, using the process/asset-specific driver and identical configuration/capacity units. Manufacture q=sum(Q_a*f_c,a)/N_ref; each initial and whole-asset replacement creates its own asset cohort and enters once, not an additional current-period maintenance item. Installation physical quantities outside the asset product gate use that same installed-asset fraction. Terminal residual quantity in its own declared unit, evidenced from matched retirement or a prospective residual/reuse/retention plan, uses exactly the same f_c,a and original reference denominator; actual custody transfers only verify/update it. Earlier removed parts are excluded from terminal residual. Restate life and all original beneficiary cohorts under calc_capital_restatement; lifetime estimates need evidence and sensitivity, never numeric defaults. Genuine component repairs/replacements use actual causal events or the fixed provider maintenance-year shares, not another whole-life fraction. A whole component reused as a separately commissioned capital asset instead receives its own serial/lifetime register, never both treatments."
+      inputs:
+        - cp_support_premises_service
+        - cp_support_remote_acceptance_it
+      output: "manufacturing product and paired terminal residual, same lifetime fraction"
+      source_ids: []
+    - id: calc_capital_restatement
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Within this entry's declared applies_to scope, apply the complete ordered rule group: calc_capital_restatement_driver_revision; calc_capital_restatement_source_correction; calc_capital_restatement_normalization; calc_capital_restatement_retirement; calc_capital_restatement_zero_activity; calc_capital_restatement_shared_driver_controls; calc_capital_restatement_background_version. Use this entry's inputs, reference denominator and output; all definitions, conditions, exclusions and completion requirements across that group apply jointly. These components form one method, not additional exchanges or repeated allocation. Reading only a component is insufficient for completion. Follow the existing ownership and deduplication rules when one event appears in more than one entry."
+      inputs:
+        - cp_capital_restatement
+        - calc_capital_restatement_driver_revision
+        - calc_capital_restatement_source_correction
+        - calc_capital_restatement_normalization
+        - calc_capital_restatement_retirement
+        - calc_capital_restatement_zero_activity
+        - calc_capital_restatement_shared_driver_controls
+        - calc_capital_restatement_background_version
+      output: "source-native unit per original cohort N_c; separate physical controls"
+      source_ids: []
+    - id: capital_premises_service_building_gate
+      applies_to: "u_premises_service_building_gate; u_premises_service_concrete_demolition"
+      rule: "Foreground physical branch only under foreground_interface_method; service quantities use their interface rule. Manufacture/construction row u_premises_service_building_gate: Q_a is actual unamortized m2 at the declared product gate; q=sum(Q_a*f_c,a)/N_s. Q_a is the original complete building-shell handover floor area, before amortisation. f=target-cohort/stratum attributed occupied/reserved floor-area-hours divided by the same asset full-lifetime occupied/reserved floor-area-hours; same asset, area and calendar-hour definition are mandatory. For premises_service the numerator is F_s; for premises use its attributed cohort area-hours. q_prod=Q_a*f/N_s; each full-lifecycle demolition stream Q_e uses identical f/N_s. Cohort/stratum shares are already in f and are not applied again. Missing lifetime/area boundary blocks completion. Actual maintenance quantities use their separate period/event share, never this manufacture f. Already amortised supplier inputs require recovery of original Q_a and the full-life denominator; applying f again is prohibited. Terminal row u_premises_service_concrete_demolition: native kg, q=sum(R_a*f_c,a)/N_s; join the identical serial/cohort and f_c,a, R_a is the terminal net residual already excluding earlier removals; subtract historical removals once only when deriving R_a from an original gross/BOM basis, never again from measured terminal net residual. Whole replacements create their own asset cohort, never an extra maintenance whole-product flow; distinct installation beyond the product gate uses this same fraction. Static lifetime ratios describe the current version only; life/source changes and final retirement must apply calc_capital_restatement to the original cohorts, not update only future denominators."
+      inputs:
+        - cp_support_premises_service
+      output: "asset-native physical unit per N_s; linked terminal native unit, same f"
+      source_ids: []
+    - id: capital_remote_acceptance_it_server_gate
+      applies_to: "u_remote_acceptance_it_server_gate; u_remote_acceptance_it_retired_server"
+      rule: "Foreground physical branch only under foreground_interface_method; service quantities use their interface rule. Manufacture/construction row u_remote_acceptance_it_server_gate: Q_a is actual unamortized Item(s) at the declared product gate; q=sum(Q_a*f_c,a)/N_s. Q_a is the original delivered complete hardware count at factory gate, before amortisation. f=(provider-period installed calendar hours/documented full installed-calendar lifetime hours)*the evidenced endpoint-operation and stratum workload share. Reconcile all workload and idle capacity. q_prod=Q_a*f/N_s; the same asset terminal Q_e uses identical f/N_s. Do not apply workload shares again. Missing lifetime or workload-to-resource linkage blocks completion. Actual maintenance quantities use their separate period/event share, never this manufacture f. Already amortised supplier inputs require recovery of original Q_a and the full-life denominator; applying f again is prohibited. Terminal row u_remote_acceptance_it_retired_server: native Item(s), q=sum(R_a*f_c,a)/N_s; join the identical serial/cohort and f_c,a, R_a is the terminal net residual already excluding earlier removals; subtract historical removals once only when deriving R_a from an original gross/BOM basis, never again from measured terminal net residual. Whole replacements create their own asset cohort, never an extra maintenance whole-product flow; distinct installation beyond the product gate uses this same fraction. Static lifetime ratios describe the current version only; life/source changes and final retirement must apply calc_capital_restatement to the original cohorts, not update only future denominators."
+      inputs:
+        - cp_support_remote_acceptance_it
+      output: "asset-native physical unit per N_s; linked terminal native unit, same f"
+      source_ids: []
+    - id: capital_remote_acceptance_it_network_switch_gate
+      applies_to: "u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_network_switch"
+      rule: "Foreground physical branch only under foreground_interface_method; service quantities use their interface rule. Manufacture/construction row u_remote_acceptance_it_network_switch_gate: Q_a is actual unamortized Item(s) at the declared product gate; q=sum(Q_a*f_c,a)/N_s. Q_a is the original delivered complete hardware count at factory gate, before amortisation. f=(provider-period installed calendar hours/documented full installed-calendar lifetime hours)*the evidenced endpoint-operation and stratum workload share. Reconcile all workload and idle capacity. q_prod=Q_a*f/N_s; the same asset terminal Q_e uses identical f/N_s. Do not apply workload shares again. Missing lifetime or workload-to-resource linkage blocks completion. Actual maintenance quantities use their separate period/event share, never this manufacture f. Already amortised supplier inputs require recovery of original Q_a and the full-life denominator; applying f again is prohibited. Terminal row u_remote_acceptance_it_retired_network_switch: native Item(s), q=sum(R_a*f_c,a)/N_s; join the identical serial/cohort and f_c,a, R_a is the terminal net residual already excluding earlier removals; subtract historical removals once only when deriving R_a from an original gross/BOM basis, never again from measured terminal net residual. Whole replacements create their own asset cohort, never an extra maintenance whole-product flow; distinct installation beyond the product gate uses this same fraction. Static lifetime ratios describe the current version only; life/source changes and final retirement must apply calc_capital_restatement to the original cohorts, not update only future denominators."
+      inputs:
+        - cp_support_remote_acceptance_it
+      output: "asset-native physical unit per N_s; linked terminal native unit, same f"
+      source_ids: []
+    - id: calc_atomic_species
+      applies_to: "all elementary physical rows"
+      rule: "Foreground physical branch only under foreground_interface_method; service quantities use their interface rule. Each elementary row identifies one substance or physically specified particle carrier and one receiving medium/subcompartment. Collect the actual substance/CAS or verified chemical identity, factor unit and mass/molar/carbon expression, source technology/fuel/load, location and receiving medium. Apply a substance-specific measured release or compatible factor once. Factory emissions already in a complete product gate are not also direct provider-use emissions. Particle size classes and fate fractions are mutually exclusive; physically defined particles are not fictitious pure elements. NOx and NMVOC totals are QA observations only, never elementary-exchange substitutes. Every actual extra species/material needs its own concrete bilingual source row, protocol, unit, fixed calculation and normal projection before completed modelling; do not use a selector or a family-name placeholder."
+      inputs:
+        - cp_support_premises_service
+        - cp_support_remote_acceptance_it
+      output: "one substance or defined physical carrier per receiver"
+      source_ids: []
+    - id: calc_nox_speciation
+      applies_to: "u_premises_service_no_air; u_premises_service_no2_air"
+      rule: "For the explicitly evidenced definition NOx=NO+NO2 expressed as NO2-equivalent, record T, its unit/basis and source-matched measured molar fraction a=n_NO/(n_NO+n_NO2). Then m_NO=a*T*M_NO/M_NO2 and m_NO2=(1-a)*T, using independently evidenced molecular masses on the same unit basis. Prefer direct substance-specific mass measurements/factors when available and do not add the QA total again. T is not ordinary NO/NO2 mixture mass; never apply a mass fraction directly to T or assign all T to NO2. If definition includes other nitrogen species, speciation or conversion evidence is missing, no two-component split is permitted: preserve the raw QA observation and block completion until actual species-specific rows and quantities are established. No numeric fraction or molecular mass is defaulted by this PCR."
+      inputs:
+        - cp_support_premises_service
+      output: "kg NO and kg NO2, never NO2-equivalent exchange"
+      source_ids: []
+    - id: calc_capital_restatement_driver_revision
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. For every asset a retain versioned all-user activity and each original beneficiary cohort/stratum c, including failed/empty work under its existing fixed responsibility rule. u_c,a is its attributed actual driver to date; U_a is evidenced complete-life all-user driver (actual to date plus supported remaining forecast), in the identical configuration and unit. U_a must be positive and at least the actual all-user total. Set f_c,a=u_c,a/U_a; do not use remaining activity as U_a. On every life, activity, beneficiary, source-quantity or terminal-route revision recompute every affected original cohort, including previously reported cohorts; do not preserve an old fraction while applying a new lifetime denominator only to later cohorts."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: calc_capital_restatement_source_correction
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. For each independent source s in its native unit, A_s,c,new=Q_s,new*f_c,a. Q_s,new is its current evidenced full manufacture/installation source quantity before lifetime allocation, not a remaining unallocated balance, or matched net terminal residual/complete lifecycle source; it is not a previously allocated quantity. Retain B_s,c, the previously booked attributed raw amount, and its original normalized result/version; delta_A_s,c=A_s,c,new-B_s,c. A newly evidenced terminal source has B=0, while a correction to an existing source replaces that same source ID."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: calc_capital_restatement_normalization
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Recompute q_s,c=A_s,c,new/N_c using that original cohort current verified reference denominator N_c; if N_c itself was corrected, replace the old result rather than adding delta_A/new_N to a result based on old_N. Sum source contributions only after removing documented overlap. Record positive/negative result corrections, never negative physical transfers, substitution credits or another current-period whole-asset purchase."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: calc_capital_restatement_retirement
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. At final retirement replace U_a by complete actual all-user driver, recompute all f and all source quantities; for positive total activity all beneficiary fractions sum to one, including non-study beneficiaries. Measured terminal net residual is not reduced again by historical removals."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: calc_capital_restatement_zero_activity
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Zero-output events retain their existing causal parent cohort and its original denominator; never seek an unrelated positive-output period. If that parent has no positive N_c, retain attributed raw totals and an unresolved normalized result. With zero lifetime activity, assign only to an evidenced sole commissioning responsibility under the same original-cohort rule; otherwise retain the unallocated source and block completeness."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: calc_capital_restatement_shared_driver_controls
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Keep asset manufacture, installation and terminal burden on the same revised f, while gross stock, transfers and retirements remain separate physical control records. For a calendar-time asset, u is its elapsed service-capacity time assigned once to each original class/period by the existing shared/class rule, including the prescribed vacancy/failure responsibility; U covers that same all-user calendar capacity. Do not apply the class share a second time to q. Unknown history, unsupported life/endpoint or missing original denominators blocks completeness."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+    - id: calc_capital_restatement_background_version
+      applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      rule: "Component of calc_capital_restatement. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. If a supply-background or treatment-model version changes without a physical quantity change, replace the corresponding linked inventory and result for all affected original cohorts; a zero physical delta_A does not preserve the old model."
+      inputs:
+        - cp_capital_restatement
+      output: "Method component; the originating entry owns the inventory result"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_scope
+      applies_to: "all inventory rows"
+      requirement: "Match office, calendar period, stratum, first/last gate, provider and physical unit; disclose service quality and number of mailpieces per session. Registered and certified procedures and different mail forms are not automatically equivalent."
+      evidence: "cp_acceptance; provider scope records"
+    - id: quality_unknown
+      applies_to: "all inventory rows"
+      requirement: "Missing amount, unverified identity, absent upstream inventory, unknown destination or failed reconciliation remains an explicit gap and prevents a complete dataset claim. A provisional estimate must state source, method, bounds and sensitivity; no default numerical intensity, life, conversion factor or compliance limit is provided."
+      evidence: "gap register and scenario evidence"
+    - id: quality_inventory
+      applies_to: "activity_premises_service; activity_remote_acceptance_it; counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer"
+      requirement: "Retain disaggregated underlying service inventories, units, driver evidence and explicit scope exclusions. Test all physical sources for duplicate electricity, assets, cooling, paper, network or waste treatment. A service name, receipt or price alone is insufficient evidence."
+      evidence: "supplier/foreground background crosswalk and balance"
+    - id: quality_waste_origin
+      applies_to: "receipt_paper_waste; glassine_liner_waste"
+      requirement: "For every ordinary solid-waste stream verify generation responsibility, original cohort/stratum/denominator, origin-labelled stock balance, supported actual or prospective complete treatment and later-receipt replacement. Unknown origin/fate/physical loss remains an explicit gap; future dispatch alone cannot close or reassign it. Keep wastewater and amortized terminal-asset treatment on their separate methods."
+      evidence: "generation/stock/transfer ledgers; supported route models; original-cohort receipt replacements"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Bind each eventual flow UUID only after direct-read confirmation of official name in both languages when present, flow type, state, property, unit and receiving compartment. Search similarity and historical citations are insufficient; unresolved cards remain candidates until that binding exists."
+      evidence: "official response and hash-bound identity evidence"
+    - id: quality_atomic_completeness
+      applies_to: "all disaggregated support and species"
+      requirement: "Completeness is branch-specific under foreground_interface_method and foreground_interface_coverage. Foreground physical exchanges need the retained exact identities, original measurements, species and stock reconciliation. External interfaces need one defined service/property/unit, measured activity, exact supplier gates and compatible background coverage, not exhaustive provider-internal BOMs or capital ledgers. Unknown occurrence is not absence; uncovered real scope is an explicit gap. Unbound interface UUID/property/unit-group identities remain row-specific candidates until direct official evidence and receipts resolve them. The interface is not permission for an undefined multi-service package or for an Item(s) substitute for hours/mass/transport activity."
+      evidence: "scope-to-physical-row reconciliation; supplier/BOM/species originals; signed gap register"
+    - id: quality_service_interfaces
+      applies_to: "svc_premises_service; svc_remote_acceptance_it"
+      requirement: "Completeness is branch-specific under foreground_interface_method and foreground_interface_coverage. Foreground physical exchanges need the retained exact identities, original measurements, species and stock reconciliation. External interfaces need one defined service/property/unit, measured activity, exact supplier gates and compatible background coverage, not exhaustive provider-internal BOMs or capital ledgers. Unknown occurrence is not absence; uncovered real scope is an explicit gap. Unbound interface UUID/property/unit-group identities remain row-specific candidates until direct official evidence and receipts resolve them. The interface is not permission for an undefined multi-service package or for an Item(s) substitute for hours/mass/transport activity."
+      evidence: "cp_interface protocols; signed coverage/ownership matrix; native-unit reconciliation; identity receipts"
+    - id: scope_interface_premises_service
+      applies_to: "u_premises_service_electricity; u_premises_service_tap_water; u_premises_service_natural_gas; u_premises_service_hot_water_heat; u_premises_service_building_gate; u_premises_service_sanitary_wastewater; u_premises_service_concrete_demolition; u_premises_service_co2_fossil_air; u_premises_service_no_air; u_premises_service_no2_air; svc_premises_service"
+      requirement: "For support_premises_service, svc_premises_service is the external service input under boundary_atomic_support. Its listed physical counterparts apply only to operator-owned foreground components; they are not required supplier-internal collection. For every event/component record exactly one owner and representation. Keep physical components excluded from the contracted service, and remove only evidenced overlap; partial contracts cannot suppress the whole process. Scope changes require the coverage matrix and fresh bilingual projection."
+      evidence: "signed foreground/interface matrix; contract exclusions; actual component records"
+    - id: scope_interface_remote_acceptance_it
+      applies_to: "u_remote_acceptance_it_datacentre_electricity; u_remote_acceptance_it_network_electricity; u_remote_acceptance_it_cooling_makeup_water; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch; svc_remote_acceptance_it"
+      requirement: "For support_remote_acceptance_it, svc_remote_acceptance_it is the external service input under boundary_atomic_support. Its listed physical counterparts apply only to operator-owned foreground components; they are not required supplier-internal collection. For every event/component record exactly one owner and representation. Keep physical components excluded from the contracted service, and remove only evidenced overlap; partial contracts cannot suppress the whole process. Scope changes require the coverage matrix and fresh bilingual projection."
+      evidence: "signed foreground/interface matrix; contract exclusions; actual component records"
+    - id: inv_premises_scope
+      applies_to: "u_premises_service_electricity; u_premises_service_tap_water; u_premises_service_natural_gas; u_premises_service_hot_water_heat; u_premises_service_building_gate; u_premises_service_sanitary_wastewater; u_premises_service_concrete_demolition; u_premises_service_co2_fossil_air; u_premises_service_no_air; u_premises_service_no2_air"
+      requirement: "Only the estate-period and zone-matched counter accommodation under allocation_premises_inventory; direct devices, plug loads, paper and remote IT excluded."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_ac_basis
+      applies_to: "u_premises_service_electricity; u_remote_acceptance_it_datacentre_electricity; u_remote_acceptance_it_network_electricity"
+      requirement: "Applies only to independently evidenced point-of-use AC; this generic UUID does not determine supplier, grid, voltage or generation technology. Meter kWh converts to MJ by 3.6 once; installation/repair AC and operating AC have disjoint meter/phase ownership."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_asset_basis
+      applies_to: "u_premises_service_building_gate; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate"
+      requirement: "Actual maintenance quantities use their separate period/event share, never this manufacture f. Already amortised supplier inputs require recovery of original Q_a and the full-life denominator; applying f again is prohibited."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_terminal_basis
+      applies_to: "u_premises_service_concrete_demolition; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      requirement: "Its raw Q_e is the full-lifecycle terminal physical quantity belonging to asset_suffix, before amortisation, not an amortised provider-period amount or a later-period dispatch total. Apply exactly the linked production f once and divide by the original denominator once; no extra operational allocation share."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_combustion_species
+      applies_to: "u_premises_service_co2_fossil_air; u_premises_service_no_air; u_premises_service_no2_air"
+      requirement: "Only documented exact combustion technology, species, factor and receiving compartment; no total-NOx substitution. Compute once from measured fuel and a single-species factor excluding upstream fuel-chain emissions."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+    - id: inv_remote_it_scope
+      applies_to: "u_remote_acceptance_it_datacentre_electricity; u_remote_acceptance_it_network_electricity; u_remote_acceptance_it_cooling_makeup_water; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+      requirement: "Executed remote barcode validation/record-write/acknowledgement requests for the declared acceptance endpoint; includes failures/retries, excludes ongoing delivery tracking. Only the actual endpoint/provider resource and independent product/receiver gate are evidenced; distinct technologies/models/zones must not be merged."
+      evidence: "Existing collection protocols and evidence of each listed inventory row."
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reconcile N_s to unique valid acceptance/receipt/handoff events; no rejection, cancellation, duplicate scan or correction is counted as another output. Reject N_s <= 0. Verify all qualifiers before applicability."
+    source_ids: []
+  - rule_id: validate_service_interfaces
+    applies_to: "svc_premises_service; svc_remote_acceptance_it"
+    rule: "Verify the event/component responsibility matrix before reading row amounts. An external-service component activates its interface only; its covered detailed physical counterpart is inactive, not a measured zero. Verify one property/unit, raw native activity, original all-user allocation and single final normalization; failed/reworked/empty events follow the retained cohort rules. Test partial contracts, own energy/assets/retained wastes, already allocated supplier inventories, zero-output cohorts and missing complementary coverage. Reject double counting, invented identity/amounts, forced supplier-internal collection or an undocumented branch change. Verify all service row IDs and protocol/rule links in both languages and generated guidance."
+    source_ids: []
+  - rule_id: validation_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "For every resource reconcile direct + all allocated functional shares to raw period total; w_sj sums to one over served functions. Check facility occupied area-hours, stock kg and waste kg separately. Retain unexplained residual; never force a balance by changing a missing value to zero. Test A-period generated retained waste and B-period dispatch: original A responsibility and denominator persist, and actual evidence replaces that same event model without another B burden."
+    source_ids: []
+  - rule_id: validation_material
+    applies_to: "foreground_dataset_conformance"
+    rule: "The purchased composite label includes liner; label attached to mail plus liner waste plus rejects/stock changes must reconcile to consumed stock without duplicating a separate liner input. Issued paper is not also waste. Check exact label construction; unknown or different stock requires separate identification/card."
+    source_ids: []
+  - rule_id: validation_support
+    applies_to: "foreground_dataset_conformance"
+    rule: "Verify all premises, equipment, remote IT and waste-treatment technical boundaries against direct foreground inputs. Reject incomplete underlying background evidence or duplicated asset/energy/treatment scopes as incomplete; no full life-cycle or methodology-approval claim follows from this check alone."
+    source_ids: []
+  - rule_id: validation_projection
+    applies_to: "foreground_dataset_conformance"
+    rule: "All mandatory boundary, allocation, collection, calculation and quality requirements must survive the canonical structured projection with these same row/protocol/rule IDs; check bilingual meanings and current hashes, not hashes alone."
+    source_ids: []
+  - rule_id: validate_atomic_support
+    applies_to: "all support and emission rows"
+    rule: "Verify the event/component responsibility matrix before reading row amounts. An external-service component activates its interface only; its covered detailed physical counterpart is inactive, not a measured zero. Verify one property/unit, raw native activity, original all-user allocation and single final normalization; failed/reworked/empty events follow the retained cohort rules. Test partial contracts, own energy/assets/retained wastes, already allocated supplier inventories, zero-output cohorts and missing complementary coverage. Reject double counting, invented identity/amounts, forced supplier-internal collection or an undocumented branch change. Verify all service row IDs and protocol/rule links in both languages and generated guidance."
+    source_ids: []
+  - rule_id: validate_capital_restatement
+    applies_to: "counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch"
+    rule: "Check original cohorts/denominators, all-user driver, source versions, booked amounts and restatement corrections under calc_capital_restatement. Reject frozen old history with only future-denominator changes, retirement-balance transfer to unrelated current output, and negative physical exchanges."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Unit-process counter-acceptance service inventory with declared upstream links"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Only matching attended-counter acceptance stratum, quality, location, period and gates; combine with onward service only after removing overlapping acceptance burdens"
+  excluded_use: "Generic whole-CPC coverage, all office transactions, customer visit footprints, bank/retail services or completed postal delivery"
+  required_metadata: "All reference qualifiers, N_s, active/idle/failure records, office-resource scope map, allocation drivers, period totals, technical background linkage and unit compatibility; ordinary-waste generation origin, original shares/denominator, retained stocks and treatment revision chain; signed foreground/interface responsibility matrix, native service activity and background coverage; original physical activity, manufacture/terminal pairing and species basis only for foreground-owned components"
+  required_quality_disclosure: "Unresolved identities and upstream gaps; no zero substitution; temporal/site coverage; foreground estimates and uncertainty; service/facility/equipment boundary exclusions"
+  update_trigger: "Acceptance procedure, mail form/quality, office utility boundary, equipment/IT provider, stock construction, throughput/workload or material evidence changes; later ordinary-waste receipts/fate or generation correction update the original event/cohort model; foreground physical identity/speciation changes or external interface configuration/unit/coverage changes require applicable concrete-row review and fresh projection"
+data_sources:
+  - id: "un-cpc-68013"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0, subclass 68013 explanatory note; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/68013"
+    used_for: "Classification includes stamp sales and registered/certified handling; establishes narrower boundary, not a default intensity"
+  - id: "usps-package"
+    type: "official_guidance"
+    reference: "USPS, How to Prepare and Send a Package; https://www.usps.com/ship/packages.htm"
+    used_for: "Actual counter weighing, postage printing/attachment and mail presentation; United States example, not universal material specification"
+  - id: "usps-extra-services"
+    type: "official_guidance"
+    reference: "USPS, Shipping Insurance and Delivery Services; https://www.usps.com/ship/insurance-extra-services.htm"
+    used_for: "Registered/Certified Mail and sender receipt versus delivery proof; service-specific eligibility must be declared"
+  - id: "ghg-product-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters 7-10, especially chapter 9 allocation; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "General subdivision, physical allocation, consistent recycling and uncertainty principles; the counter-specific protocols and allocation drivers are authored here, not quantitative factors prescribed by this standard"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:1d38997c9db42188695435e0a8f46045399fe271c2ebc63585b310324c7d0b54"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4926"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4926
+          line: 53
+          column: 1
+        end:
+          offset: 12488
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Presented, already packaged mailpiece and installed counter; these are starting conditions, not burden-free new products |\n| starting_condition_role | foreground_start |\n| product_classification_scope | Counter acceptance only, narrower than the whole CPC 68013 subclass |\n| recursive_input_rule | Apply boundary_atomic_support: external activities enter through a defined single-unit service interface; do not recursively expand supplier internals. Foreground physical processes retain their existing cards and rules. Custody cargo is not a manufactured input. |\n| upstream_dataset_requirement | Keep a signed scope-ownership matrix for each service contract and background dataset: exact gates, route/configuration, place/period, native reference unit, quality, supply/operation/empty/failure/maintenance/capital/terminal coverage, all-user allocation and foreground overlaps. Background coverage must preserve the existing lifecycle obligations and candidate allocation policies; it may be documented by a compatible dataset and supplier scope declaration without obtaining every internal exchange. Purchased quantity is measured at the interface; bundled independent services or incompatible units require separate concrete rows. For partial coverage partition by evidenced event/component first. Keep operator-owned assets, separately supplied energy/materials, customer-provided parts and operator-retained waste only in their own physical rows and exclude them from the supplier inventory. Suppress only identical covered supplier components; retain excluded real components through their own specific interface/physical rows. Never add the detailed counterpart to a service covering it; never erase burden because supplier detail is unavailable. Missing service-unit conversion, identity, coverage or a required complementary component blocks completeness, not zero. Existing narrower product applicability, physical stock balances, original-cohort corrections and receipt evidence remain mandatory for their actual owners. |\n| disclosure | Office/period/stratum; acceptance gate; failures and corrections; customer travel exclusion; waiting/idle attribution; physical mail custody; service-provider overlaps; upstream and UUID gaps |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| boundary_counter | Include eligibility check, weighing, scanning/recording, receipt and any counter label actually applied, internal counter handoff, corrections and unsuccessful handling within the declared gate. A successful acceptance is not delivery. | un-cpc-68013; usps-package; usps-extra-services |\n| boundary_mail_money | Mailpiece contents, packaging and prepaid stamps arrive in customer custody and are not consumed or produced by this service. Track custody/count transitions outside exchange inventory. Record only incremental counter materials actually supplied. Postage, cash, tax and insured value are monetary records, never material or elementary flows. If supplied by the onward-postal-service dataset, remove the same counter stage there before combining. | un-cpc-68013; usps-package |\n| boundary_support | Include attributed counter electricity, equipment provision/upkeep/end-of-life, remote acceptance IT, premises and waste responsibilities once. Under boundary_atomic_support and foreground_interface_coverage, operator-responsible components use physical rows; independent remote IT and occupancy providers use svc_remote_acceptance_it and svc_premises_service. Keep the fixed technical scope, activity allocation and direct-scope exclusions. A compatible background service with a signed scope declaration is acceptable; an invoice alone does not establish coverage. | ghg-product-2011 |\n| boundary_exclusions | Exclude customer and employee travel/commuting, human metabolic energy, onward sorting/transport/storage/delivery and standalone stamp, financial or retail services; disclose these exclusions. Keep lighting, heating/cooling and cleaning caused by waiting-area occupation inside the premises inventory; customer waiting minutes themselves are not an emission flow. |  |\n| boundary_extension | Before quantification screen each actual route for other paper forms, inks, sealing materials, packaging, fuels, water, refrigeration and releases. Every additional present exchange needs its own specific card, physical identity, unit and protocol; the listed cards are not a completeness exemption. If integrated in premises/equipment/IT background, locate it there once and document scope. Demonstrably absent conditional rows use not_applicable with dated evidence; unknown is never zero. |  |\n\n### Atomic supporting-activity boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_atomic_support | supporting activities | Each active exchange represents one defined material, equipment or service object with one primary property and unit. A service is not disallowed merely because it has upstream processes. Fix responsibility by provider, contract, site, event, gate and scope component before quantification. Operator-run processes and separately commissioned onsite tasks under operator inventory responsibility use foreground physical rows. Independently provided activities outside that responsibility use their specified service-interface rows; supplier manufacture, utilities, maintenance and waste remain in the matched background service, not extra foreground exchanges. A contract alone does not turn supplier internals into foreground. Do not change the product, route, custody gates or original reference denominator. Apply foreground_interface_method and foreground_interface_coverage; boundary changes need PCR review, not a data-availability choice. Ownership here means inventory responsibility, not legal title alone: rented equipment provision may be an external service while separately metered operator-run electricity remains foreground. |  |\n| foreground_interface_coverage | all support processes and overlaps | Keep a signed scope-ownership matrix for each service contract and background dataset: exact gates, route/configuration, place/period, native reference unit, quality, supply/operation/empty/failure/maintenance/capital/terminal coverage, all-user allocation and foreground overlaps. Background coverage must preserve the existing lifecycle obligations and candidate allocation policies; it may be documented by a compatible dataset and supplier scope declaration without obtaining every internal exchange. Purchased quantity is measured at the interface; bundled independent services or incompatible units require separate concrete rows. For partial coverage partition by evidenced event/component first. Keep operator-owned assets, separately supplied energy/materials, customer-provided parts and operator-retained waste only in their own physical rows and exclude them from the supplier inventory. Suppress only identical covered supplier components; retain excluded real components through their own specific interface/physical rows. Never add the detailed counterpart to a service covering it; never erase burden because supplier detail is unavailable. Missing service-unit conversion, identity, coverage or a required complementary component blocks completeness, not zero. Existing narrower product applicability, physical stock balances, original-cohort corrections and receipt evidence remain mandatory for their actual owners. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 217
+              line: 8
+              column: 1
+            end:
+              offset: 300
+              line: 8
+              column: 84
+          text: "# Post office counter services: attended acceptance of registered or certified mail"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4926
+              line: 53
+              column: 1
+            end:
+              offset: 4947
+              line: 53
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_48237"
+      family: "allocation"
+      span:
+        start:
+          offset: 48237
+          line: 585
+          column: 1
+        end:
+          offset: 59277
+          line: 606
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| allocation_subdivide | First use dedicated meters, tagged stock issue and device/request logs to avoid allocation. For remaining shared loads, allocate by the physical driver specified below across all office functions, including excluded services; charge only the target share. Never divide the whole office burden by target successful transactions. | ghg-product-2011 |\n| allocation_session | Measure direct piece handling first, using non-overlapping active intervals for each staffed window/resource. Allocate measured genuinely common session activity equally only among the actual pieces sharing that activity when the same mail form/procedure and equivalent demand on the activity are evidenced. Preserve common-activity ID, participating piece IDs and divisor. Do not copy full session time to every piece. Sum assigned piece seconds must equal actual resource-active session seconds, including failures/rework; record waiting separately. For heterogeneous procedures or unproven equal demands, time the distinct activity by piece/procedure or retain an allocation gap; never default to equal allocation. |  |\n| allocation_time | For each resource j and period define tagged active handling seconds T_sj for stratum s including successful, rejected, abandoned and reworked attempts. Unknown-type attempt time is allocated to strata in proportion to their tagged active seconds; retain its amount separately. Define w_sj as adjusted stratum seconds divided by adjusted seconds for every function served by j. If no tagged active seconds exist or causality is unproven, the shared-resource result is incomplete, not zero. |  |\n| allocation_idle | Use w_sj to assign resource j shared standby, idle, startup, shutdown and closed-period loads along with its shared active loads; do not drop those loads or divide by opening hours and again by throughput. Directly tagged failed/rework inputs stay with their stratum. A failed attempt creates no accepted output; all attributable failure inputs remain in the period numerator for the completed-output stratum. Disclose rates and sensitivity. |  |\n| allocation_premises | Map occupied floor areas without overlap. For a shared lobby or support area use its area multiplied by target counter scheduled staffed-window-hours divided by all functions scheduled staffed-window-hours using that area; include the full-area total in the reconciliation. Add directly reserved counter area. Multiply resulting effective area by all calendar hours in the accounting period, including closed hours, then assign strata using v_s, the adjusted active handling seconds for stratum s divided by adjusted active seconds of every transaction class using this reserved counter footprint, including stamp/financial/retail activities actually using it; this conditional share is not the whole-office share w_sj. This is F_s in m2*h; all office functions together must recover the full occupied area-hours. Zero denominator or missing floor/work schedule prevents completion. |  |\n| allocation_premises_inventory | For foreground-owned premises components only, apply the following physical method. External occupancy uses svc_premises_service with the same zoned beneficiary drivers and exclusions under foreground_interface_method; supplier internals are not foreground collection. The matched premises physical inventory uses one m2*h of the same occupied estate-period as its raw source denominator, never as a product exchange. Collect each metered energy carrier and fuel, water, cleaning product, refrigerant by species, maintenance material, building fabric/capital share and waste treatment separately. Submeter zones first; allocate residual lighting/HVAC/water/cleaning by serviced floor-area-calendar-hours, capital/fabric by reserved floor-area-calendar-hours and documented asset lifetime, and actual refrigerant loss by the same HVAC zone share. Keep each fuel combustion/emission species and compartment in that background. Exclude direct counter plug electricity, standalone devices, paper and remote IT already inventoried here. Match meter coverage and remove subcontract service overlaps before dividing background totals by estate occupied m2*h once. No generic rent-price conversion or unverified bundled service substitute. |  |\n| allocation_device | Each device serial number is charged once as consumed lifetime fraction: calendar hours installed in this period divided by evidenced total installed calendar lifetime, multiplied by w_sj across all functions served by that device; do not multiply by a second counter-use share. The equipment lifecycle dataset includes manufacture, replacements/repair and end-of-life, excludes operating electricity and paper. Integrated scanner/printer parts included in a complete computer/device are not also separate devices; separate peripherals require separate serial records. No default lifetime, device mass or utilization. Estimates need evidence, uncertainty and alternative-life sensitivity. |  |\n| allocation_waste | Record actual receipt-paper and liner waste by stream and destination. Outsourced treatment is linked once to the measured waste output; do not add the same treatment as an input if it is already included in that link or premises background. No avoided-burden credit, financial revenue or waste-contained substance is added as a second physical output. Recovered paper remains a waste transfer here; apply and disclose recycled-content accounting consistently. | ghg-product-2011 |\n| allocation_waste_origin | Fix each ordinary solid-waste generation event to its original service cohort and stratum at generation, never at later dispatch. Directly trace the generating task first; shared generation uses the existing site/handling allocation driver over the recorded generation interval, including all customer and noncohort workloads. Preserve event ID, generation date, original shares and original reference denominator through storage and internal transfers. Acquired old waste is not new generation. Retained waste keeps its original treatment responsibility; dispatch-period service does not inherit it. For shared generation, split records at each fixed local-calendar-month boundary (68013 uses its already declared counter accounting period instead); apply the existing site task/handling driver within that exact generation interval, not the full later dispatch/cohort window. Direct event attribution takes precedence. Record site timezone before period assignment. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_atomic_physical | supporting physical inventory | For each provider, site, configuration, event and accounting interval, partition every measured physical total into mutually exclusive inventory owners before selecting the study cohort. Use the fixed activity driver for that support process, with all users and failed work in the denominator. Direct causal attribution precedes shared allocation. Never multiply a cohort share a second time if already attributed. Keep service-level allocation quantities as raw drivers, not exchange quantities, and do not repeat division by the final reference count. Meter/stock, installed/replaced assets, internal transfers, generated waste and fate balances must reconcile at the same physical/time boundary. A complete product gate may retain its manufacturing background, but a lump service row may not be reintroduced under a different label. |  |\n| allocation_atomic_capital | manufacture; installation; terminal assets | For each physical asset serial/cohort a, Q_a is its actual manufacturing/construction-gate quantity in the card unit. Set f_c,a=attributed physical lifetime activity_c,a/evidenced full-life all-user activity_a, using the process/asset-specific driver and identical configuration/capacity units. Manufacture q=sum(Q_a*f_c,a)/N_ref; each initial and whole-asset replacement creates its own asset cohort and enters once, not an additional current-period maintenance item. Installation physical quantities outside the asset product gate use that same installed-asset fraction. Terminal residual quantity in its own declared unit, evidenced from matched retirement or a prospective residual/reuse/retention plan, uses exactly the same f_c,a and original reference denominator; actual custody transfers only verify/update it. Earlier removed parts are excluded from terminal residual. Restate life and all original beneficiary cohorts under calc_capital_restatement; lifetime estimates need evidence and sensitivity, never numeric defaults. Genuine component repairs/replacements use actual causal events or the fixed provider maintenance-year shares, not another whole-life fraction. A whole component reused as a separately commissioned capital asset instead receives its own serial/lifetime register, never both treatments. |  |\n| allocation_capital_restatement | counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch | This PCR uses full restatement, not frozen historical shares or a retirement-period catch-up. All direct and supporting capital, reusable containers, installation outside the product gate and paired terminal sources follow calc_capital_restatement. Each specific activity rule fixes the driver and beneficiary shares; these are applied once. A complete asset background already including delivery/end-of-life follows the same restatement, without separate duplicate terminal exchanges. Routine component maintenance remains under its causal/period method. |  |\n| allocation_atomic_waste | operational and maintenance wastes | Generated operational and maintenance waste retains its original generation event, provider/activity cohort, shares and original reference denominator through storage and transfers. Fixed shared-waste intervals are local calendar months with timezone declared; use same-interval causal activity and all users, unless an existing more specific maintenance-year or counter-period method applies. Reconcile closing=opening+generation+internal_in-internal_out-external_dispatch-evidenced_physical_loss on consistent material/moisture bases. Include supported eventual storage/transport/treatment for retained waste, with actual evidence or an explicitly evidenced compatible prospective route and uncertainty; unknown fate remains incomplete. Later receipts replace that original event model, not add a new dispatch-period burden. Asset terminal-waste uses its paired capital fraction instead. Waste carrier and its constituents, storage losses/releases and residual treatment cannot be counted twice; the same measured site/storage operation remains under one inventory owner. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 217
+              line: 8
+              column: 1
+            end:
+              offset: 300
+              line: 8
+              column: 84
+          text: "# Post office counter services: attended acceptance of registered or certified mail"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 48237
+              line: 585
+              column: 1
+            end:
+              offset: 48277
+              line: 585
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_133004"
+      family: "validation"
+      span:
+        start:
+          offset: 133004
+          line: 688
+          column: 1
+        end:
+          offset: 137426
+          line: 707
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validation_reference | foreground_dataset_conformance | Reconcile N_s to unique valid acceptance/receipt/handoff events; no rejection, cancellation, duplicate scan or correction is counted as another output. Reject N_s <= 0. Verify all qualifiers before applicability. |  |\n| validate_service_interfaces | svc_premises_service; svc_remote_acceptance_it | Verify the event/component responsibility matrix before reading row amounts. An external-service component activates its interface only; its covered detailed physical counterpart is inactive, not a measured zero. Verify one property/unit, raw native activity, original all-user allocation and single final normalization; failed/reworked/empty events follow the retained cohort rules. Test partial contracts, own energy/assets/retained wastes, already allocated supplier inventories, zero-output cohorts and missing complementary coverage. Reject double counting, invented identity/amounts, forced supplier-internal collection or an undocumented branch change. Verify all service row IDs and protocol/rule links in both languages and generated guidance. |  |\n| validation_balance | foreground_dataset_conformance | For every resource reconcile direct + all allocated functional shares to raw period total; w_sj sums to one over served functions. Check facility occupied area-hours, stock kg and waste kg separately. Retain unexplained residual; never force a balance by changing a missing value to zero. Test A-period generated retained waste and B-period dispatch: original A responsibility and denominator persist, and actual evidence replaces that same event model without another B burden. |  |\n| validation_material | foreground_dataset_conformance | The purchased composite label includes liner; label attached to mail plus liner waste plus rejects/stock changes must reconcile to consumed stock without duplicating a separate liner input. Issued paper is not also waste. Check exact label construction; unknown or different stock requires separate identification/card. |  |\n| validation_support | foreground_dataset_conformance | Verify all premises, equipment, remote IT and waste-treatment technical boundaries against direct foreground inputs. Reject incomplete underlying background evidence or duplicated asset/energy/treatment scopes as incomplete; no full life-cycle or methodology-approval claim follows from this check alone. |  |\n| validation_projection | foreground_dataset_conformance | All mandatory boundary, allocation, collection, calculation and quality requirements must survive the canonical structured projection with these same row/protocol/rule IDs; check bilingual meanings and current hashes, not hashes alone. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_atomic_support | all support and emission rows | Verify the event/component responsibility matrix before reading row amounts. An external-service component activates its interface only; its covered detailed physical counterpart is inactive, not a measured zero. Verify one property/unit, raw native activity, original all-user allocation and single final normalization; failed/reworked/empty events follow the retained cohort rules. Test partial contracts, own energy/assets/retained wastes, already allocated supplier inventories, zero-output cohorts and missing complementary coverage. Reject double counting, invented identity/amounts, forced supplier-internal collection or an undocumented branch change. Verify all service row IDs and protocol/rule links in both languages and generated guidance. |  |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_capital_restatement | counter_computer; counter_scale; barcode_scanner; receipt_printer; label_printer; u_premises_service_building_gate; u_premises_service_concrete_demolition; u_remote_acceptance_it_server_gate; u_remote_acceptance_it_network_switch_gate; u_remote_acceptance_it_retired_server; u_remote_acceptance_it_retired_network_switch | Check original cohorts/denominators, all-user driver, source versions, booked amounts and restatement corrections under calc_capital_restatement. Reject frozen old history with only future-denominator changes, retirement-balance transfer to unrelated current output, and negative physical exchanges. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 217
+              line: 8
+              column: 1
+            end:
+              offset: 300
+              line: 8
+              column: 84
+          text: "# Post office counter services: attended acceptance of registered or certified mail"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 133004
+              line: 688
+              column: 1
+            end:
+              offset: 133026
+              line: 688
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_counter"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 7335
+          line: 68
+          column: 1
+        end:
+          offset: 7643
+          line: 68
+          column: 309
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_mail_money"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 7644
+          line: 69
+          column: 1
+        end:
+          offset: 8144
+          line: 69
+          column: 501
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_support"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 8145
+          line: 70
+          column: 1
+        end:
+          offset: 8753
+          line: 70
+          column: 609
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 8754
+          line: 71
+          column: 1
+        end:
+          offset: 9146
+          line: 71
+          column: 393
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 9147
+          line: 72
+          column: 1
+        end:
+          offset: 9666
+          line: 72
+          column: 520
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_atomic_support"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 9780
+          line: 78
+          column: 1
+        end:
+          offset: 10975
+          line: 78
+          column: 1196
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "foreground_interface_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 10976
+          line: 79
+          column: 1
+        end:
+          offset: 12486
+          line: 79
+          column: 1511
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 48331
+          line: 589
+          column: 1
+        end:
+          offset: 48704
+          line: 589
+          column: 374
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_session"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 48705
+          line: 590
+          column: 1
+        end:
+          offset: 49450
+          line: 590
+          column: 746
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_time"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 49451
+          line: 591
+          column: 1
+        end:
+          offset: 49965
+          line: 591
+          column: 515
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_idle"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 49966
+          line: 592
+          column: 1
+        end:
+          offset: 50432
+          line: 592
+          column: 467
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_premises"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 50433
+          line: 593
+          column: 1
+        end:
+          offset: 51344
+          line: 593
+          column: 912
+    - pointer: "/allocation_rules/5"
+      rule_id: "allocation_premises_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 51345
+          line: 594
+          column: 1
+        end:
+          offset: 52615
+          line: 594
+          column: 1271
+    - pointer: "/allocation_rules/6"
+      rule_id: "allocation_device"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 52616
+          line: 595
+          column: 1
+        end:
+          offset: 53331
+          line: 595
+          column: 716
+    - pointer: "/allocation_rules/7"
+      rule_id: "allocation_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 53332
+          line: 596
+          column: 1
+        end:
+          offset: 53834
+          line: 596
+          column: 503
+    - pointer: "/allocation_rules/8"
+      rule_id: "allocation_waste_origin"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 53835
+          line: 597
+          column: 1
+        end:
+          offset: 54835
+          line: 597
+          column: 1001
+    - pointer: "/allocation_rules/9"
+      rule_id: "allocation_atomic_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 54908
+          line: 601
+          column: 1
+        end:
+          offset: 55811
+          line: 601
+          column: 904
+    - pointer: "/allocation_rules/10"
+      rule_id: "allocation_atomic_capital"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 55812
+          line: 602
+          column: 1
+        end:
+          offset: 57212
+          line: 602
+          column: 1401
+    - pointer: "/allocation_rules/11"
+      rule_id: "allocation_capital_restatement"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 57213
+          line: 603
+          column: 1
+        end:
+          offset: 58131
+          line: 603
+          column: 919
+    - pointer: "/allocation_rules/12"
+      rule_id: "allocation_atomic_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 58132
+          line: 604
+          column: 1
+        end:
+          offset: 59275
+          line: 604
+          column: 1144
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 133099
+          line: 692
+          column: 1
+        end:
+          offset: 133374
+          line: 692
+          column: 276
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_service_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 133375
+          line: 693
+          column: 1
+        end:
+          offset: 134213
+          line: 693
+          column: 839
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 134214
+          line: 694
+          column: 1
+        end:
+          offset: 134753
+          line: 694
+          column: 540
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_material"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 134754
+          line: 695
+          column: 1
+        end:
+          offset: 135135
+          line: 695
+          column: 382
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_support"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 135136
+          line: 696
+          column: 1
+        end:
+          offset: 135501
+          line: 696
+          column: 366
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_projection"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 135502
+          line: 697
+          column: 1
+        end:
+          offset: 135801
+          line: 697
+          column: 300
+    - pointer: "/validation_rules/6"
+      rule_id: "validate_atomic_support"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 135874
+          line: 701
+          column: 1
+        end:
+          offset: 136691
+          line: 701
+          column: 818
+    - pointer: "/validation_rules/7"
+      rule_id: "validate_capital_restatement"
+      identity_kind: "explicit"
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 136764
+          line: 705
+          column: 1
+        end:
+          offset: 137424
+          line: 705
+          column: 661
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 4926
+          line: 53
+          column: 1
+        end:
+          offset: 4947
+          line: 53
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4926"
+      source_span:
+        start:
+          offset: 4975
+          line: 57
+          column: 1
+        end:
+          offset: 7281
+          line: 64
+          column: 209
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_48237"
+      source_span:
+        start:
+          offset: 48237
+          line: 585
+          column: 1
+        end:
+          offset: 48277
+          line: 585
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_133004"
+      source_span:
+        start:
+          offset: 133004
+          line: 688
+          column: 1
+        end:
+          offset: 133026
+          line: 688
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1d38997c9db42188695435e0a8f46045399fe271c2ebc63585b310324c7d0b54"
+  generated_content_sha256: "sha256:f2c03dbabad3b74ec5c023a33fb2a151f23cf58f798acd8b588510bcf3b7ca67"
