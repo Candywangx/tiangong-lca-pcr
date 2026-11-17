@@ -4,13 +4,14 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { CHAPTER_ALIASES, PUBLISHED_CHAPTER_ALIASES, readingTarget, aliasesForTarget, compatibilityDestination, rewriteChapterRequest } from '../lib/chapter-compatibility.ts';
-import {renderMarkdown} from './markdown.ts';
+import {renderMarkdown,sha256} from './markdown.ts';
+import packedAnchors from '../compatibility/packed-chapter-anchors.json' with {type:'json'};
 import {canonicalReadingParts} from './reading-routes.ts';
 import {providerRuntimeSourceRoot,createProviderRuntime} from './provider-runtime.ts';
 import {readPcrCatalogPage} from '../../pcr-core/src/index.ts';
 
 test('published chapter routes restore exact query and fragment in both languages', () => {
-  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,342);assert.equal(CHAPTER_ALIASES.length,527);
+  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,342);assert.equal(CHAPTER_ALIASES.length,541);
   for (const language of ['en','zh']) {
     const entry=CHAPTER_ALIASES.find(row=>row.from.startsWith('/'+language+'/'))!;
     const query='?q=%E7%AB%A0%E8%8A%82&q=a+b&raw=%2f&empty=';
@@ -31,7 +32,7 @@ test('only exact old document paths can rewrite, without source mutation or open
   for(const pathname of ['/','/en/','/unknown/','/generated/raw/a','/_next/static/a.js',entry.from+'index.txt',entry.from+'__next._full.txt',entry.from.replace('/chapters/','/%2fchapters/'),entry.to])
     assert.equal(rewriteChapterRequest(new Request('https://example.org'+pathname)),undefined);
   assert.equal(compatibilityDestination('https://example.org'+entry.from,[]),undefined);
-  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,527);
+  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,541);
   for(const row of CHAPTER_ALIASES){assert.ok(row.to.startsWith(row.from.split('/chapters/')[0]!+'/'));assert.ok(row.anchor);assert.ok(!CHAPTER_ALIASES.some(other=>other.from===row.to));}
 });
 
@@ -98,4 +99,53 @@ test('all CPC 54 source chapters retain their actual reading owners after adjace
   retained+=count;if(count)affected++;
  }
  assert.equal(affected,21);assert.equal(retained,23);
+});
+
+test('all CPC 68/69 chapters retain exact reading owners, source hashes and anchor evidence',()=>{
+ const root=providerRuntimeSourceRoot(import.meta.url);
+ const domain='distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a';
+ const records=[['postal-and-courier-services',8],['electricity-gas-and-water-distribution-on-own-account',6]] as const;
+ const aliases=new Map(CHAPTER_ALIASES.map(row=>[row.from,row]));
+ const evidence=new Map(packedAnchors.documents.map(document=>[document.sourcePath,document]));
+ assert(createProviderRuntime(root,'0'.repeat(40)));
+ let documents=0,retained=0;
+ for(const [subdomain,count] of records){
+  const page=readPcrCatalogPage({root,scope:'material',pathPrefix:domain+'/'+subdomain,limit:100});
+  assert.equal(page.totalCount,count);assert.equal(page.items.length,count);
+  assert.equal(new Set(page.items.map(record=>record.id)).size,count);
+  for(const record of page.items)for(const [language,locale] of [['en-US','en'],['zh-CN','zh']] as const){
+   documents++;
+   const sourcePath=record.path+'/pcr.'+language+'.md';
+   const source=fs.readFileSync(path.join(root,sourcePath));
+   const base='/'+locale+'/docs/pcr/'+sourcePath.split('/').slice(2,-1).join('/')+'/';
+   const chapter=(slug:string)=>base+'chapters/'+encodeURIComponent(slug)+'/';
+   const rendered=renderMarkdown(source.toString('utf8'),sourcePath,{packAdjacent:true});
+   const parts=canonicalReadingParts(rendered.parts,chapter,aliases);
+   const urls=parts.map((part,index)=>index?chapter(part.slug):base);
+   const owners=new Map(parts.flatMap((part,index)=>part.anchors.map(anchor=>[anchor,urls[index]!] as const)));
+   const document=evidence.get(sourcePath);
+   const expected=[];
+   for(const [index,part] of rendered.logicalParts.entries()){
+    const from=index?chapter(part.slug):base;
+    if(urls.includes(from))continue;
+    const route=aliases.get(from);assert(route,sourcePath+': missing route '+from);
+    assert(urls.includes(route.to));assert(part.anchors.includes(route.anchor));
+    assert(part.anchors.every(anchor=>owners.get(anchor)===route.to),sourcePath+': split or missing anchor owner');
+    expected.push({...route,anchors:part.anchors});retained++;
+    const query='?q=%E7%AB%A0%E8%8A%82&raw=%2f';
+    assert.equal(readingTarget(from+query),route.to+query+'#'+encodeURIComponent(route.anchor));
+    assert.equal(rewriteChapterRequest(new Request('https://example.org'+from+query)), 'https://example.org'+route.to+query);
+    for(const anchor of part.anchors){
+     const fragment='#'+encodeURIComponent(anchor);
+     assert.equal(compatibilityDestination('https://example.org'+from+query+fragment,aliasesForTarget(route.to)),route.to+query+fragment);
+    }
+   }
+   expected.sort((a,b)=>a.from<b.from?-1:a.from>b.from?1:0);
+   assert.deepEqual(document?.entries??[],expected,sourcePath+': incomplete anchor ledger');
+   if(document)assert.equal(document.sourceSha256,sha256(source));
+   assert.equal([...aliases.keys()].filter(from=>from.startsWith(base)).length,expected.length,sourcePath+': stale route');
+  }
+ }
+ assert.equal(documents,28);
+ assert.equal(retained,14);
 });

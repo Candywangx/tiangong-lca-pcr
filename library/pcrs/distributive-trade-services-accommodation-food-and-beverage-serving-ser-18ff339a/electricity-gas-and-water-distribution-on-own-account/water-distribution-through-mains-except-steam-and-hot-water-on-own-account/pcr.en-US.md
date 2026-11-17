@@ -1,8 +1,1103 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.electricity-gas-and-water-distribution-on-own-account.water-distribution-through-mains-except-steam-and-hot-water-on-own-account
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Water distribution through mains, except steam and hot water (on own account)
+# Own-account potable-water distribution through mains
+
+## 1. Scope and Applicability
+
+This PCR specifies a measured distribution service for already treated potable liquid water, from inlet to accepted customer handoff, using electric pumping or gravity and optional sodium hypochlorite boosting. It is a deliberately narrower route within CPC 69210; the retained PCR identity is unchanged. Use foreground operation, actual on-site work and specific delivered inputs only; supplier manufacture/transport and off-site receiver internals are background. One primary property/unit defines each flow; complete specified equipment is allowed.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.electricity-gas-and-water-distribution-on-own-account.water-distribution-through-mains-except-steam-and-hot-water-on-own-account |
+| classification_refs | CPC 3.0 69210; narrower |
+| covered_products | own-account potable-water mains distribution service on the declared electric/gravity route |
+| excluded_products | Raw-water abstraction and initial treatment; non-potable or thermal water; non-mains delivery; customer plumbing; standalone meter installation or independent meter-reading; intermediation; agricultural irrigation; other operating booster chemistries and operating on-site combustion routes |
+| representative_product | distribution of 1 m3 accepted potable water through the identified mains network |
+| production_route | Cover gravity or electrically pumped ambient-temperature potable-water mains, with no booster chemical or sodium hypochlorite solution only. Declare legal and contractual quality, pressure and temperature criteria without inventing generic limits. Other quality classes, operating booster chemistries or operating on-site combustion need a reviewed extension and are outside this route; their actual occurrence is a scope failure, never a zero. |
+| market_state | service at net accepted handoff; liquid water quality, temperature and pressure declared |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Own-account distribution service from treated-water inlet to accepted handoff |
+| How much | 1 m3 |
+| How well | Potable quality, pressure and temperature meet the declared legal/contract acceptance conditions at each counted handoff |
+| How long or cycle | One common complete reporting year; normalize by net accepted Q m3, preserving seasonal, unsuccessful and standby burdens |
+| reference_flow_link | `delivery_service` |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Own-account potable-water distribution through mains at accepted handoff |
+| Reference flow property | Volume `93a60a56-a3c8-22da-a746-0800200c9a66` |
+| Reference unit group | Units of volume `93a60a57-a3c8-12da-a746-0800200c9a66` |
+| Reference unit | m3 |
+| Required qualifiers | network and inlet; accepted handoff gates; potable quality class and criteria; actual liquid temperature and pressure; electric or gravity route; booster use and NaOCl fraction; reporting year and net Q; loss and return reconciliation; commodity pairing and foreground equipment supply/acceptance gates |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | applies_to | required_property | required_unit | rule |
+| --- | --- | --- | --- | --- |
+| m_reference | delivery_service; makeup_water | Volume | m3 | Use actual whole-liquid handoff volume for Q, not gas normal volume or pure-H2O equivalent volume; 1 L=0.001 m3. Preserve the declared handoff state/calibration and original acceptance basis for returned quantities. Source supply volumes use their own measured inlet lot state under c_source_supply. Mixing volumes need not add: c_water uses whole-stream mass and H2O-component mass for closure, never an assumed additive volume identity. |
+| m_normalize | all rows | Property as defined per card | per 1 m3 | Keep period totals in native kg, m3, kWh or h. Apply allocation once and divide by the same net accepted Q m3 once; reference output Q/Q=1 m3. No per-customer or per-inlet denominator. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | already treated potable water at distribution inlet; specific equipment/services enter at operator supply/acceptance gates; upstream water production/manufacture is not foreground |
+| starting_condition_role | foreground distribution service and actual site work, with source-matched operating-loss and capital-test water separately |
+| product_classification_scope | CPC 3.0 69210; narrower |
+| recursive_input_rule | Do not recursively expand same-category supplier processes. Disjoint segments retain identical quality/gates; an actual separately purchased specific segment service needs a defined measurement object/unit and inclusion gate with corresponding host-stage subtraction. Internal transfers create no second reference service. |
+| upstream_dataset_requirement | Later background links match only the recorded foreground electricity/product/specified equipment/service and waste-handover gates, without duplicating included supply transport, initial fill, site work or treatment. |
+| disclosure | reference qualifiers, Q/origins, stock/returns, operating versus capital events, equipment supply/waste handover gates, actual on-site occurrence, unknowns and excluded background stages |
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| b_gate | reference service | Begin at the calibrated inlet of already treated potable liquid water; end at the operator/customer acceptance meter. Include pumping, distribution storage, leak control, customer-meter maintenance and operational monitoring. Exclude raw-water abstraction, initial treatment, customer plumbing, meter installation sold separately, independent meter-reading services, intermediation, agricultural irrigation, steam, hot water and non-mains delivery. | `un_cpc` |
+| b_route | covered route | Cover gravity or electrically pumped ambient-temperature potable-water mains, with no booster chemical or sodium hypochlorite solution only. Declare legal and contractual quality, pressure and temperature criteria without inventing generic limits. Other quality classes, operating booster chemistries or operating on-site combustion need a reviewed extension and are outside this route; their actual occurrence is a scope failure, never a zero. | `epa_quality` |
+| b_commodity | makeup_water; capital_test_water; delivery_service | Output is distribution service per actual net accepted whole-liquid Q=G-R. This PCR fixes source-water burden attribution by tracked H2O-component mass, converted back to each independently supplied inlet lot volume under c_source_supply; that attributed source volume is not the mixed-liquid volume at its destination. Service inputs are operating Vop_s plus allocated capital-test f_a*Vcapital_a_s, once. Downstream commodity production uses only Vaccepted_s/Q times the matching independent source-water inventory; never full inlet production again. Embedded and reaction-generated water retain already_counted_supply_ref to the actually counted equipment/reagent and do not receive another water-production link. Keep their physical components in c_water/c_origin. Supplier-included preacceptance tests are not another foreground water purchase. Unknown origin, composition, reaction or stock/return quantity prevents complete pairing; it is neither zero nor automatically loss. | `epa_audit` |
+| b_unsuccessful | all network activity | Keep electricity, chemicals, maintenance, loss makeup and disposal burdens of failed delivery, rejection, rework, flushing and unauthorized consumption in the numerator. Only net accepted authorized deliveries meeting the declared criteria enter Q, including qualified unbilled authorized use and qualified resale. Unbilled use is not automatically leakage; meter/billing error is not an environmental release. Internal pumping, recirculation and storage transfers create neither a second reference service nor extra external water input. | `epa_audit` |
+| b_foreground | all rows | Foreground consists of identified network operation, actual operator-controlled field work, directly supplied equipment/services and on-site wastewater dechlorination only when it actually occurs within the declared operating boundary. Supplier extraction/manufacture, upstream transport, nested factory/vehicle/road/tool capital and off-site receiver treatment/EOL internals are background and absent from the inventory. This foreground selection is a modelling choice, not a source-mandated scientific approval. | |
+| b_assets | field_work | Preserve network asset responsibility through actual specified delivered pipe segments, pump sets, valves, tanks, meters, dosing units, photometers and operator maintenance vehicles, one primary property/unit per card, allocated once to this service. Keep replacements by actual function and original asset ledger, regardless of financial capital/expense label. Exclude supplier constituent manufacture and off-site EOL internals; do not replace equipment by a whole-network lifecycle service or exclude all capital implicitly. | `epa_quality`; `pipe_materials` |
+| b_measurement_object | all nonreference rows | One flow is one specified measurable product, equipment, service or characterized waste carrier with exactly one primary property and preferred unit. Complete multi-material equipment and formulated products are allowed when specification and supply gate are fixed; no material/element disassembly is required. Independent supplies, media or directions remain separate even when they share kg. Different actual configurations cannot be silently pooled as equivalent; instantiate distinguishable configuration rows or separate models. | |
+| b_waste | flush_sewer; flush_offsite; hypochlorite_container; field_work; onsite_dechlorination | Actual waste outputs end at signed foreground storage/dispatch and documented receiver handover, with generation/stock/cohort reconciliation; off-site treatment inputs, emissions and future paired receipts are not foreground. Only actual on-site treatment receives the paired internal flush carrier; cancel that internal link once and retain its actual resources/releases/waste. Gross waste carrier includes contents once, not another waste of each constituent. First environmental soil and freshwater interfaces are mutually exclusive by event; later migration is fate, not another network emission. | `epa_audit` |
+| b_onsite | onsite_dechlorination; field_work | Decide actual occurrence from operating/job/contract records. On-site chlorine-removal chemistry is distinct from the narrow NaOCl-only network booster route. Record each actually consumed specific reagent and actual post-treatment species; the listed conditional reagent cards are not assumed simultaneous inputs or default treatment recipes. Any different actual reagent or release needs a precisely specified row before completeness. Distribution pumping combustion stays excluded, but actual foreground maintenance-vehicle/tool combustion is included. | `epa_dechlorination` |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| mains_distribution | Potable-water mains distribution | required | required within b_gate and b_route | foreground | actual or once-attributed quantities for Q m3 service of same original responsibility cohort |
+| field_work | Foreground maintenance, inspection and sampling | required | actual operator-controlled work and directly procured equipment/services only | foreground | actual or once-attributed quantities for Q m3 service of same original responsibility cohort |
+| onsite_dechlorination | Actual foreground wastewater dechlorination | conditional | only when wastewater is treated within the declared foreground; off-site receiver internals excluded | foreground | actual or once-attributed quantities for Q m3 service of same original responsibility cohort |
+
+### Process: Potable-water mains distribution (`mains_distribution`)
+
+#### Inputs
+
+##### Product flows
+
+###### Treated potable water for distribution loss makeup (`makeup_water`)
+
+Independently supplied source-matched treated water attributed to operating nonaccepted fates, including loss, rejection/discard, unauthorized delivery and evidenced water reaction consumption. Vop_s is source-state supplied-water equivalent volume under c_source_supply, not gross destination mixture volume. Capital commissioning-test responsibility is separately in capital_test_water; preserve unallocated whole-mass and H2O QA.
+
+- Selected flow: Treated potable water for distribution loss makeup
+- Flow property / unit: Volume / m3
+- Amount rule: sum_s(Vop_s)/Q m3; Vop_s is independently supplied source-state volume derived from source H2O attribution; exclude capital-test and embedded/generated water. Not total inlet/Q or a fixed 1.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water`
+- Sources: `epa_audit`
+
+###### Alternating current (`electricity`)
+
+The official Net calorific value property is used here under the record's explicit electrical-energy convention, not fuel combustion heat; 1 kWh=3.6 MJ. Electricity at point of use; supply technology, voltage and provider are unspecified by the official identity and must be declared in the supplier dataset. Cover pumps, storage mixing, monitoring, boosting and failed operation once.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: sum_j(w_j*E_j)/Q kWh actual attributed grid import, less only same-purchase returns, never unrelated export; E_j excludes meters already in field_electricity/onsite_electricity, and w_j applies once.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy`
+- Sources:
+
+###### Sodium hypochlorite solution (`hypochlorite`)
+
+Conditional booster or post-repair disinfection chemical. No fixed dose or assumed composition; absent only with operating and procurement evidence.
+
+- Selected flow: Sodium hypochlorite solution
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*C_separate_j)/Q kg whole solution; C_separate_j is stock-reconciled independently supplied consumption by batch, excluding a second purchase of equipment-included initial fill. Total actual use/initial fill remains mass QA; active mass is not another purchase, w_j once.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_chemical`
+- Sources: `epa_quality`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Own-account potable-water distribution through mains at accepted handoff (`delivery_service`)
+
+Reference output for the declared network, quality class, acceptance gate and year; link this row from the functional unit.
+
+- Selected flow: Own-account potable-water distribution through mains at accepted handoff
+- Flow property / unit: Volume / m3
+- Amount rule: 1 m3
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water`
+- Sources:
+
+###### Potable liquid water delivered without authorization (`unauthorized_water`)
+
+Nonreference physical product transfer, excluded from accepted service Q. Its makeup and distribution burdens remain in the service without co-product credit; never classify it as soil or freshwater emission.
+
+- Selected flow: Potable liquid water delivered without authorization
+- Flow property / unit: Volume / m3
+- Amount rule: U/Q m3, where U is investigated actual unauthorized external consumption this period, excluding meter and billing errors.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water`
+- Sources: `epa_audit`
+
+##### Waste flows
+
+###### Chlorinated potable-water network wastewater transferred to sewer treatment (`flush_sewer`)
+
+Actual chlorinated network wastewater carrier at documented sewer receiver handover; not an elementary freshwater release. Off-site sewer treatment reagents, energy, assets and emissions are not foreground.
+
+- Selected flow: Chlorinated potable-water network wastewater transferred to sewer treatment
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*D_sewer_c_j)/Q m3 actual handed-over solution of this modelled original responsibility cohort c; generation/stock/destination volumes are separate QA. Pending stock is not handed-over volume, and historical-cohort dispatch is not charged to current Q.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+###### Empty HDPE sodium hypochlorite container with residual contents (`hypochlorite_container`)
+
+Actual whole HDPE waste container with residual contents handed over at the documented foreground receiver gate; residue is not another chemical waste. Distinguish reusable return from disposal; supplier-included manufacture/cleaning/transport is not duplicated and off-site treatment internals are background.
+
+- Selected flow: Empty HDPE sodium hypochlorite container with residual contents
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*D_container_c_j)/Q kg actual handed-over gross carrier of original cohort; generation Wc=dispatch+closing-opening is cohort QA only. Pending stock is not a handover and historical cohorts are not charged to current Q.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+###### Chlorinated potable-water wastewater entering foreground dechlorination (`flush_direct_transfer`)
+
+Actual internal wastewater transfer only when dechlorination is operated within the selected foreground. Pair onsite_flush_in by event/cohort; the common carrier cancels at model aggregation, but actual on-site reagents/electricity/final releases remain. Off-site direct-treatment transfer is a separate documented waste-handover configuration.
+
+- Selected flow: Chlorinated potable-water wastewater entering foreground dechlorination
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*Vd_j)/Q m3 attributed internal solution; both sides use identical event/weight and cancel, while raw Vd_j remains measured batch QA; no second weighting.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+###### Chlorinated potable-water wastewater handed to off-site dechlorination (`flush_offsite`)
+
+Actual non-sewer off-site receiver handover at a signed volume/quality gate; exclude internal onsite_flush_in and sewer transfer. Receiver reagents, equipment and releases are background and are not foreground flows.
+
+- Selected flow: Chlorinated potable-water wastewater handed to off-site dechlorination
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*D_offsite_c_j)/Q m3 actual original-cohort handed-over solution, disjoint from sewer/internal on-site transfers and leaks. Vo is stage destination QA; undispatched quantity remains stock.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+##### Elementary flows
+
+###### Water, liquid, to soil (`water_soil`)
+
+Actual H2O component reaching soil at the first environmental interface, rather than the gross leak solution. Keep Ls as solution-volume QA; independently measure water fraction/composition and same-state densities under the mandatory water-component calculation. Dissolved/suspended constituents reported in other species cards are excluded from this H2O quantity.
+
+- Selected flow: Water, liquid, to soil
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*M_H2O_j/rho_water_j)/Q m3 H2O; j includes only first-interface soil leak events. M_H2O_j=rho_solution_j*Ls_j*f_H2O_j kg, or measured solution_mass_j*f_H2O_j when gross mass is measured directly. If H2O component mass is directly measured, use it without another fraction. No assumed f_H2O=1.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water`
+- Sources:
+
+###### Water, liquid, to surface freshwater (`water_freshwater`)
+
+Actual H2O component of network leakage at its first surface-freshwater interface, excluding sewer/soil leakage, treatment outlets and nonwater constituents. Lf remains gross solution volume in the network QA balance, not this elementary H2O quantity. No downstream migration is counted again.
+
+- Selected flow: Water, liquid, to surface freshwater
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*M_H2O_j/rho_water_j)/Q m3 H2O; j includes only first-interface surface-freshwater network leaks. M_H2O_j=rho_solution_j*Lf_j*f_H2O_j kg, or measured solution_mass_j*f_H2O_j; directly measured H2O mass receives no additional fraction. Exclude all treatment outlets; no assumed pure-water fraction.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+###### Hypochlorous acid, to surface freshwater (`hocl_freshwater`)
+
+Conditional single-species hypochlorous acid release to surface freshwater. Apply `inv_chlorine_species` in section 8.
+
+- Selected flow: Hypochlorous acid, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum(w_j*Vj*c_free_j*0.001*f_HOCl_j*MW_HOCl/MW_Cl2)/Q kg; Vj includes only measured network leakage at its first surface-freshwater interface, excluding final treatment outlets; c_free_j is mg/L free available chlorine as Cl2; f is verified molar fraction among free-chlorine species and MW are evidence-backed molar masses.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+###### Hypochlorite ion, to surface freshwater (`ocl_freshwater`)
+
+Conditional single-species hypochlorite ion release to surface freshwater. Apply `inv_chlorine_species` in section 8.
+
+- Selected flow: Hypochlorite ion, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum(w_j*Vj*c_free_j*0.001*f_OCl_j*MW_OCl/MW_Cl2)/Q kg; Vj includes only measured network leakage at its first surface-freshwater interface, excluding final treatment outlets; c_free_j is mg/L free available chlorine as Cl2; f is verified molar fraction among free-chlorine species and MW are evidence-backed molar masses.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+###### Hypochlorous acid, to soil (`hocl_soil`)
+
+Conditional single-species hypochlorous acid release to soil. Apply `inv_chlorine_species` in section 8.
+
+- Selected flow: Hypochlorous acid, to soil
+- Flow property / unit: Mass / kg
+- Amount rule: sum(w_j*Vj*c_free_j*0.001*f_HOCl_j*MW_HOCl/MW_Cl2)/Q kg; Vj includes only measured liquid water entering soil; c_free_j is mg/L free available chlorine as Cl2; f is verified molar fraction among free-chlorine species and MW are evidence-backed molar masses.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water`
+- Sources:
+
+###### Hypochlorite ion, to soil (`ocl_soil`)
+
+Conditional single-species hypochlorite ion release to soil. Apply `inv_chlorine_species` in section 8.
+
+- Selected flow: Hypochlorite ion, to soil
+- Flow property / unit: Mass / kg
+- Amount rule: sum(w_j*Vj*c_free_j*0.001*f_OCl_j*MW_OCl/MW_Cl2)/Q kg; Vj includes only measured liquid water entering soil; c_free_j is mg/L free available chlorine as Cl2; f is verified molar fraction among free-chlorine species and MW are evidence-backed molar masses.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water`
+- Sources:
+
+### Process: Foreground maintenance, inspection and sampling (`field_work`)
+
+#### Inputs
+
+##### Product flows
+
+###### Mortar-lined ductile-iron potable-water pressure-main segment (`asset_iron_main`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare diameter, pressure class, lining/coating, joint type and delivered segment length; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Mortar-lined ductile-iron potable-water pressure-main segment
+- Flow property / unit: Length / m
+- Amount rule: sum_a(f_a*n_a_asset_iron_main)/Q m; n is actual supplied accepted length for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: `pipe_materials`
+
+###### HDPE potable-water pressure-main segment (`asset_pe_main`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare diameter, pressure class, resin grade and delivered segment length; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: HDPE potable-water pressure-main segment
+- Flow property / unit: Length / m
+- Amount rule: sum_a(f_a*n_a_asset_pe_main)/Q m; n is actual supplied accepted length for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Potable-water centrifugal pump set with electric motor (`asset_pump`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare manufacturer/model, rated flow/head, motor rating, wetted materials and included initial charge; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Potable-water centrifugal pump set with electric motor
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_pump)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Potable-water isolation valve (`asset_valve`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare model, nominal diameter, pressure class, body material and actuation; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Potable-water isolation valve
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_valve)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Potable-water storage tank (`asset_tank`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare model/serial or civil asset ID, usable volume, material, foundation inclusion and acceptance test; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Potable-water storage tank
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_tank)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Potable-water customer meter (`asset_meter`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare meter technology, diameter, rated flow, accuracy class and model; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Potable-water customer meter
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_meter)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Sodium-hypochlorite booster dosing unit (`asset_booster`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare model, metered capacity, chemical compatibility, delivered dry/charged state and included auxiliaries; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Sodium-hypochlorite booster dosing unit
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_booster)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### DPD free-chlorine photometer (`asset_photometer`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare model, optical method, measurement range, calibration and included accessories; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: DPD free-chlorine photometer
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_photometer)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Diesel-powered light network-maintenance van (`asset_van`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare model, payload, engine/emission configuration and operator use boundary; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Diesel-powered light network-maintenance van
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_van)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Portable wastewater-dechlorination dosing unit (`asset_dechlorinator`)
+
+Specific complete supplied foreground asset, accepted at the operator's delivery/installation gate. Declare model, reagent compatibility, metered capacity and included pumps/tank/controls; each actually different configuration needs its own distinguishable exchange, never an unspecified equipment basket. Apply `inv_asset_background` in section 8.
+
+- Selected flow: Portable wastewater-dechlorination dosing unit
+- Flow property / unit: Number of items / item
+- Amount rule: sum_a(f_a*n_a_asset_dechlorinator)/Q item; n is actual supplied accepted count for the same specified configuration and original asset key. Use the fixed foreground-asset allocation once; no standard weight, life or duplicate replacement charge.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+###### Diesel fuel (`field_diesel`)
+
+Actual diesel consumed by foreground maintenance vehicles/tools, including empty travel, failed work and idling; supplier fuel production/transport is background. Distribution pumping remains electric/gravity under b_route.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*F_j)/Q kg; F_j is event opening+receipts-closing-returns/transfers reconciled to actual task fuel meters; convert volume by batch density at temperature only when needed.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Mineral lubricating oil (`field_oil`)
+
+Actual foreground oil top-up/change supply for pumps or operator vehicles; initial fill included in delivered equipment is an internal stock memorandum rather than another purchase.
+
+- Selected flow: Mineral lubricating oil
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*C_oil_j)/Q kg actual consumed supplied oil, stock-reconciled by formulation and task; retain removed oil in its own waste carrier.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### DPD free-chlorine test reagent tablet, specified formulation (`field_dpd`)
+
+One actual purchased formulated test product at operator receipt, including its buffers/fillers once. Declare tablet formulation, lot, mass and compatible method; do not input its constituents again.
+
+- Selected flow: DPD free-chlorine test reagent tablet, specified formulation
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*C_dpd_j)/Q kg consumed whole tablets, from counted tablets times lot-verified mean tablet mass or direct weighing, with stock reconciliation.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### DPD free-chlorine analysis of one potable-water sample (`sample_analysis`)
+
+One accepted external laboratory service at sample dispatch/report receipt gates; the specified method, analyte, sample ID, acceptance criteria and one completed report define the counted service. Laboratory manufacture, transport and energy internals are background. Do not also charge on-site supplies for the same analysis job.
+
+- Selected flow: DPD free-chlorine analysis of one potable-water sample
+- Flow property / unit: Number of items / item
+- Amount rule: sum_j(w_j*N_report_j)/Q item; N_report_j counts actual completed method-and-delivered-report services, including completed reports with nonconforming water results. Repeat/aborted work follows the service-attempt quality requirement, never an invented item for no-report attempts or assumed zero burden.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Alternating current (`field_electricity`)
+
+Purchased point-of-use electricity at dedicated foreground meters; allocate any shared meter once and exclude the same kWh from the mains operating card. Subtract only proved same-purchase returns, never unrelated exports.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: sum_j(w_j*E_stage_j)/Q kWh of attributed external grid import; 1 kWh=3.6 MJ only if converting energy, never an additional exchange.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Excavation and backfilling of a potable-water-main trench (`trench_work`)
+
+Actually procured specific site-work service at surveyed trench-volume and signed completion gates; declare geometry, soil class, backfill specification and included machine/fuel/material/haul scope. Excludes pipe supply and road surfacing. Do not also input contractor-included fuel/backfill or machinery manufacture. Owner-performed work instead requires its actual specific inputs, not a fictitious purchased service.
+
+- Selected flow: Excavation and backfilling of a potable-water-main trench
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*V_trench_j)/Q m3 of accepted specified completed trench work; measured survey volumes and job IDs, not number of pipes or arbitrary hours.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Asphalt-road surface reinstatement above a water-main trench (`road_reinstatement`)
+
+Actually procured surface-restoration service at measured accepted area, with specified layer thickness/formulation, compaction and contract inclusions. Excludes trench excavation and pipe supply. This is current local work, not road lifetime manufacture or traffic supporting-capital allocation.
+
+- Selected flow: Asphalt-road surface reinstatement above a water-main trench
+- Flow property / unit: Area / m2
+- Amount rule: sum_j(w_j*A_restored_j)/Q m2 accepted restored surface with signed geometry/thickness and job ledger; exclude areas covered by another included service.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Treated potable water for foreground asset commissioning tests (`capital_test_water`)
+
+Actual post-acceptance operator-supplied water for a specific installation/commissioning capital event, with source and original asset key. Supplier-provided pre-acceptance tests already included in the delivered asset are background and not another input. Vcapital_a_s is source-state supplied-water equivalent volume assigned to this event under c_source_supply, excluding recovered stock and embedded/generated water; keep its actual gross event volume and unallocated whole-mass/H2O QA separately.
+
+- Selected flow: Treated potable water for foreground asset commissioning tests
+- Flow property / unit: Volume / m3
+- Amount rule: sum_a,s(f_a*Vcapital_a_s)/Q m3 supplied test water, source-matched once; Vcapital is excluded from Vop and not multiplied by asset fraction again.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources:
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+##### Waste flows
+
+###### Used mineral lubricating oil (`field_used_oil`)
+
+Actual generated whole oil carrier, with contamination and measured waste stock; end at signed licensed receiver handover, not hypothetical treatment.
+
+- Selected flow: Used mineral lubricating oil
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*D_c_j)/Q kg actually handed-over gross carrier of this modelled original responsibility cohort. Generation/opening/closing/internal handling are QA; pending stock is not handover and old-cohort dispatch is not charged to current Q.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### DPD chlorine-test wastewater (`field_test_waste`)
+
+Actual collected test-liquid carrier including water/reagents once; closed container and signed off-site receiver gate. On-site neutralization or release requires actual additional named inputs/species, not an assumed zero.
+
+- Selected flow: DPD chlorine-test wastewater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*D_c_j)/Q kg actually handed-over gross carrier of this modelled original responsibility cohort. Generation/opening/closing/internal handling are QA; pending stock is not handover and old-cohort dispatch is not charged to current Q.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Removed mortar-lined ductile-iron pipe segment (`field_pipe_scrap`)
+
+One characterized actual removed pipe carrier including retained lining/coating; weigh at foreground storage/receiver handover. Do not separately waste its contained mortar/iron again. Other observed removed asset identities need specific additional carrier cards.
+
+- Selected flow: Removed mortar-lined ductile-iron pipe segment
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*D_c_j)/Q kg actually handed-over gross carrier of this modelled original responsibility cohort. Generation/opening/closing/internal handling are QA; pending stock is not handover and old-cohort dispatch is not charged to current Q.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+##### Elementary flows
+
+###### Carbon dioxide, fossil, to air (`field_co2_fossil_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Carbon monoxide, to air (`field_co_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Carbon monoxide, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Methane, to air (`field_ch4_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Methane, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Dinitrogen monoxide, to air (`field_n2o_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Dinitrogen monoxide, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Nitrogen monoxide, to air (`field_no_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Nitrogen monoxide, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Nitrogen dioxide, to air (`field_no2_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Nitrogen dioxide, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Sulfur dioxide, to air (`field_so2_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Sulfur dioxide, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Particulate matter below 2.5 um, to air (`field_pm25_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Particulate matter below 2.5 um, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+###### Particulate matter 2.5 to 10 um, to air (`field_pm_coarse_air`)
+
+NO and NO2 are separate; PM fractions do not overlap. Supplier fuel/manufacturing emissions are excluded. Apply `inv_engine_emissions` in section 8.
+
+- Selected flow: Particulate matter 2.5 to 10 um, to air
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*e_species_j)/Q kg; use measured event release OR actual fuel activity times evidenced native-basis species factor, not both; no repeated composition/oxidation multiplier or assumed missing-data zero.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_field`
+- Sources:
+
+### Process: Actual foreground wastewater dechlorination (`onsite_dechlorination`)
+
+#### Inputs
+
+##### Product flows
+
+###### Alternating current (`onsite_electricity`)
+
+Purchased point-of-use electricity at dedicated foreground meters; allocate any shared meter once and exclude the same kWh from the mains operating card. Subtract only proved same-purchase returns, never unrelated exports.
+
+- Selected flow: Alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: sum_j(w_j*E_stage_j)/Q kWh of attributed external grid import; 1 kWh=3.6 MJ only if converting energy, never an additional exchange.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Sodium bisulfite solution (`onsite_bisulfite`)
+
+Actual foreground reducing reagent, specified lot composition/concentration and whole supplied solution mass; not salt plus solution twice.
+
+- Selected flow: Sodium bisulfite solution
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*C_reagent_j)/Q kg actual independently supplied consumed product, excluding equipment-included initial reagent; opening+receipts-closing-returns/transfers reconciled to batch dosing/adsorbent replacement; no default dose, efficiency or concentration.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources: `epa_dechlorination`
+
+###### Sodium thiosulfate pentahydrate (`onsite_thiosulfate`)
+
+Actual specified hydrate used to treat the whole measured wastewater batch; neutralizing only a laboratory sample is not proof of full-stream treatment.
+
+- Selected flow: Sodium thiosulfate pentahydrate
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*C_reagent_j)/Q kg actual independently supplied consumed product, excluding equipment-included initial reagent; opening+receipts-closing-returns/transfers reconciled to batch dosing/adsorbent replacement; no default dose, efficiency or concentration.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources: `epa_dechlorination`
+
+###### Activated carbon (`onsite_carbon`)
+
+Actual carbon adsorbent input only where a documented on-site carbon-treatment step occurs; record grade, lot and purchased mass.
+
+- Selected flow: Activated carbon
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*C_reagent_j)/Q kg actual independently supplied consumed product, excluding equipment-included initial reagent; opening+receipts-closing-returns/transfers reconciled to batch dosing/adsorbent replacement; no default dose, efficiency or concentration.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources: `epa_dechlorination`
+
+##### Waste flows
+
+###### Chlorinated potable-water wastewater entering foreground dechlorination (`onsite_flush_in`)
+
+Internal inlet matching flush_direct_transfer by event/cohort; no second purchased water product, no off-site receiver flow and no inferred quantity from final effluent.
+
+- Selected flow: Chlorinated potable-water wastewater entering foreground dechlorination
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*Vd_j)/Q m3 attributed internal solution; both sides use identical event/weight and cancel, while raw Vd_j remains measured batch QA; no second weighting.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources:
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+##### Waste flows
+
+###### Spent activated carbon (`onsite_spent_carbon`)
+
+Actual spent adsorbent carrier including retained contaminants/moisture once, measured at foreground storage and signed off-site handover. Receiver regeneration/incineration/landfill is background; no paired future receiving inlet.
+
+- Selected flow: Spent activated carbon
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*D_c_j)/Q kg actually handed-over gross carrier of this modelled original responsibility cohort. Generation/opening/closing/internal handling are QA; pending stock is not handover and old-cohort dispatch is not charged to current Q.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+##### Elementary flows
+
+###### Chloride ion, to surface freshwater (`onsite_chloride_freshwater`)
+
+Other observed species need precise row extension. Apply `inv_treated_species` in section 8.
+
+- Selected flow: Chloride ion, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*Vout_j*c_species_j*0.001)/Q kg; c is mg/L actual ion, not elemental N/P/S/Cl-equivalent; convert reporting basis once with evidence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Sulfate ion, to surface freshwater (`onsite_sulfate_freshwater`)
+
+Other observed species need precise row extension. Apply `inv_treated_species` in section 8.
+
+- Selected flow: Sulfate ion, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*Vout_j*c_species_j*0.001)/Q kg; c is mg/L actual ion, not elemental N/P/S/Cl-equivalent; convert reporting basis once with evidence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Sulfite ion, to surface freshwater (`onsite_sulfite_freshwater`)
+
+Other observed species need precise row extension. Apply `inv_treated_species` in section 8.
+
+- Selected flow: Sulfite ion, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*Vout_j*c_species_j*0.001)/Q kg; c is mg/L actual ion, not elemental N/P/S/Cl-equivalent; convert reporting basis once with evidence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Sodium ion, to surface freshwater (`onsite_sodium_freshwater`)
+
+Other observed species need precise row extension. Apply `inv_treated_species` in section 8.
+
+- Selected flow: Sodium ion, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*Vout_j*c_species_j*0.001)/Q kg; c is mg/L actual ion, not elemental N/P/S/Cl-equivalent; convert reporting basis once with evidence.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Water, liquid, to surface freshwater (`treatment_water_freshwater`)
+
+Actual H2O component of on-site final effluent only, excluding solute/suspended species and network leaks. Vout is gross solution QA; apply the water-component conservation method with no default fraction/density.
+
+- Selected flow: Water, liquid, to surface freshwater
+- Flow property / unit: Volume / m3
+- Amount rule: sum_j(w_j*M_H2O_j/rho_water_j)/Q m3 H2O; M_H2O_j=rho_solution_j*Vout_j*f_H2O_j or directly measured solution_mass_j*f_H2O_j kg. Direct measured H2O mass receives no repeat fraction; only actual on-site final-outlet events enter j.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Hypochlorous acid, to surface freshwater (`treatment_hocl_freshwater`)
+
+Actual residual free-chlorine species in final on-site effluent; validated matrix-specific speciation, actual receiving medium and post-treatment sample are mandatory. Cl2-equivalent remains QA, not molecular Cl2 release.
+
+- Selected flow: Hypochlorous acid, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*Vout_j*c_free_j*0.001*f_HOCl_j*MW_HOCl/MW_Cl2)/Q kg actual species; no second dose/removal/destination share.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+###### Hypochlorite ion, to surface freshwater (`treatment_ocl_freshwater`)
+
+Actual residual free-chlorine species in final on-site effluent; validated matrix-specific speciation, actual receiving medium and post-treatment sample are mandatory. Cl2-equivalent remains QA, not molecular Cl2 release.
+
+- Selected flow: Hypochlorite ion, to surface freshwater
+- Flow property / unit: Mass / kg
+- Amount rule: sum_j(w_j*Vout_j*c_free_j*0.001*f_OCl_j*MW_OCl/MW_Cl2)/Q kg actual species; no second dose/removal/destination share.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 m3 reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_onsite`
+- Sources:
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| a_direct | all rows | Directly assign dedicated operating inputs; shared pump electricity uses measured pumping-energy demand. Foreground work/capital follow fixed c_field, c_assets and c_event_weights methods. Original cohorts/all beneficiaries reconcile; attribute and normalize once, without revenue/customer/arbitrary-equal substitutes for available physical causal data. | `epa_audit` |
+| a_losses | makeup_water; capital_test_water; delivery_service; all rows | All included accepted handoffs share the same quality class and gate. Attribute pre-handoff loss and failed activity to that network service; no successful output is assigned to losses. Separate different quality classes or service gates into metered models; do not call them equivalent co-products. No co-product or economic allocation credit for stolen water, stock, discarded water or returned reagent packaging. | `epa_audit` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_water | mains_distribution | inlet, reference and losses | meter; stock; quality; cohort ledger | G; R; Q; source_ID; inlet_lot_ID; independent_or_embedded_or_generated; supply_state; rho_s; f_H2O_s; k_s; M0; Min; M1; Mout; residual_M; W0; Win; W1; Wout; Wgenerated; Wconsumed; residual_W; W0_s; Win_s; Wreturn_s; Wgenerated_s; W1_s; Wgross_s; Wfate_s; Wconsumed_s; residual_s; Waccepted_s; Wop_s; Wcapital_a_s; Vaccepted_s; Vop_s; Vcapital_a_s; Q_share_s; reaction_event_ID; measured_reaction_extent; reactant_product_analysis; reaction_model_validation; precursor_supply_ref; source_event_fate_code; already_counted_supply_ref; stock_origin; time_step; mixing_evidence; original_acceptance_ID; return_time; original_service_cohort; original_asset_key; capital_or_recurring; f_a; w_j; causal_job_share; I_network_s; I_test_s; Win_embedded_s; temperature; pressure; meter_ID; calibration_correction; quality_acceptance; sample_time; sample_state; solution_mass; rho_solution; f_H2O; rho_water; H2O_component_mass; H2O_measurement_method; composition_closure; dissolved_constituent_masses; suspended_constituent_masses; volatile_constituent_masses; density_reference; H2O_uncertainty; Ls; Lf; U; unauthorized_volume; flush_volume; first_environment_interface; event_ID; csj; c_free_j; f_HOCl_j; f_OCl_j; pH_j; T_j; speciation_method; parameters; MW_HOCl; MW_OCl; MW_Cl2; soil_sampling_time; actual_dispatch_D_c_j; Q_c; supplier_preaccept_inclusion; asset_personnel_hours; all_beneficiary_workorder_personnel_hours; F_prev_all; u_current; U_remaining_all | Read calibrated inlet-lot and acceptance meters at synchronized time steps and measure each physical pool stock by level/geometry plus same-state density. At every supply lot/composition change and representative synchronized stock/withdrawal interval, sample source and pool liquid; measure whole mass or rho*volume and H2O fraction/component mass using c_h2o. Preserve source state, sample representativeness, method detection/uncertainty, complete constituent closure and traceable density evidence; never substitute pure-water density for source product rho_s. Reconcile c_water whole-mass and H2O ledgers monthly and each event. Record actual occurrence/absence/unknown of reactions from operations and complete reactant/product evidence; quantify only evidenced generation/consumption, with validated reaction extent/model, uncertainty and distinct precursor source tags. Missing reaction evidence leaves a gap, not a balancing term. Trace actual losses, capital tests, returns and acceptance to source/cohort IDs under c_origin; validate pool mixing before time-step source fractions, retain signed return corrections and current physical stock separately. Apply c_source_supply to independent-source volume attribution, with supplier-state inventory matching and no embedded/generated repurchase. Record potable acceptance tests and sample actual first-interface chlorine/species at the relevant leak/final outlet before environmental reaction. Keep original asset/event weights and signed receiver quantities; apply c_event_weights once, excluding supplier-included preacceptance resources. Unallocated mass/component balances and actual gross volumes remain QA, never a second water purchase. Unknown source, state, composition, density, reaction or mixing prevents completeness. |m3; degC; kPa; applicable quality units; kg solution; kg H2O/kg solution; kg/m3 same-state density; kg H2O | Continuous meters; each supply lot/composition change, reaction/return/loss/test event; representative synchronized stock/withdrawal samples; monthly reconciliation | one common reporting year including all seasons; start/end stock instants | All actual network and temporary site pools within the foreground, inlet lots to acceptance or other exit; include actual onsite treatment pools, cancel internal links | per 1 m3 reference flow | Calibrated meters/scales/density methods; matrix-valid H2O assay and complete composition; source-lot and stock records; reaction occurrence/extent/model evidence; original acceptance and signed return/receiver records; hydraulic/tracer mixing validation and uncertainty |
+| cp_energy | mains_distribution | electricity | submeter and supplier bill |grid_import,same_purchase_returns,kWh,meter_ID,pump_run,shared_driver,supply_voltage,mix,provider,failed_runs,event_ID,original_asset_key,original_service_cohort,capital_or_recurring,causal_job_share,f_a,w_j,Vop_s,Vcapital_a_s,actual_dispatch_D_c_j,Q_c,supplier_preaccept_inclusion,Wfate_embedded_s,embedded_supply_ID,embedded_water_origin,embedded_acceptance_share,already_counted_supply_ref,I_network_s,I_test_s,Win_embedded_s,Vaccepted_s,Waccepted_embedded_s,independent_or_embedded,asset_personnel_hours,all_beneficiary_workorder_personnel_hours,F_prev_all,u_current,U_remaining_all |Read operating boundary/equipment meters and reconcile bills; subtract only verified same-purchase returns, never unrelated exports. Allocate shared use under a_direct; sum attributed E then E/Q, convert kWh/MJ by 3.6 once only. Operating onsite combustion remains excluded under b_route Also collect original asset/service cohort, one-time-capital versus recurring classification and actual handover. Under c_event_weights attribute post-acceptance capital-event resources/water/reagents/releases once to the original asset share. Raw annual balance/pending stock is QA; no old-cohort burden on current Q, no supplier-included pre-acceptance resources and no second weighting of attributed quantities. | kWh; MJ if converted | continuous meter; monthly bill and reconciliation | same full reporting year as Q | covered distribution pumps, storage mixing, monitoring and booster systems; operating stage only | per 1 m3 reference flow | meter calibration; supplier invoices; equipment and allocation reconciliation |
+| cp_chemical | mains_distribution | hypochlorite | reagent inventory and dosing records |opening,receipts,closing,returns,transfer,solution_mass,NaOCl_fraction,density,temperature,container_mass,package_life,dose_event,event_ID,original_asset_key,original_service_cohort,capital_or_recurring,causal_job_share,f_a,w_j,Vop_s,Vcapital_a_s,actual_dispatch_D_c_j,Q_c,supplier_preaccept_inclusion,Wfate_embedded_s,embedded_supply_ID,embedded_water_origin,embedded_acceptance_share,already_counted_supply_ref,I_network_s,I_test_s,Win_embedded_s,Vaccepted_s,Waccepted_embedded_s,independent_or_embedded,asset_personnel_hours,all_beneficiary_workorder_personnel_hours,F_prev_all,u_current,U_remaining_all |Weigh deliveries and stocks or convert measured volume using lot-specific density at temperature; link batch certificates to dosing and post-repair use. c_chemical; reconcile consumed solution C and containers without double counting active mass Also collect original asset/service cohort, one-time-capital versus recurring classification and actual handover. Under c_event_weights attribute post-acceptance capital-event resources/water/reagents/releases once to the original asset share. Raw annual balance/pending stock is QA; no old-cohort burden on current Q, no supplier-included pre-acceptance resources and no second weighting of attributed quantities. | kg solution; kg/kg active; kg/m3 | every delivery, dosing event and stocktake; monthly reconciliation | same year as Q; opening and closing stocks | booster and post-repair disinfection within this network; direct-discharge treatment separate | per 1 m3 reference flow | scale calibration; safety sheet; lot assays; invoices; stock reconciliation; packaging supplier boundary |
+| cp_assets | field_work | specified delivered capital inputs | acceptance and original asset allocation ledger | original_asset_key,model,serial,configuration,count,segment_length,diameter,pressure_class,included_components,initial_fill,delivery_gate,acceptance_date,capacity,service_capacity_hours,all_user_whole_life_capacity_hours,engine_duty_hours,instrument_engaged_hours,past_charges,remaining_fraction,life_revision,replacement_key,calibration,event_ID,original_service_cohort,capital_or_recurring,causal_job_share,f_a,w_j,Vop_s,Vcapital_a_s,actual_dispatch_D_c_j,Q_c,supplier_preaccept_inclusion,Wfate_embedded_s,embedded_supply_ID,embedded_water_origin,embedded_acceptance_share,already_counted_supply_ref,I_network_s,I_test_s,Win_embedded_s,Vaccepted_s,Waccepted_embedded_s,independent_or_embedded,asset_personnel_hours,all_beneficiary_workorder_personnel_hours,F_prev_all,u_current,U_remaining_all ; source-specific B/version and original N fields in cp_capital_amendment | Count accepted complete specified equipment and survey accepted configuration-specific pipe length at operator gate; retain drawings/invoices/acceptance and actual inclusions. Determine available capacity/use and evidenced expected whole-life driver from asset plans and service records; apply c_assets once with all beneficiaries/periods. Keep initial fill as included equipment stock and do not repurchase it. No supplier component/BOM, factory, transport or EOL expansion Also collect original asset/service cohort, one-time-capital versus recurring classification and actual handover. Under c_event_weights attribute post-acceptance capital-event resources/water/reagents/releases once to the original asset share. Raw annual balance/pending stock is QA; no old-cohort burden on current Q, no supplier-included pre-acceptance resources and no second weighting of attributed quantities.  For capital-test water, collect source-lot rho_s, f_H2O_s and H2O event fates with cp_water and calculate source-state Vcapital_a_s under c_source_supply; gross mixed test volume is not the supply amount. Complete cp_capital_amendment reconciliation for final settlement and source/denominator revisions. | item; m preferred exchange units; h and capacity*h raw drivers | each delivery/replacement/retirement/change; annual original-ledger reconciliation | original asset life ledger and same Q-year service share | only directly supplied operator foreground equipment/segments, not supplier supporting assets | per 1 m3 reference flow | acceptance records; configuration/dimensions; life/use evidence; calibration; all-beneficiary fractions and remaining balance |
+| cp_capital_amendment | field_work | original-asset sources and their one-time capital-event components; excludes recurring operating components | versioned_original_source_and_cohort_ledger | asset_ID; source_ID and original row_ID/native unit; original acceptance/event gate; full measured source quantity and old/new versions; measurement/calibration/state basis; each original beneficiary-period/driver unit/u_actual; period b where applicable; all past/future beneficiaries; F_prev_all and remaining_driver; accepted g/F_booked; raw booked B; old normalized result/original N and corrected N; background model versions/scope; actual final retirement evidence; A_new/delta_A/replacement/deduplication links | Collect original records at asset/supplier acceptance, actual site events and receiver handover gates as applicable; verify full quantities through the existing cp_assets weighing/configuration-count/length/driver measurement and calibration methods. At every source/life/model/denominator revision and final retirement, compare old/new records for every original cohort and apply capital_source_amendment. Reconcile all-beneficiary fractions, source totals and each amendment link; the service data custodian reviews and signs the reconciliation. Prove nonoccurrence by complete event registers/zero-activity evidence, never absence-as-zero; retain unresolved identities, measurement uncertainty and incomplete causes. | source-native units; fixed driver units; original reference units | each acceptance/event/revision/final retirement; annual reconciliation | complete original asset history and original service cohorts; evidenced remaining life | existing foreground gates and capital-source responsibility only | once per original reference flow | raw measurement/calibration; signed acceptance/event/receiver records; source/model versions; all-beneficiary and revision reconciliation ledger |
+| cp_field | field_work | actual maintenance, sampling, work services, fuels and releases | job, purchase, meter, sample, contract and waste ledger |job_ID,owner_or_contract,service_gate,included_materials,included_fuel,accepted_work_volume,accepted_surface_area,layer_thickness,tablets,tablet_mass,lot,formulation,opening,receipts,closing,returns,transfers,oil_mass,fuel_mass,fuel_volume,density,temperature,meter_ID,engine_ID,task_hours,payload_mass,distance,empty,idling,failed,shared_driver,all_user_driver,sample_ID,analysis_route,accepted_report,species,medium,native_factor,factor_unit,control,carbon_origin,waste_generation,waste_stock,dispatch,receiver,event_ID,original_asset_key,original_service_cohort,capital_or_recurring,causal_job_share,f_a,w_j,Vop_s,Vcapital_a_s,actual_dispatch_D_c_j,Q_c,supplier_preaccept_inclusion,Wfate_embedded_s,embedded_supply_ID,embedded_water_origin,embedded_acceptance_share,already_counted_supply_ref,I_network_s,I_test_s,Win_embedded_s,Vaccepted_s,Waccepted_embedded_s,independent_or_embedded,asset_personnel_hours,all_beneficiary_workorder_personnel_hours,F_prev_all,u_current,U_remaining_all,completed_report,method_completed,sample_result_conformity,repeat_report_ID,abort_attempt_ID,attempt_duration_h,supplier_per_report_rework_inclusion,supplier_work_unit_rework_inclusion,uncovered_actual_resources |Meter actual stage electricity and diesel; weigh supplies/wastes or convert lot-specific raw units with evidence. Log dedicated/shared job use, loaded/empty/failed travel, site-work geometry and signed acceptance. Reconcile outsourced contract inclusions so the same job fuel/material/service is counted once. Each sample-analysis job is on-site reagent use OR accepted external analysis service; distinguish genuinely additional QA analyses. Measure actual individual releases or use source-specific native-unit factors and evidence under c_field_emissions. Reconcile original-cohort waste generation/stocks to signed handover; no receiver internals Also collect original asset/service cohort, one-time-capital versus recurring classification and actual handover. Under c_event_weights attribute post-acceptance capital-event resources/water/reagents/releases once to the original asset share. Raw annual balance/pending stock is QA; no old-cohort burden on current Q, no supplier-included pre-acceptance resources and no second weighting of attributed quantities. Under q_service_attempt verify completed reports, sample results, independently delivered repeats and per-report rework inclusions; no-report aborts cannot use item as a substitute for hours. Record actual attempt duration/supplier coverage evidence; uncovered attempts require defined additional service or actual foreground inputs before complete use. Work rework reconciles actual resources/unit coverage without invented accepted geometry. | kWh; kg preferred fuel/reagent/waste; m3 trench work; m2 surface service; item analysis; native factor units | every job/purchase/sample/dispatch; continuous meters; monthly stock and attribution reconciliation | same complete Q reporting year; original cohort for stored waste | actual operator-controlled field tasks and specifically procured services at declared gates; supplier activity excluded | per 1 m3 reference flow | calibrated scales/meters; lot/SDS; signed job and service acceptance; sample reports; engine/factor provenance; receiver manifests and stock closure |
+| cp_waste | mains_distribution | flush_sewer; flush_offsite; flush_direct_transfer; hypochlorite_container; water_freshwater; hocl_freshwater; ocl_freshwater | foreground exit and original-cohort waste ledger | event_ID,origin_year,Vs,Vo,Vd,Lf,Vj,c_free_j,f_HOCl_j,f_OCl_j,pH_j,T_j,speciation_method,MW_HOCl,MW_OCl,MW_Cl2,kg_carrier,residue_fraction,opening_waste,closing_waste,dispatch,receiver_gate,onsite_or_offsite,first_environment_interface,solution_mass,rho_solution,f_H2O,rho_water,H2O_component_mass,H2O_measurement_method,composition_closure,dissolved_constituent_masses,suspended_constituent_masses,volatile_constituent_masses,sample_state,density_reference,H2O_uncertainty,original_asset_key,original_service_cohort,capital_or_recurring,causal_job_share,f_a,w_j,Vop_s,Vcapital_a_s,actual_dispatch_D_c_j,Q_c,supplier_preaccept_inclusion,Wfate_embedded_s,embedded_supply_ID,embedded_water_origin,embedded_acceptance_share,already_counted_supply_ref,I_network_s,I_test_s,Win_embedded_s,Vaccepted_s,Waccepted_embedded_s,independent_or_embedded,asset_personnel_hours,all_beneficiary_workorder_personnel_hours,F_prev_all,u_current,U_remaining_all; custody_lot_id; custody_pool_id; O; G; T_in; C; H; T_out; L; epsilon; movement_endpoints; loss_event_ID; loss_time_location; loss_evidence_method; first_medium; release_row_id; propagated_uncertainty | Meter exclusive wastewater destinations at actual foreground handover; weigh whole residual-containing containers and reconcile original-cohort generation/stock/dispatch. On-site transfer alone is internally paired, while off-site transfer ends this foreground record without assumed treatment. For actual network environmental release, sample actual interface water composition/speciation and same-state densities under c_h2o/c_speciation. Handover carrier content is not another waste. Record returned reusable containers separately from actual waste generation Also collect original asset/service cohort, one-time-capital versus recurring classification and actual handover. Under c_event_weights attribute post-acceptance capital-event resources/water/reagents/releases once to the original asset share. Raw annual balance/pending stock is QA; no old-cohort burden on current Q, no supplier-included pre-acceptance resources and no second weighting of attributed quantities. For custody_mass_balance and custody_loss_link, retain calibrated event/stock measurements, matched composition/density and original lot; investigate each loss or residual at the actual location, link its release row and paired movements, and reconcile monthly and at interval end. Record absence only with dated inspection/measurement coverage; unknown is not zero. | m3 gross waste solution; kg gross container; mg/L as Cl2; kg actual species; kg H2O; kg/m3 density | every flushing/leak/container/handover event; monthly stock reconciliation; each loss event and stock movement | Q-year generated waste, retaining original cohort when stored/dispatched later | network exits to signed sewer/off-site receiver gate or actual first environmental interface; on-site treatment separate | per 1 m3 reference flow | calibrated meters/scales; receiver acceptance; waste stock and generation audit; representative accredited water/species methods; matrix-valid water fraction and density evidence |
+| cp_onsite | onsite_dechlorination | all actual on-site treatment rows | batch, meter, reagent stock, final sample and residue ledger |batch_ID,event_ID,origin_cohort,onsite_boundary,Vd,Vout,opening_stock,closing_stock,retained_water,solids,reagent_ID,formulation,lot,concentration,opening,receipts,closing,returns,dose,adsorbent_mass,kWh,meter_ID,same_purchase_returns,post_treatment_sample,species,c_species,c_free,pH,T,f_HOCl,f_OCl,MW_HOCl,MW_OCl,MW_Cl2,speciation_method,solution_mass,rho_solution,f_H2O,rho_water,H2O_component_mass,H2O_measurement_method,composition_closure,dissolved_constituent_masses,suspended_constituent_masses,volatile_constituent_masses,sample_state,density_reference,H2O_uncertainty,residue_mass,receiver_gate,uncertainty,original_asset_key,original_service_cohort,capital_or_recurring,causal_job_share,f_a,w_j,Vop_s,Vcapital_a_s,actual_dispatch_D_c_j,Q_c,supplier_preaccept_inclusion,Wfate_embedded_s,embedded_supply_ID,embedded_water_origin,embedded_acceptance_share,already_counted_supply_ref,I_network_s,I_test_s,Win_embedded_s,Vaccepted_s,Waccepted_embedded_s,independent_or_embedded,asset_personnel_hours,all_beneficiary_workorder_personnel_hours,F_prev_all,u_current,U_remaining_all |Confirm real on-site operation from logs/contract and defined batch boundary. Meter inlet/outlet/electricity, weigh or stock-reconcile actual reagent formulations, and log exact dose without importing a recipe. Sample after actual treatment at first environmental boundary; apply c_h2o and c_speciation and record measured actual ions on species basis. Close water and relevant mass/element/species balances with uncertainty. Weigh actual residue and end at documented foreground handover. Exclude all off-site receiver/subsequent-treatment internals Also collect original asset/service cohort, one-time-capital versus recurring classification and actual handover. Under c_event_weights attribute post-acceptance capital-event resources/water/reagents/releases once to the original asset share. Raw annual balance/pending stock is QA; no old-cohort burden on current Q, no supplier-included pre-acceptance resources and no second weighting of attributed quantities. | m3 gross solution QA; kWh electricity; kg whole reagent/carrier; kg actual H2O/species; kg/m3 density; mg/L actual species or declared analytical equivalent | every real batch and dose; continuous flow/power meters; representative post-treatment samples before release; monthly stock closure | actual on-site events attributed to same original service-year Q and waste cohort | actual on-site treatment inlet to final on-site environmental release or waste handover only | per 1 m3 reference flow | operating and contract scope; calibrated meters/scales; lot certificates; accredited species and matrix-valid water-fraction method; density source/state; stock/balance reconciliation and release/receiver records |
+
+### Calculation Rules
+
+| rule_id | applies_to | formula_or_rule | inputs | output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| c_water | makeup_water; capital_test_water; delivery_service; all rows | Q=G-R uses gross accepted whole-liquid handoff G and actual returns R on their original acceptance basis; later returns correct the original service cohort once, not an unrelated current Q. Physical returns enter the actual return-period stock ledger once. For each physical pool and synchronized interval close whole-stream kg: M0 + sum(Min) = M1 + sum(Mout) + residual_M. Include all actual boundary water, equipment-contained liquid, reagents, returns, gas/solid/liquid exits and stocks applicable to that pool; cancel internal transfers and do not create hypothetical exchanges. Chemical reaction creates no total-mass source. Separately for H2O kg close W0 + sum(Win) + Wgenerated = W1 + sum(Wout) + Wconsumed + residual_W. Win/Wout are actual H2O in the same streams, using c_h2o measurement, with source tags under c_origin. Only actual evidenced reactions may have Wgenerated/Wconsumed, from measured reaction extent and complete reactant/product analysis or a validated reaction balance with documented uncertainty; these terms never fill an unexplained residual. Record actual gross volumes for meters, Q, waste carriers and event QA, but do not add embedded H2O equivalent volume to a solution volume or assume inlet, mixture and outlet volumes add even at equal temperature/pressure. Investigate both residuals against propagated measurement uncertainty; never clip or convert a discrepancy to loss. Obtain independent service supply Vop_s/Vcapital_a_s from classified source-component fates under c_source_supply, not from gross inlet minus Q. Apply event weights once and divide attributed amounts by original cohort Q once; raw physical closure stays unallocated. | G; R; Q; M0; Min; M1; Mout; residual_M; W0; Win; W1; Wout; Wgenerated; Wconsumed; residual_W; source_event_ledger; reaction_evidence; original_service_cohort | Q; unallocated whole-mass and H2O QA; attributed supply B_s/Q | `epa_audit` |
+| c_chemical | hypochlorite; all independently supplied reagents | Raw formulation consumption C=opening+receipts-closing-returns/transfers, reconciled by batch/event. Only independently supplied C_separate_j enters purchase cards; equipment-included initial fill is a separately source-tagged stock memorandum for total use/release mass QA, never another reagent purchase. Convert measured volume using lot-temperature rho to whole-product mass; active C*x is QA, not another active-plus-solution purchase. Attributed quantity=sum_j(w_j*C_separate_j), divided by Q once. | opening; receipts; closing; returns; transfers; formulation; rho; temperature; x; initial_fill_origin; C_separate_j; w_j; Q | independently supplied formulation kg/Q; full initial-fill/use mass QA | |
+| c_origin | makeup_water; capital_test_water; delivery_service | Use source s at inlet lot/state resolution, distinguishing independent water, embedded equipment/reagent water and actual reaction-generated water; record technology, geography, quality and already_counted_supply_ref where applicable. Track H2O kg W for each source in every real pool: W0_s + Win_s + Wreturn_s + Wgenerated_s = W1_s + Wgross_s + Wfate_s + Wconsumed_s + residual_s. Wgross_s is gross accepted outward H2O; Wfate_s includes separately measured nonaccepted exits, supplier returns and other external transfers, with exclusive event/fate codes. Win_s excludes separately recorded Wreturn_s. Incoming network, independent test and embedded components are disjoint: already metered component mass is not added again and internal withdrawal creates no new source. Use independent zones, tracers or measured source tracking; only with verified hydraulic/turnover mixing use time-step source H2O stock fractions for simultaneous withdrawals and reaction consumption, updating source stocks each step, never annual inlet shares. Generated H2O receives a new reaction source tag linked to its actual already-counted precursor supply; do not also retain that generated mass under an original water tag. Consumed source H2O stays assigned to its actual operating/capital event, not erased. Returns restore actual current stocks with original tags and revise original accepted Waccepted_s once; preserve source burden on stock without a new purchase. Waccepted_s is original gross accepted H2O less linked returns. If reported, Q_share_s=Q*Waccepted_s/sum_s(Waccepted_s) only allocates bulk service Q for metadata; it is not measured source volume or a commodity production quantity. Unknown source, reaction attribution, nonpositive required denominator or invalid mixing prevents complete source pairing. | W0_s; Win_s; Wreturn_s; Wgenerated_s; W1_s; Wgross_s; Wfate_s; Wconsumed_s; residual_s; Waccepted_s; Q_share_s; source_ID; lot_state; time_step; mixing_evidence; reaction_evidence; already_counted_supply_ref; Q | source H2O kg ledger; original acceptance correction; optional service-share metadata | |
+| c_source_supply | makeup_water; capital_test_water; delivery_service | For each independent source-water lot s measure inlet whole-liquid density rho_s (kg/m3) and H2O mass fraction f_H2O_s at the actual supply state; k_s=rho_s*f_H2O_s is kg H2O per m3 of that supplied product, positive and evidenced. Fixed attribution: Vaccepted_s=Waccepted_s/k_s; Vop_s=Wop_s/k_s; Vcapital_a_s=Wcapital_a_s/k_s. Wop_s and Wcapital_a_s are independent-source H2O assigned once to actual operating nonaccepted fates or identified postacceptance capital-test nonaccepted fates, including their evidenced chemical consumption; distinguish loss, rejection, unauthorized transfer, waste and reaction codes. Recovered reusable water remains source stock or moves internally and is not consumed a second time. Supplier returns/other external commodity transfers retain their own responsibility model, not operating loss. Reconcile all source receipt/stock/return/accepted/nonaccepted/reaction categories in H2O kg and source-volume equivalents before allocation; the ratio is the PCR fixed supply-burden driver, not an assertion that nonwater constituents follow H2O physically. Whole-mass/constituent QA remains separate. B_s=Vop_s+sum_a(f_a*Vcapital_a_s) is entered by the two water cards once, source-matched and divided by Q; already weighted quantities are not weighted again. Independent commodity production adds sum_s(Vaccepted_s/Q*matched independent supply inventory), preserving each lot technology, quality, geography, state and gate. Embedded/generated sources have Waccepted_s and nonaccepted W records but no independent V purchase or production link: bind only the already-counted equipment/reagent supply and its actual attribution. Do not force sum(Vaccepted_s)=Q, replace k_s by pure-water density, or use Q_share_s for supply production. Unknown/zero k_s or unresolved source closure blocks quantities, never defaults. | rho_s; f_H2O_s; k_s; Waccepted_s; Wop_s; Wcapital_a_s; Vaccepted_s; Vop_s; Vcapital_a_s; f_a; Q; already_counted_supply_ref | source-state independent water m3/Q; separate embedded source responsibility | |
+| c_speciation | hocl_freshwater; ocl_freshwater; hocl_soil; ocl_soil; treatment_hocl_freshwater; treatment_ocl_freshwater | For each actual release stream j, measure free available chlorine c_free_j as Cl2, pH and temperature. Obtain f_HOCl and f_OCl by validated measured speciation or a model validated for that water matrix, with source, parameters, validity domain and uncertainty. Demonstrate complete species coverage and fractions summing to one; combined chlorine, molecular chlorine or other chlorine species require their own atomic cards and extended analysis rather than forcing them into these two species. Species s mass=sum(w_j*Vj*c_free_j*0.001*f_s_j*MW_s/MW_Cl2)/Q kg. MW require traceable laboratory or standard evidence; Cl2-equivalent is not molecular chlorine. Apply the molar-mass ratio once and no additional dose, destination-share or removal multiplier. No assumed pKa, default pH, decay or fate; unknown speciation blocks completeness. |Vj; c_free_j; pH_j; T_j; f_s_j; MW_s; MW_Cl2; Q; validated_model; event_ID; original_asset_key; original_service_cohort; w_j | kg actual species per m3 reference service |  |
+| c_h2o | makeup_water; capital_test_water; delivery_service; water_soil; water_freshwater; treatment_water_freshwater | Q, Ls, Lf and Vout_j retain their actual gross solution-volume measurements for function/event QA, not additive network source closure or elementary H2O amounts. Apply the following component measurements also to inlet, stock, return and fate streams in c_water/c_origin; c_source_supply uses inlet product rho_s*f_H2O_s, not pure-water density. For each same-state event measure solution_mass; if only Vsolution is measured, determine solution_mass=rho_solution*Vsolution using measured solution density. Determine f_H2O (kg H2O/kg solution) with a matrix-validated water-specific laboratory method; a composition-difference water fraction is permitted only if all dissolved, suspended and volatile nonwater constituents are independently identified/quantified and composition closes within uncertainty. M_H2O=solution_mass*f_H2O kg; directly measured H2O component mass receives no further density or water-fraction multiplication. Water m3=M_H2O/rho_water, where rho_water is traceable water-component density at its declared temperature/pressure in kg/m3, not solution density. Record density source, method, state, validity and uncertainty; no default rho or f_H2O=1. Masses of separately reported HOCl, OCl and other ions/solids are excluded from M_H2O. Actual waste flows retain whole-carrier quantity and their contained species are not another duplicate waste; actual final releases follow individual species cards. Attribute once and divide by Q once; no repeated fraction or destination share. Unknown composition/density blocks H2O quantity/completeness and is not zero. |Vsolution; solution_mass; rho_solution; f_H2O; H2O_component_mass; rho_water; sample_state; H2O_measurement_method; composition_closure; density_reference; H2O_uncertainty; Q; event_ID; original_asset_key; original_service_cohort; w_j | kg H2O and same-state m3 H2O/Q; separate solution-volume QA ledger |
+| c_assets | field_work | For each original specified fixed network asset a, f_a=service-specific available capacity-hours / evidenced all-user whole-life capacity-hours; for operator vehicles use service engine-on duty hours / all-user whole-life same hours, including empty/idling/failed tasks; for portable instruments use service engaged-use hours / all-user whole-life same hours. Multiply the delivered accepted count or configuration-specific pipe length by f_a once, then divide by Q once. Preserve all periods/beneficiaries, past charged fractions and remaining service; cumulative fractions <=1, life revisions affect only remaining fraction/use with retirement true-up, not restarting a fully charged asset. New replacement capital has a distinct key; an actual consumable replacement is a current measured input, not both another full capital asset and repair input. Equipment manufacture/delivery transport/off-site EOL and supporting assets are background, with no nested capital coefficients. On life revision freeze historical fractions: f_new,current=(1-F_prev_all)*u_current/U_remaining_all, where F_prev_all is all previously charged original-asset fractions across periods/beneficiaries, and U_remaining_all includes the current period with the same fixed original-equipment driver. Unknown/nonpositive remaining denominator blocks completeness; true up residual at retirement without restarting the whole asset. Apply capital_source_amendment for final settlement, source quantity/model-version corrections and original-denominator changes; any delta-fraction times source-quantity expression here is conditional on its unchanged-source/model requirements. | original_asset_key; configuration; count_or_length; capacity_hours; duty_hours; engaged_hours; all_user_whole_life_driver; past_charges; remaining_fraction; Q; F_prev_all; u_current; U_remaining_all | attributed specified delivered equipment count or pipe length / Q |  |
+| capital_source_amendment | original-asset sources and their one-time capital-event components; excludes recurring operating components | Within this entry's declared applies_to scope, apply the complete ordered rule group: capital_source_amendment_history; capital_source_amendment_final_shares; capital_source_amendment_source_revision; capital_source_amendment_normalization; capital_source_amendment_scope. Use this entry's inputs, reference denominator and output; all definitions, conditions, exclusions and completion requirements across that group apply jointly. These components form one method, not additional exchanges or repeated allocation. Reading only a component is insufficient for completion. Follow the existing ownership and deduplication rules when one event appears in more than one entry. | cp_capital_amendment; cp_assets; capital_source_amendment_history; capital_source_amendment_final_shares; capital_source_amendment_source_revision; capital_source_amendment_normalization; capital_source_amendment_scope | attributed totals in source-native units; normalize once by original N_c |  |
+| c_field | field_work | Dedicated actual job supplies are directly assigned; shared vehicle fuel is allocated by actual occupied payload-mass distance with empty/idling/failed return activity attached to its originating job; shared electric tools use actual metered energy, and shared sampling supplies/lab service use actual completed same-method analysis jobs. Assign already service-specific quantities no further fraction. Keep actual site-work contracts at their measured completion gate, excluding included materials/fuel from separate cards for the same work. Failed/repeated work stays in the numerator. Calculate physical totals first, apply sharing once and Q division once. | job_ID; gate; raw_totals; shared_driver; all_user_driver; contract_inclusions; Q | attributable foreground work inputs / Q | |
+| c_waste | flush_sewer; flush_offsite; hypochlorite_container; field_work; onsite_dechlorination |Reconcile original-cohort raw generation, stocks, handovers, other movements, evidenced losses and unexplained residuals under custody_mass_balance and custody_loss_link; generation and pending stock remain QA only. Vs to sewer, Vo to off-site direct treatment, Vd to actual on-site treatment and physical leak destinations are exclusive. Actual on-site input Vd matches the internal output and cancels once; no off-site hypothetical treatment inventory. Output waste carrier retains its measured gross mass/volume and composition, never duplicated by contained-species waste. Free available chlorine equivalent=sum(Vj*c_free_j*0.001)/Q kg as Cl2 is QA only; individual final species use validated speciation. No destination fraction on already destination-specific volume or another active fraction on as-Cl2 concentration. Keep original generation/return cohorts and unknown destination as a gap; handover does not prove treatment occurred. External handover cards use actual D_c_j dispatched from this modelled original responsibility cohort, attributed by event weight once; generation/pending stock are QA only. Historical-cohort dispatch belongs to original Q_c, never all current Q. Generation without actual handover is not a transferred flow. |dispatch; closing; opening; Vs; Vo; Vd; Vout; Vj; c_free_j; Q; event_ID; original_asset_key; original_service_cohort; w_j | foreground waste handovers, internal on-site link and actual releases / Q | |
+| custody_mass_balance | original-cohort waste custody and actual losses | O + G + T_in = C + H + T_out + L + epsilon, in raw whole-carrier kg for one original generation lot, declared custody pool and matched interval. O/C are opening/closing physical stocks; G is newly generated material entering custody, counted once; H is gross actual accepted external handover under the existing gate; T_in/T_out are other evidenced physical movements (including returns or reclassification), with origin/destination and paired ledger entries, never also H or new G. Internal movements cancel when pools are consolidated. A physical return retains the original lot and enters T_in paired to the original gross H; keep that historical H in this physical ledger. Any later acceptance/attribution correction is separate and must not also reduce H in this equation. Correct an erroneous handover that never occurred without inventing a return. Reclassification without a physical pool-boundary movement changes the state label only, never T_in/T_out. L is evidenced physical loss after entry into this custody pool, not a balancing plug; epsilon is the signed unexplained measurement residual. Calculate epsilon = O + G + T_in - C - H - T_out - L; investigate it against propagated measurement uncertainty and retain the evidence and unresolved remainder. Unknown quantities must not be zero-filled or converted into L. Weigh the actual whole carrier at each event and stock count, or use calibrated volume times density at matching state/temperature/composition; distinguish whole-carrier mass from dry mass and contained-species mass. Moisture loss is an evidenced physical movement, not an unsupported basis conversion. Record zero loss only with inspection/measurement coverage and uncertainty evidence. Do not allocate or normalize this physical QA equation. Retain each inventory row’s declared property/unit: a volume-based handover row uses actual handed-over volume; its matched density conversion to kg serves this physical QA only and never creates a second output. Example with zero opening/closing/other movements and no unexplained residual: G=10 kg, H=9 kg, L=1 kg; output H remains 9 kg. Example values are not defaults. | O; G; T_in; C; H; T_out; L; epsilon; cp_waste | Raw whole-carrier kg closure; actual H only at handover |  |
+| custody_loss_link | original-cohort waste custody and actual losses | Link custody entry, movement and loss event IDs to c_water and the declared network/custody pool endpoints. A network leak before custody entry and a later storage loss are distinct events; never book the same event in both pools. Preserve c_h2o and c_speciation: total lost solution/carrier kg is not automatically kg H2O or kg pollutant; use matched measured composition and first receiving medium, with each actual release counted once. Internal onsite treatment transfers have matching endpoints and cancel once; no assumed off-site emissions. Apply c_event_weights and the original Q_c once. Missing species/medium rows or unresolved loss identities require explicit matching cards and identity review before completion; unknown residuals are not releases. | custody_mass_balance; cp_waste | One actual release event at its original allocation and denominator |  |
+| c_onsite | onsite_dechlorination | Meter actual received Vd, dosing/adsorbent consumption, purchased electricity, final Vout and retained water/solids/stocks for each real foreground batch. Close whole-mass and H2O-component balances under c_water, including only evidenced actual reaction generation/consumption, and relevant elemental/species balances with actual analyses and uncertainty; no assumed removal efficiency, stoichiometric dose, pure-water fraction or equal inlet/outlet. Sample final discharge after treatment at the first environment interface. Do not use whole off-site receiving-plant concentration or resources. Any real on-site residue or unlisted product/species needs a specific quantity/identity card; absent process requires records, unknown is not zero. |batch_ID; Vd; Vout; stock; retained_water; reagent; energy; post_treatment_species; uncertainty; Q; event_ID; original_asset_key; original_service_cohort; w_j | actual on-site treatment inputs, H2O/species releases and residue handover / Q | |
+| c_field_emissions | field_work | For each actual foreground engine species use measured integrated release OR fuel activity times source-specific native-basis species factor, recording engine/fuel/control, factor unit, reference state and uncertainty. Never add both routes, nor multiply composition/oxidation/molecular ratio again when already included in the factor. Annual fuel/carbon balance is QA, not an additional release. NO and NO2 and nonoverlapping PM fractions remain separate. Actual biofuel carbon origin needs explicit species partition and appropriate added biogenic rows rather than fossil or zero; no speculative supplier emissions. | event_ID; actual_fuel; species; medium; measured_release; native_factor; factor_unit; engine; controls; carbon_origin; Q | kg actual foreground species / Q | |
+| c_event_weights | all rows | For post-acceptance one-time foreground installation/commissioning/retirement event j, attach actual resources, trial water, chemicals, electricity, work, waste handover and actual releases to the original beneficiary asset a; use w_j=f_a once under the original service-period capital ledger. Actual recurring operation/maintenance has w_j=its measured causal service share, equal to 1 if dedicated. First subdivide directly attributable portions to original assets using site records or independent measurements; a directly attributed portion receives no shared fraction. Split a still-inseparable same-source capital work order once by each original asset measured personnel-hours / total personnel-hours of all beneficiary assets in that work order, then multiply each corresponding f_a. Unknown/nonpositive personnel-hour denominator blocks completeness. No nested supplier coefficients. Already attributed physical quantities receive no second w_j. Keep raw annual physical balances unweighted for QA, and separately sum attributed event totals then divide by the modelled original-cohort Q once. Pre-acceptance supplier-included site resources are excluded; actual operator post-acceptance resources remain. Final capital settlement and source/original-denominator revisions follow capital_source_amendment; recurring components do not receive lifetime allocation. | event_ID; original_asset_key; original_service_cohort; capital_or_recurring; actual_event_total; causal_job_share; f_a; w_j; Q | attributed foreground resources, water/species and handovers / original-cohort Q |  |
+| capital_source_amendment_history | original-asset sources and their one-time capital-event components; excludes recurring operating components | Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. This rule completes the existing frozen-history/remaining-life policy; it does not require retrospective replacement of historical life fractions at every life revision. Keep the original asset key, each native-unit source s and version, exact product/event gate, all beneficiary-period cohorts c, immutable raw measurements and accepted postings. Before actual final retirement, life/utilization revisions freeze historical fractions and allocate only the remaining fraction using the existing evidenced remaining driver; require 0<=F_prev_all<=1 and include the current interval and all future beneficiaries in the positive remaining denominator. A late first-observed capital source uses each historical accepted fraction and the same remaining ledger, not a full event-year charge. Keep the original asset-specific driver: available capacity-hours for fixed network assets, engine-on duty hours including empty/idling/failed work for operator vehicles, and engaged-use hours for portable instruments. Never combine different driver units into one lifetime denominator. | cp_capital_amendment; cp_assets | Method component; the originating entry owns the inventory result |  |
+| capital_source_amendment_final_shares | original-asset sources and their one-time capital-event components; excludes recurring operating components | Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. At actual final retirement set w_c=u_actual_c/U_final with U_final=sum_all_original_beneficiaries(u_actual)>0; all final shares sum to one, including non-study/failed/standby responsibilities already prescribed by the original driver. A transfer to continued use is not final retirement. Zero or unknown lifetime activity, unsupported prior fractions or missing original cohorts prevents final allocation; retain raw totals and the gap, never equal-split or invent use. | cp_capital_amendment; cp_assets | Method component; the originating entry owns the inventory result |  |
+| capital_source_amendment_source_revision | original-asset sources and their one-time capital-event components; excludes recurring operating components | Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. For source correction before retirement use each original cohort accepted fraction g_c; at final retirement use g_c=w_c. Q_s,new is the evidenced FULL source quantity before allocation in its original card unit, not a remaining unallocated balance or a previously weighted amount. B_s,c is the actual previously booked attributed raw quantity for that source/cohort, with its quantity/model version and previous normalized result. Calculate A_s,c,new=Q_s,new*g_c and delta_A_s,c=A_s,c,new-B_s,c. A newly observed source has B=0 where unposted; a correction to an existing source replaces that source ID, not an additional purchase or disposal event. The shortcut (g_new-F_booked)*Q_s is valid only when the source quantity and linked model version are unchanged and B=F_booked*Q_s; otherwise use A_new-B. Reconcile physical gross receipt/stock/transfer/handover separately; signed corrections are model amendments, never negative physical exchanges or substitution credits. For a changed linked supply/treatment model, replace the affected original-cohort inventory/results even if delta_A=0; remove the previous model contribution and record both versions and scope. | cp_capital_amendment; cp_assets | Method component; the originating entry owns the inventory result |  |
+| capital_source_amendment_normalization | original-asset sources and their one-time capital-event components; excludes recurring operating components | Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Normalize the complete revised attributed amount once by the original cohort current verified reference denominator N_c (Q, D or A as locally named). If N_c itself changes, replace the complete old normalized result; do not add delta_A/new_N to a result based on old_N. Zero-output events retain their already prescribed causal parent; a parent without positive N_c retains raw attributed totals and an incomplete normalized result, never shifts to an unrelated positive-output period. | cp_capital_amendment; cp_assets | Method component; the originating entry owns the inventory result |  |
+| capital_source_amendment_scope | original-asset sources and their one-time capital-event components; excludes recurring operating components | Component of capital_source_amendment. Before execution, read the complete group listed by the applicable entry: its definitions, conditions and exclusions govern every component. Use only that entry's actual event scope and original denominator; this component is not a separate exchange or independently additive result. Apply this to each actual capital-origin source covered by the existing gates, including separately counted initial fill, post-acceptance capital-site events and actual retirement carriers where present; do not create new sources, extend background boundaries, duplicate included supply stages or apply lifetime fractions to routine operation. These are explicit candidate accounting rules, not claimed numerical requirements of the cited classification or technical sources. | cp_capital_amendment; cp_assets | Method component; the originating entry owns the inventory result |  |
+
+
+### Data Quality Requirements
+
+| requirement_id | applies_to | requirement | evidence |
+| --- | --- | --- | --- |
+| q_scope | all rows | Retain network, potable class, state, gates, year and Q. One specified measurable object/property/unit per row is required, not homogeneous composition. Actual operating route failure, unlisted input/receiver gate, composition or H2O/speciation uncertainty remains explicit; missing identity/quantity is never zero. | declared boundary and configuration register; gap/action/uncertainty log |
+| q_gates | all purchased inputs and waste outputs | Fix actual supply/acceptance/handover inclusions for equipment, formulated products and specified services. Equipment included initial fill, supplied components, delivery, installation or service fuel/material/energy is not bought again in another row; actual operational top-up and work not included remain separate. Match downstream background datasets to exactly these foreground gates and exclude overlapping supply/treatment stages when linked later. No hidden supplier manufacture or receiver internals remain in foreground prose or machine guidance. | supplier/contract inclusion matrix; initial-fill inventory; stage and job reconciliation |
+| q_occurrence | all conditional rows | For each card decide occurs/absent/unknown using actual asset configuration, purchase, work, sample, treatment and receiver records. A conditional list is not a default recipe/BOM. New actual equipment configuration, fuel, reagent, waste or species needs a precise one-property/unit exchange before complete foreground coverage; do not prelist supplier hypothetical emissions. Unknown data triggers named corrective collection, uncertainty and blocked complete claim. | applicability decision per row; records proving absence; corrective collection register |
+| q_identity | reference and all selected flows | Only point-of-use AC identity is reused from historical direct official evidence, with generic property/group support separately verified. Other candidate identities are unbound; no new UUID is invented. Validate direct record/status/name/state/property/unit/compartment and hash evidence before binding. Chinese official AC name is preserved; semantic bilingual alignment is distinct from scientific approval and formal translation review. | historical direct-response integrity receipt; unresolved row register; bilingual comparison |
+| q_service_attempt | sample_analysis; trench_work; road_reinstatement; field_work | An analysis item is completed specified method plus independently delivered report, not a conforming water result; a nonconforming result still counts when method/report are complete. Count a repeat report separately only when independently delivered and its rework burden is not already included in the matched supplier per-report inventory. A no-report aborted attempt is neither an invented one item nor zero burden: prove its actual resources are included in supplier per-report background, otherwise before complete use add a specifically defined aborted DPD-analysis-attempt service with method, start/end gates, recorded attempt duration h and acceptance conditions, or record actual specific inputs where the foreground performs the attempt. Procured trench m3/surface m2 services count actual accepted geometry only; do not invent extra volume/area for failed/repeated work already in the supplier unit burden. Explicitly cover actual resources not included at that exact supply gate through a defined service or real foreground resources, never omit them. | completed reports and sample-result status; repeat/abort jobs; supplier per-unit/rework inclusion proof; actual duration/resources; work geometry acceptance and rework records |
+| inv_chlorine_species | hocl_freshwater; ocl_freshwater; hocl_soil; ocl_soil | Free available chlorine reported as mg/L as Cl2 is an analytical equivalent, never molecular Cl2 emission. Determine actual species mass under the speciation calculation; incomplete other-species identification blocks complete emissions. | Existing collection protocols and evidence of each listed inventory row. |
+| inv_asset_background | asset_iron_main; asset_pe_main; asset_pump; asset_valve; asset_tank; asset_meter; asset_booster; asset_photometer; asset_van; asset_dechlorinator | Supplier manufacture, delivery transport and off-site EOL internals are background; do not also input its constituents or included components/initial fill. | Existing collection protocols and evidence of each listed inventory row. |
+| inv_engine_emissions | field_co2_fossil_air; field_co_air; field_ch4_air; field_n2o_air; field_no_air; field_no2_air; field_so2_air; field_pm25_air; field_pm_coarse_air | Conditional actual foreground engine/vehicle release at the first air interface, measured or calculated with source-specific native-basis factors and actual fuel/control configuration. | Existing collection protocols and evidence of each listed inventory row. |
+| inv_treated_species | onsite_chloride_freshwater; onsite_sulfate_freshwater; onsite_sulfite_freshwater; onsite_sodium_freshwater | Actual individual final-outlet species at the first freshwater interface, after real on-site treatment. Direct species-mass analysis or validated species conversion is required; no automatic reagent-to-discharge stoichiometric yield. | Existing collection protocols and evidence of each listed inventory row. |
+
+## 9. Validation Rules
+
+| rule_id | applies_to | rule | source_ids |
+| --- | --- | --- | --- |
+| validate_custody_balance | original-cohort waste custody and actual losses | Verify custody_mass_balance and custody_loss_link with dated original-lot stocks, actual handover receipts, paired movements, calibrated loss evidence and propagated uncertainty. Distinguish evidenced L from unexplained epsilon and block unqualified completion for unresolved quantities, identity or fate. Verify that G=10, H=9, L=1 with other terms zero closes, H stays 9, each release appears once at its first medium, and allocation/normalization does not alter raw physical closure. |  |
+| v_balance | makeup_water; capital_test_water; delivery_service; all rows | Require Q>0 and finite same-cohort totals; separately reconcile whole-mass and H2O source/stock/return/fate balances under c_water/c_origin, including only evidenced reaction terms. Verify source-state k_s and c_source_supply attribution without additive-volume assumptions, mixed-liquid minus component-volume arithmetic, forced sum(Vaccepted_s)=Q or conversion of unexplained residual to loss. Preserve dynamic source matching, actual H2O component versus whole solution and chlorine-equivalent versus species. Every actual first environmental interface and foreground waste handover occurs once; no hypothetical receiver release or duplicate internal output. | `epa_audit` |
+| v_exchanges | all rows | Check one primary property/preferred unit, actual specified object/gate, executable quantity/protocol and one allocation/Q normalization. Full equipment or specific service is not invalid merely because it contains different materials; unspecified bundles/selectors remain invalid. Remove supplier and off-site treatment internals, retain actual on-site work/treatment, and verify no supplied included stage is counted twice. | |
+| validate_capital_amendment | original-asset sources and their one-time capital-event components; excludes recurring operating components | Verify the original driver, freeze/remaining ledger, actual final w, each source full Q_s/B/version, original N and whole normalized-result replacement under capital_source_amendment. Recalculate unchanged-quantity share corrections, changed quantity with unchanged share, changed model with zero physical delta, corrected original N and zero-output cases; verify mutually exclusive capital/recurring components and all beneficiaries. Missing traceable old postings or positive denominators remains incomplete; prohibit disposal-year fallback, negative physical flows, duplicate normalization or second shares. |  |
+| v_projection | canonical bilingual content and projection | Ordered rows, directions/types, properties/units, identities, formulas, qualifiers, conditions, negations, protocol/rule IDs and supported mandatory tables must agree across languages and guidance. Regenerate structured normally; schema/fingerprint and candidate/aligned markers do not establish scientific review or publication approval. | |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | foreground potable-water mains distribution-service dataset |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | same quality/route/year/acceptance gates with source-matched water commodity pairing and declared foreground scope |
+| excluded_use | standalone complete delivered-water footprint; initial water production, nonpotable/thermal/nonmains routes, undeclared supplier manufacture or off-site treatment internals |
+| required_metadata | Actual bulk Q; source H2O kg, rho_s, f_H2O_s, k_s, Vaccepted_s, Vop_s, Vcapital_a_s; Q_share_s only if separately labelled allocation metadata; whole-mass/H2O closure, reaction evidence and source stock/returns, original assets/event weights, specific equipment/service gates and primary units, actual waste handovers, real on-site treatment and first environment medium |
+| required_quality_disclosure | candidate identity/quantity gaps, pending handover stocks, composition/speciation/density uncertainty and excluded background stages; neither standalone delivered-water footprint nor scientific/publication approval |
+| update_trigger | network equipment, contract gates, water source, actual operating route, quality, loss/stock/returns, on-site treatment, asset life or waste receiver-gate changes |
+
+## 11. Data Sources
+
+| source_id | type | reference | used_for |
+| --- | --- | --- | --- |
+| un_cpc | official_guidance | UNSD CPC Version 3.0 subclass 69210, https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/69210 | Own-account mains distribution and meter-maintenance scope and explicit exclusions; not numerical LCA factors |
+| epa_audit | official_guidance | US EPA, Water Audits and Water Loss Control For Public Water Systems, EPA 816-F-13-002 (2013), https://www.epa.gov/sites/default/files/2015-04/documents/epa816f13002.pdf | Physical versus apparent water losses and audit logic; the service/commodity split and cohort accounting are explicit PCR rules, not claimed EPA mandates |
+| epa_quality | official_guidance | US EPA, Distribution System Water Quality: Maintaining a Disinfectant Residual, EPA 815-F-21-003 (2021), https://www.epa.gov/system/files/documents/2021-12/ds-toolbox-fact-sheets_disinfectant_residual.pdf | Distribution storage, flushing, booster disinfection and infrastructure maintenance relevance; no imported example dose, limit or default |
+| epa_dechlorination | official_guidance | US EPA, Wastewater Technology Fact Sheet Dechlorination, EPA 832-F-00-022 (2000), https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P1001L40.TXT | Official text representation supports qualitative chemical/species and monitoring screening only; no example dose, concentration, performance or regulatory limit adopted. PCR attribution/collection rules are explicit method design |
+| pipe_materials | extension_guidance | McWane Ductile, Cement-Mortar Lining, https://www.mcwaneductile.com/products/linings/cement-lining/ | Historical manufacturer text supports mortar-lined ductile-iron potable-pipe specification relevance only; it does not mandate constituent disassembly or supply universal composition/life/factors. Foreground scope/equipment measurement is this PCR method choice. |
