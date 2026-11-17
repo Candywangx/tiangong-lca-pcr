@@ -92,6 +92,9 @@ export function verifyHostingContract(config: unknown, downloads: readonly {url:
       "search-terms.mjs",
       "search-wire.mjs",
       "search-pack.mjs",
+      "search-arithmetic.mjs",
+      "search-brotli.mjs",
+      "brotli-dec.mjs",
     ]) {
       const headers = headersFor(config, "/generated/" + file, { firstMatch });
       assert.match(

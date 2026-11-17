@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-02
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedAt: 2026-11-17
+lastReviewedNote: "PR172: integrate d1c8953e5 Brotli search transport and required v8/v9 packing dependencies; preserve logical search content, PCR artifacts and resource budgets. Final-source CI remains required."
+lastReviewedCommit: 989050f32ca7c647c9c248a0f2d2bd4b165e88c7
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -588,14 +588,112 @@ versions 1–6 remain available. The 16-member pack limit, 2 MB source-text buck
 complete record fields, query cutoff/ranking and 20 MB raw / 4 MB gzip limits,
 including the manifest, remain unchanged.
 
+Search manifest version 8 uses envelope `schemaVersion: 4` and
+`encoding: "v4-columnar-new-reuse-ranked-split-vlq"`. It retains the original
+first-appearance term dictionary and every ordered logical v4 wire. Its five
+numeric channels contain term commands, ranked score headers, posting lengths,
+signed predicted first values and unsigned remaining posting deltas. A map with
+negative remaining deltas, unsupported shapes, oversized integers or insufficient
+shared expansion budget retains its original native numeric columns.
+
+Term command zero introduces the next dictionary ID. A positive command is one
+plus the zigzag delta from the previous reused ID in that map; new terms do not
+change that predictor. Reuse state resets per map, while the next new ID advances
+through every map in original shard/key order, including native fallbacks. Reuse
+cannot name an unintroduced term, native columns cannot skip a new ID, and all
+dictionary entries must be introduced. The restored original term-ID deltas,
+not the command stream, enter the existing logical-wire checks.
+
+The 1,023 legal score headers have a fixed corpus-independent rank: headers whose
+declared length equals the mask's bit length come first, then mask popcount and
+the original numeric header break ties. This bijection preserves trailing empty
+slots. Nonempty postings retain v7's previous-first-value predictor independently
+for each of the nine score slots; first and remaining values occupy separate
+channels without reordering the restored postings. Empty lists consume neither.
+
+V8 retains complete unique channel ownership, canonical bounded VLQs, header and
+posting-count checks, finite predictor arithmetic and the same shared 20 MB numeric
+expansion budget. The budget accounts for the original term/header digit lengths,
+slot vectors, posting arrays and restored first values as well as decoded channels;
+short term commands and small header ranks cannot conceal larger restoration.
+Physical bytes, summed restored-wire bytes, final logical hashes and record counts
+remain independently checked. Readers and canonical writer bytes for v1-7 remain
+compatible; older Workers reject the v8 manifest. A new transport does not alter
+source text, independent logical indexes, engine exports, record fields or ranking.
+
+Search manifest version 9 uses envelope `schemaVersion: 5` and
+`encoding: "v4-columnar-arithmetic-channels"`. It preserves the complete v8
+term dictionary, shards and five ordered numeric channels. Only the ASCII VLQ
+channel strings are transported with an adaptive binary arithmetic code; original
+string lengths, valid bit count and canonical base64 bytes are explicit. Each
+six-bit alphabet symbol uses the preceding symbol and current binary prefix as
+context; the initial predecessor is 64 at each original string boundary. Counts
+start at one and rescale by rounded-up halving at a combined count of 256.
+The 32-bit interval uses exact integer-valued arithmetic and canonical final bits.
+
+Before arithmetic expansion, the reader verifies complete, unique map-to-channel
+ownership and equal channel counts. All five channels share a separate 20 MB
+restored-ASCII/count budget, charged before allocation. Noncanonical base64,
+padding, termination, truncated streams and unbounded lengths are rejected;
+re-encoding checks the canonical bitstream. Restored strings then pass every
+existing v8 VLQ, predictor, numeric-expansion, dictionary, logical-wire hash and
+record-count check. The original numeric expansion budget is not replaced or
+increased. The emitted Worker includes the compiled arithmetic module explicitly;
+older Workers fail closed on v9. No original record, token, posting, score slot,
+logical shard order, query cutoff or ranking is changed. V1–8 readers and V5–8
+writer behavior remain available. An unavailable arithmetic candidate cannot
+suppress an eligible earlier transport.
+
+Search manifest version 10 adds a lossless Brotli envelope around a selected
+v7, v8 or v9 physical pack. The envelope binds its original transport version,
+exact inner UTF-8 length and SHA-256, source commit, language and first logical
+shard. Its canonical base64 holds Brotli quality-11 bytes with a 22-bit window.
+Selection compares the complete manifest and actual level-9 gzip file sizes; the
+older layout remains available when the envelope does not improve transfer size.
+The sixteen-member limit, 20 MB physical and restored-byte bounds, 4 MB language
+transfer limit, logical identities and all inner decoder checks remain unchanged.
+
+The Worker lazily loads the pinned `brotli-dec-wasm` decoder and its WASM only
+when a v10 pack is requested. The emitter copies these locked dependency bytes
+and the MIT license; it does not rely on a CDN or native browser Brotli support.
+Decompression runs in the existing Worker, uses at most 64 KiB per output step,
+requires exact input consumption and the authenticated inner output length, and
+frees streaming allocations on success or failure. Truncated, oversized and
+trailing-byte streams fail without publishing partial indexes. Node verification
+uses its independently implemented bounded Brotli decoder. Both paths authenticate
+the outer bytes, then the restored inner bytes and every logical wire before
+import. Old transport readers, full records, tokenization, query limits, ranking
+and retry behavior remain available. The additional decoder assets are included
+in the static export and resource counts; measured transfer savings must be
+reported alongside their download cost.
+
+The generator retains the original sixteen-member greedy layout as a candidate
+and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
+At each cut position it retains at most sixteen paths. Physical dictionary strings
+may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
+gzip is smaller; dictionary values and first-appearance order remain exact. The
+complete manifest and physical files determine the selected gzip cost within the
+unchanged raw budget. Candidates must also retain the existing per-pack physical
+and summed restored-wire byte limits before selection. This does not change
+logical text buckets, engine exports,
+record fields, logical order, ranking, decoder versions or any size/expansion guard.
+
+Corpus auditing accepts only the exact canonical physical pack spelling or its
+exact dictionary-only Unicode-escape variant for v7/v8/v9. It still verifies physical hashes,
+every restored logical wire, native engine exports, complete records, ordered
+query results and the full existing raw/gzip budgets. This compatibility does not
+permit arbitrary JSON rewrites or changes to non-dictionary fields.
+
 `node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
-compares captured physical assets with repacked v7 files over the exact same
+compares captured physical assets with repacked v8 files over the exact same
 logical wires, source identity, language and pack membership. It retains physical,
 logical, native-export and complete-record hashes and both full manifest costs.
 A baseline may be over budget; that diagnostic does not qualify it for browser
 use. Generation measures every language before failing a search-budget violation,
 retains `search-budget-diagnostics.json` in its unpromoted stage, and preserves the
-previous generated artifact set. Final combined-source generation, complete
+previous generated artifact set. The v10 corpus audit additionally verifies the canonical Brotli envelope and its
+exact inner v7/v8/v9 bytes before the same export and query comparisons.
+Final combined-source generation, complete
 export/browser verification and product resource gates remain mandatory.
 
 ### Historical bounded native downloads
