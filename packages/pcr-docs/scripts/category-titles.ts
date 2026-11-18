@@ -2,6 +2,9 @@
 const zh: Readonly<Record<string,string>> = {
   "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
   "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
+  "accommodation-food-and-beverage-services": "住宿和餐饮服务",
+  "passenger-transport-services": "旅客运输服务",
+  "freight-transport-services": "货物运输服务",
   "chemicals": "化学品",
   "pharmaceutical-ingredients": "药用成分",
   "rubber-and-plastics-products": "橡胶和塑料制品",
