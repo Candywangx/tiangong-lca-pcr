@@ -19,7 +19,7 @@ const reports=[];
 for(const language of ["en-US","zh-CN"]){
  const manifestBytes=fs.readFileSync(path.join(source,language,"manifest.json"));
  const raw:unknown=JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(manifestBytes));
- assert.ok(isUnknownRecord(raw)&&(raw.schemaVersion===5||raw.schemaVersion===6||raw.schemaVersion===7||raw.schemaVersion===8||raw.schemaVersion===9||raw.schemaVersion===10));
+ assert.ok(isUnknownRecord(raw)&&(raw.schemaVersion===5||raw.schemaVersion===6||raw.schemaVersion===7||raw.schemaVersion===8||raw.schemaVersion===9||raw.schemaVersion===10||raw.schemaVersion===11));
  assert.equal(raw.language,language);assert.ok(typeof raw.sourceCommit==="string"&&/^[0-9a-f]{40}$/.test(raw.sourceCommit));
  assert.ok(!Object.hasOwn(raw,"shards")&&!Object.hasOwn(raw,"termDictionary")&&Array.isArray(raw.files));
  // Baseline budgets intentionally may fail. Each actual physical/logical identity is still verified below.

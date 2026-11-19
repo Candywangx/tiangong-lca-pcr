@@ -13,6 +13,38 @@ function update(zero: Uint16Array, one: Uint16Array, context: number, bit: numbe
     one[context] = (one[context]! + 1) >>> 1;
   }
 }
+/** The v11 term and score channels blend two predecessors with the original one-symbol prior. */
+function bitModel(order: 1 | 2) {
+  const [zero, one] = model();
+  const contexts = order === 2 ? 65 * 65 * 64 : 0;
+  const counts = new Uint16Array(contexts), zeros = new Uint16Array(contexts);
+  let previous = 64, earlier = 64;
+  return {
+    reset() { previous = earlier = 64; },
+    advance(symbol: number) { earlier = previous; previous = symbol; },
+    midpoint(low: number, high: number, prefix: number) {
+      const context = previous * 64 + prefix;
+      const z = zero[context]!, sum = z + one[context]!;
+      if (order === 1) return low + Math.floor((high - low + 1) * z / sum) - 1;
+      const pair = earlier * 65 * 64 + context;
+      const numerator = zeros[pair]! * sum + 6 * z;
+      const denominator = (counts[pair]! + 6) * sum;
+      return low + Math.floor((high - low + 1) * numerator / denominator) - 1;
+    },
+    observe(prefix: number, bit: number) {
+      const context = previous * 64 + prefix;
+      update(zero, one, context, bit);
+      if (order === 1) return;
+      const pair = earlier * 65 * 64 + context;
+      counts[pair]!++;
+      if (bit === 0) zeros[pair]!++;
+      if (counts[pair] === 255) {
+        counts[pair] = counts[pair]! >>> 1;
+        zeros[pair] = zeros[pair]! >>> 1;
+      }
+    },
+  };
+}
 function channelSize(lengths: readonly number[]): number {
   if (lengths.length > 1_000_000) return fail();
   let total = 0;
@@ -28,11 +60,11 @@ function base64(bytes: Uint8Array): string {
   for (let i = 0; i < bytes.length; i += 8192) text += String.fromCharCode(...bytes.subarray(i, i + 8192));
   return btoa(text);
 }
-export function encodeSearchChannel(strings: readonly string[]): ArithmeticChannel {
+export function encodeSearchChannel(strings: readonly string[], order: 1 | 2 = 1): ArithmeticChannel {
   const lengths = strings.map(text => text.length);
   if (lengths.reduce((sum, length) => sum + length + 1, 0) > LIMIT) throw new SearchChannelCapacityError();
   const total = channelSize(lengths);
-  const [zero, one] = model();
+  const probability = bitModel(order);
   let low = 0, high = FULL - 1, pending = 0, bits = 0;
   let output = new Uint8Array(Math.max(64, Math.min(LIMIT, total)));
   function write(bit: number) {
@@ -46,14 +78,14 @@ export function encodeSearchChannel(strings: readonly string[]): ArithmeticChann
   }
   function emit(bit: number) { write(bit); while (pending > 0) { write(1 - bit); pending--; } }
   for (const text of strings) {
-    let previous = 64;
+    probability.reset();
     for (const character of text) {
       const value = alphabet.indexOf(character);
       if (value < 0) return fail();
       let prefix = 1;
       for (let shift = 5; shift >= 0; shift--) {
-        const context = previous * 64 + prefix, bit = (value >>> shift) & 1;
-        const middle = low + Math.floor((high - low + 1) * zero[context]! / (zero[context]! + one[context]!)) - 1;
+        const bit = (value >>> shift) & 1;
+        const middle = probability.midpoint(low, high, prefix);
         if (bit) low = middle + 1; else high = middle;
         while (true) {
           if (high < HALF) emit(0);
@@ -62,16 +94,16 @@ export function encodeSearchChannel(strings: readonly string[]): ArithmeticChann
           else break;
           low *= 2; high = high * 2 + 1;
         }
-        update(zero, one, context, bit); prefix = prefix * 2 + bit;
+        probability.observe(prefix, bit); prefix = prefix * 2 + bit;
       }
-      previous = value;
+      probability.advance(value);
     }
   }
   pending++; emit(low < QUARTER ? 0 : 1);
   return { lengths, bits, data: base64(output.subarray(0, Math.ceil(bits / 8))) };
 }
 /** Charge the shared expansion bound before allocation; reject noncanonical termination/padding. */
-export function decodeSearchChannel(value: unknown, budget: { remaining: number }): string[] {
+export function decodeSearchChannel(value: unknown, budget: { remaining: number }, order: 1 | 2 = 1): string[] {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return fail();
   const record = value as Record<string, unknown>;
   if (Object.keys(record).length !== 3 || !Array.isArray(record.lengths)
@@ -93,15 +125,14 @@ export function decodeSearchChannel(value: unknown, budget: { remaining: number 
   }
   let low = 0, high = FULL - 1, code = 0;
   for (let i = 0; i < 32; i++) code = code * 2 + read();
-  const [zero, one] = model(), output = new Uint8Array(total);
+  const probability = bitModel(order), output = new Uint8Array(total);
   let written = 0;
   for (const length of lengths) {
-    let previous = 64;
+    probability.reset();
     for (let i = 0; i < length; i++) {
       let prefix = 1, value = 0;
       for (let shift = 5; shift >= 0; shift--) {
-        const context = previous * 64 + prefix;
-        const middle = low + Math.floor((high - low + 1) * zero[context]! / (zero[context]! + one[context]!)) - 1;
+        const middle = probability.midpoint(low, high, prefix);
         const bit = code > middle ? 1 : 0;
         if (bit) low = middle + 1; else high = middle;
         while (true) {
@@ -111,15 +142,15 @@ export function decodeSearchChannel(value: unknown, budget: { remaining: number 
           else break;
           low *= 2; high = high * 2 + 1; code = code * 2 + read();
         }
-        update(zero, one, context, bit); prefix = prefix * 2 + bit; value = value * 2 + bit;
+        probability.observe(prefix, bit); prefix = prefix * 2 + bit; value = value * 2 + bit;
       }
-      output[written++] = alphabet.charCodeAt(value); previous = value;
+      output[written++] = alphabet.charCodeAt(value); probability.advance(value);
     }
   }
   const text = new TextDecoder().decode(output), strings: string[] = [];
   let start = 0;
   for (const length of lengths) { strings.push(text.slice(start, start + length)); start += length; }
-  const canonical = encodeSearchChannel(strings);
+  const canonical = encodeSearchChannel(strings, order);
   if (canonical.bits !== record.bits || canonical.data !== record.data) return fail();
   return strings;
 }

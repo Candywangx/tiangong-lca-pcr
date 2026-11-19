@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-11-13
-lastReviewedNote: "PR31 search capacity: lossless bounded Brotli v10 envelope, pinned lazy Worker decoder, independent exact-byte restoration and unchanged search/PCR/resource contracts."
+lastReviewedAt: 2026-11-19
+lastReviewedNote: "PR37 search capacity: bounded v11 context coding of v8 numeric channels with exact pack and logical-wire restoration."
 lastReviewedCommit: 05fb4462baeac303521fc6f7d38bd7cd080d9059
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -666,6 +666,22 @@ import. Old transport readers, full records, tokenization, query limits, ranking
 and retry behavior remain available. The additional decoder assets are included
 in the static export and resource counts; measured transfer savings must be
 reported alongside their download cost.
+
+If the earlier transports exceed a language budget, the generator also measures
+manifest version 11 over consecutive groups of at most sixteen logical shards.
+Its Brotli envelope (schema 7, `v8-context-brotli-base64`) binds the coded byte
+length and the exact canonical v8 inner length and hash. Within the v8 numeric
+columns, term commands and score ranks use two-symbol context, posting lengths
+and first values use the v9 one-symbol model, and posting remainders retain
+their VLQ strings. The two-symbol model blends the observed bit counts for the
+previous two symbols and current bit prefix with six observations from the
+one-symbol prior. At 255 observations both pair counts are halved, rounding
+down. Both predecessors reset at each string boundary.
+
+The reader checks map ownership, channel counts and the exact expanded UTF-8
+length before arithmetic decoding. It authenticates the reconstructed v8 bytes
+and then every logical wire. The existing Worker Brotli decoder handles both
+envelopes. Full manifests and physical files count toward the same budgets.
 
 The generator retains the original sixteen-member greedy layout as a candidate
 and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
