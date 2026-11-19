@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-04
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
-lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
+lastReviewedAt: 2026-11-19
+lastReviewedCommit: 6b528b2cecc91f7fb27ce1ce6550f67bc2d0fe91
+lastReviewedNote: "PCR #176 reviewed eligible Playwright 1.65.0, published browser descriptors and the exact runtime/receipt pin. Archived qualification, corpus/coverage and complete browser/sealed acceptance requirements retain their original evidence boundaries."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
