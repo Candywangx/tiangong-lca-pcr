@@ -4,9 +4,9 @@ import {SearchChannelCapacityError} from '../lib/search-arithmetic.ts';
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {isUnknownRecord} from '../../pcr-core/src/types.ts';
-import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchManifestV10,type SearchPhysicalFile} from '../lib/search-pack.ts';
+import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,SEARCH_GZIP_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchManifestV10,type SearchManifestV11,type SearchPhysicalFile} from '../lib/search-pack.ts';
 interface Transport {payload:string;bytes:number;gzipBytes:number;sha256:string}
-export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9|SearchManifestV10;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
+export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9|SearchManifestV10|SearchManifestV11;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
 const hash=(text:string)=>'sha256:'+createHash('sha256').update(text).digest('hex');
 const gzip=(text:string)=>gzipSync(text,{level:9}).length;
 const transport=(payload:string):Transport=>({payload,bytes:Buffer.byteLength(payload),gzipBytes:gzip(payload),sha256:hash(payload)});
@@ -65,6 +65,38 @@ function planVersion(wires:readonly string[],sourceCommit:string,language:string
   bounded.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
   return bounded[0];
 }
+function envelopeLayout(version: 10 | 11, baseline: SearchLayout, files: SearchLayout['files']): SearchLayout {
+  const manifest = {...baseline.manifest, schemaVersion: version, files: files.map(file => file.descriptor)};
+  const manifestText = JSON.stringify(manifest);
+  return {manifest, manifestText, files,
+    rawBytes: Buffer.byteLength(manifestText) + files.reduce((n, f) => n + f.descriptor.bytes, 0),
+    gzipBytes: gzip(manifestText) + files.reduce((n, f) => n + f.descriptor.gzipBytes, 0)};
+}
+/** Try the context profile only when the older transports exceed the language budget. */
+function contextLayout(wires: readonly string[], baseline: SearchLayout): SearchLayout | undefined {
+  const {sourceCommit, language} = baseline.manifest;
+  const identities = baseline.manifest.files.flatMap(file => file.logicalShards);
+  const files: SearchLayout['files'] = [];
+  for (let start = 0; start < wires.length; start += SEARCH_PACK_MEMBERS) {
+    const group = wires.slice(start, start + SEARCH_PACK_MEMBERS);
+    const logicalShards = identities.slice(start, start + group.length);
+    if (logicalShards.reduce((sum, shard) => sum + shard.wireBytes, 0) > SEARCH_RAW_LIMIT) return;
+    const inner = packSearchShards(group, sourceCommit, language, start, 8);
+    if (Buffer.byteLength(inner) > SEARCH_RAW_LIMIT) return;
+    let payload: string;
+    try { payload = encodeBrotliSearchPack(inner, 8, true); }
+    catch (error) { if (error instanceof SearchChannelCapacityError) return; throw error; }
+    const packed = transport(payload);
+    if (packed.bytes > SEARCH_RAW_LIMIT) return;
+    files.push({payload, descriptor: {
+      url: `/generated/search/${encodeURIComponent(language)}/pack-${String(files.length).padStart(3, '0')}.json`,
+      bytes: packed.bytes, gzipBytes: packed.gzipBytes, sha256: packed.sha256,
+      firstLogicalShard: start, logicalShardCount: group.length, logicalShards,
+      records: logicalShards.reduce((sum, shard) => sum + shard.records, 0),
+    }});
+  }
+  return envelopeLayout(11, baseline, files);
+}
 /** Compare complete v7/v8/v9 manifests; an eligible original v7 layout remains available. */
 export function planSearchPacks(wires:readonly string[],sourceCommit:string,language:string):SearchLayout{
   const candidates=([7,8,9] as const).map(version=>{try{return planVersion(wires,sourceCommit,language,version);}catch(error){if(version===9&&error instanceof SearchChannelCapacityError)return undefined;throw error;}}).filter((candidate):candidate is SearchLayout=>candidate!==undefined);
@@ -76,7 +108,9 @@ export function planSearchPacks(wires:readonly string[],sourceCommit:string,lang
     const packed=transport(encodeBrotliSearchPack(file.payload,original.manifest.schemaVersion as 7|8|9));
     return {payload:packed.payload,descriptor:{...file.descriptor,bytes:packed.bytes,gzipBytes:packed.gzipBytes,sha256:packed.sha256}};
   });
-  const manifest:SearchManifestV10={...original.manifest,schemaVersion:10,files:files.map(file=>file.descriptor)},manifestText=JSON.stringify(manifest);
-  const candidate:SearchLayout={manifest,manifestText,files,rawBytes:Buffer.byteLength(manifestText)+files.reduce((n,f)=>n+f.descriptor.bytes,0),gzipBytes:gzip(manifestText)+files.reduce((n,f)=>n+f.descriptor.gzipBytes,0)};
-  return candidate.rawBytes<=SEARCH_RAW_LIMIT&&candidate.gzipBytes<original.gzipBytes?candidate:original;
+  const candidate = envelopeLayout(10, original, files);
+  const baseline = candidate.rawBytes <= SEARCH_RAW_LIMIT && candidate.gzipBytes < original.gzipBytes ? candidate : original;
+  if (baseline.rawBytes <= SEARCH_RAW_LIMIT && baseline.gzipBytes <= SEARCH_GZIP_LIMIT) return baseline;
+  const context = contextLayout(wires, baseline);
+  return context && context.rawBytes <= SEARCH_RAW_LIMIT && (baseline.rawBytes > SEARCH_RAW_LIMIT || context.gzipBytes < baseline.gzipBytes) ? context : baseline;
 }
