@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-11-19
-lastReviewedCommit: 6b528b2cecc91f7fb27ce1ce6550f67bc2d0fe91
-lastReviewedNote: "PCR #176 reviewed eligible Playwright 1.65.0, published browser descriptors and the exact runtime/receipt pin. Archived qualification, corpus/coverage and complete browser/sealed acceptance requirements retain their original evidence boundaries."
+lastReviewedAt: 2026-11-20
+lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
+lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
 ---
 
 # Authoring Guide

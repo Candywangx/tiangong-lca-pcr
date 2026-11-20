@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-02
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedAt: 2026-11-20
+lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
+lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
