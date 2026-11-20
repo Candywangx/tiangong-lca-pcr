@@ -20,14 +20,14 @@ CBP 保留样品的说明记载南洋楹边接木条芯、每侧两张柳桉单�
 
 排除全单板热带胶合板、针叶木外表层条芯板、非热带阔叶木外表层板、三层条芯板、含两个实心芯层的五层板、木片条芯板、MDF/刨花/空心芯、竹材、致密木、结构胶合木/LVL、涂饰板、室外/船用性能声明、一体化制芯/湿材干燥及其他表层胶路线。不移植其他路线的收率、胶量、密度、含水率、强度、寿命或排放范围。
 
-CPC 3.0 31422 关联是候选 narrower 解释，仓库维护者依据 docs/adr/2026-11-10-hold-blockboard-cpc-associations.md 暂缓其接受。实际四张柳桉单板／一个南洋楹实木条芯结构仍为语义产品边界。官方 31412／31413 说明明确包含细木工板并允许中央芯采用其他材料，31422／31423 也描述交叉多单板条件。不能仅凭实木条芯或仅木片分支标题排除 31412 或裁定 31422。原 batch-03 接受为历史记录，当前正向映射中没有该代码的边。制造商结构及原生 UUID 证据不是官方分类裁决。不主张替代分类、整叶覆盖、独立科学批准或发布。来源：`un-cpc-notes-2025`、`un-cpc-explanatory-notes-xlsx-2025`、`un-cpc-introduction`。
+本库接受 CPC 3.0 31422 的较窄映射，限定产品为四张柳桉单板包覆一个外购的南洋楹拼条实木芯，实物层间纹理交错，板面未饰面，且两层实际外层均经核实为热带柳桉。联合国统计司 2026 年 10 月 23 日白皮本在标准五位父类下的 31422.01 明列相应细木工板（附录第 138–143 段、印刷页 928）。标准 31412 的说明仍明列细木工板并允许其他中央芯材。五层实物按 0/90/0/90/0 交错，去除中央实木芯后四张单板为 0/90/90/0，仅凭层序不足以裁定交叉单板条文的适用性。本裁定综合附录明确的下级品名、父级规则和正文反证。实际批次须核实柳桉外层树种、来源及外购南洋楹条芯。海关实物支持该构造，所选 UF 胶接路线和实际供方另行举证。决定见 docs/adr/2026-11-21-accept-cpc-31422-retained-meranti-faced-strip-core-blockboard.md，11 月 10 日的暂缓记录作为历史证据保留。
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.meranti-veneered-falcata-strip-core-blockboard |
-| classification_refs | CPC 3.0 31422；声明四张柳桉单板／一个南洋楹实木条芯产品的候选 narrower 关联；依据 docs/adr/2026-11-10-hold-blockboard-cpc-associations.md 暂缓接受，等待分类裁定 |
+| classification_refs | CPC 3.0 31422，已接受所述热带木材饰面细木工板的较窄关联，见 docs/adr/2026-11-21-accept-cpc-31422-retained-meranti-faced-strip-core-blockboard.md |
 | covered_products | 未涂饰室内五层柳桉面背板及横带、南洋楹条芯板；外购裸芯 UF 胶合路线 |
 | excluded_products | 全单板胶合板及第 1 节排除的其他层/芯结构与路线 |
 | representative_product | 以实测最终含水率表征的未饰面验收柳桉饰面南洋楹条芯板 |
@@ -72,7 +72,7 @@ CPC 3.0 31422 关联是候选 narrower 解释，仓库维护者依据 docs/adr/2
 | --- | --- |
 | declared_starting_condition | 外购干燥、边接、未贴面的南洋楹实心木条裸芯；干燥未胶合柳桉面背及横带单板；供应态 UF 干树脂和干 NH4Cl |
 | starting_condition_role | 前景采购门；上游制芯及实际边胶通过关联投入数据集保留 |
-| product_classification_scope | 保留实物产品边界；候选31422关联处于维护者要求的暂缓接受状态，不进行已接受的自动分类选择；通用原生流不能裁定分类。 |
+| product_classification_scope | 核实四张柳桉单板、热带外层、南洋楹实木条芯及交叉纹理。原生产品标识仍须配合实际适用性证据。 |
 | recursive_input_rule | 外购同类别成品条芯板是单独明确识别的投入；保留继承负荷，不能代替未贴面裸芯，转售/重复验收不能创造新产出；未解决的递归供应商保持未解决 |
 | upstream_dataset_requirement | 独立兼容的裸芯、未胶合单板、化学品、公用工程、运输及废物处理数据集；保留地理、树种、含水率、配方/状态、参考单位、边界门及继承负荷 |
 | disclosure | 说明采购门、实际芯/单板树种、上游芯胶及干燥、工厂/时间、公用工程、包装、排除服务及仅前景与关联上游的完整性 |
