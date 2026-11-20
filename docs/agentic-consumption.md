@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-04
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
-lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
+lastReviewedAt: 2026-11-20
+lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
+lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

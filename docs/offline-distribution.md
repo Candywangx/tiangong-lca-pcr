@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-20
+lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
+lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -106,6 +106,18 @@ Canonical PCR/classification bytes, methodology and translation states, reader
 compatibility minimum 0.4.1, Node 24.19.0/npm 12.2.0 construction pins and provider
 Node 24.18.0 remain unchanged. Existing immutable release assets and receipts stay
 intact. Publish only the tag's sealed bundle through the existing unified workflow.
+
+## Product 0.4.11 preparation
+
+Product 0.4.11 distributes the already reviewed Main sources from PCR #161,
+#166 and #173. It includes the candidate PCR batch and its lossless published-link
+compatibility, the source-bound PEF method module and the qualified Playwright
+runtime update. Existing candidate, translation and scientific-review states stay
+attached to their original records. The PEF module retains
+`scientific_approval=false`. Product publication requires the existing complete
+qualification, sealed npm pair, verified production website and stable GitHub
+receipt. The version source and three mirrors advance together; dependency
+resolutions retain the qualified Main graph.
 
 ## Build and transport
 
