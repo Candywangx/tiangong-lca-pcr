@@ -636,7 +636,7 @@ CPC64132为非轨道陆上旅客观光运输，以巴士为例。本方法保留
 | normalize_participants | 全部清单行 | 真实兼容原生量按直接有据共享覆盖归属功能一致履约参与队列，再仅除正真实N一次。不得再除票登圈载客导团头时编另一参考。 | cp_participants;cp_motor;cp_cable;cp_human;cp_animal;cp_support;cp_providers;cp_maintenance;cp_assets;cp_waste;cp_emissions | 每1Item(s)履约参与原生量 |  |
 | delivered_phase_equivalence | working_horse;motor_coach_supply;motor_car_supply;pedicab_supply;horse_carriage_supply;nonrail_cable_installation | 逐物理资产系统动物，归属交付阶段需求=真实交付原生量乘研究兼容作业/有据正同资产全用户寿命总作业，再除N一次。记录阶段类型制造安装或前期饲养，不是全寿命服务。寿命作业同物理队列兼容基准；动物休息支持及其他真实用途仍核算。独立补未覆盖运行照护更新退役，不用年度采购折旧工资通用头年因子。 | cp_assets;cp_participants;cp_animal;cp_cable | 每参考真实制造安装或前饲原生当量 |  |
 | animal_physical_balance | working_horse;horse_grass_hay;animal_tap_water;horse_faeces;horse_urine;animal_respiration_co2;animal_enteric_ch4 | 真实动物物种年龄工作休息头时日粮饮水健康厩养垫料全用户须记录。前期饲养交付覆盖与当前喂养照护粪尿期间互斥：全寿命供应替代对应本地照护释放，不另添全寿命负荷。饲料CN水分体存呼吸肠道释放粪尿去向须物理闭合；库存损失余差不能编排放。马科指南畜牧背景不提供通用所有物种或牛类换算。 | cp_animal;cp_assets;cp_waste;cp_emissions | 归一前真实CN水体存物种来源去向核对 |  |
-| supplemental_exposure | sightseeing_land | 真实日窗口天圈参与车距导场小时动物头时耦合作业独计。补充暴露不替履约参与N或供应原生单位。 | cp_participants;cp_motor;cp_cable;cp_human;cp_animal;cp_providers | 仅补充真实暴露 |  |
+| supplemental_exposure | sightseeing_land | 分别记录实际日期、服务窗口天数、圈次、参与者行程距离、车辆行驶距离、导览场次、导览小时数、动物数量与服务时间的乘积，以及耦合系统的作业量。各项保留自身单位和实际记录口径。上述补充活动量不能替代实际已完成的参与者体验数量 N，也不能替代外购供应服务的原生计量单位。 | cp_participants;cp_motor;cp_cable;cp_human;cp_animal;cp_providers | 仅补充真实暴露 |  |
 
 ### 数据质量要求
 

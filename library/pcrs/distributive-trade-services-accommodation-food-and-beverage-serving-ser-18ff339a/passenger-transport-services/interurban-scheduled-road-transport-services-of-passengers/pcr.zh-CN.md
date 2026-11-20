@@ -465,7 +465,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | native_normalization | interurban_scheduled_road_service | 真实兼容原始量乘有据队列全用户份额，闭合失败空载有客支持库存作业再除正N一次。兼容每公里小时人公里供应方先乘真实原生活动，已等价每段不第二次除。 | cp_completion; cp_fuel; cp_electric; cp_depot; cp_maintenance; cp_emissions | 每参考真实归属原生量 | ghg-product-2011 |
-| asset_manufacture | interurban_scheduled_road_service | 同资产真实交付原生量乘兼容队列/正的全寿命全用户有效作业再/N，仅制造交接点。未含安装运行改装更换维修退役独立，总成初始件供应方覆盖互斥。 | cp_assets | 每参考真实归属原生量 | ghg-product-2011 |
+| asset_manufacture | interurban_scheduled_road_service | 对同一资产，制造归属量 = 实际交付原生数量 ×（归属于目标队列的有效作业量 / 该资产全寿命内全部使用者的有效作业总量），再除以同一队列的正值 N，且仅除一次。分子和分母采用相同且有依据的作业计量单位，寿命作业总量须为正。此项仅覆盖制造交接点；另行计入尚未覆盖的安装、运行、改装、更换、维修和退役。各初始组件及供应方已覆盖阶段仅计入一次。 | cp_assets | 每参考真实归属原生量 | ghg-product-2011 |
 | energy_stock_fates | interurban_scheduled_road_service | 分别核对燃料库存供应净取用燃烧溢洒回收及电力总输入供应方直流内部变流储能回生外送损失耗散。混合物与替代组分互斥。真实兼容物种来源活动介质不由余差表差编造。 | cp_fuel; cp_electric; cp_emissions | 每参考真实归属原生量 | ghg-product-2011 |
 
 ### 数据质量要求
