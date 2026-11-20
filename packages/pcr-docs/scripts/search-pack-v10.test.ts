@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {gzipSync} from 'node:zlib';
+import {brotliCompressSync, gzipSync} from 'node:zlib';
 import {packSearchShards,unpackSearchFile,readSearchManifest,type SearchManifest,type SearchPhysicalFile} from '../lib/search-pack.ts';
 import {encodeBrotliSearchPack,decodeBrotliSearchPack} from './search-brotli.ts';
 const hash=(bytes:string|Uint8Array)=>'sha256:'+createHash('sha256').update(bytes).digest('hex');
@@ -28,4 +28,33 @@ test('v10 authenticates physical bytes before decoding and retains logical recei
  await assert.rejects(unpackSearchFile(f.manifest,f.file,f.bytes,hash));
  f.file.logicalShards[1]!.wireSha256='sha256:'+'0'.repeat(64);
  await assert.rejects(unpackSearchFile(f.manifest,f.file,f.bytes,hash,decodeBrotliSearchPack));
+});
+
+test('v11 restores canonical v8 bytes and rejects forged context sizes, channel ownership and coded data', async () => {
+ const base = fixture(8);
+ const payload = encodeBrotliSearchPack(base.inner, 8, true);
+ const envelope = JSON.parse(payload) as {data:string; codedBytes:number; innerBytes:number; innerVersion:number};
+ const manifest = {...base.manifest, schemaVersion:11 as const};
+ const read = (value: typeof envelope) => {
+  const bytes = Buffer.from(JSON.stringify(value));
+  return unpackSearchFile(manifest, {...base.file, bytes:bytes.length, sha256:hash(bytes)}, bytes, hash, decodeBrotliSearchPack);
+ };
+ assert.deepEqual((await read(envelope)).map(member => JSON.stringify(member)), wires);
+ for (const invalid of [{codedBytes:0}, {codedBytes:20_000_001}, {innerVersion:9}, {innerBytes:envelope.innerBytes + 1}]) {
+  await assert.rejects(read({...envelope, ...invalid}));
+ }
+ const decoded = decodeBrotliSearchPack(Buffer.from(envelope.data, 'base64'), envelope.codedBytes);
+ type CodedPack = {numericColumns: [{lengths:number[]}, unknown, unknown, unknown, string[]]; shards: {entries:{map:number[]}}[]};
+ const mutations: ((pack: CodedPack) => void)[] = [
+  pack => { pack.numericColumns[0].lengths[0] = 20_000_001; },
+  pack => { pack.numericColumns[0].lengths.pop(); },
+  pack => { pack.numericColumns[4][0] = '!'; },
+  pack => { pack.shards[0]!.entries.map[0] = 999; },
+ ];
+ for (const mutate of mutations) {
+  const pack = JSON.parse(Buffer.from(decoded).toString('utf8')) as CodedPack;
+  mutate(pack);
+  const bytes = Buffer.from(JSON.stringify(pack));
+  await assert.rejects(read({...envelope, codedBytes:bytes.length, data:brotliCompressSync(bytes).toString('base64')}));
+ }
 });

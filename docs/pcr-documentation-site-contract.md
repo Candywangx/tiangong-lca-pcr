@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-17
-lastReviewedNote: "PR172: integrate d1c8953e5 Brotli search transport and required v8/v9 packing dependencies; preserve logical search content, PCR artifacts and resource budgets. Final-source CI remains required."
-lastReviewedCommit: 989050f32ca7c647c9c248a0f2d2bd4b165e88c7
+lastReviewedAt: 2026-11-20
+lastReviewedNote: "PR172 local integration of CPC 63–65 and the PR37 bounded v11 search transport."
+lastReviewedCommit: e72d4bafcf47d4d533a05ff50a58b36545c430e0
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -666,6 +666,22 @@ import. Old transport readers, full records, tokenization, query limits, ranking
 and retry behavior remain available. The additional decoder assets are included
 in the static export and resource counts; measured transfer savings must be
 reported alongside their download cost.
+
+If the earlier transports exceed a language budget, the generator also measures
+manifest version 11 over consecutive groups of at most sixteen logical shards.
+Its Brotli envelope (schema 7, `v8-context-brotli-base64`) binds the coded byte
+length and the exact canonical v8 inner length and hash. Within the v8 numeric
+columns, term commands and score ranks use two-symbol context, posting lengths
+and first values use the v9 one-symbol model, and posting remainders retain
+their VLQ strings. The two-symbol model blends the observed bit counts for the
+previous two symbols and current bit prefix with six observations from the
+one-symbol prior. At 255 observations both pair counts are halved, rounding
+down. Both predecessors reset at each string boundary.
+
+The reader checks map ownership, channel counts and the exact expanded UTF-8
+length before arithmetic decoding. It authenticates the reconstructed v8 bytes
+and then every logical wire. The existing Worker Brotli decoder handles both
+envelopes. Full manifests and physical files count toward the same budgets.
 
 The generator retains the original sixteen-member greedy layout as a candidate
 and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.

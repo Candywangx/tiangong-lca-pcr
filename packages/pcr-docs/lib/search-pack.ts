@@ -24,11 +24,12 @@ export interface SearchManifestV7 extends Omit<SearchManifestV5, "schemaVersion"
 export interface SearchManifestV8 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 8 }
 export interface SearchManifestV9 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 9 }
 export interface SearchManifestV10 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 10 }
-export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7 | SearchManifestV8 | SearchManifestV9 | SearchManifestV10;
+export interface SearchManifestV11 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 11 }
+export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7 | SearchManifestV8 | SearchManifestV9 | SearchManifestV10 | SearchManifestV11;
 export type SearchDigest = (bytes: Uint8Array) => string | Promise<string>;
 export function searchUtf8(text: string): Uint8Array { return utf8.encode(text); }
 export function readSearchManifest(value: unknown, language: string): SearchManifest {
- if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7 && value.schemaVersion !== 8 && value.schemaVersion !== 9 && value.schemaVersion !== 10) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
+ if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7 && value.schemaVersion !== 8 && value.schemaVersion !== 9 && value.schemaVersion !== 10 && value.schemaVersion !== 11) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
  let next = 0, raw = 0, gzip = 0;
  const urls = new Set<string>();
  for (const file of value.files) {
@@ -282,7 +283,7 @@ export function packSearchShards(wires: readonly string[], sourceCommit: string,
   if (!object(packed) || !Array.isArray(packed.numericColumns)) return fail();
   const columns = packed.numericColumns as string[][];
   if (columns.reduce((size, column) => size + column.length + column.reduce((n, text) => n + text.length, 0), 0) > SEARCH_RAW_LIMIT) throw new SearchChannelCapacityError();
-  return JSON.stringify({...packed, schemaVersion: 5, encoding: arithmeticEncoding, numericColumns: columns.map(encodeSearchChannel)});
+  return JSON.stringify({...packed, schemaVersion: 5, encoding: arithmeticEncoding, numericColumns: columns.map(column => encodeSearchChannel(column))});
  }
  if (!wires.length || wires.length > SEARCH_PACK_MEMBERS || !commit(sourceCommit) || !natural(firstLogicalShard) || (version !== 5 && version !== 6 && version !== 7 && version !== 8)) return fail();
  const dictionary: string[] = [], ids = new Map<string, number>(), numericBudget = {remaining: SEARCH_RAW_LIMIT};
@@ -333,17 +334,58 @@ function verifyChannelOwnership(shards: unknown[], count: number): void {
   }
   if (usedChannels.size !== count) return fail();
 }
+/** Restore a canonical v8 pack within its authenticated byte count before passing it to the v8 reader. */
+function restoreContextPack(bytes: Uint8Array, expected: number): Uint8Array {
+ const packed: unknown = JSON.parse(new TextDecoder("utf-8", {fatal:true}).decode(bytes));
+ if (!object(packed) || packed.schemaVersion !== 4 || packed.encoding !== compactEncoding ||
+     !Array.isArray(packed.shards) || packed.shards.length > SEARCH_PACK_MEMBERS || !Array.isArray(packed.numericColumns) || packed.numericColumns.length !== 5) return fail();
+ const columns = packed.numericColumns;
+ const literal: unknown = columns[4];
+ if (!Array.isArray(literal) || !literal.every(text => typeof text === "string" && /^[A-Za-z0-9+/]*$/u.test(text))) return fail();
+ verifyChannelOwnership(packed.shards, literal.length);
+ // JSON framing outside the channels and each unescaped ASCII string are counted before allocating.
+ const channelBytes = utf8.encode(JSON.stringify(columns)).length;
+ let restoredBytes = bytes.length - channelBytes + JSON.stringify(literal).length + arraySyntax(columns.length);
+ const budget = {remaining: SEARCH_RAW_LIMIT - literal.reduce((sum, text) => sum + text.length + 1, 0)};
+ if (budget.remaining < 0) return fail();
+ for (const channel of columns.slice(0, 4)) {
+  if (!object(channel) || !Array.isArray(channel.lengths) || channel.lengths.length !== literal.length) return fail();
+  restoredBytes += arraySyntax(channel.lengths.length) + 2 * channel.lengths.length;
+  for (const length of channel.lengths) {
+   if (!natural(length) || length > SEARCH_RAW_LIMIT) return fail();
+   restoredBytes += length;
+  }
+  if (restoredBytes > expected) return fail();
+ }
+ if (restoredBytes !== expected) return fail();
+ packed.numericColumns = columns.map((channel, index) =>
+   index === 4 ? literal : decodeSearchChannel(channel, budget, index < 2 ? 2 : 1));
+ return utf8.encode(JSON.stringify(packed));
+}
 /** Validates actual physical bytes and each restored logical wire before a caller imports indexes. */
 export async function unpackSearchFile(manifest: SearchManifest, file: SearchPhysicalFile, bytes: Uint8Array, digest: SearchDigest, decompress?: (bytes:Uint8Array, expected:number)=>Uint8Array|Promise<Uint8Array>): Promise<Record<string, unknown>[]> {
  if (bytes.byteLength !== file.bytes || bytes.byteLength > SEARCH_RAW_LIMIT || await digest(bytes) !== file.sha256) return fail();
  let value: unknown;
  try { value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); } catch { return fail(); }
- if(manifest.schemaVersion===10){
-  if(!object(value)||Object.keys(value).length!==9||value.schemaVersion!==6||value.encoding!=="v4-brotli-base64"||value.sourceCommit!==manifest.sourceCommit||value.language!==manifest.language||value.firstLogicalShard!==file.firstLogicalShard||(value.innerVersion!==7&&value.innerVersion!==8&&value.innerVersion!==9)||!natural(value.innerBytes)||value.innerBytes<1||value.innerBytes>SEARCH_RAW_LIMIT||!hash(value.innerSha256)||typeof value.data!=="string"||value.data.length>Math.ceil(SEARCH_RAW_LIMIT/3)*4||!decompress)return fail();
+ if(manifest.schemaVersion===10 || manifest.schemaVersion===11){
+  const context = manifest.schemaVersion === 11;
+  if (!object(value) || Object.keys(value).length !== (context ? 10 : 9) ||
+      value.schemaVersion !== (context ? 7 : 6) ||
+      value.encoding !== (context ? "v8-context-brotli-base64" : "v4-brotli-base64") ||
+      value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language ||
+      value.firstLogicalShard !== file.firstLogicalShard ||
+      (value.innerVersion !== 7 && value.innerVersion !== 8 && value.innerVersion !== 9) ||
+      !natural(value.innerBytes) || value.innerBytes < 1 || value.innerBytes > SEARCH_RAW_LIMIT ||
+      !hash(value.innerSha256) || typeof value.data !== "string" ||
+      value.data.length > Math.ceil(SEARCH_RAW_LIMIT / 3) * 4 || !decompress) return fail();
+  const codedBytes = context ? value.codedBytes : value.innerBytes;
+  if ((context && value.innerVersion !== 8) || !natural(codedBytes) || codedBytes < 1 || codedBytes > SEARCH_RAW_LIMIT) return fail();
   let binary:string;
   try{binary=atob(value.data);}catch{return fail();}
   if(!binary.length||binary.length>SEARCH_RAW_LIMIT||btoa(binary)!==value.data)return fail();
-  const compressed=Uint8Array.from(binary,c=>c.charCodeAt(0)),inner=await decompress(compressed,value.innerBytes);
+  const compressed=Uint8Array.from(binary,c=>c.charCodeAt(0)),coded=await decompress(compressed,codedBytes);
+  if(coded.length!==codedBytes)return fail();
+  const inner=context?restoreContextPack(coded,value.innerBytes):coded;
   return unpackSearchFile({...manifest,schemaVersion:value.innerVersion},{...file,bytes:value.innerBytes,sha256:value.innerSha256},inner,digest);
  }
  if (!object(value) || value.schemaVersion !== (manifest.schemaVersion === 9 ? 5 : manifest.schemaVersion === 8 ? 4 : manifest.schemaVersion === 7 ? 3 : manifest.schemaVersion === 6 ? 2 : 1) || value.encoding !== (manifest.schemaVersion === 9 ? arithmeticEncoding : manifest.schemaVersion === 8 ? compactEncoding : manifest.schemaVersion === 7 ? channelEncoding : manifest.schemaVersion === 6 ? numericEncoding : encoding) || value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language || value.firstLogicalShard !== file.firstLogicalShard || !Array.isArray(value.dictionary) || value.dictionary.length > 1_000_000 || !value.dictionary.every((term: unknown): term is string => typeof term === "string") || new Set(value.dictionary).size !== value.dictionary.length || !Array.isArray(value.shards) || value.shards.length !== file.logicalShardCount || value.shards.length > SEARCH_PACK_MEMBERS) return fail();
