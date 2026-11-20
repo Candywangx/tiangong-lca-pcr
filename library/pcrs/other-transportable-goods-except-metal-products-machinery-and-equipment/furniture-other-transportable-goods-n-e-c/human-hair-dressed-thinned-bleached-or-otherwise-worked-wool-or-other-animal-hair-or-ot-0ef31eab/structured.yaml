@@ -1,10 +1,1757 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "38972"
-  title: "Human hair, dressed, thinned, bleached or otherwise worked; wool or other animal hair or other textile materials, prepared for use in making wigs or the like; wigs, false beards, eyebrows and eyelashes, switches and the like, of human or animal hair or of textile materials; articles of human hair n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.furniture-other-transportable-goods-n-e-c.human-hair-dressed-thinned-bleached-or-otherwise-worked-wool-or-other-animal-hair-or-ot-0ef31eab"
+  classification_refs: "CPC 3.0:38972, accepted narrower association for complete natural-colour hand-knotted human-hair wigs with the specified lace cap"
+  covered_products: "Complete natural-colour human-hair wigs with sewn uncoated polyamide 6.6 lace caps and hand-knotted hair"
+  excluded_products: "Raw hair as terminal; separately sold loose dressed hair or wefts; toppers; false beards and eyelashes; animal or synthetic hair; glued skin bases; intentional bleaching/dyeing/perming; machine-weft wigs; purchased finished-wig repacking"
+  representative_product: "One declared complete full-lace wig configuration with actual fixed accessories"
+  production_route: "Raw hair receipt; sort/wash/sun-dry; lace cut/sew; hand-knot; actual finish; test and first overall release"
+  market_state: "Conditioned complete newly accepted wig; net mass excludes removable packaging"
+functional_unit:
+  what: "Provide the specified complete wearable human-hair lace wig"
+  how_much: "1 kg reference flow"
+  how_well: "Meets declared cap fit, seam integrity, hair length/direction/density, shedding, cleanliness and appearance acceptance; no universal test limits"
+  how_long_or_cycle: "One unique first overall release; no assumed wearing life"
+  reference_flow_link: "released_wig"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "all processes"
+      rule: "Include actual receipt/storage, sorting/alignment and removal of short/damaged hairs, washing/rinsing, sun-drying, lace inspection/cutting and cap sewing, seam reinforcement, hand knotting, actual finishing and overall QC. Retain every failed lot, trial, startup, shutdown, idle, cleaning, maintenance and rework event, including unauthorized operations. No bleach, dye, perm, adhesive, disinfectant, steam generator or fuel boiler is presumed; when actually used add each precise material/species and review route applicability."
+      source_ids:
+        - adorable-wig-factory
+        - daniel-wig-manufacture
+        - allure-hair-process
+    - rule_id: boundary_q
+      applies_to: "released_wig"
+      rule: "Q is NEW first overall accepted complete net wig kg, each serial/lot counted once. Closing FG from this cohort is already included in Q; do not add it again as production output. Delivery, retest, storage, repair and redelivery create no new Q. Never substitute purchased raw-hair kg or hair-only mass for complete-wig Q."
+      source_ids:
+        - adorable-wig-factory
+        - daniel-wig-manufacture
+    - rule_id: boundary_stocks
+      applies_to: "all inventory rows"
+      rule: "Reconcile raw hair, wet/dry hair WIP, cap panels, partly ventilated wigs, failed material, chemical baths, equipment charges and FG separately by lot/location/state. Physical opening + real receipts/transfers = closing + real consumption/exports/losses. For EVERY exchange carry the opening inherited burden vector, add actual current increments, transfer internal vectors once and retain closing vectors with original Qc. Do not equate stored mass with stored environmental burden. Failed and Q0 campaigns remain linked to their production history, never disappear."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_fg
+      applies_to: "fg_service"
+      rule: "Keep opening/closing FG, gross outward delivery, actual external return, disposal and repair by original cohort. Reverse the original delivery event once in the delivery ledger for a genuine return; never cancel original manufacture or add return kg to Q. Charge NEW repair/rewash/repack inputs to the original cohort Qc, not new output. Keep original inherited vectors and observed service horizon; missing later service is disclosed. Combine gates by cancelling only the internal first-release transfer Q and its vector; retain all external physical flows."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_gross
+      applies_to: "all inventory rows"
+      rule: "Maintain unallocated gross physical V by exchange/origin/destination independently of attributed environmental A. Report actual waste, emissions, replacement parts and heat-carrier returns as V/Qc for their actual cohort, never reduced by economic allocation, service allocation or WIP burden deferral. F is genuinely new activity. X can remove only an identified OTHER same-side duplicate with event evidence, never new repair, fresh water, loss or failure. Combined origin partitions must sum to measured gross V without overlap."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_physical
+      applies_to: "all processes"
+      rule: "Close total physical mass and relevant elemental balances separately from evidence for actual species. Whole wet hair/liquor and their water/solid constituents are either one ledger or explicitly non-additive bridges. Distinguish free/phase water, actual reaction water and structural water; do not invent a reaction or fit two unknowns with one residual. COD, TOC and VOC totals are indicators, not masses of a guessed molecule. Retain individual actual gas species, phase, origin, recipient medium, and measured gross versus net quantities."
+      source_ids:
+        - daniel-wig-manufacture
+    - rule_id: boundary_heat
+      applies_to: "all processes"
+      rule: "Sun drying does not create a purchased heat exchange. Meter actual electric drying/styling if present. If liquid hot water or another external carrier truly supplies heat, retain its actual mass, composition, pressure, temperature, phase/enthalpy and external Product return; use one primary energy supply account and the supplier water/energy agreement. Mass/enthalpy bridge rows are not an additional purchase of the same energy. Do not manufacture boiler fuel, steam, condensate or cooling flows from an assumed route."
+      source_ids:
+        - adorable-wig-factory
+        - daniel-wig-manufacture
+    - rule_id: boundary_pack
+      applies_to: "fg_service"
+      rule: "For EACH package article reconcile opening empty + opening attached to WIP/FG + opening reusable + external purchases + first non-purchase external receipts (attached to incoming supplies, free transfers or borrowing) + genuine external returns linked to an earlier outward movement of the same packaging = corresponding closing stocks + outward packaging attached to GROSS physical shipments + external package returns + waste. These receipt classes are mutually exclusive per event; a first non-purchase receipt is not a return without evidence of that same packaging previously leaving this site. All physical receipt masses enter V regardless of price or ownership. Assign only the supply burden actually borne by this system, once; where already included in an incoming-material supplier inventory, retain the packaging mass bridge without adding that supply burden again. Record ownership, provider, prior movement link and supply-burden coverage. Internal reuse cancels and is not a new purchase. Packing is excluded from net wig Q, is not an automatic co-product/credit, and is never allocated by net dispatch alone. Retain each material and each genuine provider separately."
+      source_ids:
+        - adorable-wig-factory
+        - ilcd-allocation-2010
+boundary_abstraction:
+  declared_starting_condition: "Unworked cut human hair and supplied lace fabric at actual site receipt; each whole auxiliary and fixed accessory in its actual supply state"
+  starting_condition_role: "foreground_gate_to_gate"
+  product_classification_scope: "Narrow complete natural-colour human-hair wig subset of 38972; 38971 remains upstream raw-hair context"
+  recursive_input_rule: "Purchased finished wigs or worked wefts do not substitute for raw hair; returns retain original identity and burden history; internal hair/cap/WIP transfers cancel"
+  upstream_dataset_requirement: "Link actual raw-hair preparation, fabric/thread/accessory supplies, each whole formulation, utility supply, packaging supply and actual waste treatment exactly once with compatible geography/state"
+  disclosure: "Report manufacturing, postrelease FG-service and combined physical gates separately; disclose missing inputs and unresolved providers rather than treating them as zero"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Complete natural-colour hand-knotted human-hair wig with sewn polyamide 6.6 lace cap"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "hair species human and source state"
+    - "natural colour and no intentional colour-change route"
+    - "hair length distribution and root-tip alignment"
+    - "uncoated polyamide 6.6 lace fibre identity and actual textile construction"
+    - "cap panel geometry and seam thread specification"
+    - "ventilation knot pattern and density map"
+    - "fixed elastic and clip material configuration"
+    - "actual wash formulation and whole supply state"
+    - "actual drying and styling operations"
+    - "first-release tests and unique serial or lot IDs"
+    - "conditioning moisture tare and complete net mass"
+    - "site geography and actual electricity provider voltage"
+    - "raw material WIP and FG stocks by lot"
+    - "inherited per-exchange vectors and original Qc"
+    - "actual wastewater destination and species tests"
+    - "packaging custody and gross dispatch returns"
+    - "complete failed idle cleanup trial and rework loads"
+    - "reporting period H and data uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q sums calibrated complete net wig masses at the first-release condition. Record each item mass and count independently within the same configuration/lot; no fixed kg/item or moisture default. Packaging, separate hair bundles and cap subassemblies are not extra product output."
+  - id: whole_supply
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Count each supplied shampoo, conditioner or other preparation once as a whole. Active ingredient, carrier water and assay are non-additive child balances. Actual onsite mixing requires each purchased ingredient and true energy, evaporation and loss; a supplier blend must not be purchased again as its ingredients."
+  - id: unit_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual numerator property"
+      uuid: ""
+    required_unit: "original unit"
+    rule: "Convert raw units before attribution. Electricity kWh times 3.6 gives MJ. Integrate only actual rates; an already integrated liquid/gas volume is not multiplied by H again. Use independently measured material-specific density at actual temperature/pressure/composition, not water density or a secondary flow-property coefficient."
+  - id: single_normalization
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual numerator property"
+      uuid: ""
+    required_unit: "original unit"
+    rule: "Collection retains undivided raw values. report_once is the sole division by the applicable Qc. Cards and aggregation reference the same result; H is an observation window, never a second denominator. Qc=0 retains physical loads and inherited vectors without a unit result."
+process_map:
+  - id: wig_manufacture
+    name: "Integrated human-hair preparation and complete lace-wig assembly"
+    inclusion: "required"
+    inclusion_condition: "Actual receipt to first overall release; operation-level subledgers retain each stage"
+    role: "foreground_manufacturing"
+    quantitative_reference: "Q kg newly first-released complete wig"
+  - id: fg_service
+    name: "Postrelease storage packing handling and actual return work"
+    inclusion: "conditional"
+    inclusion_condition: "Actual services during H linked to original released cohorts"
+    role: "foreground_service"
+    quantitative_reference: "Original cohort Qc kg; no new production"
+process_inventory:
+  - id: wig_manufacture
+    label: "Integrated human-hair preparation and complete lace-wig assembly"
+    inputs:
+      product:
+        - row_id: raw_hair
+          role: "Unworked human hair receipt"
+          name: "Unworked cut human hair for wig manufacture"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual unworked cut human hair at receipt, retaining washed/unwashed state, root-tip direction, moisture and supplier preparation. Do not treat disposal waste as saleable input. Exact supply-flow UUID remains unresolved; no grade, origin or yield is assumed. Measure gross received, packaging tare, physical stock and usable hair separately; carry actual upstream burden. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hair
+              source_ids:
+                - adorable-wig-factory
+                - un-cpc3-2025
+            ranges: []
+        - row_id: lace_fabric
+          role: "Cap lace cloth"
+          name: "Uncoated polyamide 6.6 Swiss-lace tulle for wig cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One supplied lace cloth specification per row, with actual fibre composition, mesh, finish and usable width; split different cloth types. Inspect, cut panels, retain offcuts and sewing losses. This bounded route uses uncoated polyamide 6.6 Swiss-lace tulle. Supplier specifications must confirm the actual construction; trade name alone does not prove woven, knitted or bobbinet formation. Banbury WN2625 supplies a documented material example, not proof of its use in any named wig. A different polymer, coating or mixed-panel cap requires applicability review and separate atomic cards. [banbury-lace-substrate] This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cap
+              source_ids:
+                - daniel-wig-manufacture
+                - banbury-lace-substrate
+            ranges: []
+        - row_id: sewing_thread
+          role: "Cap seam thread"
+          name: "Wig-cap sewing thread"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual supplied sewing-thread specification including polymer/fibre, twist, finish and net mass. It forms seams and reinforcement, not synthetic hair. Do not use yarn explicitly excluding sewing thread. Retain bobbin stock and cut ends. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cap
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: elastic_strap
+          role: "Fixed adjustment strap"
+          name: "Wig-cap elastic adjustment strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional only where the approved complete configuration contains this single strap article; declare its textile/elastomer composition and attachments, measure installed mass and offcuts. Lingerie/plastic-apparel-specific native candidates are not presumed applicable. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cap
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: wig_clip
+          role: "Fixed mechanical clip"
+          name: "Steel wig attachment clip"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual steel clip fixed in the delivered wig; declare coating and dimensions and count/weigh independently. Other actual clip materials require separate named rows. No adhesive attachment is presumed and a paper clip is not a wig clip. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cap
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: wash_shampoo
+          role: "Whole supplied hair wash"
+          name: "Supplied aqueous hair-washing shampoo"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual complete supplied shampoo, one formulation per row. Supplier specification/SDS, net wet mass and assay/carrier-water child account are required; no invented active ingredient or dose. Natural-colour and chemical-free marketing never justify omitting actual washing chemicals. Onsite preparation follows whole_supply with separate purchased ingredients. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wet
+              source_ids:
+                - adorable-wig-factory
+                - allure-hair-process
+            ranges: []
+        - row_id: conditioner
+          role: "Whole supplied conditioning preparation"
+          name: "Supplied aqueous hair conditioner"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual rinsing/conditioning formulation. Record its complete supplied mass once and retention/rinse-out, water and solids as child balances. A single silicone or antifoam candidate is not this whole preparation; no curling/perming chemistry is inferred. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wet
+              source_ids:
+                - allure-hair-process
+            ranges: []
+        - row_id: tap_water
+          role: "Supplied washing water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Treated piped municipal/potable water supplied for actual washing/rinsing/cleanup, not raw abstraction, deionized water or wastewater. Exact supply UUID remains unresolved. Weigh or independently measure density/state for meter-volume conversion. Whole shampoo carrier water is not purchased again. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wet
+              source_ids:
+                - adorable-wig-factory
+            ranges: []
+        - row_id: electricity
+          role: "Manufacturing electricity"
+          name: "Low-voltage alternating-current supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Actual user-side supply for sewing, lighting, pumps and any electric drying/styling; retain startup/idle/failed work. Declare geography, voltage, generation/provider and service boundary. China-specific or hydropower-at-plant candidates do not identify the Indian or otherwise unspecified supply. No direct combustion emissions or boiler fuel follow from electricity use. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: sewing_needle
+          role: "Replacement hand-sewing needle"
+          name: "Steel hand sewing needle"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual iron/steel HAND needle, not a machine needle or an aggregate of hardware. Verify actual alloy, coating and supplier specification; exact flow UUID remains unresolved. Retain real replacement mass and used/broken outgoing needles and tool stocks; no fixed lifetime. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: machine_needle
+          role: "Replacement sewing-machine needle"
+          name: "Steel sewing-machine needle"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional machine seam reinforcement; one actual complete needle with alloy/coating specified. Do not reuse the hand-use-only needle family. Retain replacement, stock and scrap mass independently. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: sewing_oil
+          role: "Supplied sewing-machine oil"
+          name: "Sewing-machine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional complete lubricant preparation actually consumed in seam equipment; track charge/top-up/drain/leak and actual formulation. Do not bind a fixed synthetic PAO route to an unspecified mineral or mixed oil. Oil-contaminated cloth and drained oil remain separate wastes. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: cleaning_cloth
+          role: "Reusable cotton wiping cloth"
+          name: "Cotton equipment wiping cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual cotton cloth purchased for equipment cleanup; count net mass, laundering/reuse and discard. Add actual laundry water, detergent and energy individually; reusing the same cloth is not a new purchase. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: purchased_heat
+          role: "Actual external heat supply"
+          name: "Purchased heat for hair-washing water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only if actually supplied. Record delivered net MJ and supplier supply/return state; one provider supply convention. The hot_water_supply/heat_water_return mass ledger bridges the same carrier and must not duplicate this energy procurement. Sun drying has no such purchase. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: hot_water_supply
+          role: "Liquid heat-carrier supply"
+          name: "Supplied liquid hot water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual externally supplied hot liquid water. Record gross mass, enthalpy/state and whether supplier heat inventory includes water. Use the water supply burden once under the agreement; physical carrier mass is retained even when energy procurement is represented by purchased_heat. No assumed steam. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_wig
+          role: "New first-released complete wig"
+          name: "Complete natural-colour hand-knotted human-hair wig with sewn polyamide 6.6 lace cap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the complete natural-colour human-hair wig with sewn polyamide 6.6 lace cap and actual fixed accessories enters this row. Exact reference product UUID remains unresolved. Sum uniquely first-accepted complete conditioned net masses; hair, cap and fixed clips are already contained in that mass. Closing FG is already part of Q. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_release
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: heat_water_return
+          role: "External heat-carrier return"
+          name: "Returned liquid heat-carrier water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual liquid water physically returned to the heat supplier. Retain GROSS Product return, temperature/pressure/enthalpy, makeup and loss under the same supply agreement. It is not wastewater, a negative emission or an automatic credit; normalize physical return by actual cohort Qc independently of energy allocation. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - daniel-wig-manufacture
+            ranges: []
+      waste:
+        - row_id: discarded_hair
+          role: "Discarded human hair"
+          name: "Discarded human hair"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sorted-out short/damaged hair and cutting/shedding losses leaving as waste; separate dry hair, adhering water and chemical residues through a non-additive bridge. Do not use the unworked-hair Product UUID for disposal waste. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: wash_liquor
+          role: "Spent hair-washing liquor"
+          name: "Spent hair-washing liquor"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measured whole wastewater to the actual treatment provider, including washing/rinsing/cleanup; one total wet mass with non-additive water/solids/species assays. Not an elementary discharge unless it actually crosses to that medium. No arbitrary part-degreasing or viscose-process proxy. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: lace_offcuts
+          role: "Polyamide 6.6 wig-cap lace offcuts"
+          name: "Polyamide 6.6 wig-cap lace offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual fabric-specification waste from cutting/failed caps. Declare fibre composition and actual destination; split unlike fabrics and contaminated versus clean batches. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: thread_offcuts
+          role: "Wig-cap sewing-thread offcuts"
+          name: "Wig-cap sewing-thread offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual same-thread trimming and failed-seam waste by material; not a generic textile waste bundle. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: elastic_offcuts
+          role: "Wig-cap elastic-strap offcuts"
+          name: "Wig-cap elastic-strap offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual strap cutting/replacement waste with the same composite composition; do not add constituent mass to the whole strap mass. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: reject_wig
+          role: "Rejected complete human-hair wig"
+          name: "Rejected complete human-hair wig"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual unrecoverable complete rejected wig as one mixed article. If dismantled, replace the whole-wig outgoing waste with mutually exclusive measured material partitions; do not add both. Retain all failed/rework burden. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: steel_needle_waste
+          role: "Discarded steel sewing needle"
+          name: "Discarded steel sewing needle"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual broken/replaced hand or machine steel needles of one declared alloy and destination; split different coatings/materials when treatment differs. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent sewing-machine lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual drained or collected lubricant to the true waste handler; gross wet mass and composition including water separately tested. Do not turn spilled oil into this collected stream or credit recovery automatically. Exact waste-flow UUID remains unresolved; verify actual oil composition and handler before binding. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+        - row_id: oily_cloth
+          role: "Oil-contaminated cotton wiping cloth"
+          name: "Oil-contaminated cotton wiping cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole soiled cloth waste to one treatment provider; oil and cotton are non-additive child masses. Do not also count its retained oil in drained-oil waste. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - adorable-wig-factory
+                - daniel-wig-manufacture
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Actual drying water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual H2O vapour, CAS7732-18-5, emitted to unspecified air; Mass reference factor1. Native synonyms include heavy/tritiated water and unrelated aliases: none authorizes isotope substitution, liquid discharge or another medium; use ordinary measured H2O vapour only. Independent wet/dry mass, ambient moisture/airflow or verified specific water balance must distinguish vapour from wet wastewater/retained moisture; do not solve two unknown exits with one residual. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - adorable-wig-factory
+            ranges: []
+  - id: fg_service
+    label: "Postrelease storage packing handling and actual return work"
+    inputs:
+      product:
+        - row_id: returned_wig
+          role: "Actual external return of released complete wig"
+          name: "Previously released complete human-hair lace wig returned externally"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional gross physical receipt of a previously released complete human-hair wig. Preserve the original serial, cohort Qc, delivered state, net mass and burden vector; this is a custody bridge, not a new purchase or negative manufacture. Purchased used wigs for independent refurbishment fall outside this manufacturing route. Apply boundary_fg and physical_closure; the return does not create new Q."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - banbury-bespoke
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_electricity
+          role: "FG-service electricity"
+          name: "Low-voltage alternating-current supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Actual storage/packing/handling/return-work meter share by original cohort, including idle and cleanup. Provider/voltage/geography must be independently compatible; no China-specific identity is silently adopted. Never charge the manufacturing meter twice. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: paper_box
+          role: "Folding paperboard wig box"
+          name: "Paper Box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual folding retail paperboard box only, at plant and Mass reference1; native synonyms carton/cardboard/kraft box and comment describe a folding box, not a durable reusable transport crate. No CAS, grade/geography or secondary properties; composition and provider remain foreground facts. Apply boundary_pack: retain purchases, first non-purchase receipts attached to incoming supplies or received by free transfer/borrowing, and genuine returns linked to this same packaging’s prior outward movement. Keep empty/attached/reusable stocks and actual issue. Every receipt enters physical V; supply burdens actually borne are counted once, including any already embedded in the incoming supplier inventory, with explicit non-additive mass bridges. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - adorable-wig-factory
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pe_bag
+          role: "Polyethylene inner bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole polyethylene inner bag; verify supplier composition, specification and destination. Exact flow UUID remains unresolved. Apply boundary_pack: retain purchases, first non-purchase receipts attached to incoming supplies or received by free transfer/borrowing, and genuine returns linked to this same packaging’s prior outward movement. Keep empty/attached/reusable stocks and actual issue. Every receipt enters physical V; supply burdens actually borne are counted once, including any already embedded in the incoming supplier inventory, with explicit non-additive mass bridges. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - adorable-wig-factory
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: tissue_wrap
+          role: "Cellulose tissue wrapping sheet"
+          name: "Cellulose tissue wrapping sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual single cellulose tissue wrap; supplier fibre/coating and net mass declared. No toilet-paper or archival-paper proxy is presumed. Apply boundary_pack: retain purchases, first non-purchase receipts attached to incoming supplies or received by free transfer/borrowing, and genuine returns linked to this same packaging’s prior outward movement. Keep empty/attached/reusable stocks and actual issue. Every receipt enters physical V; supply burdens actually borne are counted once, including any already embedded in the incoming supplier inventory, with explicit non-additive mass bridges. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - adorable-wig-factory
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: protective_net
+          role: "Removable nylon wig-protection net"
+          name: "Removable nylon wig-protection net"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual removable nylon net; a packaging article, not the lace cap or human hair. Actual other-polymer net requires its own row; no default polymer mass. Apply boundary_pack: retain purchases, first non-purchase receipts attached to incoming supplies or received by free transfer/borrowing, and genuine returns linked to this same packaging’s prior outward movement. Keep empty/attached/reusable stocks and actual issue. Every receipt enters physical V; supply burdens actually borne are counted once, including any already embedded in the incoming supplier inventory, with explicit non-additive mass bridges. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - adorable-wig-factory
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dispatched_wig
+          role: "Gross external handover of released complete wig"
+          name: "Released complete human-hair lace wig dispatched externally"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual complete wig leaving the site, including first delivery and redelivery. Measure gross outward net wig mass and original cohort; packaging has separate atomic rows. This is a custody bridge, not an additional production reference or co-product. Keep the original release transfer internal at the combined gate and retain this external exit; never net away real returns or count delivery as new Q."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - banbury-bespoke
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: paper_box_out
+          role: "Folding paperboard wig box outward"
+          name: "Paper Box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual folding retail paperboard box only, at plant and Mass reference1; native synonyms carton/cardboard/kraft box and comment describe a folding box, not a durable reusable transport crate. No CAS, grade/geography or secondary properties; composition and provider remain foreground facts. Physical outgoing article attached to gross shipments or separately returned externally, with distinct measured destination subledgers. One physical total, not a co-product credit. All original cohort Qc and storage histories retained. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pe_bag_out
+          role: "Polyethylene inner bag outward"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual whole polyethylene inner bag; verify supplier composition, specification and destination. Exact flow UUID remains unresolved. Physical outgoing article attached to gross shipments or separately returned externally, with distinct measured destination subledgers. One physical total, not a co-product credit. All original cohort Qc and storage histories retained. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: tissue_wrap_out
+          role: "Cellulose tissue wrapping sheet outward"
+          name: "Cellulose tissue wrapping sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual single cellulose tissue wrap; supplier fibre/coating and net mass declared. No toilet-paper or archival-paper proxy is presumed. Physical outgoing article attached to gross shipments or separately returned externally, with distinct measured destination subledgers. One physical total, not a co-product credit. All original cohort Qc and storage histories retained. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: protective_net_out
+          role: "Removable nylon wig-protection net outward"
+          name: "Removable nylon wig-protection net"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual removable nylon net; a packaging article, not the lace cap or human hair. Actual other-polymer net requires its own row; no default polymer mass. Physical outgoing article attached to gross shipments or separately returned externally, with distinct measured destination subledgers. One physical total, not a co-product credit. All original cohort Qc and storage histories retained. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        - row_id: paper_box_waste
+          role: "Folding paperboard wig box waste"
+          name: "Folding paperboard wig box waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual discarded folding paperboard wig box to the specified handler; retain gross mass, composition, moisture and contamination. Do not reuse the Product UUID for waste or add component assays to the whole article mass. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pe_bag_waste
+          role: "Polyethylene inner bag waste"
+          name: "Polyethylene inner bag waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual discarded polyethylene inner bag to the specified handler; retain gross mass, composition, moisture and contamination. Do not reuse the Product UUID for waste or add component assays to the whole article mass. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: tissue_wrap_waste
+          role: "Cellulose tissue wrapping sheet waste"
+          name: "Cellulose tissue wrapping sheet waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual discarded cellulose tissue wrapping sheet to the specified handler; retain gross mass, composition, moisture and contamination. Do not reuse the Product UUID for waste or add component assays to the whole article mass. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: protective_net_waste
+          role: "Removable nylon wig-protection net waste"
+          name: "Removable nylon wig-protection net waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual discarded removable nylon wig-protection net to the specified handler; retain gross mass, composition, moisture and contamination. Do not reuse the Product UUID for waste or add component assays to the whole article mass. This card’s N / Qc references the same report_once result; take raw values from cp_raw or cp_fg and the named specialised protocol, with full gross-flow, stock, cohort and single-normalization rules."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "all processes"
+    rule: "This is an attributional manufacturing method for situations requiring allocation. ILCD section 7.9 applies under its stated attributional conditions; its multifunctional-product QFD example is not a fixed split for a wig and its recycling-loop formulas are not adopted as automatic credits. Industrial manufacturing pages support operations, not an LCA allocation rule."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_exclusive
+    applies_to: "all inventory rows"
+    rule: "First separately meter dedicated products/operations; use real or virtual subdivision where actual process knowledge uniquely assigns an input or service. Hair and cap parts embodied in one wig are assigned there; actual short hair sold separately and other wig styles remain separate functions. Mere physical contact or mass fraction does not establish determining causality."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_causal
+    applies_to: "all inventory rows"
+    rule: "For genuine remaining shared exchanges establish exchange-specific determining physical causality from how changes in outputs cause changes in that input/output. Sewing duration and actual intensity, wet-batch treatment demand or occupied space-time require evidence, not default shares. Do not apply one mass/time key to all exchanges; distinguish goods embodied from service provision."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_residual
+    applies_to: "all inventory rows"
+    rule: "Only genuinely unresolved residual shared burdens may use documented contemporaneous market values of actual co-products at the SAME common process gate and actual state/quality/quantity. Remove downstream extra processing, packing, transport and retail services from price comparators; no arbitrary choice of physical versus economic, fixed ratio or value-based deletion of waste/emission gross mass. Document zero/negative/nontraded cases as unresolved if no valid basis exists."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_closure
+    applies_to: "all processes"
+    rule: "Retain 100 percent closure of each allocated exchange across co-functions with original numerators and chosen criteria. Waste treatment remains assigned to the causing activity unless a separately evidenced legitimate joint process applies. Reuse or sale of hair/offcuts/packaging is not automatic avoided-production credit. Maintain gross physical V alongside attributed A; both retain failures, cleanup, loss and original cohort history."
+    source_ids:
+      - ilcd-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw
+      process_id: "wig_manufacture"
+      flow_role: "All manufacturing exchanges and stock vectors"
+      record_type: "foreground_record"
+      raw_fields: "event ID; row ID; lot/cohort; operation; timestamp; original unit; raw amount/rate; integration interval; physical origin/destination; Qc; opening/closing mass; opening/closing inherited vector per exchange; F; OTHER duplicate event X; allocation evidence; uncertainty"
+      collection_method: "Reconcile scales, meters, purchase/issue records and operation/WIP handovers. Retain all actual failed, idle, start-stop, cleanup, trial and rework events. Match only proven duplicate same-side events for X; never infer absent loads."
+      unit: "original unit"
+      frequency: "Each event and period close"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Actual site and outsourced operation interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; event provenance; stock reconciliation; allocation rationale; missing-data log"
+    - protocol_id: cp_hair
+      process_id: "wig_manufacture"
+      flow_role: "Raw human hair and preparation"
+      record_type: "foreground_record"
+      raw_fields: "supplier lot; human identity; raw/washed state; gross received mass; tare; moisture; dry hair mass; root-tip orientation; length grading; short/damaged removal; wet/dry WIP; supplier preparation; operation losses"
+      collection_method: "Verify human hair with supplier traceability and appropriate material inspection; weigh incoming/outgoing material and moisture samples independently. Hair-only mass never supplies whole-wig Q."
+      unit: "kg"
+      frequency: "Each receipt and preparation batch"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Receipt and sort/wash/dry stations"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Supplier declaration; weighing tickets; moisture method; reject disposition"
+    - protocol_id: cp_cap
+      process_id: "wig_manufacture"
+      flow_role: "Cap construction and fixed accessories"
+      record_type: "foreground_record"
+      raw_fields: "cloth supplier and fibre composition; mesh; finish; panel dimensions; thread identity; strap and clip configuration; received/issued/installed/offcut mass; count; seam and knot map; cap WIP"
+      collection_method: "Inspect supplied fabric; weigh material by specification; record cutting patterns, sewing reinforcement and actual hand-knotting. Compare complete bill of materials with installed components; no assumed fibre family."
+      unit: "kg"
+      frequency: "Each configuration and lot"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Cap cutting/sewing and ventilation"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Material specifications; BOM; seam inspection; handover and loss records"
+    - protocol_id: cp_wet
+      process_id: "wig_manufacture"
+      flow_role: "Whole formulations and water"
+      record_type: "foreground_record"
+      raw_fields: "formulation ID; SDS; supplier; whole wet mass; assay and carrier water; actual onsite recipe; each purchased ingredient; dilution water; bath stocks; water meter; independent density and temperature; retained moisture; rinse-out; wastewater destination"
+      collection_method: "Weigh whole supply and use; separate purchased formulation from onsite mixing. Use mass measurement or independently measured substance-specific density for volume. Match each actual bath discharge/evaporation/retention; unknown chemistry cannot be reconstructed from COD."
+      unit: "kg"
+      frequency: "Each wet batch and tank close"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Hair washing/rinsing and actual cleanup"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Recipe/SDS; tank balances; meters; density test; effluent transfer"
+    - protocol_id: cp_energy
+      process_id: "wig_manufacture"
+      flow_role: "Electricity by operation"
+      record_type: "foreground_record"
+      raw_fields: "meter ID; provider; geography; voltage; start/end reading; kWh or power rate; actual run/idle duration; drying/styling equipment; operation allocation criterion"
+      collection_method: "Read calibrated submeters and reconcile site bills; integrate power only when it is a rate. Keep sun-drying duration separate from purchased energy; include actual lighting and machine idle."
+      unit: "MJ"
+      frequency: "Each meter interval and H"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Manufacturing user-side supply"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Meter calibration; bill; operation log; 3.6 conversion audit"
+    - protocol_id: cp_maintenance
+      process_id: "wig_manufacture"
+      flow_role: "Replacement needles lubricant and wiping cloth"
+      record_type: "foreground_record"
+      raw_fields: "tool type and material; replacement count and mass; oil formulation; opening charge; additions; drainage; leaks; closing charge; cloth supply/reuse/washing/discard; destination"
+      collection_method: "Inspect actual maintenance records and weigh replacement/discarded parts. Track each material independently; allocate shared equipment service from proven use while preserving gross physical replacement and wastes."
+      unit: "kg"
+      frequency: "Each maintenance and charge event"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Sewing/ventilation equipment and cleanup"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Work orders; scales; lubricant specification; charge closure"
+    - protocol_id: cp_heat
+      process_id: "wig_manufacture"
+      flow_role: "Conditional external heat and water carrier"
+      record_type: "foreground_record"
+      raw_fields: "supplier; agreed water/energy boundary; net heat meter MJ; supply/return mass; supply/return temperature pressure phase and enthalpy; density; makeup; loss; cohort"
+      collection_method: "Measure only real supply and external return. Reconcile enthalpy difference and heat meter with water balance; one primary supply account, no duplicate heat/carrier provider or fictitious boiler."
+      unit: "MJ; kg"
+      frequency: "Each actual supply interval"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Actual supplier/site heat interface"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Supply contract; meter; state measurements; water return tickets"
+    - protocol_id: cp_release
+      process_id: "wig_manufacture"
+      flow_role: "Unique first complete-wig release"
+      record_type: "foreground_record"
+      raw_fields: "serial/lot ID; full cap/hair/accessory configuration; first-release flag; accepted count; calibrated complete net mass kg; tare; moisture/conditioning; cap fit; seam integrity; hair direction/length/density; shedding; cleanliness; pass/fail; WIP and FG cohort"
+      collection_method: "Weigh complete accepted wigs on calibrated scales excluding all removable packaging; compare serial/lot to previous releases to prevent duplicates. Count and actual item mass are paired independently; retain rejects and retests without new Q."
+      unit: "kg"
+      frequency: "Every first release and period close"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Complete-wig acceptance gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; serial register; acceptance criteria/results; complete BOM"
+    - protocol_id: cp_waste
+      process_id: "wig_manufacture"
+      flow_role: "Atomic waste by origin and destination"
+      record_type: "foreground_record"
+      raw_fields: "row and origin ID; whole wet mass; independent moisture/solids; species tests; collection route; handler; gross removal; sample/test losses; actual returns; non-additive partition IDs"
+      collection_method: "Weigh each waste stream; use actual handler receipts and destination. A mixed rejected wig or liquor is a whole waste stream or measured non-overlapping partitions, not both. Actual treatment inputs and species emissions require added atomic rows when onsite."
+      unit: "kg"
+      frequency: "Each removal and reconciled batch"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Manufacturing waste handover"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Weighbridge; handler; laboratory; mass and elemental closure"
+    - protocol_id: cp_species
+      process_id: "wig_manufacture"
+      flow_role: "Actual water vapour and additional actual species"
+      record_type: "foreground_record"
+      raw_fields: "species; CAS; phase; source; recipient medium; gross and net mass; air volume or rate; temperature/pressure; humidity; wet/dry matter; independent losses; concentration basis; uncertainty"
+      collection_method: "Measure vapour by a supported independent water balance or airflow/humidity method with appropriate blank/ambient corrections and independent other exits. For other actual emissions add named species and measured compartment-specific rows; never infer molecule mass from COD/VOC or assume an emission factor."
+      unit: "kg"
+      frequency: "Each emitting operation and H"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Real environmental interface"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Lab method; instrument calibration; independent water exits; uncertainty"
+    - protocol_id: cp_fg
+      process_id: "fg_service"
+      flow_role: "FG cohort custody and service numerators"
+      record_type: "foreground_record"
+      raw_fields: "original cohort Qc; original release ID; opening/closing FG mass and full inherited vectors; gross shipments; return link and original delivery reversal; real new repair F; OTHER duplicate X; service meters; idle/cleanup; disposal; H"
+      collection_method: "Reconcile custody by original cohort, not net shipments. Record real return/rework service and each new material/water/energy exchange separately, including cross-period history. Retain failure and gross emissions/wastes independently of service allocation."
+      unit: "original unit"
+      frequency: "Each service/custody event and period close"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "FG stores and actual return/dispatch operations"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Release register; return authorization and physical proof; original delivery; meters"
+    - protocol_id: cp_pack
+      process_id: "fg_service"
+      flow_role: "One ledger per packaging article"
+      record_type: "foreground_record"
+      raw_fields: "article ID and material; supplier; ownership and receiving event ID; purchase mass; first non-purchase mass attached to incoming supplies; first free-transfer or borrowed receipt mass; genuine external return mass and same-article prior outward event link; supply-burden responsibility and amount already included in incoming supplier inventory; non-additive bridge ID; opening/closing empty stock; attached WIP stock; attached FG stock; reusable stock; internal reuse; gross shipment attached mass; external package returns; waste; cohort"
+      collection_method: "Weigh each actual package article including bag/box/wrap/net separately; reconcile full boundary_pack equation with mutually exclusive receipt classes. Inspect incoming supply packaging, transfer/loan records and matched prior outward events; free or borrowed receipts are not zero physical input. Keep all masses in V and verify that any supply burden actually borne is represented once across the packaging and incoming-material provider inventories. Distinguish retail box from shipping carton and fixed wig cap from removable net; add any actual outer carton, tape or label as its own article."
+      unit: "kg"
+      frequency: "Each issue/return/shipment and close"
+      temporal_coverage: "Complete H and opening/closing history"
+      site_scope: "Packaging external receipts and all custody locations"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Supplier composition and inventory coverage; incoming receipt and loan/transfer records; matched original outward event; tare measurements; physical stock counts; dispatch manifests"
+  calculation_rules:
+    - id: release_sum
+      applies_to: "released_wig"
+      rule: "Q = sum of uniquely identified newly first-accepted complete net wig kg from cp_release; a closing FG unit is already in this sum and no retest or delivery creates a second term."
+      inputs:
+        - cp_release
+      output: "Q"
+      source_ids:
+        - adorable-wig-factory
+        - daniel-wig-manufacture
+    - id: raw_to_numerator
+      applies_to: "all inventory rows"
+      rule: "Convert measured original units/rates, reconcile actual physical V and separate inherited environmental vectors, then perform justified subdivision/allocation for A. Preserve dedicated actual gross waste/emission/return V in the physical channel. N selects the declared physical V or attributed A channel with provenance; never subtract F as X or silently substitute A for V."
+      inputs:
+        - cp_raw
+        - cp_fg
+        - cp_hair
+        - cp_cap
+        - cp_wet
+        - cp_energy
+        - cp_maintenance
+        - cp_heat
+        - cp_release
+        - cp_waste
+        - cp_species
+        - cp_pack
+      output: "N"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: report_once
+      applies_to: "all inventory rows"
+      rule: "r = N / Qc for Qc > 0, once for each declared row/cohort/channel. For new manufacturing Qc=Q; postrelease services and returns use original cohort Qc. Physical waste/emission/replacement/heat-return channels use gross V, not allocated A. Qc=0 keeps raw load and stock history but has no unit result. The released_wig reference is 1 kg. No second division in cards, collection aggregation or by H."
+      inputs:
+        - N
+        - Qc
+        - cp_raw
+        - cp_fg
+        - cp_release
+      output: "r"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: physical_closure
+      applies_to: "all inventory rows"
+      rule: "At each manufacturing/FG/combined gate reconcile physical opening + genuine external inputs + nonduplicated internal receipts = closing + genuine external outputs + nonduplicated internal transfers. Cancel internal movements in the combined gate, including first-release Q. Use actual reaction and moisture/species evidence; an unexplained residual remains uncertainty, not an invented exit."
+      inputs:
+        - cp_raw
+        - cp_fg
+        - cp_hair
+        - cp_cap
+        - cp_wet
+        - cp_waste
+        - cp_species
+        - cp_heat
+        - cp_pack
+      output: "physical_balance"
+      source_ids:
+        - ilcd-allocation-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Exact material/form/route/state and provider/medium compatibility. Native family labels cannot override hard restrictions; blanks remain explicit identity gaps. Full descriptions and source context travel with rows."
+      evidence: "Specifications; complete native records; raw_hair and complete-wig distinction"
+    - id: dq_measurement
+      applies_to: "all inventory rows"
+      requirement: "Calibrated raw measurements and unit/state basis; no borrowed density, per-item mass, recipe, emissions factor, yield or marketing performance default."
+      evidence: "Calibration; independent density/moisture tests; meter integration records"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Every actual operation/input/output and actual species is captured, including Q0, failures, trials, unauthorized deviations, cleaning, idle and repairs; absence requires evidence and unknown is not zero."
+      evidence: "Full operation log; purchasing reconciliation; missing-data register"
+    - id: dq_history
+      applies_to: "all processes"
+      requirement: "Every stock lot retains physical location/state and inherited vector for every exchange with original Qc; manufactured and FG services do not silently mix histories."
+      evidence: "Opening/closing inventory and burden vectors; serial release and return links"
+    - id: dq_sources
+      applies_to: "all processes"
+      requirement: "Qualitative manufacturer routes are not factory measurements or universal ranges. Disclose technical synthesis, counter-route exclusions, geographic/time mismatch and unmeasured later services."
+      evidence: "Primary documents; actual supplier/foreground records; uncertainty and applicability assessment"
+validation_rules:
+  - rule_id: validate_terminal
+    applies_to: "released_wig"
+    rule: "Verify a complete human-hair lace-cap wig with actual fixed accessories and unique first-release Q; raw hair, loose bundles, cap alone or synthetic/animal hair cannot pass as the terminal. Check all qualifiers, net weighing, actual route and same cohort across languages."
+    source_ids:
+      - adorable-wig-factory
+      - daniel-wig-manufacture
+      - un-cpc3-2025
+  - rule_id: validate_once
+    applies_to: "all inventory rows"
+    rule: "Trace every raw numerator through unit/rate conversion, stock-vector handling and actual attribution to one report_once operation. Validate Qc and both gross physical and environmental channels; no second division, no lost Q0/failure and no new Q from reinspection/delivery."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_physical
+    applies_to: "all processes"
+    rule: "Independently close total mass, relevant elements, actual species/water and every packaging custody equation at manufacturing, FG and combined gates. Distinguish whole versus child accounts, integrated volume versus rate, gross versus net, true new F versus only duplicate X, and one provider per supply. No residual fitting of two unknowns."
+    source_ids:
+      - ilcd-allocation-2010
+      - daniel-wig-manufacture
+  - rule_id: validate_allocation
+    applies_to: "all processes"
+    rule: "Demonstrate dedicated/virtual subdivision first, then exchange-specific determining causality, then only genuine residual common-gate contemporaneous value; reconcile 100 percent. Preserve gross physical emissions/waste/return regardless of allocation and keep rejected routes as actual recorded deviations."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_gaps
+    applies_to: "all processes"
+    rule: "A missing actual input, unknown critical terminal or unsupported route is an explicit incompleteness/applicability hold. An ordinary unresolved auxiliary UUID or future site amount alone does not prove absence or methodological failure. No engineering check establishes scientific approval, translation review, mapping or publication."
+    source_ids:
+      - adorable-wig-factory
+      - daniel-wig-manufacture
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Supplier-specific cradle-to-gate linking after actual foreground completion and review"
+  allowed_use: "Same human-hair lace-wig configuration and declared natural-colour hand-knotted route with compatible inputs/services"
+  excluded_use: "Whole 38972 coverage; raw-hair production; synthetic/animal hair; other wig routes; use-life or comparative performance assertions"
+  required_metadata: "All section3 qualifiers; source and provider links; exact boundary; original cohort Qc; single-normalization provenance"
+  required_quality_disclosure: "Actual measurement coverage; unbound identities; uncertainty; physical and environmental channels; allocation evidence; unmeasured future FG services"
+  update_trigger: "Changed hair source/state; fabric or cap configuration; knotting route; chemical/thermal processing; supplier/medium; quality gate; new evidence or material data gap"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Ver.3.0 complete Explanatory Notes, 30 June 2025, p.197 (38971/38972), and entries 27911/27912/28262/38994. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact 38971/38972 distinction only; not manufacturing methodology or whole-leaf coverage"
+  - id: "adorable-wig-factory"
+    type: "literature"
+    reference: "Adorable Hair Suppliers / Real Indian Hair. Indian Hair Factory. https://www.realindianhair.com/indian-hair-factory/"
+    used_for: "Manufacturer whole natural human-hair full-lace wig terminal and sorting/washing/sun-drying/ventilating/QC; qualitative route and packaging capability only"
+  - id: "daniel-wig-manufacture"
+    type: "literature"
+    reference: "Daniel Alain. How to Make a Luxury Human Hair Wig. https://www.danielalain.com/pages/how-to-make-a-luxury-human-hair-wig"
+    used_for: "Independent complete cap cutting/sewing/ventilation/finish/QC context; coloured/bleached route retained as counter-route; no recipe or fixed numerical defaults"
+  - id: "allure-hair-process"
+    type: "literature"
+    reference: "ALLURE HAIR PRODUCTS PVT. LTD. Process. https://www.bulkhairexporter.com/process.html"
+    used_for: "Contrary worked-hair route with onsite shampoo formulation and glued/steamed wefts; no automatic adoption for hand-knotted wigs"
+  - id: "ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC. ILCD Handbook General guide for LCA Detailed guidance. First edition March2010, sections7.9.2–7.9.3, printed255–272. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and exchange-specific determining causality; residual common-gate actual-state market value and 100 percent closure; not a wig recipe or automatic recycling credit"
+  - id: "banbury-bespoke"
+    type: "literature"
+    reference: "Banbury Postiche. Wig Questions and Answers, bespoke and repair sections. https://www.banburypostiche.co.uk/wigQuestionsAndAnswers"
+    used_for: "Independent hand-knotted complete real-hair wig and base specification; distinguish later repair/restyling services; no lifetime, recipe or quantitative default"
+  - id: "banbury-hair-state"
+    type: "literature"
+    reference: "Banbury Postiche. Ethical Materials Supply Statement, cut/combed hair and European preparation sections. https://www.banburypostiche.co.uk/EthicalPolicy"
+    used_for: "Cut root-tip-aligned raw supply and preparation state; supplier statement, not independent certification or a universal zero-burden assumption"
+  - id: "banbury-lace-substrate"
+    type: "literature"
+    reference: "Banbury Postiche. Wig Nets, Gauze and Liners, WN2625/400. https://www.banburypostiche.co.uk/wig_nets_gauze_and_liners"
+    used_for: "Uncoated polyamide 6.6 Swiss-lace tulle material example; no evidence of a particular wig BOM or assumed consumption"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:9218867bb6d98e4b39f350c82b36b85458759bf0f6843c0fe96d9564471d2830"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_9149"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 9149
+          line: 71
+          column: 1
+        end:
+          offset: 15634
+          line: 97
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Unworked cut human hair and supplied lace fabric at actual site receipt; each whole auxiliary and fixed accessory in its actual supply state |\n| starting_condition_role | foreground_gate_to_gate |\n| product_classification_scope | Narrow complete natural-colour human-hair wig subset of 38972; 38971 remains upstream raw-hair context |\n| recursive_input_rule | Purchased finished wigs or worked wefts do not substitute for raw hair; returns retain original identity and burden history; internal hair/cap/WIP transfers cancel |\n| upstream_dataset_requirement | Link actual raw-hair preparation, fabric/thread/accessory supplies, each whole formulation, utility supply, packaging supply and actual waste treatment exactly once with compatible geography/state |\n| disclosure | Report manufacturing, postrelease FG-service and combined physical gates separately; disclose missing inputs and unresolved providers rather than treating them as zero |\n\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_route | all processes | Include actual receipt/storage, sorting/alignment and removal of short/damaged hairs, washing/rinsing, sun-drying, lace inspection/cutting and cap sewing, seam reinforcement, hand knotting, actual finishing and overall QC. Retain every failed lot, trial, startup, shutdown, idle, cleaning, maintenance and rework event, including unauthorized operations. No bleach, dye, perm, adhesive, disinfectant, steam generator or fuel boiler is presumed; when actually used add each precise material/species and review route applicability. | adorable-wig-factory; daniel-wig-manufacture; allure-hair-process |\n| boundary_q | released_wig | Q is NEW first overall accepted complete net wig kg, each serial/lot counted once. Closing FG from this cohort is already included in Q; do not add it again as production output. Delivery, retest, storage, repair and redelivery create no new Q. Never substitute purchased raw-hair kg or hair-only mass for complete-wig Q. | adorable-wig-factory; daniel-wig-manufacture |\n| boundary_stocks | all inventory rows | Reconcile raw hair, wet/dry hair WIP, cap panels, partly ventilated wigs, failed material, chemical baths, equipment charges and FG separately by lot/location/state. Physical opening + real receipts/transfers = closing + real consumption/exports/losses. For EVERY exchange carry the opening inherited burden vector, add actual current increments, transfer internal vectors once and retain closing vectors with original Qc. Do not equate stored mass with stored environmental burden. Failed and Q0 campaigns remain linked to their production history, never disappear. | ilcd-allocation-2010 |\n| boundary_fg | fg_service | Keep opening/closing FG, gross outward delivery, actual external return, disposal and repair by original cohort. Reverse the original delivery event once in the delivery ledger for a genuine return; never cancel original manufacture or add return kg to Q. Charge NEW repair/rewash/repack inputs to the original cohort Qc, not new output. Keep original inherited vectors and observed service horizon; missing later service is disclosed. Combine gates by cancelling only the internal first-release transfer Q and its vector; retain all external physical flows. | ilcd-allocation-2010 |\n| boundary_gross | all inventory rows | Maintain unallocated gross physical V by exchange/origin/destination independently of attributed environmental A. Report actual waste, emissions, replacement parts and heat-carrier returns as V/Qc for their actual cohort, never reduced by economic allocation, service allocation or WIP burden deferral. F is genuinely new activity. X can remove only an identified OTHER same-side duplicate with event evidence, never new repair, fresh water, loss or failure. Combined origin partitions must sum to measured gross V without overlap. | ilcd-allocation-2010 |\n| boundary_physical | all processes | Close total physical mass and relevant elemental balances separately from evidence for actual species. Whole wet hair/liquor and their water/solid constituents are either one ledger or explicitly non-additive bridges. Distinguish free/phase water, actual reaction water and structural water; do not invent a reaction or fit two unknowns with one residual. COD, TOC and VOC totals are indicators, not masses of a guessed molecule. Retain individual actual gas species, phase, origin, recipient medium, and measured gross versus net quantities. | daniel-wig-manufacture |\n| boundary_heat | all processes | Sun drying does not create a purchased heat exchange. Meter actual electric drying/styling if present. If liquid hot water or another external carrier truly supplies heat, retain its actual mass, composition, pressure, temperature, phase/enthalpy and external Product return; use one primary energy supply account and the supplier water/energy agreement. Mass/enthalpy bridge rows are not an additional purchase of the same energy. Do not manufacture boiler fuel, steam, condensate or cooling flows from an assumed route. | adorable-wig-factory; daniel-wig-manufacture |\n| boundary_pack | fg_service | For EACH package article reconcile opening empty + opening attached to WIP/FG + opening reusable + external purchases + first non-purchase external receipts (attached to incoming supplies, free transfers or borrowing) + genuine external returns linked to an earlier outward movement of the same packaging = corresponding closing stocks + outward packaging attached to GROSS physical shipments + external package returns + waste. These receipt classes are mutually exclusive per event; a first non-purchase receipt is not a return without evidence of that same packaging previously leaving this site. All physical receipt masses enter V regardless of price or ownership. Assign only the supply burden actually borne by this system, once; where already included in an incoming-material supplier inventory, retain the packaging mass bridge without adding that supply burden again. Record ownership, provider, prior movement link and supply-burden coverage. Internal reuse cancels and is not a new purchase. Packing is excluded from net wig Q, is not an automatic co-product/credit, and is never allocated by net dispatch alone. Retain each material and each genuine provider separately. | adorable-wig-factory; ilcd-allocation-2010 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 359
+              line: 10
+              column: 1
+            end:
+              offset: 420
+              line: 10
+              column: 62
+          text: "# Natural-colour hand-knotted human-hair lace wig manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 9149
+              line: 71
+              column: 1
+            end:
+              offset: 9170
+              line: 71
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_59866"
+      family: "allocation"
+      span:
+        start:
+          offset: 59866
+          line: 847
+          column: 1
+        end:
+          offset: 62373
+          line: 858
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | all processes | This is an attributional manufacturing method for situations requiring allocation. ILCD section 7.9 applies under its stated attributional conditions; its multifunctional-product QFD example is not a fixed split for a wig and its recycling-loop formulas are not adopted as automatic credits. Industrial manufacturing pages support operations, not an LCA allocation rule. | ilcd-allocation-2010 |\n| allocation_exclusive | all inventory rows | First separately meter dedicated products/operations; use real or virtual subdivision where actual process knowledge uniquely assigns an input or service. Hair and cap parts embodied in one wig are assigned there; actual short hair sold separately and other wig styles remain separate functions. Mere physical contact or mass fraction does not establish determining causality. | ilcd-allocation-2010 |\n| allocation_causal | all inventory rows | For genuine remaining shared exchanges establish exchange-specific determining physical causality from how changes in outputs cause changes in that input/output. Sewing duration and actual intensity, wet-batch treatment demand or occupied space-time require evidence, not default shares. Do not apply one mass/time key to all exchanges; distinguish goods embodied from service provision. | ilcd-allocation-2010 |\n| allocation_residual | all inventory rows | Only genuinely unresolved residual shared burdens may use documented contemporaneous market values of actual co-products at the SAME common process gate and actual state/quality/quantity. Remove downstream extra processing, packing, transport and retail services from price comparators; no arbitrary choice of physical versus economic, fixed ratio or value-based deletion of waste/emission gross mass. Document zero/negative/nontraded cases as unresolved if no valid basis exists. | ilcd-allocation-2010 |\n| allocation_closure | all processes | Retain 100 percent closure of each allocated exchange across co-functions with original numerators and chosen criteria. Waste treatment remains assigned to the causing activity unless a separately evidenced legitimate joint process applies. Reuse or sale of hair/offcuts/packaging is not automatic avoided-production credit. Maintain gross physical V alongside attributed A; both retain failures, cleanup, loss and original cohort history. | ilcd-allocation-2010 |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 359
+              line: 10
+              column: 1
+            end:
+              offset: 420
+              line: 10
+              column: 62
+          text: "# Natural-colour hand-knotted human-hair lace wig manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 59866
+              line: 847
+              column: 1
+            end:
+              offset: 59906
+              line: 847
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_76473"
+      family: "validation"
+      span:
+        start:
+          offset: 76473
+          line: 901
+          column: 1
+        end:
+          offset: 78501
+          line: 912
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_terminal | released_wig | Verify a complete human-hair lace-cap wig with actual fixed accessories and unique first-release Q; raw hair, loose bundles, cap alone or synthetic/animal hair cannot pass as the terminal. Check all qualifiers, net weighing, actual route and same cohort across languages. | adorable-wig-factory; daniel-wig-manufacture; un-cpc3-2025 |\n| validate_once | all inventory rows | Trace every raw numerator through unit/rate conversion, stock-vector handling and actual attribution to one report_once operation. Validate Qc and both gross physical and environmental channels; no second division, no lost Q0/failure and no new Q from reinspection/delivery. | ilcd-allocation-2010 |\n| validate_physical | all processes | Independently close total mass, relevant elements, actual species/water and every packaging custody equation at manufacturing, FG and combined gates. Distinguish whole versus child accounts, integrated volume versus rate, gross versus net, true new F versus only duplicate X, and one provider per supply. No residual fitting of two unknowns. | ilcd-allocation-2010; daniel-wig-manufacture |\n| validate_allocation | all processes | Demonstrate dedicated/virtual subdivision first, then exchange-specific determining causality, then only genuine residual common-gate contemporaneous value; reconcile 100 percent. Preserve gross physical emissions/waste/return regardless of allocation and keep rejected routes as actual recorded deviations. | ilcd-allocation-2010 |\n| validate_gaps | all processes | A missing actual input, unknown critical terminal or unsupported route is an explicit incompleteness/applicability hold. An ordinary unresolved auxiliary UUID or future site amount alone does not prove absence or methodological failure. No engineering check establishes scientific approval, translation review, mapping or publication. | adorable-wig-factory; daniel-wig-manufacture |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 359
+              line: 10
+              column: 1
+            end:
+              offset: 420
+              line: 10
+              column: 62
+          text: "# Natural-colour hand-knotted human-hair lace wig manufacture"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 76473
+              line: 901
+              column: 1
+            end:
+              offset: 76495
+              line: 901
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 10278
+          line: 87
+          column: 1
+        end:
+          offset: 10912
+          line: 87
+          column: 635
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_q"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 10913
+          line: 88
+          column: 1
+        end:
+          offset: 11313
+          line: 88
+          column: 401
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 11314
+          line: 89
+          column: 1
+        end:
+          offset: 11946
+          line: 89
+          column: 633
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_fg"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 11947
+          line: 90
+          column: 1
+        end:
+          offset: 12559
+          line: 90
+          column: 613
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_gross"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 12560
+          line: 91
+          column: 1
+        end:
+          offset: 13156
+          line: 91
+          column: 597
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 13157
+          line: 92
+          column: 1
+        end:
+          offset: 13764
+          line: 92
+          column: 608
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_heat"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 13765
+          line: 93
+          column: 1
+        end:
+          offset: 14369
+          line: 93
+          column: 605
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 14370
+          line: 94
+          column: 1
+        end:
+          offset: 15631
+          line: 94
+          column: 1262
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_59866"
+      source_span:
+        start:
+          offset: 59979
+          line: 851
+          column: 1
+        end:
+          offset: 60411
+          line: 851
+          column: 433
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_exclusive"
+      identity_kind: "explicit"
+      unit_id: "normative_59866"
+      source_span:
+        start:
+          offset: 60412
+          line: 852
+          column: 1
+        end:
+          offset: 60859
+          line: 852
+          column: 448
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_59866"
+      source_span:
+        start:
+          offset: 60860
+          line: 853
+          column: 1
+        end:
+          offset: 61315
+          line: 853
+          column: 456
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_59866"
+      source_span:
+        start:
+          offset: 61316
+          line: 854
+          column: 1
+        end:
+          offset: 61866
+          line: 854
+          column: 551
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_59866"
+      source_span:
+        start:
+          offset: 61867
+          line: 855
+          column: 1
+        end:
+          offset: 62370
+          line: 855
+          column: 504
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_76473"
+      source_span:
+        start:
+          offset: 76568
+          line: 905
+          column: 1
+        end:
+          offset: 76939
+          line: 905
+          column: 372
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_once"
+      identity_kind: "explicit"
+      unit_id: "normative_76473"
+      source_span:
+        start:
+          offset: 76940
+          line: 906
+          column: 1
+        end:
+          offset: 77278
+          line: 906
+          column: 339
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_76473"
+      source_span:
+        start:
+          offset: 77279
+          line: 907
+          column: 1
+        end:
+          offset: 77707
+          line: 907
+          column: 429
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_76473"
+      source_span:
+        start:
+          offset: 77708
+          line: 908
+          column: 1
+        end:
+          offset: 78080
+          line: 908
+          column: 373
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_gaps"
+      identity_kind: "explicit"
+      unit_id: "normative_76473"
+      source_span:
+        start:
+          offset: 78081
+          line: 909
+          column: 1
+        end:
+          offset: 78498
+          line: 909
+          column: 418
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 9149
+          line: 71
+          column: 1
+        end:
+          offset: 9170
+          line: 71
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_9149"
+      source_span:
+        start:
+          offset: 9198
+          line: 75
+          column: 1
+        end:
+          offset: 10204
+          line: 82
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_59866"
+      source_span:
+        start:
+          offset: 59866
+          line: 847
+          column: 1
+        end:
+          offset: 59906
+          line: 847
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_76473"
+      source_span:
+        start:
+          offset: 76473
+          line: 901
+          column: 1
+        end:
+          offset: 76495
+          line: 901
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9218867bb6d98e4b39f350c82b36b85458759bf0f6843c0fe96d9564471d2830"
+  generated_content_sha256: "sha256:b0acceebe663a50227d98aaf8e3ac95262e9ae3c6330c63e8a65d11ef4529e95"
