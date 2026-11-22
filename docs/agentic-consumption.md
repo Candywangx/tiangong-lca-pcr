@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-20
-lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
-lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
+lastReviewedAt: 2026-11-22
+lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
+lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

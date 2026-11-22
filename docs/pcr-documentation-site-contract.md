@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-20
-lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
-lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
+lastReviewedAt: 2026-11-22
+lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
+lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -365,6 +365,15 @@ only the sealed-product importer, whose separate 15-minute download/materializat
 deadline, cleanup and atomic handoff remain enforced. The export uses two static workers
 with at most one static page render in flight per worker. Its 4 GB Node heap
 ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap ceiling is not proof of total resident memory.
+
+The hosted web build sets `PCR_SOURCE_VERIFY_WORKERS=2` for verification of
+independent source documents. Each admitted document still undergoes the complete
+Markdown inventory, rendered-block, link, source-marker and ordering checks.
+Two Node child processes inherit the build environment and its per-process heap
+limit. The existing process-tree RSS check includes the parent and both children.
+The verifier waits for all assigned documents and child shutdown before continuing
+with the global export checks. It reports document validation errors in source
+order. An unset value or `1` runs the serial verification path.
 
 Each attempted stage emits `build-stage` diagnostics with its command, duration,
 sampled peak process-tree RSS, measurement availability, child exit code and

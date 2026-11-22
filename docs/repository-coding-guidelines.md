@@ -14,9 +14,9 @@ whenToUpdate:
   - when repository-specific coding guidelines change
 checkPaths:
   - docs/repository-coding-guidelines.md
-lastReviewedAt: 2026-11-19
-lastReviewedCommit: 6b528b2cecc91f7fb27ce1ce6550f67bc2d0fe91
-lastReviewedNote: "PCR #176 reviewed eligible Playwright 1.65.0, published browser descriptors and the exact runtime/receipt pin. Archived qualification, corpus/coverage and complete browser/sealed acceptance requirements retain their original evidence boundaries."
+lastReviewedAt: 2026-11-22
+lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
+lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
 related:
   - docs/coding-principles.md
   - docs/ai-friendly-cli-design.md
