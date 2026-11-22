@@ -1,10 +1,1014 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34662"
-  title: "Fungicides"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.fungicides"
+  classification_refs: "CPC 3.0 34662, accepted narrower registered finished wettable-powder product under docs/adr/2026-11-22-accept-cpc-34662-finished-mancozeb-wettable-powder-at-first-release.md"
+  covered_products: "Registered civilian 70% mancozeb wettable-powder finished product at its first qualified release"
+  excluded_products: "Technical active material; other forms/concentrations; mixed actives; neighbouring pesticide subclasses; previously released resale goods"
+  representative_product: "Whole finished powder identified by PD20091282 header; actual batch and permission independently documented"
+  production_route: "Externally manufactured whole formulation received before final commercial release; documented packaging and first qualified release; manufacture stays upstream black box"
+  market_state: "Finished wettable powder in the actual documented pack at first-release site gate; reference mass excludes pack"
+functional_unit:
+  what: "Supply one identified qualified finished fungicide product; no use-service equivalence"
+  how_much: "1 kg net whole finished product"
+  how_well: "Study-specific registered product identity, supplied state and signed qualified release; no inferred efficacy"
+  how_long_or_cycle: "One first-release event per physical lot; no assumed shelf life or application cycle"
+  reference_flow_link: "finished_wp"
+system_boundary:
+  rules:
+    - rule_id: boundary_identity
+      applies_to: "received_wp, finished_wp"
+      rule: "Bind the product to its registration, physical form, actual manufacturer and first release. A label or designed capacity is neither measured production nor evidence of the site's permission or emissions."
+      source_ids:
+        - icama-pd20091282
+        - samr-mancozeb-2020
+        - cn-pesticide-regulation-2022
+    - rule_id: boundary_accounting
+      applies_to: "release"
+      rule: "Include attributable receipt, external packaging, qualification services, holding, returns, cleaning and waste handling. Keep manufacturer burdens upstream and require verified coverage without duplicate utilities or freight. Excluded internal details are not zero environmental burdens."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_pack
+      applies_to: "primary_bag_in, carton_in, pallet_in"
+      rule: "For each article type record purchases P, first non-purchase external receipts N and true returns R traceable to the same article previously dispatched from this site. N includes incoming-load packaging, separate loans and free transfers, whether or not supplier inventories list them. Reconcile every stock and destination."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_extension
+      applies_to: "release"
+      rule: "Conditional carton, pallet, water and waste rows require actual occurrence. Record supported non-applicability; missing evidence is not zero. Add each actual external utility, service, waste or elemental emission as its own identified exchange before claiming completeness. No direct emission factor is supplied."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_exclusions
+      applies_to: "finished_wp"
+      rule: "This gate method excludes field use, efficacy and fate. Chinese product identity cannot imply authorization in another jurisdiction."
+      source_ids:
+        - hc-mancozeb-2024
+        - unsd-cpc3-2025
+        - unsd-cpc3-2026
+boundary_abstraction:
+  declared_starting_condition: "Whole finished formulation received from a documented external manufacturer before its first final commercial release; inherited environmental burdens and packaging received with it declared"
+  starting_condition_role: "Upstream whole-product handoff, not internal active manufacture or a burden-free starting point"
+  product_classification_scope: "CPC 3.0 34662, narrower registered 70% wettable-powder identity"
+  recursive_input_rule: "Record the whole received product once with a compatible upstream provider. Never explode its internal composition into duplicate purchases; already final-released same-category goods cannot create new output B."
+  upstream_dataset_requirement: "Compatible whole formulation, actual manufacturer, gate, period and geography; disclose included packaging, transport and utilities. Unavailable upstream coverage remains an explicit gap."
+  disclosure: "Foreground receipt/packaging/release gate; excluded internal operations and downstream use; actual supplier handoff; failed release and stock burdens; all packaging origins; transport/services and environmental coverage gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "70% mancozeb wettable powder"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "registration and holder"
+    - "actual manufacturer and handoff"
+    - "product concentration and form"
+    - "applicable specification edition"
+    - "batch genealogy and first-release evidence"
+    - "site and reporting dates"
+    - "entrusted-site permission and release certificate"
+    - "net product mass"
+    - "packaging construction/ownership"
+    - "stock and burden transfers"
+    - "supplier provider coverage"
+    - "utilities and transport interfaces"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Net whole finished-product mass excludes bag, carton and pallet. The label's 70% identifies a grade, not a conversion of product kg into active kg."
+  - id: matched_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use the same positive newly qualified finished-product mass B for attribution; convert each raw numerator to its stated unit before dividing once by B. A packaging count needs measured article mass, not a default pack weight."
+  - id: electricity_meter
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: "f6811440-ee37-11de-8a39-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Electrical meter deltas retain their electrical-energy meaning. Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 has MJ reference and 1 kWh = 3.6 MJ. This support chain does not determine an unselected supplier flow's native property and never implies net calorific value."
+process_map:
+  - id: release
+    name: "Finished-product receipt, external packaging and first release"
+    inclusion: "required"
+    inclusion_condition: "Whole formulation before first final release; actual site and supplier handoff evidenced"
+    role: "foreground"
+    quantitative_reference: "finished_wp"
+process_inventory:
+  - id: release
+    label: "Finished-product receipt, external packaging and first release"
+    inputs:
+      product:
+        - row_id: received_wp
+          role: "70% mancozeb wettable powder before final release"
+          name: "70% mancozeb wettable powder before final release"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Whole supplied formulation received at the actual manufacturer handoff; quantify net product independently of all packaging. No internal composition breakdown."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product
+              source_ids: []
+            ranges: []
+        - row_id: returned_released_wp
+          role: "Previously released 70% mancozeb wettable powder returned to site"
+          name: "Previously released 70% mancozeb wettable powder returned to site"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual customer return of the same previously released whole product. Link prior release and remaining burden to the original lot; no new production B. Keep this physical receipt separate from received_wp, which is before final release."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Purchased electricity"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / kWh"
+          description: "Metered electricity attributable to this receipt/packaging/release boundary; retain failed-release burdens. Supplier flow and native property are unbound."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: primary_bag_in
+          role: "Complete pesticide powder primary bag"
+          name: "Complete pesticide powder primary bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Count all P, N and verified R receipts for this specific whole bag article. Actual construction is required; separately acquired liners require separate cards. No reuse of contaminated bags is assumed."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: carton_in
+          role: "Corrugated-board carton"
+          name: "Corrugated-board carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use. Record P, N and verified R even when a carton arrives with supplied goods and is absent from supplier inventories."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: pallet_in
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on an actual wooden-pallet pool. Separately borrowed or freely transferred pallets are N at first receipt, not R without a prior same-site dispatch. No default rotations."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: tap_water
+          role: "Purchased tap water"
+          name: "Purchased tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on separately supplied packaging-zone cleaning water. Supplier-contained water is not a second purchase. Require metered mass or measured conversion; no default density."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_wp
+          role: "70% mancozeb wettable powder"
+          name: "70% mancozeb wettable powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Unique reference output at first final qualified release. Released net product and later physical dispatch are bridged by finished stock; count the same product only once."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+        - row_id: returned_wp
+          role: "70% mancozeb wettable powder returned to supplier"
+          name: "70% mancozeb wettable powder returned to supplier"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional whole-product return before final release; identify destination and carried burdens. Returned already released customer product is a separate stock event, never new production."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product
+              source_ids: []
+            ranges: []
+        - row_id: primary_bag_out
+          role: "Complete pesticide powder primary bag"
+          name: "Complete pesticide powder primary bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual outward bag article, attached to outgoing product or otherwise transferred; destination subledgers are mutually exclusive. Excludes bag waste."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: carton_out
+          role: "Corrugated-board carton"
+          name: "Corrugated-board carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual outward cartons including dispatch with goods and return to owner; never also count the same article as discarded."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: pallet_out
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual outward pallets by article identity and destination, including loan return; transport legs and service coverage are recorded separately once."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_wp
+          role: "Discarded 70% mancozeb wettable powder"
+          name: "Discarded 70% mancozeb wettable powder"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measured whole finished product exported as waste, excluding packaging; supplier return and internal stock are not this export. No treatment operation is prescribed."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_bag
+          role: "Discarded contaminated pesticide powder bag"
+          name: "Discarded contaminated pesticide powder bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole waste article. Record empty article and adhering product as composition subledgers without adding duplicate total waste mass."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: discarded_carton
+          role: "Discarded corrugated-board carton"
+          name: "Discarded corrugated-board carton"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual waste carton; document contamination and destination independently. A free transfer is not automatically waste or avoided virgin production."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: discarded_pallet
+          role: "Discarded wooden pallet"
+          name: "Discarded wooden pallet"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual discarded pallet with condition and destination. No speculative recycling or substitution credit."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: zone_wastewater
+          role: "Packaging-zone cleaning wastewater"
+          name: "Packaging-zone cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual exported wastewater, not a direct elementary emission. Retain actual treatment coverage and unresolved constituents."
+          amount:
+            expression: "Actual attributable converted raw-period physical amount divided once by positive newly first-qualified whole-product net kg, as specified in section 8. Keep packaging physical movements separate from environmental burden assignment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "release"
+    rule: "First isolate directly attributable loads; examine subdivision or justified system expansion before allocation. For inseparable shared loads justify a causal measured physical driver; if unavailable, explain the rejection and any other relationship, disclose sensitivity and retain review. No default mass or revenue split."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_once
+    applies_to: "all inventory rows"
+    rule: "A product receipt, stock transfer, true return, reinspection or resale creates no co-product credit and no second production event. Retain unsuccessful release, rework-related environmental services and their losses in the matched reporting pool."
+    source_ids: []
+  - rule_id: allocation_pack
+    applies_to: "primary_bag_in, carton_in, pallet_in"
+    rule: "Assign manufacture, procurement, transport, cleaning, repair and pool-service burdens by actual provenance and coverage once. Traceable R carries the same article's remaining burden, not a new article manufacture. First N is not burden-free merely because unpurchased or absent from supplier inventories. Supplier coverage unknown means pending investigation, not zero. No unsupported lifetime/rotation assumption or avoided-production credit."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "release"
+      flow_role: "finished_wp"
+      record_type: "first-release and stock ledger"
+      raw_fields: "QA owner; registration; holder; manufacturer; product form; batch ID; site; period dates; release decision/date; conformity certificate; manufacturer/entrusted-site permission; production date; sales/dispatch date; calibrated gross/tare/net kg; previous release; opening/closing unreleased and released stocks; failed lots; returns; burden transfers"
+      collection_method: "Quality owner reconciles unique first final acceptance with net weighing and lot genealogy across supplier/site. B is newly first-qualified whole-product net kg in the matched pool. Do not substitute shipments, design capacity or sales. Exclude previous final releases, transfers and reinspection from B; retain failures and zero-output periods in the burden pool. Allocate opening carried burdens in and closing carried burdens out once. Do not normalize if B is nonpositive or unresolved"
+      unit: "kg"
+      frequency: "each event and period close"
+      temporal_coverage: "whole matched reporting period"
+      site_scope: "declared release site and actual manufacturer interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "signed release; calibration; stock balance; supplier handoff; carried-burden reconciliation"
+    - protocol_id: cp_product
+      process_id: "release"
+      flow_role: "received_wp, returned_released_wp, returned_wp"
+      record_type: "whole-product custody ledger"
+      raw_fields: "procurement owner; manufacturer; supplier lot; registration; net kg; previous release status; custody dates; returns; rejected/discarded kg; provider identity and environmental coverage; freight coverage"
+      collection_method: "Reconcile each external whole-product receipt and supplier return to cp_output genealogy, calibrated mass and matched stock bridge. Keep per-lot, per-exchange external carried-in environmental vectors, their source/destination, acquisition time, remaining unassigned share and one-time entry/settlement keys; opening/closing and outward transferred shares, distinct from newly incurred burdens. Supplier coverage links each exchange to exactly one provenance entry. Preserve all environmental upstream burdens without internal recipe disclosure; coverage gaps block a complete dataset"
+      unit: "kg"
+      frequency: "each handoff"
+      temporal_coverage: "same pool as cp_output"
+      site_scope: "actual supplier and site boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets; delivery and return receipts; compatible upstream provider; nonduplicate coverage matrix"
+    - protocol_id: cp_pack
+      process_id: "release"
+      flow_role: "primary_bag_in, carton_in, pallet_in, primary_bag_out, carton_out, pallet_out"
+      record_type: "article-type physical and burden ledgers"
+      raw_fields: "packaging owner; article identity/type; construction; kg per item; count; opening/closing stock; P; N; R; prior same-site dispatch; ownership; attached-to-load receipts; separately borrowed/free transfers; outward destinations; discard; unresolved loss; supplier coverage; manufacture/freight/service records; cohort per-exchange external carried-in remaining vector; entry/settlement key; historical assigned share; new-burden flag; carried burden"
+      collection_method: "For each type independently weigh or convert count using measured article mass. Record all first external N, including unlisted incoming-load packaging and separate loans/transfers; R requires identity linkage to an earlier site dispatch. Reconcile all incoming/outgoing/stock changes with pack_balance; record each transfer counterparty/pool and its paired outward/inward settlement so only the remaining vector re-enters. Audit supplier coverage independently of receipt origin. Reconcile burden assignment by cohort and actual service use with pack_burden, retaining true returns in their original cohort and verifying only the remaining unassigned share, never assuming all manufacture returns or is zero; missing supplier data remains pending"
+      unit: "kg"
+      frequency: "each movement and period close"
+      temporal_coverage: "same pool as cp_output, with opening cohorts"
+      site_scope: "site pool including borrowed and supplier-owned articles"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "item trace; measured article mass; ownership/handoff; invoices; return receipts; pool stock count; coverage matrix"
+    - protocol_id: cp_utilities
+      process_id: "release"
+      flow_role: "electricity, tap_water"
+      record_type: "meter and coverage ledger"
+      raw_fields: "utility owner; meter ID; start/end; multiplier; unit; dates; site boundary; submeter/shared driver; already integrated flag; supply provider; native property if selected; cleaning-water mass or measured conversion; supplier-service coverage"
+      collection_method: "Read calibrated meter deltas for included receipt, packaging, holding and qualification support. Subdivide measured loads where possible; retain failed/zero-output loads and stock burdens. Reconcile shared driver and provider coverage; a service including electricity cannot be charged again. Retain electrical kWh separately from supplier-native identity"
+      unit: "kWh; kg"
+      frequency: "each meter interval and period close"
+      temporal_coverage: "same pool as cp_output"
+      site_scope: "included site and support services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated meters; bills; measured driver; property/unit chain; coverage reconciliation"
+    - protocol_id: cp_waste
+      process_id: "release"
+      flow_role: "discarded_wp, spent_bag, discarded_carton, discarded_pallet, zone_wastewater"
+      record_type: "individual waste transfer ledger"
+      raw_fields: "environment owner; stream identity; net kg; article/component subledger; dates; batch; on-site stock; destination; treatment provider and utility coverage; measured emissions if any; missing coverage"
+      collection_method: "Weigh each actual stream separately and bind it to source stock. Whole waste mass and composition subledgers cannot both be additional outputs. Exclude true returns and internal movements from waste exports. Document actual transport and treatment once; each actual direct emission requires independent identity, medium and measurement, never a fitted mass-balance residual"
+      unit: "kg"
+      frequency: "each event and period close"
+      temporal_coverage: "same pool as cp_output"
+      site_scope: "site waste handling and actual external interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibrated weigh tickets; transfer manifest; destination and treatment evidence; environmental coverage assessment"
+  calculation_rules:
+    - id: period_normalize
+      applies_to: "all inventory rows"
+      rule: "q_i = attributable converted raw amount_i / B; B is unique newly first-qualified whole-product net kg from cp_output. finished_wp remains 1 kg. Do not divide an already normalized amount again. Carry opening burdens in and closing burdens out exactly once; retain failed and zero-output loads without assigning them to unrelated output. Unresolved B or burden attribution blocks normalized values."
+      inputs:
+        - "raw amount_i"
+        - B
+        - cp_output
+        - "matched stock/burden pool"
+      output: "q_i per 1 kg reference flow"
+      source_ids: []
+    - id: product_balance
+      applies_to: "received_wp, returned_released_wp, finished_wp, returned_wp, discarded_wp"
+      rule: "On the raw-period custody ledger: opening whole-product mass + external receipts including previously released customer returns = closing whole-product mass + physical product dispatch + supplier returns + waste exports + separately supported losses. First release changes stock status, not mass; bridge finished_wp to dispatch using released stock. Include adhering product in the waste composition ledger once. No unknown emission or internal constituent is inferred from a residual."
+      inputs:
+        - "custody and stock kg"
+        - "first-release status"
+        - "supported waste/loss kg"
+      output: "whole-product reconciliation"
+      source_ids: []
+    - id: pack_balance
+      applies_to: "primary_bag_in, carton_in, pallet_in, primary_bag_out, carton_out, pallet_out"
+      rule: "For each article type: S_open + P + N + R = S_close + O + W + L, on the same measured mass basis. O is every outward non-waste destination, W actual discard, L independently evidenced loss; internal moves cancel. Investigate any residual rather than invent L. P, first N and true R are mutually exclusive, regardless of supplier coverage. Return lacking prior same-site article trace cannot be R."
+      inputs:
+        - "type-specific raw kg"
+        - "item IDs"
+        - "all stock and movement records"
+      output: "physical article reconciliation"
+      source_ids: []
+    - id: pack_burden
+      applies_to: "primary_bag_in, carton_in, pallet_in"
+      rule: "For each article cohort and exchange vector: opening carried burden + actual external carried-in remaining burden + verified newly incurred burden = burden attributed to this pool + closing carried burden + burden transferred to another documented pool. External carried-in includes previously incurred, still-unassigned vectors received mid-period with P, first N or R. Record source, timestamp, original cohort, prior assigned share and remaining vector; carried-in and newly incurred entries are mutually exclusive for the same exchange. Use a one-time provenance entry/settlement key across invoice, provider, transport and service records to prevent dual entry. Physical R retains its original cohort; neither all original manufacture nor zero is assumed to return. Supplier-covered vectors link once, not as both carried-in and new burden. Physical R does not add manufacture. Each P and first N needs an independently checked coverage decision. Count actual purchase/transport/service burdens borne by the study once; verify any missing upstream manufacture separately. Unknown supplier coverage remains pending. Verified use/rotation allocation may distribute carried burden but cannot erase physical stock or create assumed reuse."
+      inputs:
+        - provenance
+        - "per-exchange external remaining vectors"
+        - "entry/settlement keys"
+        - "previous assignment"
+        - "coverage decisions"
+        - "actual new burdens"
+        - "measured use"
+        - "stock transfers"
+      output: "nonduplicate attributable packaging burden"
+      source_ids:
+        - eu-pef-2021
+    - id: product_burden
+      applies_to: "received_wp, returned_released_wp, finished_wp, returned_wp, discarded_wp"
+      rule: "For each whole-product lot and environmental exchange: opening carried vector + verified external carried-in remaining vector + newly incurred vector = vector assigned to this reporting pool + closing carried vector + vector transferred to another documented pool. Separate incoming supplier coverage from current site additions with one-time source/entry/settlement keys; the same exchange cannot be both carried-in and new. Prior release status controls B, not whether inherited environmental burden exists. Retain actual remaining burdens on supplier returns, product stock and waste without duplicate treatment/provider coverage. Pair every external transfer with the sending pool and its outward/inward settlement; recognize only the remaining vector, including on a genuine return. No unsupported vector or zero-fill."
+      inputs:
+        - "lot genealogy"
+        - "actual handoff vectors"
+        - "opening/closing shares"
+        - "once-only keys"
+        - cp_product
+        - cp_output
+        - cp_waste
+      output: "whole-product burden reconciliation"
+      source_ids: []
+    - id: energy_conversion
+      applies_to: "electricity"
+      rule: "E_MJ = 3.6 × E_kWh after reading the meter delta and multiplier once. Keep original kWh; conversion never validates a supplier flow or changes its native reference property."
+      inputs:
+        - "electrical meter delta"
+        - multiplier
+        - "verified energy unit chain"
+      output: "compatible metered electrical energy"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "received_wp, finished_wp"
+      requirement: "Same whole product, form, actual handoff and first release in both languages; no active UUID substitution or native-classification override."
+      evidence: "registration header; study-specific permission and batch genealogy"
+    - id: dq_denominator
+      applies_to: "all inventory rows"
+      requirement: "Same positive B and reporting pool for inventory, protocols and calculations; no output invented from capacity or sales; failures, opening/closing stocks and carried burdens retained."
+      evidence: "cp_output; cp_product; period_normalize"
+    - id: dq_pack
+      applies_to: "primary_bag_in, carton_in, pallet_in"
+      requirement: "Reconcile each P/N/R origin and every stock/destination separately from burden coverage; first free receipt is not return or zero burden."
+      evidence: "cp_pack; pack_balance; pack_burden"
+    - id: dq_complete
+      applies_to: "release"
+      requirement: "Actual upstream, transport, external qualification, waste treatment, additional utilities and emissions are assessed. Missing evidence is reported as incomplete, not presumed absent."
+      evidence: "provider coverage matrix; cp_utilities; cp_waste"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_wp"
+    rule: "Require the unique terminal product output linked by reference_flow_link, 1 kg whole net product, matching first-release identity and compatible support/property chain. An unresolved whole-product UUID does not authorize provider substitution."
+    source_ids:
+      - icama-pd20091282
+  - rule_id: validate_release
+    applies_to: "release"
+    rule: "Verify actual manufacturer, entrusted-site permission where applicable, prior release status, supplier handoff, signed first acceptance/certificate and quantity/batch/quality/date stock bridge. Resale, returns or reinspection do not increase B. Missing records prevent a usable production dataset."
+    source_ids:
+      - cn-pesticide-regulation-2022
+  - rule_id: validate_pack
+    applies_to: "primary_bag_in, carton_in, pallet_in"
+    rule: "Test each physical balance including first non-purchase receipt regardless of supplier list, same-article return trace, waste/destination split and the independent once-only burden ledger. Missing provider coverage stays explicit."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "all inventory rows"
+    rule: "Verify single normalization, no negative/invented residuals, actual environmental coverage, provider boundaries and EN/ZH agreement. Conditional non-applicability needs evidence. No zero-fill for unidentified emissions, packaging, utilities or upstream manufacture."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "A qualified whole-product supply model only after independently verified upstream and foreground completeness"
+  allowed_use: "Bounded collection design for received finished formulation, external packaging and first release; eventual procurement modelling only with compatible providers"
+  excluded_use: "Complete manufacturing or PEF claim from this gate alone; technical material; already released resale as new production; field use, efficacy and fate; cross-jurisdiction authorization"
+  required_metadata: "Registration/holder; actual manufacturer/handoff; net product and batch first release; site/time; specification edition; packaging origins/pools; raw and burden stocks; utilities; transport and provider coverage"
+  required_quality_disclosure: "Product and exchange identity gaps; upstream black-box coverage; supplier/packaging uncertainty; conditional applicability; environmental measurements and missing scope; independent review state"
+  update_trigger: "Changed registered product/form, release responsibility, supplier/gate/provider, packaging/pool, utilities, standards or jurisdictional applicability"
+data_sources:
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC3 explanatory notes, frozen 2025-06-30, PDF p167. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Frozen identity and neighbouring subclasses; no production evidence."
+  - id: "unsd-cpc3-2026"
+    type: "official_guidance"
+    reference: "UNSD 2026-10-23 explanation workbook, CPC3!A1495:D1500; 34662 at row1496. https://unsdsna.azure-api.net/files/pages/cpc/CPC_Ver3_Exp_Notes_2026-10-23_for_Website.xlsx"
+    used_for: "HS2022 3808.92 and neighbouring headings; supplements, does not replace frozen coordinate."
+  - id: "icama-pd20091282"
+    type: "official_guidance"
+    reference: "ICAMA label PD20091282, header only: Sichuan Xianyida; mancozeb; wettable powder; 70%. https://www.icama.cn/BasicdataSystem/pesticideRegistration/tagview.do?pdno=PD20091282"
+    used_for: "Same-holder whole finished-product identity; no recipe, use instructions, measured inventory or facility permission inferred."
+  - id: "icama-comparators"
+    type: "official_guidance"
+    reference: "ICAMA PD20040011 and PD20082317, header fields only. https://www.icama.cn/BasicdataSystem/pesticideRegistration/tagview.do?pdno=PD20040011 ; https://www.icama.cn/BasicdataSystem/pesticideRegistration/tagview.do?pdno=PD20082317"
+    used_for: "Separate holders corroborate finished form; not interchangeable facilities or conditions."
+  - id: "samr-mancozeb-2020"
+    type: "standard"
+    reference: "SAMR GB/T39672-2020 metadata, effective 2021-07-01, replaces GB/T20699-2006 technical product and GB/T20700-2006 WP. https://std.samr.gov.cn/gb/search/gbDetailed?id=B691BB778715D126E05397BE0A0AF3B3"
+    used_for: "Product distinction and edition history only; no full-standard requirements inferred."
+  - id: "hc-mancozeb-2024"
+    type: "official_guidance"
+    reference: "Health Canada, Changes to the registration of mancozeb pesticides, January2024. https://www.canada.ca/en/health-canada/services/publications/product-safety/changes-registration-mancozeb-pesticides.html"
+    used_for: "Counterevidence to universal authorization; jurisdiction-specific status only, no application instructions adopted."
+  - id: "cn-pesticide-regulation-2022"
+    type: "official_guidance"
+    reference: "Ministry of Justice national administrative regulation database, Pesticide Management Regulation, 2022-03-29 consolidated edition, articles19,21–22. https://xzfg.moj.gov.cn/mobile/law/detail?LawID=1565"
+    used_for: "Documentary roles for commissioned processing/packing, qualified factory-sale release and batch/quantity/quality/date records, packaging/labels. No proof of actual lot acceptance, site permission or environmental quantities."
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "Recommendation(EU)2021/2279, corrected 2022-05-23, AnnexI §§3.2.1–3.2.2,4.4.9.1–4.4.9.4,4.5, PDF pp32–34,78–81,87–88. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02021H2279-20211230"
+    used_for: "Declared/reference quantity, transparent boundary, reuse burden separation and allocation hierarchy. Packaging ledgers operationalize these accounting principles; no borrowed numeric rotations or full PEF conformity claimed."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:bf20283b6d75456699b9a018309e9d04ffdd09595152fc770589c3087f2e1dd2"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6810"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6810
+          line: 64
+          column: 1
+        end:
+          offset: 9764
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole finished formulation received from a documented external manufacturer before its first final commercial release; inherited environmental burdens and packaging received with it declared |\n| starting_condition_role | Upstream whole-product handoff, not internal active manufacture or a burden-free starting point |\n| product_classification_scope | CPC 3.0 34662, narrower registered 70% wettable-powder identity |\n| recursive_input_rule | Record the whole received product once with a compatible upstream provider. Never explode its internal composition into duplicate purchases; already final-released same-category goods cannot create new output B. |\n| upstream_dataset_requirement | Compatible whole formulation, actual manufacturer, gate, period and geography; disclose included packaging, transport and utilities. Unavailable upstream coverage remains an explicit gap. |\n| disclosure | Foreground receipt/packaging/release gate; excluded internal operations and downstream use; actual supplier handoff; failed release and stock burdens; all packaging origins; transport/services and environmental coverage gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_identity | received_wp, finished_wp | Bind the product to its registration, physical form, actual manufacturer and first release. A label or designed capacity is neither measured production nor evidence of the site's permission or emissions. | icama-pd20091282; samr-mancozeb-2020; cn-pesticide-regulation-2022 |\n| boundary_accounting | release | Include attributable receipt, external packaging, qualification services, holding, returns, cleaning and waste handling. Keep manufacturer burdens upstream and require verified coverage without duplicate utilities or freight. Excluded internal details are not zero environmental burdens. | eu-pef-2021 |\n| boundary_pack | primary_bag_in, carton_in, pallet_in | For each article type record purchases P, first non-purchase external receipts N and true returns R traceable to the same article previously dispatched from this site. N includes incoming-load packaging, separate loans and free transfers, whether or not supplier inventories list them. Reconcile every stock and destination. | eu-pef-2021 |\n| boundary_extension | release | Conditional carton, pallet, water and waste rows require actual occurrence. Record supported non-applicability; missing evidence is not zero. Add each actual external utility, service, waste or elemental emission as its own identified exchange before claiming completeness. No direct emission factor is supplied. | eu-pef-2021 |\n| boundary_exclusions | finished_wp | This gate method excludes field use, efficacy and fate. Chinese product identity cannot imply authorization in another jurisdiction. | hc-mancozeb-2024; unsd-cpc3-2025; unsd-cpc3-2026 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 217
+              line: 9
+              column: 1
+            end:
+              offset: 302
+              line: 9
+              column: 86
+          text: "# 70% mancozeb wettable powder: finished-product receipt, packaging and first release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6810
+              line: 64
+              column: 1
+            end:
+              offset: 6831
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24327"
+      family: "allocation"
+      span:
+        start:
+          offset: 24327
+          line: 345
+          column: 1
+        end:
+          offset: 25625
+          line: 353
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | release | First isolate directly attributable loads; examine subdivision or justified system expansion before allocation. For inseparable shared loads justify a causal measured physical driver; if unavailable, explain the rejection and any other relationship, disclose sensitivity and retain review. No default mass or revenue split. | eu-pef-2021 |\n| allocation_once | all inventory rows | A product receipt, stock transfer, true return, reinspection or resale creates no co-product credit and no second production event. Retain unsuccessful release, rework-related environmental services and their losses in the matched reporting pool. |  |\n| allocation_pack | primary_bag_in, carton_in, pallet_in | Assign manufacture, procurement, transport, cleaning, repair and pool-service burdens by actual provenance and coverage once. Traceable R carries the same article's remaining burden, not a new article manufacture. First N is not burden-free merely because unpurchased or absent from supplier inventories. Supplier coverage unknown means pending investigation, not zero. No unsupported lifetime/rotation assumption or avoided-production credit. | eu-pef-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 217
+              line: 9
+              column: 1
+            end:
+              offset: 302
+              line: 9
+              column: 86
+          text: "# 70% mancozeb wettable powder: finished-product receipt, packaging and first release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24327
+              line: 345
+              column: 1
+            end:
+              offset: 24367
+              line: 345
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37758"
+      family: "validation"
+      span:
+        start:
+          offset: 37758
+          line: 385
+          column: 1
+        end:
+          offset: 39136
+          line: 394
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | finished_wp | Require the unique terminal product output linked by reference_flow_link, 1 kg whole net product, matching first-release identity and compatible support/property chain. An unresolved whole-product UUID does not authorize provider substitution. | icama-pd20091282 |\n| validate_release | release | Verify actual manufacturer, entrusted-site permission where applicable, prior release status, supplier handoff, signed first acceptance/certificate and quantity/batch/quality/date stock bridge. Resale, returns or reinspection do not increase B. Missing records prevent a usable production dataset. | cn-pesticide-regulation-2022 |\n| validate_pack | primary_bag_in, carton_in, pallet_in | Test each physical balance including first non-purchase receipt regardless of supplier list, same-article return trace, waste/destination split and the independent once-only burden ledger. Missing provider coverage stays explicit. |  |\n| validate_coverage | all inventory rows | Verify single normalization, no negative/invented residuals, actual environmental coverage, provider boundaries and EN/ZH agreement. Conditional non-applicability needs evidence. No zero-fill for unidentified emissions, packaging, utilities or upstream manufacture. | eu-pef-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 217
+              line: 9
+              column: 1
+            end:
+              offset: 302
+              line: 9
+              column: 86
+          text: "# 70% mancozeb wettable powder: finished-product receipt, packaging and first release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37758
+              line: 385
+              column: 1
+            end:
+              offset: 37780
+              line: 385
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 8117
+          line: 79
+          column: 1
+        end:
+          offset: 8440
+          line: 79
+          column: 324
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 8441
+          line: 80
+          column: 1
+        end:
+          offset: 8778
+          line: 80
+          column: 338
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 8779
+          line: 81
+          column: 1
+        end:
+          offset: 9176
+          line: 81
+          column: 398
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 9177
+          line: 82
+          column: 1
+        end:
+          offset: 9538
+          line: 82
+          column: 362
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_exclusions"
+      identity_kind: "explicit"
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 9539
+          line: 83
+          column: 1
+        end:
+          offset: 9762
+          line: 83
+          column: 224
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_24327"
+      source_span:
+        start:
+          offset: 24440
+          line: 349
+          column: 1
+        end:
+          offset: 24811
+          line: 349
+          column: 372
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_once"
+      identity_kind: "explicit"
+      unit_id: "normative_24327"
+      source_span:
+        start:
+          offset: 24812
+          line: 350
+          column: 1
+        end:
+          offset: 25104
+          line: 350
+          column: 293
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_24327"
+      source_span:
+        start:
+          offset: 25105
+          line: 351
+          column: 1
+        end:
+          offset: 25623
+          line: 351
+          column: 519
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_37758"
+      source_span:
+        start:
+          offset: 37853
+          line: 389
+          column: 1
+        end:
+          offset: 38154
+          line: 389
+          column: 302
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_release"
+      identity_kind: "explicit"
+      unit_id: "normative_37758"
+      source_span:
+        start:
+          offset: 38155
+          line: 390
+          column: 1
+        end:
+          offset: 38516
+          line: 390
+          column: 362
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_37758"
+      source_span:
+        start:
+          offset: 38517
+          line: 391
+          column: 1
+        end:
+          offset: 38809
+          line: 391
+          column: 293
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_37758"
+      source_span:
+        start:
+          offset: 38810
+          line: 392
+          column: 1
+        end:
+          offset: 39134
+          line: 392
+          column: 325
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 6810
+          line: 64
+          column: 1
+        end:
+          offset: 6831
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6810"
+      source_span:
+        start:
+          offset: 6859
+          line: 68
+          column: 1
+        end:
+          offset: 8044
+          line: 75
+          column: 242
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24327"
+      source_span:
+        start:
+          offset: 24327
+          line: 345
+          column: 1
+        end:
+          offset: 24367
+          line: 345
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37758"
+      source_span:
+        start:
+          offset: 37758
+          line: 385
+          column: 1
+        end:
+          offset: 37780
+          line: 385
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bf20283b6d75456699b9a018309e9d04ffdd09595152fc770589c3087f2e1dd2"
+  generated_content_sha256: "sha256:5b4b9b15c4365bdc798dc6265b27388a3393654f5b641bf510650f2adc84da9d"
