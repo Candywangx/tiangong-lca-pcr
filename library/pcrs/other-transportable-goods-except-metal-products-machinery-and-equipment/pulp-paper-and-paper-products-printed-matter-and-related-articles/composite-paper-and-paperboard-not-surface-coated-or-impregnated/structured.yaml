@@ -1,10 +1,1220 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "32141"
-  title: "Composite paper and paperboard, not surface-coated or impregnated"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.composite-paper-and-paperboard-not-surface-coated-or-impregnated"
+  classification_refs: "CPC 3.0 32141. The narrower association was accepted under docs/adr/2026-11-22-accept-cpc-32141-starch-bonded-uncoated-flat-layer-paperboard.md."
+  covered_products: "Unreinforced uncoated flat-paper-ply board joined with starch adhesive"
+  excluded_products: "Wet multilayer forming, corrugation, coating, impregnation, non-paper reinforcement and non-starch bonding"
+  representative_product: "Unsurfaced starch-bonded flat sheet board; example properties are not default recipes"
+  production_route: "Purchased dry plies → starch wet bonding and pressing → drying/conditioning and necessary flattening → final slitting/first flat-board supply gate; actual configuration must be collected"
+  market_state: "Accepted sheet-board output at converter gate, declared moisture and packing; downstream box conversion excluded"
+functional_unit:
+  what: "Provide flat-layer board material with declared grammage, caliper and bond quality"
+  how_much: "1 kg"
+  how_well: "Declare construction, material, moisture, caliper, grammage and order acceptance criteria; no universal performance threshold"
+  how_long_or_cycle: "One conversion campaign and gate delivery; no universal service-life claim"
+  reference_flow_link: "board_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "All inventory cards inherit this complete context. Keep gross physical exchange vector V, in each flow's original unit, separate from the attributed burden vector A. Establish raw record identity, actual time/scope, rate integration and dimensional conversion first; then isolate dedicated operations and justify each remaining shared exchange by its own physical cause. Only a genuinely inseparable residual may use another relationship. Perform one final division by positive new accepted net board mass Q. Allocation never alters gross mass, water, carbon, inventory stock or physical co-output quantities. [eu-pef-multifunctionality-2021]"
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Q is new board first accepted after bonding, required pressing, drying/conditioning, flattening and final slitting to the declared flat-sheet supply gate. Record rejects and every acceptance ID. New accepted closing finished goods are already included in Q; do not add them again to measured accepted production. Reconcile dispatch with opening/closing finished goods, external returns and transfers. Reinspection or return of previously accepted board creates no new Q. Opening finished goods dispatched now retain their original burdens. Raw/unused material, work in progress and finished-goods cohorts carry a vector b_i of inherited quantities for every flow i, including earlier material, electricity, heat, water and emissions; bring in their actual opening vectors, carry actual closing vectors, and transfer vectors at actual completion stages without deleting them or applying allocation twice. Unknown history is unknown, never a zero vector."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Q=0, failed batches, starts/stops, idle periods, cleanup and trial runs retain their real loads. Attribute them to the causally served production period/cohort with a documented rule; do not drop them, divide by zero, or substitute an invented output. A measured service quantity Qc or actual operating hours H may describe a separately declared service or attribution driver, never new board production Q. No machine mass, recipe, yield, moisture, price or loss share is prescribed."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "A composition ledger partitions a whole supplied material; it does not create additional exchanges. Purchased paper includes its actual fibre/filler/sizing upstream once; purchased whole adhesive includes starch, carrier water and other supplied ingredients once. Wastewater wet mass, H2O, solids and COD are different quantities; only the whole shipment links to one actual compatible treatment provider. Do not sum its constituent ledger into whole-stream mass, add duplicate upstream manufacture, or claim recycling, substitution or energy credits."
+      source_ids: []
+    - rule_id: boundary_layers
+      applies_to: "converter"
+      rule: "Foreground starts at paper receipt; supplier pulping, sizing, fillers, drying and emissions belong once to the ply background and are not repeated at converter."
+      source_ids:
+        - wco-hs-2022-ch48
+        - ec-paper-bref-2015
+    - rule_id: boundary_operations
+      applies_to: "converter"
+      rule: "Include bonding, pressing, actual drying/conditioning and necessary flattening, cutting, dust capture, cleaning and actual gate packing; a converter without a pulper cannot call exported trim an internal broke loop."
+      source_ids:
+        - ec-paper-bref-2015
+        - klug-es-adhesive
+    - rule_id: boundary_variant
+      applies_to: "product"
+      rule: "Reinforcement, surface treatment, synthetic binder, on-site combustion heat or on-site water treatment exceeds this route and requires complete corresponding methods and atomic rows; producer emission-free marketing does not replace site screening."
+      source_ids:
+        - paramelt-paper-board
+        - solidus-board
+        - klug-es-adhesive
+boundary_abstraction:
+  declared_starting_condition: "Purchased dried uncoated/unimpregnated flat paper or paperboard plies and whole starch adhesive in supplied state arrive at converter"
+  starting_condition_role: "Foreground receiving boundary; upstream burden is not zero"
+  product_classification_scope: "The stated restricted subset of 32141; classification is not physical applicability"
+  recursive_input_rule: "Record any same-category purchased board once as a supplier input, without recursively duplicating current manufacture; an already-composite board core needs a separately verified flow and boundary."
+  upstream_dataset_requirement: "Link compatible pulp/papermaking background per ply grade/origin; purchased adhesive includes formulation manufacture. Verify transport endpoints and existing transport coverage; add actual transport-service rows for uncovered routes."
+  disclosure: "Declare supplier cut points, background quantity definitions, transport/packing coverage and actual foreground facilities; wood-processing studies do not establish papermaking recipes."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Finished starch-bonded uncoated flat-layer paperboard"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual grade"
+    - "count and paper/paperboard state of each ply"
+    - "evidence of no coating/impregnation/reinforcement"
+    - "whole-glue ingredients"
+    - "starch origin and wet/dry basis"
+    - "necessary pressing/drying/flattening/slitting and first flat-board supply gate"
+    - "measured gate moisture"
+    - "net board/packing tare and acceptance IDs"
+    - "site/period/voltage"
+    - "actual heat route"
+    - "steam pressure/temperature/condensate and provider basis"
+    - "raw/WIP/FG/packaging stock vectors"
+    - "co-outputs/waste receivers"
+    - "order acceptance"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is same-period newly accepted net board kg at the first flat-board supply gate, measured gross less actual packing tare and including declared moisture. Reconcile acceptance IDs and stocks; normalize once. Historical finished-board return/reinspection creates no Q; new closing FG is not added again to measured accepted production."
+  - id: moisture_basis
+    applies_to: "paper/glue/product/waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain wet mass, measured solids/moisture and volatile-loss applicability for each stream; wet adhesive mass is not dry adhesive or oven-dry paper mass."
+  - id: electric_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: "f6811440-ee37-11de-8a39-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Use the dimensional conversion 1 kWh = 3.6 MJ. Convert actual electricity meter readings only; this does not establish thermal efficiency or delivered steam heat."
+  - id: water_volume
+    applies_to: "tap water and water balance"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Input uses measured m3; water-balance mass conversion uses actual density and temperature, without an assumed density."
+  - id: pm_bins
+    applies_to: "particles released outdoors"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "The three rows are mutually exclusive fractions; cumulative differences require comparable tests at the same conditions. Unknown particle splits remain pending; no default fractions."
+process_map:
+  - id: converter
+    name: "Paper-ply bonding, conditioning, cutting and packing"
+    inclusion: "required"
+    inclusion_condition: "Declared flat-paper/paperboard and starch route, electricity and actual steam separate"
+    role: "foreground"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: converter
+    label: "Paper-ply bonding, conditioning, cutting and packing"
+    inputs:
+      product:
+        - row_id: outer_paper
+          role: "Outer paper plies"
+          name: "Dried uncoated outer-ply paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record one actual supplier grade of dried uncoated, unimpregnated outer-ply paper. Only identical grades may be summed; create separate atomic rows for differing grades. Collect fibre, filler, internal sizing, moisture and supplied-state background basis; no generic ply weight. Quantity-method context: normalize_exchange; stock_vectors together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Weigh each outer-ply supplier grade in received wet kg; reconcile opening, receipts, unused returns, closing raw/WIP/FG and actual losses under cp_layers and the inherited per-flow stock ledger; isolate this grade/ply burden before one final normalization, once per reference flow. Area records require actual same-lot grammage and area, not catalogue values. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_layers
+              source_ids:
+                - klug-es-adhesive
+            ranges: []
+        - row_id: core_paper
+          role: "Inner paper plies"
+          name: "Dried uncoated inner-ply paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record one actual inner-ply paper grade, separately from outer plies. For a two-ply construction this exchange is absent only with construction evidence. Distinguish paper from paperboard; collect grade, fibre/fillers/sizing, moisture and upstream basis. Quantity-method context: normalize_exchange; stock_vectors together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Collect each actual inner paper grade separately in wet kg using cp_layers; absent inner plies require construction evidence. Reconcile issues/returns, raw/WIP/FG vectors and losses under the inherited per-flow stock ledger, isolate actual inner-ply burden and apply one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_layers
+              source_ids:
+                - klug-es-adhesive
+            ranges: []
+        - row_id: board_ply
+          role: "Purchased dried flat paperboard ply"
+          name: "Dried uncoated flat paperboard ply"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record one actual dried, uncoated and unimpregnated flat paperboard grade. Confirm fibre/fillers/sizing, moisture, surface state and supplier kg basis. An already-composite purchased core requires a separate verified flow and inherited-manufacture boundary. Quantity-method context: normalize_exchange; stock_vectors together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Collect actual wet kg per grade under cp_layers; area needs same-lot measured area and grammage. Reconcile the inherited per-flow stock ledger for raw/WIP/FG and losses, isolate this ply burden, then one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_layers
+              source_ids: []
+            ranges: []
+        - row_id: starch_adhesive
+          role: "Purchased starch adhesive"
+          name: "Aqueous starch adhesive"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record the whole purchased aqueous starch formulation once, with supplier recipe/SDS, starch origin, heat treatment, solids, H2O fraction and wet-formulation reference mass. Carrier water and supplied ingredients are composition subledgers, not additional exchanges. Actual separately added ingredients need separate atomic cards; no synthetic, PVAc, EVA or bituminous binder is covered. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Meter or integrate actual whole supplied wet-formulation kg under cp_adhesive; volume needs actual mixture density at stated temperature. Reconcile unused/raw/WIP/FG/residue vectors; segregate this glue batch and only then use one final normalization once per reference flow. Solids, starch and carrier-water subledgers are not additional doses. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_adhesive
+              source_ids:
+                - klug-es-adhesive
+                - klug-es-board-td-2026
+            ranges: []
+        - row_id: tap_water
+          role: "Additional dilution and cleaning water"
+          name: "Treated tap water"
+          flow_type: "product"
+          property_unit: "Volume; unit group / m3"
+          description: "Record metered externally supplied treated tap water for actual dilution and cleaning. Exclude adhesive carrier water and internal recirculation. Verify site, period, supplier treatment/delivery gate and m3 background basis; physical water mass requires measured density and temperature. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Integrate measured external tap-water volume rates over actual intervals or use calibrated meter differences, in m3 under cp_water; exclude supplied-glue carrier water and internal recirculation. Isolate actual dilution/cleaning use and inherited stock burdens before one final normalization once per reference flow. Physical water kg uses actual water density(T). Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - paramelt-paper-board
+            ranges: []
+        - row_id: electricity
+          role: "Customer-side low-voltage electricity"
+          name: "Low-voltage alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record actual low-voltage electricity supplied at the converter meter. Meter drives, press, ventilation, cutting, packing and electrical drying without overlapping meters; retain region/year/voltage/loss and background basis. The heat source must be collected, not inferred from a product example. Quantity-method context: normalize_exchange; electricity_mj together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Collect nonoverlapping meter kWh differences or integrate actual power over time under cp_energy, including drying, starts/stops, idle and cleaning. Convert kWh to MJ with the metered kWh-to-MJ conversion (3.6 MJ/kWh); subdivide actual drive/operation scope, transfer stock vectors and assign only genuine shared residuals before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+        - row_id: steam_heat
+          role: "Actual indirect process heat delivered by purchased steam"
+          name: "Purchased steam process heat"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record actual purchased steam for indirect heating only. Collect supplier technology, pressure, temperature, steam quality, enthalpy datum, delivered heat and condensate paths. Energy in MJ, steam kg and useful heat are distinct ledgers; provider compatibility and conversion remain required. Other heat routes need their own atomic identity and complete units. Quantity-method context: normalize_exchange; steam_delivery together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Integrate actual steam mass-rate and matched enthalpy difference, or verify heat-meter MJ, under cp_steam; reconcile the same gate/interval/condensate basis through the same-gate steam/condensate heat ledger to the provider native heat quantity. Retain separate carrier-water kg; subdivide drying duty, stock and coupled heat/electricity/water burdens before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_steam
+              source_ids: []
+            ranges: []
+        - row_id: paper_wrap
+          role: "Plain uncoated paper wrap"
+          name: "Plain uncoated paper wrap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record one actual plain uncoated and unimpregnated paper wrapping grade, separately from incorporated plies and board net mass. Verify composition, moisture and provider mass basis. Add separate atomic rows for actual pallets, straps or film; whole packaging and components cannot duplicate manufacture. Quantity-method context: normalize_exchange; packaging_receipts together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Collect actual plain-paper component receipts and wet kg under cp_pack; use the complete first-physical-receipt ledger to distinguish first external physical receipt from procurement/burden ownership. Reconcile empty/raw/WIP/FG/reusable stocks, external issues, matched returns and waste; assign the actual wrapping burden once, then one final normalization per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: board_output
+          role: "Finished starch-bonded uncoated flat-layer paperboard"
+          name: "Finished starch-bonded uncoated flat-layer paperboard"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Exactly 1 kg of newly accepted net board at declared gate moisture. Exclude packing and rejected board. The board contains only flat paper/paperboard plies and internal starch adhesive; no corrugated core, reinforcement, outer coating or impregnation."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - wco-hs-2022-ch48
+                - klug-es-adhesive
+            ranges: []
+        - row_id: condensate_return
+          role: "Steam condensate actually returned to heat supplier"
+          name: "Liquid steam condensate returned to heat supplier"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record actual liquid condensate returned across the supplier interface. Internal returns cancel; contaminated/discarded condensate needs its actual waste identity and receiver. No negative steam, avoided-water or energy credit is assigned. Quantity-method context: normalize_exchange; stock_vectors together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Measure actual returned kg or same-stream V times measured density(T) under cp_steam; reconcile steam/return IDs, intervals, stocks and residual heat. Preserve gross V without another water manufacture or negative steam. Attribute actual heat duty and the inherited per-flow stock ledger, then one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_steam
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: clean_trim
+          role: "Unglued paper trim exported"
+          name: "Unglued paper trim"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record separately weighed unglued paper trim exported to the actual receiver. Retain grade, moisture and receiver treatment compatibility; no default recycling share or credit. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Weigh actual separate unglued trim shipments in wet kg under cp_waste, with stock/internal-return reconciliation and measured moisture; retain gross V and actual receiver. Determine dedicated/shared attribution and inherited grade burdens before one final normalization once per reference flow; no recycling credit. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+        - row_id: bonded_trim
+          role: "Starch-bonded board trim exported"
+          name: "Starch-bonded paperboard trim"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record exported starch-bearing board trim/rejects with paper/starch/moisture composition and receiver compatibility. Internal returns are not exports. Waste versus genuine coproduct requires section 7 evidence. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Weigh actual starch-bearing board trim/reject shipments in wet kg under cp_waste; record paper/starch/H2O and stocks separately without adding constituent mass twice. Keep gross V, inherited vectors and actual receiver; establish coproduct/waste attribution before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+        - row_id: adhesive_residue
+          role: "Separated waste starch adhesive"
+          name: "Liquid waste starch adhesive"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record whole liquid aqueous starch adhesive residue exported, separately from cleaning wastewater. Collect phase, formulation, wet mass, solids/H2O, stock and receiver. Gelled/dried residue needs another specific atomic identity; no default hazard or treatment is assigned. Quantity-method context: normalize_exchange; exported_liquid_basis together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Measure whole actual liquid residue shipment wet kg, or integrate volume and measured mixture density(T,state), under cp_waste and the whole wet-liquid basis; reconcile stocks and separate H2O/solids subledgers. Preserve gross V and actual receiver; assign the responsible glue/cleanup cohort before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - klug-es-adhesive
+            ranges: []
+        - row_id: cleaning_effluent
+          role: "Starch-adhesive equipment cleaning wastewater"
+          name: "Starch-adhesive equipment cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record whole wet cleaning wastewater exported to off-site treatment. Use measured wet mass or actual mixture density times measured volume; H2O, solids and COD are separate analyses, not extra whole-liquid exchanges. No duplicate direct receiving-water release is added for the same exported stream. Quantity-method context: normalize_exchange; exported_liquid_basis together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Measure actual whole exported cleaning liquid in wet kg or measured V times same-stream density(T,state), using cp_water and the whole wet-liquid basis. Integrate real discharge rates when rate-based; retain H2O, solids and COD as separate analyses, stocks and one receiver. Assign actual cleaning causes before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - paramelt-paper-board
+            ranges: []
+        - row_id: captured_dust
+          role: "Collected starch-bearing paper cutting dust"
+          name: "Collected paper and starch cutting dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record collected paper/starch cutting dust removed as waste, including inherent filler/sizing, moisture, stock and actual receiver. Captured dust is distinct from outdoor particulate release; no default biodegradability, collection frequency or treatment is assigned. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Weigh actual collector removal in wet kg under cp_waste; reconcile opening/closing collector stock and internal return, with measured paper/starch/filler/moisture composition. Keep capture separate from escaping PM and preserve gross V; isolate the actual cutting source before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+      elementary:
+        - row_id: pm25_air
+          role: "PM2.5 released to outdoor air"
+          name: "Particles up to 2.5 micrometres to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record actual exclusive PM2.5 release after capture. Retain measurement definitions, outdoor receiving compartment and detection-limit uncertainty; no default emission factor. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Under cp_air integrate actual matched concentration times gas-volume rate over time with consistent T/P/wet-dry conditions, plus separately evidenced fugitives, for the exclusive outdoor-air PM2.5 fraction in kg. Preserve gross V, nondetect uncertainty and actual source attribution before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+        - row_id: pm25_10_air
+          role: "Particles between PM2.5 and PM10 released to air"
+          name: "Particles above 2.5 to 10 micrometres to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record the exclusive >2.5 to 10 micrometre fraction. Only matched compatible cumulative PM10 minus PM2.5 may be used; unknown splits remain unresolved. Quantity-method context: normalize_exchange; pm_exclusive together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Under cp_air integrate exclusive size-resolved mass release, or apply the matched exclusive-particle calculation only to matched cumulative PM10 and PM2.5 records. Convert actual concentration/rate/time units to kg before causal attribution and stock-vector accounting; retain gross V and one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+        - row_id: pm_over10_air
+          role: "Particles above PM10 released to air"
+          name: "Particles above 10 micrometres to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record the exclusive >10 micrometre fraction. Compatible total particulate minus PM10 is permitted with matched test conditions; never add cumulative total as another emission. Quantity-method context: normalize_exchange; pm_exclusive together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Use cp_air matched exclusive >10 micrometre release tests or compatible total particulate minus PM10 under the matched exclusive-particle calculation, in kg; never add total PM as another species. Retain actual gas-rate/time integration, gross V, attribution and uncertainty before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-paper-bref-2015
+            ranges: []
+        - row_id: water_vapour
+          role: "Water evaporated to outdoor air"
+          name: "Water vapour to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Determine process-derived positive H2O release using matched inlet/outlet humidity and dry-air rate or a fully constrained water balance with only one unknown. Exclude ambient humidity; retain steam/condensate and stock water. Condensation is not a negative vapour emission. Quantity-method context: normalize_exchange together with the complete sections 4, 7 and 8 and the linked collection protocol."
+          amount:
+            expression: "Use cp_water independently measured matched air humidity and dry-air mass-rate integration, or a fully constrained water balance with this sole unknown, to establish positive process H2O released to outdoor air in kg. Include actual steam/condensate and all material/stock water; no simultaneous fitting of multiple unknowns. Attribute actual drying/conditioning loads before one final normalization once per reference flow. Direct same-reference amount is q_i = A_i / Q; A_i is this row attributed quantity after those steps, Q is new accepted net board kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - paramelt-paper-board
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "converter"
+    rule: "First investigate subdivision or explicit system expansion; expansion requires real co-functions, representative boundaries and whole-expanded-system reporting. Isolate dedicated paper grades, glue batches, meters and production campaigns before any allocation. For each remaining exchange document the causal physical relation: paper by actual grade/ply issues, glue by actual formulation dosing, heat by measured drying duty, electricity by measured drives/run state and water by actual cleaning/dilution operations. Neither board mass nor one factory-wide percentage automatically allocates every exchange."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: allocation_physical
+    applies_to: "physical ledger"
+    rule: "Preserve gross V and all physical outputs/internal links/stocks independently of attributed A. Transfer inherited per-flow cohort vectors through raw material, WIP and finished goods once. The chosen target Q contains only new accepted board; unrelated output, returned board, opening-stock dispatch and reusable packaging do not enlarge it."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: allocation_residual
+    applies_to: "genuinely inseparable residual"
+    rule: "Only after documenting why subdivision/expansion and a relevant physical relation fail, justify an economic relationship for the actual residual. Use actual same-gate, same-state, same-period quantities and realized values of all real co-functions, with cost/negative-value cases and sensitivity disclosed; no invented prices or universal share."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: allocation_trim
+    applies_to: "clean_trim; bonded_trim; captured_dust"
+    rule: "Verify waste versus saleable coproduct from actual specification, recipient use, waste status and market evidence; a payment alone is insufficient. A genuine coproduct needs its own qualified Product output and physical quantity, with dedicated and shared burdens assigned before normalization. Keep waste as waste with one actual receiver; internal returns cancel and carry history. No automatic avoided-paper, energy-recovery or substitution credit."
+    source_ids:
+      - ec-paper-bref-2015
+      - eu-pef-multifunctionality-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "converter"
+      flow_role: "reference output"
+      record_type: "scale/meter/laboratory/supplier records"
+      raw_fields: "gross/tare/net mass; lot; order acceptance; grade; moisture; accepted production; dispatch; opening/closing stock"
+      collection_method: "Calibrated weighing and representative gate-moisture tests; reconcile accepted production with dispatch and stock"
+      unit: "kg; mass fraction"
+      frequency: "each lot and matched stage interval"
+      temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
+      site_scope: "declared converting line and attributable shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, sample chain, SOP, supplier definitions and complete raw records"
+    - protocol_id: cp_layers
+      process_id: "converter"
+      flow_role: "each paper grade"
+      record_type: "scale/meter/laboratory/supplier records"
+      raw_fields: "supplier; grade; ply position/count; moisture; received/issued/returned mass; stock; surface coating/impregnation declaration; transport endpoint"
+      collection_method: "Per-grade scale/stock balance and supplier declaration; keep upstream paper manufacture separate from converter"
+      unit: "kg; mass fraction"
+      frequency: "each lot and matched stage interval"
+      temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
+      site_scope: "declared converting line and attributable shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, sample chain, SOP, supplier definitions and complete raw records"
+    - protocol_id: cp_adhesive
+      process_id: "converter"
+      flow_role: "starch adhesive"
+      record_type: "scale/meter/laboratory/supplier records"
+      raw_fields: "supplier/SDS and applicable CAS; starch origin and modification; all formulation ingredients; supplied form; wet mass; starch/other measured solids/H2O fractions; dilution; residue; shelf/storage change; background reference basis"
+      collection_method: "Lot dosing/stock balance and validated solids method; do not double count supplier carrier water or the adhesive manufacturing process"
+      unit: "kg; mass fraction"
+      frequency: "each lot and matched stage interval"
+      temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
+      site_scope: "declared converting line and attributable shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, sample chain, SOP, supplier definitions and complete raw records"
+    - protocol_id: cp_energy
+      process_id: "converter"
+      flow_role: "electricity"
+      record_type: "calibrated meters/provider originals"
+      raw_fields: "stage power/time/kWh; provider voltage/region/year/mix/gate/losses; actual electric dryer and steam configuration; meter overlaps; coupled utilities; startup/idle/cleaning/stocks"
+      collection_method: "Integrate actual operation without overlapping meters; distinguish supplier joint heat/power/water production from converter demand, without repeating covered generation/boiler fuel, water or emissions"
+      unit: "kWh; MJ"
+      frequency: "each interval/campaign"
+      temporal_coverage: "full period including failures/idle/cleaning"
+      site_scope: "selected line and actual shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, provider basis and originals"
+    - protocol_id: cp_pack
+      process_id: "converter"
+      flow_role: "paper-wrap component"
+      record_type: "physical receipt/issue/return/stock records"
+      raw_fields: "atomic material/form/type/direction; original measurement/unit and kg conversion; receiptID/time/origin; procurement/burden owner/custody/cohort/prior vector/provider; purchases P and first nonpurchase N; ER matched to same-item earlier outward; empty/raw/WIP/FG/reusable opening/closing and grossS/EO/W"
+      collection_method: "Separate physical receipt from procurement/burden ownership; purchased batch components remain P without separate invoice; actual loan/rental/entrusted/nonpurchase accompanied receipts enter actual receiving side as N; internal issue/reuse cancel and unknown history is not zero"
+      unit: "kg"
+      frequency: "each event and period close"
+      temporal_coverage: "full period including stocks/returns"
+      site_scope: "actual receiving side and packaging gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "original receipt/custody/history/provider evidence"
+    - protocol_id: cp_waste
+      process_id: "converter"
+      flow_role: "each waste export"
+      record_type: "scale/meter/laboratory/supplier records"
+      raw_fields: "stream; mass; moisture/solids; starch/filler/sizing contamination; liquid/gelled/semi-solid/dry state; H2O and other formulation fractions; receiver; treatment; stock; internal return; collector capture"
+      collection_method: "Separate weighed loads and composition tests for each export; receiver tickets; collector stock balance"
+      unit: "kg"
+      frequency: "each lot and matched stage interval"
+      temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
+      site_scope: "declared converting line and attributable shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, sample chain, SOP, supplier definitions and complete raw records"
+    - protocol_id: cp_air
+      process_id: "converter"
+      flow_role: "each outdoor particle bin"
+      record_type: "scale/meter/laboratory/supplier records"
+      raw_fields: "source; aerodynamic size cut; concentration; sampled gas volume T/P wet/dry; time; controls; outdoor compartment; capture; blanks; detection limits; uncertainty"
+      collection_method: "Site-approved size-resolved sampling of exhaust and fugitives; integrate matched concentration and volumetric rate over time; absence requires documented screening"
+      unit: "kg; concentration; gas volume"
+      frequency: "each lot and matched stage interval"
+      temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
+      site_scope: "declared converting line and attributable shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, sample chain, SOP, supplier definitions and complete raw records"
+    - protocol_id: cp_water
+      process_id: "converter"
+      flow_role: "water and cleaning effluent"
+      record_type: "scale/meter/laboratory/supplier records"
+      raw_fields: "purchased m3; density/T; glue/paper/product/waste moisture; wash discharge whole volume/wet mass/mixture density and temperature/H2O fraction/solids; receiver; returned condensate; humidity; water stock"
+      collection_method: "Calibrated water meters, wet/dry composition and sampled density; matched physical water balance including purchased-glue carrier water once"
+      unit: "m3; kg; mass fraction"
+      frequency: "each lot and matched stage interval"
+      temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
+      site_scope: "declared converting line and attributable shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, sample chain, SOP, supplier definitions and complete raw records"
+    - protocol_id: cp_steam
+      process_id: "converter"
+      flow_role: "steam heat/carrier and condensate interfaces"
+      record_type: "heat/steam meters and provider originals"
+      raw_fields: "actual boiler or CHP route; steam/return IDs; mass-rate/time; P/T/quality; inlet/outlet enthalpy and datum; pipe losses; condensate kg/density/T/destination; heat meter; provider native units; coupled heat/power/water and stocks"
+      collection_method: "Calibrated metering, actual-time integration and same-interface enthalpy ledger; verify provider native heat basis rather than equating kg, MJ or differing heat conventions"
+      unit: "kg; MJ; time"
+      frequency: "each heat interval and campaign"
+      temporal_coverage: "full period including startup/idle/cleaning"
+      site_scope: "actual converting line and heat-delivery gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, provider invoices/utility diagram, enthalpy calculations and return receipts"
+    - protocol_id: cp_stock
+      process_id: "converter"
+      flow_role: "each-flow stock inheritance and attribution"
+      record_type: "cohort/stock/acceptance/allocation records"
+      raw_fields: "each raw/unused/WIP/FG opening/closing quantity and per-flow vector; completion stage; first acceptance ID; dispatch/return; failed/start/idle/cleaning loads; co-outputs; subdivision and each-exchange physical cause; actual residual same-period/gate values"
+      collection_method: "Track physical quantities and inherited burden vectors by cohort, gross V separate from attributed A; reconcile new Q without recounting new closing FG or returns"
+      unit: "each flow original unit; kg"
+      frequency: "each event and period close"
+      temporal_coverage: "complete production/stock period"
+      site_scope: "selected board gate and related shared units"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "original acceptance/stock accounts, historical vectors and attribution rationale"
+  calculation_rules:
+    - id: normalize_exchange
+      applies_to: "all non-reference rows"
+      rule: "First establish original units/actual-rate integration, same-scope conversion, stock_vectors and each-flow dedicated/shared attribution; then q_i = A_i / Q once. A_i is the quantity attributed to new target board in this card native unit; Q is same-period first accepted net board kg. Preserve gross V and physical co-outputs separately."
+      inputs:
+        - cp_mass
+        - cp_layers
+        - cp_adhesive
+        - cp_energy
+        - cp_pack
+        - cp_waste
+        - cp_air
+        - cp_water
+        - cp_steam
+        - cp_stock
+      output: "row amount per reference flow"
+      source_ids: []
+    - id: electricity_mj
+      applies_to: "electricity"
+      rule: "A_MJ = 3.6 * A_kWh; 3.6 is the kWh-to-MJ unit conversion; convert at the metered delivery point."
+      inputs:
+        - cp_energy
+      output: "MJ per reference flow"
+      source_ids: []
+    - id: dry_water_components
+      applies_to: "paper/glue/product/waste"
+      rule: "m_dry = m_wet * s; m_H2O = m_wet * w_H2O; s is validated measured dry-solids fraction and w_H2O is independently established H2O fraction. Use 1-s only when the entire non-solid fraction is proven to be water; retain non-water volatiles/solvents and other formulation components separately, without assuming all drying loss is H2O."
+      inputs:
+        - cp_layers
+        - cp_adhesive
+        - cp_mass
+        - cp_waste
+        - cp_water
+      output: "physical dry matter and water; wet reference unchanged"
+      source_ids: []
+    - id: physical_balances
+      applies_to: "converter"
+      rule: "For dry solids, water and carbon separately, inputs = product + exported waste + environmental releases + stock change; equal internal-link ends cancel. Convert pure-water input V using measured water density; whole mixed-liquid wet mass = V * measured mixture density, and its water ledger contains only wet mass * w_H2O. Collect carbon composition/biogenic origin; no default carbon fraction or CO2 emission."
+      inputs:
+        - cp_layers
+        - cp_adhesive
+        - cp_mass
+        - cp_water
+        - cp_waste
+        - cp_air
+      output: "unallocated physical ledger and residuals"
+      source_ids: []
+    - id: pm_exclusive
+      applies_to: "particle rows"
+      rule: "PM2.5-10 = matched PM10 - PM2.5; >10 = comparable total particulate - PM10; apply only with compatible definitions, conditions and detection limits, otherwise collect. Investigate negative differences rather than clipping to zero."
+      inputs:
+        - cp_air
+      output: "exclusive particle kg per reference flow"
+      source_ids:
+        - ec-paper-bref-2015
+    - id: exported_liquid_basis
+      applies_to: "liquid adhesive residue/off-site cleaning wastewater"
+      rule: "Native wet Mass/kg is measured whole wet mass or measured V * mixture density(T,state); same-stream H2O = wet mass * w_H2O. Formulation solids/pollutant indicators are separate composition ledgers, not additional whole-liquid quantities. Normalize once by same-period Q, with no on-site treatment or duplicate direct receiving-water releases. Non-liquid residue needs a separately verified identity and atomic row."
+      inputs:
+        - cp_waste
+        - cp_water
+        - cp_mass
+      output: "wet kg per reference flow and separate H2O ledger"
+      source_ids: []
+    - id: stock_vectors
+      applies_to: "all inventory rows"
+      rule: "For each flow i: newly completed production burden vector = actual current activities + inherited raw/WIP vectors brought into production - actual raw/unused/WIP vectors carried forward; separately reconcile external returns/transfers/disposal at actual stages without subtracting net-issued material twice. Newly accepted FG vectors remain within Q, then are split between current dispatch and new closing FG; opening FG dispatch/returns keep original vectors and create no Q. Allocate only real common residual once."
+      inputs:
+        - cp_stock
+        - cp_mass
+        - cp_layers
+        - cp_adhesive
+      output: "each-flow attributed A and stock vectors; gross V independent"
+      source_ids:
+        - eu-pef-multifunctionality-2021
+    - id: packaging_receipts
+      applies_to: "paper_wrap"
+      rule: "Complete physical ledger: opening S0 + purchased P + first nonpurchase N + ER matched to the same article previously outward = closing S1 + actual external outward EO + waste W. Include every empty/raw/WIP/FG/reusable stock; internal grossS issue/reuse ends cancel. P remains purchased without separate invoice. N records atomic material/form/direction/original measurement/receiptID and time/origin/owner/custody/cohort/priorvector/provider. Unknown history is not zero; whole article and components have no duplicate manufacture; current attribution and future carryover are separate."
+      inputs:
+        - cp_pack
+        - cp_stock
+      output: "complete receipt ledger and one provider burden"
+      source_ids: []
+    - id: steam_delivery
+      applies_to: "steam_heat; condensate_return"
+      rule: "Actual steam kg is mass-rate integrated over time; reconcile delivered MJ using a common inlet/outlet enthalpy datum and actual condensate/vent/loss paths. Retain provider thermal-energy quantity, usable heat and carrier-water kg separately; a different provider basis requires verified conversion, never an assumed equality or latent-heat factor. Verify coupled heat/power/water from actual provider joint burdens and each-exchange physical relationships; do not repeat provider fuel/water/electricity/emissions or invent a condensate energy credit."
+      inputs:
+        - cp_steam
+        - cp_energy
+        - cp_water
+        - cp_stock
+      output: "attributed native heat and separate water/energy physical ledgers"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all exchanges"
+      requirement: "Check name, CAS when relevant, route, classification, medium, property and unit; physical identity is distinct from background quantity compatibility; unresolved UUIDs remain blank."
+      evidence: "supplier specifications and direct flow/property/unit records"
+    - id: period_scope
+      applies_to: "collection"
+      requirement: "Declare actual place/complete period, ply grades, adhesive supply state and line; historical or single-plant examples are not generic recipes or energy amounts."
+      evidence: "cp_mass; cp_layers; cp_adhesive; cp_energy"
+    - id: uncertainty
+      applies_to: "measurement"
+      requirement: "Retain calibration, representativeness, detection limits, material/water/carbon residuals and uncertainty; missing is not zero and supplier VOC-free claims do not prove zero release at all stages."
+      evidence: "cp_air; cp_water; cp_waste"
+    - id: coverage
+      applies_to: "actual route"
+      requirement: "Investigate and atomically complete actual packing, transport, maintenance/lubricants/cleaners/wastes and utilities. This method supplies no assumed on-site boiler or treatment unit. Distinguish real species/compartment/water/heat/phase from total PM, COD, NOx or elemental indicators; an indicator is not an additional species, and one residual cannot solve multiple unknowns. Retain actual biogenic CO2 in LCI irrespective of GHG reporting conventions."
+      evidence: "cp_energy; cp_steam; cp_pack; cp_water; site process diagram"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "product"
+    rule: "Check flat plies, adhesive, surface/gate state and actual route; any unknown requires review, with no inference from classification or the name solid board."
+    source_ids:
+      - wco-hs-2022-ch48
+      - klug-es-adhesive
+      - solidus-board
+  - rule_id: validate_reference
+    applies_to: "reference"
+    rule: "Exactly one board_output is the 1 kg reference product output; identity must have verifiable physical limitations and cannot borrow a neighbouring product UUID."
+    source_ids: []
+  - rule_id: validate_balances
+    applies_to: "collection"
+    rule: "Verify every Amount original unit, real rate integration, conversion scope, each-flow subdivision/shared attribution, raw/WIP/FG inherited vectors and final single A/Q. Independently review gross V dry matter/water/carbon, stocks, physical co-outputs, Q=0 loads and first external packaging receipts. New closing FG is already in Q; return/reinspection creates no Q. A finite measurement check does not establish actual dataset completeness."
+    source_ids:
+      - eu-pef-multifunctionality-2021
+  - rule_id: validate_air
+    applies_to: "emissions"
+    rule: "Do not sum the three exclusive particle bins with cumulative PM10 or total particulate; captured dust is separate from air releases. Zero requires screening evidence; unknown emissions/background bases prevent complete acceptance."
+    source_ids:
+      - ec-paper-bref-2015
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Declared gate-board input to downstream paper/packaging converting models"
+  allowed_use: "Only datasets physically within this scope with complete evidence/inventory"
+  excluded_use: "Wet multilayer board, corrugated/coated/impregnated materials; packages with unknown identity or quantity bases"
+  required_metadata: "Reference net mass/moisture, layer construction, adhesive, gate state, supplier backgrounds/utilities, actual period/place, each-flow stock inheritance and first flat-board supply gate"
+  required_quality_disclosure: "Missing measurements, unresolved identity/background bases, balance residuals, emission coverage, allocation and uncertainty"
+  update_trigger: "Changes in plies/adhesive/surfaces, process/energy/water treatment, supplier background or quality"
+data_sources:
+  - id: "wco-hs-2022-ch48"
+    type: "official_guidance"
+    reference: "WCO HS Nomenclature 2022, Chapter 48; https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1048_2022e.pdf"
+    used_for: "Headings 48.07/48.08/48.10 distinguish flat adhesive bonding, corrugation and coating; no CPC mapping acceptance or emission factor."
+  - id: "ec-paper-bref-2015"
+    type: "official_guidance"
+    reference: "European Commission JRC, Production of Pulp, Paper and Board BREF, 2015; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf"
+    used_for: "Section 7.1.10 (printed p.670/PDF p.708): finishing, cutting dust and packing mechanism; 7.1.11.5 (p.677/PDF p.715): wet multilayer board distinctions. Dry cutting mechanism only reused for converter; no papermaking water/energy/recycling defaults or emission factors."
+  - id: "klug-es-adhesive"
+    type: "handbook"
+    reference: "KLUG-CONSERVATION, ES products, publisher page with 2024 notice; https://www.klug-conservation.com/es-products"
+    used_for: "ES adhesive and flat multiple-ply bonding paragraphs: heat-treated starch/water-soluble adhesive and product case only; no zero-VOC, recipe, life or dosage default."
+  - id: "klug-es-board-td-2026"
+    type: "handbook"
+    reference: "KLUG Conservation board 017 ES natural white multiple ply technical data sheet, 2026 notice; https://download.klug-conservation.de/Technische_Datenblaetter/Karton/Museumskarton/017-ES-naturweiss/en/TD-Conservation-board-017-ES-natural-white-multiple-ply-thicknesses-1-0-1-5-2-0-2-5mm.pdf"
+    used_for: "PDF p.1 material characteristics and ex-stock sheet dimensions: bleached-cellulose/potato-starch-bonded case; thickness/composition/performance figures are not generic recipes/ranges, and no inference of all surface treatments or site utilities."
+  - id: "paramelt-paper-board"
+    type: "handbook"
+    reference: "Paramelt, Paper and board converting, publisher page; https://www.paramelt.com/packaging/paper-board-converting-adhesives/"
+    used_for: "Water-based adhesives and Board lamination sections: different adhesives/films require formulation/surface decisions; no quantitative default."
+  - id: "solidus-board"
+    type: "handbook"
+    reference: "Solidus, Solid board sheets and reels; https://solidus.com/product-type/solid-board-sheets-and-reels/page/2/"
+    used_for: "Composition of solid board and Foodline: recycled-core/PE/PET-coated counterexamples; solid-board name does not prove uncoated state and its specifications are not quantity defaults."
+  - id: "eu-pef-multifunctionality-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "PDF pp.63–64: subdivision/expansion, physical and other relationship hierarchy; allocation method only, no fixed shares or complete PEF-conformance claim."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d777cea670e8ba869d377574ee133e7627e5a1fd476094c011b3ab8d18bc45c5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8170"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8170
+          line: 68
+          column: 1
+        end:
+          offset: 12941
+          line: 98
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Complete quantity and stock context\n\nAll inventory cards inherit this complete context. Keep gross physical exchange vector V, in each flow's original unit, separate from the attributed burden vector A. Establish raw record identity, actual time/scope, rate integration and dimensional conversion first; then isolate dedicated operations and justify each remaining shared exchange by its own physical cause. Only a genuinely inseparable residual may use another relationship. Perform one final division by positive new accepted net board mass Q. Allocation never alters gross mass, water, carbon, inventory stock or physical co-output quantities. [eu-pef-multifunctionality-2021]\n\nQ is new board first accepted after bonding, required pressing, drying/conditioning, flattening and final slitting to the declared flat-sheet supply gate. Record rejects and every acceptance ID. New accepted closing finished goods are already included in Q; do not add them again to measured accepted production. Reconcile dispatch with opening/closing finished goods, external returns and transfers. Reinspection or return of previously accepted board creates no new Q. Opening finished goods dispatched now retain their original burdens. Raw/unused material, work in progress and finished-goods cohorts carry a vector b_i of inherited quantities for every flow i, including earlier material, electricity, heat, water and emissions; bring in their actual opening vectors, carry actual closing vectors, and transfer vectors at actual completion stages without deleting them or applying allocation twice. Unknown history is unknown, never a zero vector.\n\nQ=0, failed batches, starts/stops, idle periods, cleanup and trial runs retain their real loads. Attribute them to the causally served production period/cohort with a documented rule; do not drop them, divide by zero, or substitute an invented output. A measured service quantity Qc or actual operating hours H may describe a separately declared service or attribution driver, never new board production Q. No machine mass, recipe, yield, moisture, price or loss share is prescribed.\n\nA composition ledger partitions a whole supplied material; it does not create additional exchanges. Purchased paper includes its actual fibre/filler/sizing upstream once; purchased whole adhesive includes starch, carrier water and other supplied ingredients once. Wastewater wet mass, H2O, solids and COD are different quantities; only the whole shipment links to one actual compatible treatment provider. Do not sum its constituent ledger into whole-stream mass, add duplicate upstream manufacture, or claim recycling, substitution or energy credits.\n\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased dried uncoated/unimpregnated flat paper or paperboard plies and whole starch adhesive in supplied state arrive at converter |\n| starting_condition_role | Foreground receiving boundary; upstream burden is not zero |\n| product_classification_scope | The stated restricted subset of 32141; classification is not physical applicability |\n| recursive_input_rule | Record any same-category purchased board once as a supplier input, without recursively duplicating current manufacture; an already-composite board core needs a separately verified flow and boundary. |\n| upstream_dataset_requirement | Link compatible pulp/papermaking background per ply grade/origin; purchased adhesive includes formulation manufacture. Verify transport endpoints and existing transport coverage; add actual transport-service rows for uncovered routes. |\n| disclosure | Declare supplier cut points, background quantity definitions, transport/packing coverage and actual foreground facilities; wood-processing studies do not establish papermaking recipes. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_layers | converter | Foreground starts at paper receipt; supplier pulping, sizing, fillers, drying and emissions belong once to the ply background and are not repeated at converter. | wco-hs-2022-ch48; ec-paper-bref-2015 |\n| boundary_operations | converter | Include bonding, pressing, actual drying/conditioning and necessary flattening, cutting, dust capture, cleaning and actual gate packing; a converter without a pulper cannot call exported trim an internal broke loop. | ec-paper-bref-2015; klug-es-adhesive |\n| boundary_variant | product | Reinforcement, surface treatment, synthetic binder, on-site combustion heat or on-site water treatment exceeds this route and requires complete corresponding methods and atomic rows; producer emission-free marketing does not replace site screening. | paramelt-paper-board; solidus-board; klug-es-adhesive |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 351
+              line: 10
+              column: 1
+            end:
+              offset: 411
+              line: 10
+              column: 61
+          text: "# Uncoated flat-layer paperboard bonded with starch adhesive"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8170
+              line: 68
+              column: 1
+            end:
+              offset: 8191
+              line: 68
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40078"
+      family: "allocation"
+      span:
+        start:
+          offset: 40078
+          line: 460
+          column: 1
+        end:
+          offset: 42299
+          line: 469
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | converter | First investigate subdivision or explicit system expansion; expansion requires real co-functions, representative boundaries and whole-expanded-system reporting. Isolate dedicated paper grades, glue batches, meters and production campaigns before any allocation. For each remaining exchange document the causal physical relation: paper by actual grade/ply issues, glue by actual formulation dosing, heat by measured drying duty, electricity by measured drives/run state and water by actual cleaning/dilution operations. Neither board mass nor one factory-wide percentage automatically allocates every exchange. | eu-pef-multifunctionality-2021 |\n| allocation_physical | physical ledger | Preserve gross V and all physical outputs/internal links/stocks independently of attributed A. Transfer inherited per-flow cohort vectors through raw material, WIP and finished goods once. The chosen target Q contains only new accepted board; unrelated output, returned board, opening-stock dispatch and reusable packaging do not enlarge it. | eu-pef-multifunctionality-2021 |\n| allocation_residual | genuinely inseparable residual | Only after documenting why subdivision/expansion and a relevant physical relation fail, justify an economic relationship for the actual residual. Use actual same-gate, same-state, same-period quantities and realized values of all real co-functions, with cost/negative-value cases and sensitivity disclosed; no invented prices or universal share. | eu-pef-multifunctionality-2021 |\n| allocation_trim | clean_trim; bonded_trim; captured_dust | Verify waste versus saleable coproduct from actual specification, recipient use, waste status and market evidence; a payment alone is insufficient. A genuine coproduct needs its own qualified Product output and physical quantity, with dedicated and shared burdens assigned before normalization. Keep waste as waste with one actual receiver; internal returns cancel and carry history. No automatic avoided-paper, energy-recovery or substitution credit. | ec-paper-bref-2015; eu-pef-multifunctionality-2021 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 351
+              line: 10
+              column: 1
+            end:
+              offset: 411
+              line: 10
+              column: 61
+          text: "# Uncoated flat-layer paperboard bonded with starch adhesive"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40078
+              line: 460
+              column: 1
+            end:
+              offset: 40118
+              line: 460
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_56794"
+      family: "validation"
+      span:
+        start:
+          offset: 56794
+          line: 511
+          column: 1
+        end:
+          offset: 58126
+          line: 520
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | product | Check flat plies, adhesive, surface/gate state and actual route; any unknown requires review, with no inference from classification or the name solid board. | wco-hs-2022-ch48; klug-es-adhesive; solidus-board |\n| validate_reference | reference | Exactly one board_output is the 1 kg reference product output; identity must have verifiable physical limitations and cannot borrow a neighbouring product UUID. |  |\n| validate_balances | collection | Verify every Amount original unit, real rate integration, conversion scope, each-flow subdivision/shared attribution, raw/WIP/FG inherited vectors and final single A/Q. Independently review gross V dry matter/water/carbon, stocks, physical co-outputs, Q=0 loads and first external packaging receipts. New closing FG is already in Q; return/reinspection creates no Q. A finite measurement check does not establish actual dataset completeness. | eu-pef-multifunctionality-2021 |\n| validate_air | emissions | Do not sum the three exclusive particle bins with cumulative PM10 or total particulate; captured dust is separate from air releases. Zero requires screening evidence; unknown emissions/background bases prevent complete acceptance. | ec-paper-bref-2015 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 351
+              line: 10
+              column: 1
+            end:
+              offset: 411
+              line: 10
+              column: 61
+          text: "# Uncoated flat-layer paperboard bonded with starch adhesive"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 56794
+              line: 511
+              column: 1
+            end:
+              offset: 56816
+              line: 511
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "system_boundary_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 8234
+          line: 72
+          column: 1
+        end:
+          offset: 8876
+          line: 72
+          column: 643
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "system_boundary_rule_2"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 8878
+          line: 74
+          column: 1
+        end:
+          offset: 9830
+          line: 74
+          column: 953
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "system_boundary_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 9832
+          line: 76
+          column: 1
+        end:
+          offset: 10315
+          line: 76
+          column: 484
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "system_boundary_rule_4"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 10317
+          line: 78
+          column: 1
+        end:
+          offset: 10868
+          line: 78
+          column: 552
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_layers"
+      identity_kind: "explicit"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 12075
+          line: 94
+          column: 1
+        end:
+          offset: 12308
+          line: 94
+          column: 234
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 12309
+          line: 95
+          column: 1
+        end:
+          offset: 12601
+          line: 95
+          column: 293
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_variant"
+      identity_kind: "explicit"
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 12602
+          line: 96
+          column: 1
+        end:
+          offset: 12939
+          line: 96
+          column: 338
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_40078"
+      source_span:
+        start:
+          offset: 40191
+          line: 464
+          column: 1
+        end:
+          offset: 40872
+          line: 464
+          column: 682
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_40078"
+      source_span:
+        start:
+          offset: 40873
+          line: 465
+          column: 1
+        end:
+          offset: 41291
+          line: 465
+          column: 419
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_40078"
+      source_span:
+        start:
+          offset: 41292
+          line: 466
+          column: 1
+        end:
+          offset: 41729
+          line: 466
+          column: 438
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_trim"
+      identity_kind: "explicit"
+      unit_id: "normative_40078"
+      source_span:
+        start:
+          offset: 41730
+          line: 467
+          column: 1
+        end:
+          offset: 42297
+          line: 467
+          column: 568
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_56794"
+      source_span:
+        start:
+          offset: 56889
+          line: 515
+          column: 1
+        end:
+          offset: 57128
+          line: 515
+          column: 240
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_56794"
+      source_span:
+        start:
+          offset: 57129
+          line: 516
+          column: 1
+        end:
+          offset: 57329
+          line: 516
+          column: 201
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_56794"
+      source_span:
+        start:
+          offset: 57330
+          line: 517
+          column: 1
+        end:
+          offset: 57841
+          line: 517
+          column: 512
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_air"
+      identity_kind: "explicit"
+      unit_id: "normative_56794"
+      source_span:
+        start:
+          offset: 57842
+          line: 518
+          column: 1
+        end:
+          offset: 58124
+          line: 518
+          column: 283
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 8170
+          line: 68
+          column: 1
+        end:
+          offset: 8191
+          line: 68
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8170"
+      source_span:
+        start:
+          offset: 10897
+          line: 83
+          column: 1
+        end:
+          offset: 12002
+          line: 90
+          column: 202
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40078"
+      source_span:
+        start:
+          offset: 40078
+          line: 460
+          column: 1
+        end:
+          offset: 40118
+          line: 460
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_56794"
+      source_span:
+        start:
+          offset: 56794
+          line: 511
+          column: 1
+        end:
+          offset: 56816
+          line: 511
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d777cea670e8ba869d377574ee133e7627e5a1fd476094c011b3ab8d18bc45c5"
+  generated_content_sha256: "sha256:426a37865954c4729aafafdd8e61bdfac5532f7b8ef60b192ce8be2f3bd19313"
