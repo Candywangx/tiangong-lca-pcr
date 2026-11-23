@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-11-23
-lastReviewedCommit: aaed66b3908b7142e32f562c381221671076ac18
-lastReviewedNote: "PCR #185 reviewed enhanced EdgeOne machine selection, measured destination capacity, immutable product identity and existing publication controls."
+lastReviewedAt: 2026-11-24
+lastReviewedCommit: 1ca1e3b62ac872f1278c5e05c119c6ebaf30bcc0
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
 # Authoring Guide

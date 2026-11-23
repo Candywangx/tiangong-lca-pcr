@@ -12,7 +12,7 @@ export type FactsReader = (target: string) => FilesystemFacts;
 export type CopyTree = (source: string, destination: string, options: fs.CopySyncOptions) => void;
 export type Log = (message: string) => unknown;
 export interface ScratchOptions { repoRoot: string; constraint: FilesystemFacts; requiredBytes: number; env?: NodeJS.ProcessEnv; scratchParent?: string | null; candidates?: string[]; facts?: FactsReader; log?: Log }
-export interface PublishOptions { app: string; scratchApp: string; token?: string | null; freeBytes?: number | null; beforeSwap?: () => unknown; providerRoot?: string | null; rename?: (from: string, to: string) => void; cp?: CopyTree; facts?: FactsReader }
+export interface PublishOptions { app: string; scratchApp: string; token?: string | null; freeBytes?: number | null; beforeSwap?: () => unknown; providerRoot?: string | null; rename?: (from: string, to: string) => void; cp?: CopyTree; facts?: FactsReader; log?: Log }
 export interface PublishResult { files: number; bytes: number; staged: boolean; providerAssets?: { mode: "hardlink"; files: number; bytes: number } }
 export interface RelocatedBuildOptions {
   app: string; repoRoot: string; env?: NodeJS.ProcessEnv;
@@ -510,6 +510,7 @@ export function publishOutput({
   rename = fs.renameSync,
   cp = fs.cpSync,
   facts = filesystemFacts,
+  log = () => {},
 }: PublishOptions): PublishResult {
   const scratchOut = path.join(scratchApp, "out");
   if (!fs.existsSync(scratchOut)) throw new Error("Relocated build produced no export directory.");
@@ -530,6 +531,14 @@ export function publishOutput({
   const allocatedBytes = allocatedExportBytes(scratchOut, destination.blockSizeBytes ?? Number.NaN);
   const requiredBytes = Math.max(measured.bytes, allocatedBytes) + HEADROOM_BYTES;
   const available = freeBytes ?? destination.availableBytes;
+  const reportCapacity = (phase: string, filesystem: FilesystemFacts, minimumFreeBytes: number, guardAvailableBytes: number) => {
+    try {
+      log(JSON.stringify({ event: "build-output-capacity", phase, filesystem,
+        files: measured.files, logicalBytes: measured.bytes, allocatedBytes,
+        reserveBytes: HEADROOM_BYTES, stagingRequiredBytes: requiredBytes, minimumFreeBytes, guardAvailableBytes }));
+    } catch { /* Reporting cannot affect the existing capacity guards or atomic handoff. */ }
+  };
+  reportCapacity("before-staging", destination, requiredBytes, available);
   if (!Number.isSafeInteger(requiredBytes) || !Number.isSafeInteger(available) || available < requiredBytes)
     throw new Error(
       `Destination filesystem cannot stage the export: needs ${requiredBytes} ` +
@@ -559,7 +568,9 @@ export function publishOutput({
     assets = providerRoot
       ? stageProviderAssets({ providerRoot, outStage: stage, token: suffix })
       : null;
-    const remaining = facts(app).availableBytes;
+    const afterStaging = facts(app);
+    const remaining = afterStaging.availableBytes;
+    reportCapacity("after-staging", afterStaging, HEADROOM_BYTES, remaining);
     if (!Number.isSafeInteger(remaining) || remaining < HEADROOM_BYTES)
       throw new Error(`Destination filesystem no longer retains ${HEADROOM_BYTES} bytes of headroom after staging; has ${remaining}. The previous export is left untouched.`);
     beforeSwap();

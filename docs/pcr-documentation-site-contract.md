@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-23
-lastReviewedNote: "PCR #185 reviewed enhanced EdgeOne machine selection, measured destination capacity, immutable product identity and existing publication controls."
-lastReviewedCommit: aaed66b3908b7142e32f562c381221671076ac18
+lastReviewedAt: 2026-11-24
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedCommit: 1ca1e3b62ac872f1278c5e05c119c6ebaf30bcc0
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -393,7 +393,10 @@ Deployment acceptance still measures the final output filesystem and requires
 the complete verified export plus the existing reserve to fit. The machine
 selection alone does not prove sufficient destination capacity. The provider's
 plan entitlement and the actual selected machine must be verified for the
-deployment.
+deployment. The sealed importer records its native process-available CPU estimate,
+constrained/available memory and both guard-measured destination-capacity snapshots.
+The records identify raw host values separately. A machine selection or raw host
+CPU count alone cannot establish the effective allocation or final output space.
 
 ### Build workspace storage
 
