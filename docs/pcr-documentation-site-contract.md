@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-22
-lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
-lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
+lastReviewedAt: 2026-11-23
+lastReviewedNote: "PCR #185 reviewed enhanced EdgeOne machine selection, measured destination capacity, immutable product identity and existing publication controls."
+lastReviewedCommit: aaed66b3908b7142e32f562c381221671076ac18
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -383,6 +383,17 @@ handoff fails after all stages. Failed runs write
 `.generated/build-failure-metrics.json` after cleanup returns, separately from
 the last successful `.generated/build-metrics.json`; neither failure receipt
 claims a successful export or relaxes the atomic output handoff.
+
+### Build machine selection
+
+The root `edgeone.json` selects `buildMachine: enhanced`, following the
+[provider configuration contract](https://pages.edgeone.ai/document/edgeone-json).
+The provider documents this machine as eight cores and 14 GB for the Pro plan.
+Deployment acceptance still measures the final output filesystem and requires
+the complete verified export plus the existing reserve to fit. The machine
+selection alone does not prove sufficient destination capacity. The provider's
+plan entitlement and the actual selected machine must be verified for the
+deployment.
 
 ### Build workspace storage
 
