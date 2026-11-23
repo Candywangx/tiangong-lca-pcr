@@ -8,7 +8,7 @@ product_category_identity:
   excluded_products: "Wet multilayer forming, corrugation, coating, impregnation, non-paper reinforcement and non-starch bonding"
   representative_product: "Unsurfaced starch-bonded flat sheet board; example properties are not default recipes"
   production_route: "Purchased dry plies → starch wet bonding and pressing → drying/conditioning and necessary flattening → final slitting/first flat-board supply gate; actual configuration must be collected"
-  market_state: "Accepted sheet-board output at converter gate, declared moisture and packing; downstream box conversion excluded"
+  market_state: "Accepted rectangular sheet output at converter gate after final cutting, unfolded long side > 36 cm and short side > 15 cm, with declared moisture and packing"
 functional_unit:
   what: "Provide flat-layer board material with declared grammage, caliper and bond quality"
   how_much: "1 kg"
@@ -70,6 +70,7 @@ reference_flow_definition:
     uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
   reference_unit: "kg"
   required_qualifiers:
+    - "final delivered sheet form and both unfolded dimensions in cm"
     - "Actual grade"
     - "count and paper/paperboard state of each ply"
     - "evidence of no coating/impregnation/reinforcement"
@@ -531,7 +532,7 @@ dataset_production:
       flow_role: "reference output"
       record_type: "scale/meter/laboratory/supplier records"
       raw_fields: "gross/tare/net mass; lot; order acceptance; grade; moisture; accepted production; dispatch; opening/closing stock"
-      collection_method: "Calibrated weighing and representative gate-moisture tests; reconcile accepted production with dispatch and stock"
+      collection_method: "Record shape and both unfolded dimensions after final cutting against the acceptance ID. Retain the lot measurement and method, with any tolerances. Calibrated weighing and representative gate-moisture tests; reconcile accepted production with dispatch and stock"
       unit: "kg; mass fraction"
       frequency: "each lot and matched stage interval"
       temporal_coverage: "full declared period including starts/stops, rejects and stock changes"
@@ -764,6 +765,12 @@ validation_rules:
       - wco-hs-2022-ch48
       - klug-es-adhesive
       - solidus-board
+  - rule_id: validate_final_sheet_dimensions
+    applies_to: "product"
+    rule: "Require a rectangular sheet, including a square, with measured unfolded long side > 36 cm and short side > 15 cm at first supply after final cutting. Equality fails either limit. Missing form or dimensions require review before use. Keep any out-of-scope output out of the eligible reference mass."
+    source_ids:
+      - wco-hs-2022-ch48
+      - cp_mass
   - rule_id: validate_reference
     applies_to: "reference"
     rule: "Exactly one board_output is the 1 kg reference product output; identity must have verifiable physical limitations and cannot borrow a neighbouring product UUID."
@@ -817,19 +824,19 @@ data_sources:
     used_for: "PDF pp.63–64: subdivision/expansion, physical and other relationship hierarchy; allocation method only, no fixed shares or complete PEF-conformance claim."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:d777cea670e8ba869d377574ee133e7627e5a1fd476094c011b3ab8d18bc45c5"
+  source_sha256: "sha256:de46274f640e2db12f558693c5d5dd8491e55c97a9bfac144fdd44b16ccc44f3"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_8170"
+    - unit_id: "normative_8846"
       family: "system_boundary"
       span:
         start:
-          offset: 8170
-          line: 68
+          offset: 8846
+          line: 70
           column: 1
         end:
-          offset: 12941
-          line: 98
+          offset: 13617
+          line: 100
           column: 1
       markdown: "## 5. System Boundary\n\n### Complete quantity and stock context\n\nAll inventory cards inherit this complete context. Keep gross physical exchange vector V, in each flow's original unit, separate from the attributed burden vector A. Establish raw record identity, actual time/scope, rate integration and dimensional conversion first; then isolate dedicated operations and justify each remaining shared exchange by its own physical cause. Only a genuinely inseparable residual may use another relationship. Perform one final division by positive new accepted net board mass Q. Allocation never alters gross mass, water, carbon, inventory stock or physical co-output quantities. [eu-pef-multifunctionality-2021]\n\nQ is new board first accepted after bonding, required pressing, drying/conditioning, flattening and final slitting to the declared flat-sheet supply gate. Record rejects and every acceptance ID. New accepted closing finished goods are already included in Q; do not add them again to measured accepted production. Reconcile dispatch with opening/closing finished goods, external returns and transfers. Reinspection or return of previously accepted board creates no new Q. Opening finished goods dispatched now retain their original burdens. Raw/unused material, work in progress and finished-goods cohorts carry a vector b_i of inherited quantities for every flow i, including earlier material, electricity, heat, water and emissions; bring in their actual opening vectors, carry actual closing vectors, and transfer vectors at actual completion stages without deleting them or applying allocation twice. Unknown history is unknown, never a zero vector.\n\nQ=0, failed batches, starts/stops, idle periods, cleanup and trial runs retain their real loads. Attribute them to the causally served production period/cohort with a documented rule; do not drop them, divide by zero, or substitute an invented output. A measured service quantity Qc or actual operating hours H may describe a separately declared service or attribution driver, never new board production Q. No machine mass, recipe, yield, moisture, price or loss share is prescribed.\n\nA composition ledger partitions a whole supplied material; it does not create additional exchanges. Purchased paper includes its actual fibre/filler/sizing upstream once; purchased whole adhesive includes starch, carrier water and other supplied ingredients once. Wastewater wet mass, H2O, solids and COD are different quantities; only the whole shipment links to one actual compatible treatment provider. Do not sum its constituent ledger into whole-stream mass, add duplicate upstream manufacture, or claim recycling, substitution or energy credits.\n\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased dried uncoated/unimpregnated flat paper or paperboard plies and whole starch adhesive in supplied state arrive at converter |\n| starting_condition_role | Foreground receiving boundary; upstream burden is not zero |\n| product_classification_scope | The stated restricted subset of 32141; classification is not physical applicability |\n| recursive_input_rule | Record any same-category purchased board once as a supplier input, without recursively duplicating current manufacture; an already-composite board core needs a separately verified flow and boundary. |\n| upstream_dataset_requirement | Link compatible pulp/papermaking background per ply grade/origin; purchased adhesive includes formulation manufacture. Verify transport endpoints and existing transport coverage; add actual transport-service rows for uncovered routes. |\n| disclosure | Declare supplier cut points, background quantity definitions, transport/packing coverage and actual foreground facilities; wood-processing studies do not establish papermaking recipes. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_layers | converter | Foreground starts at paper receipt; supplier pulping, sizing, fillers, drying and emissions belong once to the ply background and are not repeated at converter. | wco-hs-2022-ch48; ec-paper-bref-2015 |\n| boundary_operations | converter | Include bonding, pressing, actual drying/conditioning and necessary flattening, cutting, dust capture, cleaning and actual gate packing; a converter without a pulper cannot call exported trim an internal broke loop. | ec-paper-bref-2015; klug-es-adhesive |\n| boundary_variant | product | Reinforcement, surface treatment, synthetic binder, on-site combustion heat or on-site water treatment exceeds this route and requires complete corresponding methods and atomic rows; producer emission-free marketing does not replace site screening. | paramelt-paper-board; solidus-board; klug-es-adhesive |\n\n"
       headings:
@@ -848,12 +855,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 8170
-              line: 68
+              offset: 8846
+              line: 70
               column: 1
             end:
-              offset: 8191
-              line: 68
+              offset: 8867
+              line: 70
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -868,16 +875,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_40078"
+    - unit_id: "normative_40754"
       family: "allocation"
       span:
         start:
-          offset: 40078
-          line: 460
+          offset: 40754
+          line: 462
           column: 1
         end:
-          offset: 42299
-          line: 469
+          offset: 42975
+          line: 471
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | converter | First investigate subdivision or explicit system expansion; expansion requires real co-functions, representative boundaries and whole-expanded-system reporting. Isolate dedicated paper grades, glue batches, meters and production campaigns before any allocation. For each remaining exchange document the causal physical relation: paper by actual grade/ply issues, glue by actual formulation dosing, heat by measured drying duty, electricity by measured drives/run state and water by actual cleaning/dilution operations. Neither board mass nor one factory-wide percentage automatically allocates every exchange. | eu-pef-multifunctionality-2021 |\n| allocation_physical | physical ledger | Preserve gross V and all physical outputs/internal links/stocks independently of attributed A. Transfer inherited per-flow cohort vectors through raw material, WIP and finished goods once. The chosen target Q contains only new accepted board; unrelated output, returned board, opening-stock dispatch and reusable packaging do not enlarge it. | eu-pef-multifunctionality-2021 |\n| allocation_residual | genuinely inseparable residual | Only after documenting why subdivision/expansion and a relevant physical relation fail, justify an economic relationship for the actual residual. Use actual same-gate, same-state, same-period quantities and realized values of all real co-functions, with cost/negative-value cases and sensitivity disclosed; no invented prices or universal share. | eu-pef-multifunctionality-2021 |\n| allocation_trim | clean_trim; bonded_trim; captured_dust | Verify waste versus saleable coproduct from actual specification, recipient use, waste status and market evidence; a payment alone is insufficient. A genuine coproduct needs its own qualified Product output and physical quantity, with dedicated and shared burdens assigned before normalization. Keep waste as waste with one actual receiver; internal returns cancel and carry history. No automatic avoided-paper, energy-recovery or substitution credit. | ec-paper-bref-2015; eu-pef-multifunctionality-2021 |\n\n"
       headings:
@@ -896,12 +903,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 40078
-              line: 460
+              offset: 40754
+              line: 462
               column: 1
             end:
-              offset: 40118
-              line: 460
+              offset: 40794
+              line: 462
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -916,18 +923,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_56794"
+    - unit_id: "normative_57619"
       family: "validation"
       span:
         start:
-          offset: 56794
-          line: 511
+          offset: 57619
+          line: 513
           column: 1
         end:
-          offset: 58126
-          line: 520
+          offset: 59325
+          line: 523
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | product | Check flat plies, adhesive, surface/gate state and actual route; any unknown requires review, with no inference from classification or the name solid board. | wco-hs-2022-ch48; klug-es-adhesive; solidus-board |\n| validate_reference | reference | Exactly one board_output is the 1 kg reference product output; identity must have verifiable physical limitations and cannot borrow a neighbouring product UUID. |  |\n| validate_balances | collection | Verify every Amount original unit, real rate integration, conversion scope, each-flow subdivision/shared attribution, raw/WIP/FG inherited vectors and final single A/Q. Independently review gross V dry matter/water/carbon, stocks, physical co-outputs, Q=0 loads and first external packaging receipts. New closing FG is already in Q; return/reinspection creates no Q. A finite measurement check does not establish actual dataset completeness. | eu-pef-multifunctionality-2021 |\n| validate_air | emissions | Do not sum the three exclusive particle bins with cumulative PM10 or total particulate; captured dust is separate from air releases. Zero requires screening evidence; unknown emissions/background bases prevent complete acceptance. | ec-paper-bref-2015 |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | product | Check flat plies, adhesive, surface/gate state and actual route; any unknown requires review, with no inference from classification or the name solid board. | wco-hs-2022-ch48; klug-es-adhesive; solidus-board |\n| validate_final_sheet_dimensions | product | Require a rectangular sheet, including a square, with measured unfolded long side > 36 cm and short side > 15 cm at first supply after final cutting. Equality fails either limit. Missing form or dimensions require review before use. Keep any out-of-scope output out of the eligible reference mass. | wco-hs-2022-ch48; cp_mass |\n| validate_reference | reference | Exactly one board_output is the 1 kg reference product output; identity must have verifiable physical limitations and cannot borrow a neighbouring product UUID. |  |\n| validate_balances | collection | Verify every Amount original unit, real rate integration, conversion scope, each-flow subdivision/shared attribution, raw/WIP/FG inherited vectors and final single A/Q. Independently review gross V dry matter/water/carbon, stocks, physical co-outputs, Q=0 loads and first external packaging receipts. New closing FG is already in Q; return/reinspection creates no Q. A finite measurement check does not establish actual dataset completeness. | eu-pef-multifunctionality-2021 |\n| validate_air | emissions | Do not sum the three exclusive particle bins with cumulative PM10 or total particulate; captured dust is separate from air releases. Zero requires screening evidence; unknown emissions/background bases prevent complete acceptance. | ec-paper-bref-2015 |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -944,12 +951,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 56794
-              line: 511
+              offset: 57619
+              line: 513
               column: 1
             end:
-              offset: 56816
-              line: 511
+              offset: 57641
+              line: 513
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -968,246 +975,259 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "system_boundary_rule_1"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 8234
-          line: 72
+          offset: 8910
+          line: 74
           column: 1
         end:
-          offset: 8876
-          line: 72
+          offset: 9552
+          line: 74
           column: 643
     - pointer: "/system_boundary/rules/1"
       rule_id: "system_boundary_rule_2"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 8878
-          line: 74
+          offset: 9554
+          line: 76
           column: 1
         end:
-          offset: 9830
-          line: 74
+          offset: 10506
+          line: 76
           column: 953
     - pointer: "/system_boundary/rules/2"
       rule_id: "system_boundary_rule_3"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 9832
-          line: 76
+          offset: 10508
+          line: 78
           column: 1
         end:
-          offset: 10315
-          line: 76
+          offset: 10991
+          line: 78
           column: 484
     - pointer: "/system_boundary/rules/3"
       rule_id: "system_boundary_rule_4"
       identity_kind: "snapshot_local"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 10317
-          line: 78
+          offset: 10993
+          line: 80
           column: 1
         end:
-          offset: 10868
-          line: 78
+          offset: 11544
+          line: 80
           column: 552
     - pointer: "/system_boundary/rules/4"
       rule_id: "boundary_layers"
       identity_kind: "explicit"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 12075
-          line: 94
+          offset: 12751
+          line: 96
           column: 1
         end:
-          offset: 12308
-          line: 94
+          offset: 12984
+          line: 96
           column: 234
     - pointer: "/system_boundary/rules/5"
       rule_id: "boundary_operations"
       identity_kind: "explicit"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 12309
-          line: 95
+          offset: 12985
+          line: 97
           column: 1
         end:
-          offset: 12601
-          line: 95
+          offset: 13277
+          line: 97
           column: 293
     - pointer: "/system_boundary/rules/6"
       rule_id: "boundary_variant"
       identity_kind: "explicit"
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 12602
-          line: 96
+          offset: 13278
+          line: 98
           column: 1
         end:
-          offset: 12939
-          line: 96
+          offset: 13615
+          line: 98
           column: 338
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_subdivide"
       identity_kind: "explicit"
-      unit_id: "normative_40078"
+      unit_id: "normative_40754"
       source_span:
         start:
-          offset: 40191
-          line: 464
+          offset: 40867
+          line: 466
           column: 1
         end:
-          offset: 40872
-          line: 464
+          offset: 41548
+          line: 466
           column: 682
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_physical"
       identity_kind: "explicit"
-      unit_id: "normative_40078"
+      unit_id: "normative_40754"
       source_span:
         start:
-          offset: 40873
-          line: 465
+          offset: 41549
+          line: 467
           column: 1
         end:
-          offset: 41291
-          line: 465
+          offset: 41967
+          line: 467
           column: 419
     - pointer: "/allocation_rules/2"
       rule_id: "allocation_residual"
       identity_kind: "explicit"
-      unit_id: "normative_40078"
+      unit_id: "normative_40754"
       source_span:
         start:
-          offset: 41292
-          line: 466
+          offset: 41968
+          line: 468
           column: 1
         end:
-          offset: 41729
-          line: 466
+          offset: 42405
+          line: 468
           column: 438
     - pointer: "/allocation_rules/3"
       rule_id: "allocation_trim"
       identity_kind: "explicit"
-      unit_id: "normative_40078"
+      unit_id: "normative_40754"
       source_span:
         start:
-          offset: 41730
-          line: 467
+          offset: 42406
+          line: 469
           column: 1
         end:
-          offset: 42297
-          line: 467
+          offset: 42973
+          line: 469
           column: 568
     - pointer: "/validation_rules/0"
       rule_id: "validate_scope"
       identity_kind: "explicit"
-      unit_id: "normative_56794"
+      unit_id: "normative_57619"
       source_span:
         start:
-          offset: 56889
-          line: 515
+          offset: 57714
+          line: 517
           column: 1
         end:
-          offset: 57128
-          line: 515
+          offset: 57953
+          line: 517
           column: 240
     - pointer: "/validation_rules/1"
+      rule_id: "validate_final_sheet_dimensions"
+      identity_kind: "explicit"
+      unit_id: "normative_57619"
+      source_span:
+        start:
+          offset: 57954
+          line: 518
+          column: 1
+        end:
+          offset: 58327
+          line: 518
+          column: 374
+    - pointer: "/validation_rules/2"
       rule_id: "validate_reference"
       identity_kind: "explicit"
-      unit_id: "normative_56794"
+      unit_id: "normative_57619"
       source_span:
         start:
-          offset: 57129
-          line: 516
+          offset: 58328
+          line: 519
           column: 1
         end:
-          offset: 57329
-          line: 516
+          offset: 58528
+          line: 519
           column: 201
-    - pointer: "/validation_rules/2"
+    - pointer: "/validation_rules/3"
       rule_id: "validate_balances"
       identity_kind: "explicit"
-      unit_id: "normative_56794"
+      unit_id: "normative_57619"
       source_span:
         start:
-          offset: 57330
-          line: 517
+          offset: 58529
+          line: 520
           column: 1
         end:
-          offset: 57841
-          line: 517
+          offset: 59040
+          line: 520
           column: 512
-    - pointer: "/validation_rules/3"
+    - pointer: "/validation_rules/4"
       rule_id: "validate_air"
       identity_kind: "explicit"
-      unit_id: "normative_56794"
+      unit_id: "normative_57619"
       source_span:
         start:
-          offset: 57842
-          line: 518
+          offset: 59041
+          line: 521
           column: 1
         end:
-          offset: 58124
-          line: 518
+          offset: 59323
+          line: 521
           column: 283
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 8170
-          line: 68
+          offset: 8846
+          line: 70
           column: 1
         end:
-          offset: 8191
-          line: 68
+          offset: 8867
+          line: 70
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_8170"
+      unit_id: "normative_8846"
       source_span:
         start:
-          offset: 10897
-          line: 83
+          offset: 11573
+          line: 85
           column: 1
         end:
-          offset: 12002
-          line: 90
+          offset: 12678
+          line: 92
           column: 202
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_40078"
+      unit_id: "normative_40754"
       source_span:
         start:
-          offset: 40078
-          line: 460
+          offset: 40754
+          line: 462
           column: 1
         end:
-          offset: 40118
-          line: 460
+          offset: 40794
+          line: 462
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_56794"
+      unit_id: "normative_57619"
       source_span:
         start:
-          offset: 56794
-          line: 511
+          offset: 57619
+          line: 513
           column: 1
         end:
-          offset: 56816
-          line: 511
+          offset: 57641
+          line: 513
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1216,5 +1236,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:d777cea670e8ba869d377574ee133e7627e5a1fd476094c011b3ab8d18bc45c5"
-  generated_content_sha256: "sha256:426a37865954c4729aafafdd8e61bdfac5532f7b8ef60b192ce8be2f3bd19313"
+    sha256: "sha256:de46274f640e2db12f558693c5d5dd8491e55c97a9bfac144fdd44b16ccc44f3"
+  generated_content_sha256: "sha256:c0d7177f043b5f291a1d7ab62c6dd3341e3f60b34d4f4eb5ad56ed2a8960573f"

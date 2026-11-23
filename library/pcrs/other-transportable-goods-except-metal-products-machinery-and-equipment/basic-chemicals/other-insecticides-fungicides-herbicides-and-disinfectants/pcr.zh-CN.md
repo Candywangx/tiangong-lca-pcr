@@ -68,7 +68,7 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | declared_starting_condition | 实际供方完成的未首放行完整成品及实际包装，在已证明的生产者/外包放行边界内交接 |
 | starting_condition_role | 前景采集接口，非零负担起点；实际制造及主包装上游聚合仍纳入 |
-| product_classification_scope | CPC 3.0 34669 的限定非杀灭型有蹄动物驱避成品；关系拟议 narrower |
+| product_classification_scope | CPC 3.0 34669 的限定非杀灭型有蹄动物驱避成品；已接受限定的 narrower 映射 |
 | recursive_input_rule | 按身份、门、时间及负担覆盖绑定同类上游成品；内部调拨抵销，不无止境递归或重复创造产量 |
 | upstream_dataset_requirement | 实际供方制造、主包装、公用事业、损失和处理的兼容完整聚合；实际外包装和物流服务仅补供方未覆盖部分 |
 | disclosure | 各生产者场址、交接、原门、时段、存量、实物与负担归属、未覆盖项和数据质量；未合格上游不得声称完整摇篮到门 |

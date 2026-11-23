@@ -68,7 +68,7 @@ The data package must first name one explicit physical perimeter (producer/contr
 | --- | --- |
 | declared_starting_condition | Actual supplier-completed whole product and actual packaging, not yet first-released, handed over within an evidenced producer/contractor release perimeter |
 | starting_condition_role | Foreground collection interface, not a burden-free origin; actual manufacture and primary-packing upstream aggregate remains included |
-| product_classification_scope | Scoped non-lethal ungulate repellent within CPC 3.0 34669; proposed narrower relation |
+| product_classification_scope | Scoped non-lethal ungulate repellent within CPC 3.0 34669; accepted narrower relation |
 | recursive_input_rule | Bind same-category upstream finished contents by identity, gate, time and burden coverage; cancel internal transfers without endless recursion or duplicate production |
 | upstream_dataset_requirement | Compatible complete aggregate for actual supplier manufacture, primary packing, utilities, losses and treatment; supplement only uncovered actual outer-packing and logistics services |
 | disclosure | Each producer site, handoff, original gate, period, stocks, physical/burden attribution, uncovered items and quality; unqualified upstream prevents a complete cradle-to-gate claim |

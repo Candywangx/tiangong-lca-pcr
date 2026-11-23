@@ -15,6 +15,8 @@ lastReviewedAt: 2026-11-22
 
 冻结基线为 `7d0a48078779e09b3ca6aadf1b0bd619505303a4`，续跑对账点为 `a8021d92f3eaef8bf59ae95519e105b8c9b3b340`。产品名称链接至限定范围的中文方法。科学审阅、翻译和发布状态以各项 manifest 为准。[冻结清单](../cpc3-115-20261106/frozen-targets.json) · [正式映射](../../../classifications/mappings/cpc-3.0-to-pcr.yaml)
 
+修订记录补充 32141 最终交付尺寸、中英文映射状态一致性及修订文件指纹。[PR #38 正文修订证据](pr38-content-followup.json) · [31422 和 31423 的维护者采纳](https://github.com/Candywangx/tiangong-lca-pcr/pull/38#issuecomment-7100729143)
+
 | CPC 代码 | PCR 产品及方法范围 | 映射关系 | 验收来源 | 证据 |
 | --- | --- | --- | --- | --- |
 | 31310 | [CCA 防腐辐射松粗原木](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md) | narrower | 历史验收 | [审阅](../cpc3-115-20261106/31310-review.json) · [映射决定](../../adr/2026-11-06-accept-scoped-cpc3-115-batch-01.md) |

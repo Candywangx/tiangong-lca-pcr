@@ -19,7 +19,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.furniture-other-transportable-goods-n-e-c.uv-finished-jute-backed-linoleum-rolls |
-| classification_refs | CPC 3.0 38930; narrower product and route boundary |
+| classification_refs | CPC 3.0 38930 的限定产品和工艺映射已接受 |
 | covered_products | 工厂完全固化水性UV涂饰的完整密实机织黄麻背衬油毡地板卷材 |
 | excluded_products | PVC/乙烯基地板；沥青/屋面/防水毡；未完成结合料；单独背衬；泡沫/声学/锁扣复合物；家具油毡；已安装地板；购入成品卷材重包装 |
 | representative_product | 一种指定密实卷材品级，氧化亚麻油/松香结合料；实际声明妥尔油及各粉料/填料/颜料；机织黄麻和双层整份水性UV配方体系；无固定配方或尺寸 |

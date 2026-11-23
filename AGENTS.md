@@ -192,19 +192,28 @@ lifecycle, revise, and publish mutations use per-PCR lock/journal/stage/backup s
 `library/.pcr-builder-state/`; recover interrupted state with `pcr:recover`, and use `--force-stale-lock` only after
 confirming no writer is active.
 
-Local batch production uses the `goal:*` Harness commands and persistent state under
-`library/.pcr-builder-state/goals/<goal-id>/`. Authors must be durable visible Codex app-server tasks, one PCR per
-independent worktree; never fall back to hidden agents or shared-directory writers. Synthetic dirty baselines may
-include only configured repository roots and exact untracked allowlists without changing the user's real index or
-branch. Author commits are limited to one PCR's four canonical files. Shared mappings, aliases, indexes, catalog,
-coverage, viewer derivatives, and accepted-mapping ADRs are updated only by serial integration snapshots and land
-through exact-byte compare-and-swap. `goal:stop` preserves worktrees and results.
+Local batch production may use a native Codex workflow or goal with a durable controller ledger. Use visible,
+recoverable authors and one independent worktree per PCR. Record the CPC coordinate, source baseline, worktree,
+author task and turn, and exact author commit. Bind the four author files and independent review to exact-byte
+SHA-256 digests. For review handoff, provide reachable author commits or downloadable four-file snapshots with a
+manifest linking each original commit and file digest. For retained historical records, identify the available
+retained bytes and any unavailable original author snapshots explicitly.
+
+The controller independently verifies each candidate, integrates serially, and records the exact integration commit,
+final file hashes, and qualification run and artifacts. Only the controller updates shared mappings, aliases,
+indexes, catalog, coverage, viewer derivatives and accepted-mapping decisions. Recheck the integration baseline
+and shared files before advancing delivery. Preserve worktrees and evidence on interruption.
+
+The existing `goal:*` Harness remains available for explicitly selected Harness runs. Its state lives under
+`library/.pcr-builder-state/goals/<goal-id>/`. Synthetic dirty baselines may include only configured repository
+roots and exact untracked allowlists without changing the user's real index or branch. Author commits are limited
+to one PCR's four canonical files. `goal:stop` preserves worktrees and results.
 
 Builder measurement inspection reuses canonical reference, inventory, collection and calculation rules in both languages.
 General lint is report-only for measurement findings. `pcr:check` enforces a complete, finite measurement check on
 one explicitly selected current/revision workspace; unresolved relationships require review. Symbolic machine mass M
 is valid with a collection method, scope and conversion; PCR methodology never invents a per-machine weight.
-New untouched Goal tasks pin authoring contract 2 at dispatch. Finalized UUID receipts are hash-bound in Goal events;
+New untouched Harness Goal tasks pin authoring contract 2 at dispatch. Finalized UUID receipts are hash-bound in Goal events;
 `goal:prepare-report` preserves the author's draft, assembles only uniquely derivable receipt fields, performs actual
 PCR/sync/evidence checks and returns a report reference. Intake verifies the reference before independent acceptance.
 Existing authors without that contract, released PCRs, quarantined results and exhausted repair budgets retain their

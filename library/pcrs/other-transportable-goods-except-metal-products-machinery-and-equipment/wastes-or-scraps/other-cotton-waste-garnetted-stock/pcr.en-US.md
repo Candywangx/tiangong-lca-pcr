@@ -696,7 +696,7 @@ Protocols collect raw, unnormalized records and states only; aggregation_rule na
 
 ## 9. Validation Rules
 
-These checks do not establish scientific approval or an accepted mapping; actual unknowns and the core identity gap remain explicit.
+The scoped CPC mapping is accepted. Scientific approval and the core identity remain pending.
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |

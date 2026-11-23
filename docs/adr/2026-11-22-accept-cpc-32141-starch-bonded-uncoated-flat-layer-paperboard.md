@@ -22,3 +22,5 @@ See [the independent review](../reviews/cpc3-115-resume-20261120/32141.json).
 
 Decision-maker: codex-primary-controller
 Decision time UTC: 2026-11-22T13:14:37Z
+
+At the first supply gate, apply HS 2022 chapter 48 note 8 to the finished product after all cutting. This method applies to unfolded rectangular sheets, including squares, with the longer side strictly greater than 36 cm and the shorter side strictly greater than 15 cm. Record both dimensions on the lot acceptance record. Strips and rolls have a separate width condition under note 8 and remain outside this sheet method.
