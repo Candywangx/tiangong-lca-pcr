@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-22
-lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
-lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
+lastReviewedAt: 2026-11-23
+lastReviewedCommit: aaed66b3908b7142e32f562c381221671076ac18
+lastReviewedNote: "PCR #185 reviewed enhanced EdgeOne machine selection, measured destination capacity, immutable product identity and existing publication controls."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
