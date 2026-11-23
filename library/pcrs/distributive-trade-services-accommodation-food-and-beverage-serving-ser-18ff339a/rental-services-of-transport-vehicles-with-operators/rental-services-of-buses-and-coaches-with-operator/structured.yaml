@@ -340,7 +340,7 @@ dataset_production:
       process_id: "lifecycle_support"
       flow_role: "native_events"
       record_type: "All-user asset-life and maintenance records"
-      raw_fields: "asset_id; assembly_initial_inclusions; technology; useful_life; forecast_or_observation; every_user_node_site_period; native_capacity_time; phase_event; initial_replacement_retirement; provider_covered_cells; stock; collected_lubricant; receiver; source; uncertainty"
+      raw_fields: "asset_id; assembly_initial_inclusions; technology; useful_life; forecast_or_observation; every_user_node_site_period; native_capacity_time; phase_event; initial_replacement_retirement; provider_covered_cells; opening_closing_stock; generated_collected_lubricant; internal_receipts_dispatches; transfer_id; receiver; source; uncertainty"
       collection_method: "Reconcile actual asset/parts/service registers and whole-life user demand,maintenance and transfer receipts. Preserve causal phase attribution,forecast uncertainty and exact provider coverage; collected oil is not treatment."
       unit: "Actual native units"
       frequency: "Each real event and coherent hire cohort"
@@ -636,7 +636,7 @@ dataset_production:
       source_ids: []
     - id: asset_phase_share
       applies_to: "lifecycle_support"
-      rule: "q_asset_phase = q_native_phase * d_hire / D_all_users. Use compatible positive same-asset whole-life causal availability/capacity-time demand; all real users included and phase shares reconcile. Different asset cohorts/phases/provider cells never share an invented denominator. Passenger-km is not an automatic manufacture denominator."
+      rule: "q_asset_phase = q_native_phase * d_hire / D_all_users. Use compatible positive same-asset whole-life causal availability/capacity-time demand; all real users included and phase shares reconcile. Different asset cohorts/phases/provider cells never share an invented denominator. Passenger-km is not an automatic manufacture denominator. A share of 1 is allowed only when evidence shows that the target hire/cohort accounts for the entire compatible all-user demand of that same asset/event over its relevant life. Reconcile shares across all real users to 1; never default to a whole-asset charge."
       inputs:
         - q_native_phase
         - d_hire
@@ -645,10 +645,12 @@ dataset_production:
       source_ids: []
     - id: exclusive_stock
       applies_to: "all nodes"
-      rule: "opening + external_receipts = closing + actual_use + outward + loss for each compatible stock and non-overlapping interval. Distinguish inward purchase/withdrawal,initial fill,reserve,return,internal recovery and captured matter; internal recirculation is not external receipt or a second supply. Actual use/loss receives compatible upstream supply once,whoever pays."
+      rule: "opening + external_receipts + internal_receipts + generated = closing + actual_use + outward + loss for each separately bounded compatible stock and non-overlapping interval. generated is evidenced formation into that stock,including collected waste or captured matter;it is not a second external supply. Keep all terms mutually exclusive. Pair internal receipts and dispatches with transfer ids and cancel them at the combined boundary;recirculation within the same stock gate adds neither receipt nor use. Distinguish initial fill,reserve,returns and recovery. Consumed/lost supplied products,including opening/customer stock,receive compatible upstream supply once,whoever pays;do not purchase generated waste again."
       inputs:
         - opening
         - external_receipts
+        - internal_receipts
+        - generated
         - closing
         - actual_use
         - outward
@@ -759,7 +761,7 @@ validation_rules:
     source_ids: []
   - rule_id: full_life_and_providers
     applies_to: "all nodes"
-    rule: "Require positive compatible same-asset all-user full-life attribution,phase/period/site ownership,initial/replacement exclusivity and exact provider coverage/gaps. No passenger-throughput manufacture denominator,full asset per engagement,unsupported forecast or duplicate own/provider burden."
+    rule: "Require positive compatible same-asset all-user full-life attribution,phase/period/site ownership,initial/replacement exclusivity and exact provider coverage/gaps. No passenger-throughput manufacture denominator,unsupported full-asset attribution per engagement,unsupported forecast or duplicate own/provider burden."
     source_ids: []
   - rule_id: failure_cooutputs_sites
     applies_to: "all nodes"
@@ -808,7 +810,7 @@ data_sources:
     used_for: "General function,lifecycle,data-quality and allocation principles only;qualified hire Count,availability/capacity-time,native stock/provider/full all-user life and atomic-completion gate are explicit PCR modelling choices,not quoted standard formulas."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:fe9fad84be8dcbb511ed92366851226b845cc0eb3e1fa177d7aa99c6597a5745"
+  source_sha256: "sha256:62ca263e5a6f0b492fb069690745cb3ab6a8c1ac8100bd763ecd47ade973cf38"
   identity_scope: "projection_snapshot"
   units:
     - unit_id: "normative_5695"
@@ -907,18 +909,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_64358"
+    - unit_id: "normative_65070"
       family: "validation"
       span:
         start:
-          offset: 64358
+          offset: 65070
           line: 307
           column: 1
         end:
-          offset: 67846
+          offset: 68582
           line: 322
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| reference_acceptance | all nodes | Verify full operated rental scope and64118/64223 exclusion from actual immediate function and renter directions;reference linkage,name,Count support,N,positive accepted H,configuration/capacity/control/gates/region/duty align. No positive distance,passengers or occupancy gate. |  |\n| atomic_final_gate | all nodes | Every mandatory cp_expand_ must have evidenced occurrence/absence and exhaustive real children with separate atomic verified native identities/quantities/gates and same-node protocols. Unresolved actual applicability,identity,quantity,fate,source/receiver,all-user or provider coverage blocks complete foreground package and final exchanges. Requirements are not resolved inventory rows;automated PCR check pass is not actual foreground completion. |  |\n| route_and_native_energy | all nodes | Parent operated hire and actual technology delta,coexistence/exclusion,stocks and meter gates must be evidenced. Conditional cards apply only to exact actual identity/state/gate. Native external AC Net calorific value MJ/kWh conversion once;no duplicate internal energy or payer exclusions. |  |\n| full_life_and_providers | all nodes | Require positive compatible same-asset all-user full-life attribution,phase/period/site ownership,initial/replacement exclusivity and exact provider coverage/gaps. No passenger-throughput manufacture denominator,full asset per engagement,unsupported forecast or duplicate own/provider burden. |  |\n| failure_cooutputs_sites | all nodes | Trace rejected/failed/cancelled/returned/repair/replacement duties from producing node to actual loop/exit,retain burden and exclude unresolved rejected N. Enumerate intended outputs/handoffs versus waste/residue,justify causal attribution,enumerate every site/period/user and aggregate native quantities before one normalization. |  |\n| native_fates | all nodes | Reconcile stocks and all physical handoffs with actual source/receiver,substance/particle fraction,carbon origin,phase,resource/environment compartment and compatible methods. Collected waste,treatment,product recovery and environmental release are distinct;no assumed zero,full-stock release or automatic substitution credit. |  |\n| reference_compatibility_gate | all contributing nodes | Verify reference_compatibility against the recorded actual function, configuration/capacity, accepted H, quality, responsibility, duty and gates before pooling; retain unsupported combinations as separate strata. |  |\n| completed_obligation_cohort_gate | all contributing nodes | Verify completed_obligation_cohort using cut-off status and unique full-cycle event ownership; ongoing duties and unassigned failures cannot be silently divided by completed N, and N=0 has no finite intensity. |  |\n| foreground_expansion_reconciliation_gate | all contributing nodes | Verify foreground_expansion_reconciliation for every mandatory node-owned protocol, concrete child and physical ledger before attribution; unresolved applicability, identity, quantity, fate or provider overlap blocks foreground completion. |  |\n| conditional_range_guardrails_gate | all contributing nodes | Verify conditional_range_guardrails separately from the fixed reference definition; numeric guardrails require independent compatible evidence, a shared basis and reviewed scope, not a self-validating batch or invented universal bounds. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| reference_acceptance | all nodes | Verify full operated rental scope and64118/64223 exclusion from actual immediate function and renter directions;reference linkage,name,Count support,N,positive accepted H,configuration/capacity/control/gates/region/duty align. No positive distance,passengers or occupancy gate. |  |\n| atomic_final_gate | all nodes | Every mandatory cp_expand_ must have evidenced occurrence/absence and exhaustive real children with separate atomic verified native identities/quantities/gates and same-node protocols. Unresolved actual applicability,identity,quantity,fate,source/receiver,all-user or provider coverage blocks complete foreground package and final exchanges. Requirements are not resolved inventory rows;automated PCR check pass is not actual foreground completion. |  |\n| route_and_native_energy | all nodes | Parent operated hire and actual technology delta,coexistence/exclusion,stocks and meter gates must be evidenced. Conditional cards apply only to exact actual identity/state/gate. Native external AC Net calorific value MJ/kWh conversion once;no duplicate internal energy or payer exclusions. |  |\n| full_life_and_providers | all nodes | Require positive compatible same-asset all-user full-life attribution,phase/period/site ownership,initial/replacement exclusivity and exact provider coverage/gaps. No passenger-throughput manufacture denominator,unsupported full-asset attribution per engagement,unsupported forecast or duplicate own/provider burden. |  |\n| failure_cooutputs_sites | all nodes | Trace rejected/failed/cancelled/returned/repair/replacement duties from producing node to actual loop/exit,retain burden and exclude unresolved rejected N. Enumerate intended outputs/handoffs versus waste/residue,justify causal attribution,enumerate every site/period/user and aggregate native quantities before one normalization. |  |\n| native_fates | all nodes | Reconcile stocks and all physical handoffs with actual source/receiver,substance/particle fraction,carbon origin,phase,resource/environment compartment and compatible methods. Collected waste,treatment,product recovery and environmental release are distinct;no assumed zero,full-stock release or automatic substitution credit. |  |\n| reference_compatibility_gate | all contributing nodes | Verify reference_compatibility against the recorded actual function, configuration/capacity, accepted H, quality, responsibility, duty and gates before pooling; retain unsupported combinations as separate strata. |  |\n| completed_obligation_cohort_gate | all contributing nodes | Verify completed_obligation_cohort using cut-off status and unique full-cycle event ownership; ongoing duties and unassigned failures cannot be silently divided by completed N, and N=0 has no finite intensity. |  |\n| foreground_expansion_reconciliation_gate | all contributing nodes | Verify foreground_expansion_reconciliation for every mandatory node-owned protocol, concrete child and physical ledger before attribution; unresolved applicability, identity, quantity, fate or provider overlap blocks foreground completion. |  |\n| conditional_range_guardrails_gate | all contributing nodes | Verify conditional_range_guardrails separately from the fixed reference definition; numeric guardrails require independent compatible evidence, a shared basis and reviewed scope, not a self-validating batch or invented universal bounds. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -935,11 +937,11 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 64358
+              offset: 65070
               line: 307
               column: 1
             end:
-              offset: 64380
+              offset: 65092
               line: 307
               column: 23
           text: "## 9. Validation Rules"
@@ -1128,131 +1130,131 @@ normative_context:
     - pointer: "/validation_rules/0"
       rule_id: "reference_acceptance"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 64453
+          offset: 65165
           line: 311
           column: 1
         end:
-          offset: 64772
+          offset: 65484
           line: 311
           column: 320
     - pointer: "/validation_rules/1"
       rule_id: "atomic_final_gate"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 64773
+          offset: 65485
           line: 312
           column: 1
         end:
-          offset: 65260
+          offset: 65972
           line: 312
           column: 488
     - pointer: "/validation_rules/2"
       rule_id: "route_and_native_energy"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 65261
+          offset: 65973
           line: 313
           column: 1
         end:
-          offset: 65596
+          offset: 66308
           line: 313
           column: 336
     - pointer: "/validation_rules/3"
       rule_id: "full_life_and_providers"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 65597
+          offset: 66309
           line: 314
           column: 1
         end:
-          offset: 65934
+          offset: 66670
           line: 314
-          column: 338
+          column: 362
     - pointer: "/validation_rules/4"
       rule_id: "failure_cooutputs_sites"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 65935
+          offset: 66671
           line: 315
           column: 1
         end:
-          offset: 66310
+          offset: 67046
           line: 315
           column: 376
     - pointer: "/validation_rules/5"
       rule_id: "native_fates"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 66311
+          offset: 67047
           line: 316
           column: 1
         end:
-          offset: 66671
+          offset: 67407
           line: 316
           column: 361
     - pointer: "/validation_rules/6"
       rule_id: "reference_compatibility_gate"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 66672
+          offset: 67408
           line: 317
           column: 1
         end:
-          offset: 66947
+          offset: 67683
           line: 317
           column: 276
     - pointer: "/validation_rules/7"
       rule_id: "completed_obligation_cohort_gate"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 66948
+          offset: 67684
           line: 318
           column: 1
         end:
-          offset: 67224
+          offset: 67960
           line: 318
           column: 277
     - pointer: "/validation_rules/8"
       rule_id: "foreground_expansion_reconciliation_gate"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 67225
+          offset: 67961
           line: 319
           column: 1
         end:
-          offset: 67539
+          offset: 68275
           line: 319
           column: 315
     - pointer: "/validation_rules/9"
       rule_id: "conditional_range_guardrails_gate"
       identity_kind: "explicit"
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 67540
+          offset: 68276
           line: 320
           column: 1
         end:
-          offset: 67844
+          offset: 68580
           line: 320
           column: 305
   diagnostics:
@@ -1294,14 +1296,14 @@ normative_context:
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_64358"
+      unit_id: "normative_65070"
       source_span:
         start:
-          offset: 64358
+          offset: 65070
           line: 307
           column: 1
         end:
-          offset: 64380
+          offset: 65092
           line: 307
           column: 23
 projection_metadata:
@@ -1311,5 +1313,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:fe9fad84be8dcbb511ed92366851226b845cc0eb3e1fa177d7aa99c6597a5745"
-  generated_content_sha256: "sha256:612056e5a716e3376c375a8ab9688e6fbde8a626559aa7704814b569f1e4f13d"
+    sha256: "sha256:62ca263e5a6f0b492fb069690745cb3ab6a8c1ac8100bd763ecd47ade973cf38"
+  generated_content_sha256: "sha256:20e95a4f7a84ea86abf1596ff5562bf00a22a500d62aac5aceb173004a434d1c"

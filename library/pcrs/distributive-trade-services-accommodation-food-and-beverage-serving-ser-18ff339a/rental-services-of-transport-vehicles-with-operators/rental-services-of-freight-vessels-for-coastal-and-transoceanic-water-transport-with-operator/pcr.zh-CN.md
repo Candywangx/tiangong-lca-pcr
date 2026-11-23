@@ -55,7 +55,7 @@ sync_with: pcr.en-US.md
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
 | accepted_engagement | 参考产品 | Number of items | Item(s) | N计具正值真实验收H及声明配置容量质量控制接口区域作业的独立完成验收原始带操作租用义务。不要求正航行载货拖带渔获，付款换班航次验收替船不新增约定。 |
-| native_supply | 全部原子流行 | 实际原生属性 | 实际原生单位 | 测真实原生量或有据兼容转换，已核能源单位支持1kWh=3.6MJ一次。不设通用燃料水密度船员资源率货物拖带渔获产率可用因子或每约定全库存资产。 |
+| native_supply | 全部原子流行 | 实际原生属性 | 实际原生单位 | 测真实原生量或有据兼容转换，已核能源单位支持1kWh=3.6MJ一次。不设通用燃料水密度船员资源率货物拖带渔获产率可用因子；不得无依据默认每约定完整库存/资产。 |
 | compatible_duty | 资产及供应商子项 | 实际原生属性 | 实际原生单位 | 原生小时天Count资产服务及可用容量时间须真实同功能需求单位基准。货物吨公里完成拖带渔获质量运单费用不能静默替代带操作租用，物质质量元素CO2e真实接收基准不同。 |
 
 ## 5. 系统边界
@@ -292,7 +292,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | normalize_hire | 全部清单行 | I_x = A_x / N。A_x为直接因果全部使用者归属后一致验收租用真实原生量；N为具正值验收可用时间原约真实变更配置容量接口的独立验收带操作租用义务真实计数。N=0保留负荷无有限强度。 选择分子及N前须执行reference_compatibility与completed_obligation_cohort。 | A_x;N | 每验收租用约定原生清单 |  |
 | provider_native | 真实供应商子项 | A_x = q_u * D_u * s。q_u为每原生单位u的兼容供应商清单；D_u为有记录服务池在研究份额归属前的真实同单位供应商需求；s为该池有证据的研究份额。直接专属需求取s = 1，不再乘另一共享比例。精确已含项目替代后除N一次，不假定原生小时船日Count货物吨公里、完成拖带或渔获质量金额等于本约定。 | q_u;D_u;s;N | 归属原生供应商负荷 |  |
-| asset_lifetime | 真实资产子项 | A_asset = Q_asset * U_studied / U_life；I_asset = A_asset / N。Q_asset为真实原生供应资产量；U_studied及有记录正值U_life采用同资产全部真实使用者功能场址期间兼容作业。可用容量时间按真实租用功能申明，不默认货物拖带渔获通量。生命周期阶段互斥，保留预测来源敏感性。 | Q_asset;U_studied;U_life;N | 每约定原生资产量 |  |
+| asset_lifetime | 真实资产子项 | A_asset = Q_asset * U_studied / U_life；I_asset = A_asset / N。Q_asset为真实原生供应资产量；U_studied及有记录正值U_life采用同资产全部真实使用者功能场址期间兼容作业。可用容量时间按真实租用功能申明，不默认货物拖带渔获通量。生命周期阶段互斥，保留预测来源敏感性。 仅当证据证明目标租用/队列覆盖同一资产/事件相关寿命内全部兼容使用者需求时，才允许份额为1。全部真实使用者的份额须合计为1；不得默认计入整项资产。 | Q_asset;U_studied;U_life;N | 每约定原生资产量 |  |
 | native_stock_fate | 原生物料与能源台账 | Opening + supplied + transfers_in = closing + consumed_or_transformed + transferred_out + recovered_external + evidenced_release + unresolved_residual。用真实兼容原生单位互斥项，内部保留回收属期末非额外输出。真实消耗初始期初客户燃料能源不论付款货权上游来源充电一次，不重复采购提取。转换产物用真实支持物质关系，同原物提取及下游尾气不作两次原库存去向。未知残差调查不自动废物泄漏。 | Opening;supplied;transfers_in;closing;consumed_or_transformed;transferred_out;recovered_external;evidenced_release;unresolved_residual | 已核对原生库存去向 |  |
 | availability_events | 租用验收与事件归属 | 每原义务真实按时序变更保留真实验收可用H，验收约定H为正。不可用失败待命调位救援替船事件分别具唯一所有者池。合同计费停租小时不替代物理可用证据。真实待命可无移动装载而验收，不设通用可用比例取消阈值。 | H;actual_contract_events;actual_acceptance_records | 有记录验收租用作业归属 |  |
 | reference_compatibility | 全部真实行及义务 | 在合并或比较每次租用结果前，逐原始义务记录兼容性决策。须具有相同所供功能、兼容真实配置与采用原生单位的所租容量或功能能力、针对所声明每次租用参考相等的验收可用时间H、等价验收质量、运行与商业责任、交还接口、地区及作业。单位换算须已核支持；容差仅涵盖有证据的测量不确定性，不得掩盖不同服务功能或时长。H不同或容量、控制、作业、接口不兼容时保持分层，除非每项受影响数量均有记录且受物理证据支持地转换为一个明确声明的共同参考。Count、价格、名义车队容量及相同CPC代码均不能证明等价。事实缺失阻断合并；一项仍为一个真实原始验收义务。 | cp_acceptance_cohort; actual native records | 有证据的兼容队列、唯一归属与行级证据决策 |  |

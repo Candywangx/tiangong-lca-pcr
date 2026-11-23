@@ -203,7 +203,7 @@ sync_with: pcr.en-US.md
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
 | direct_first | operated_truck_hire | 优先将事件/车辆/供应商/场址记录直接归属真实租用义务。共享原生量Q_j按q_ej = Q_j * d_ej / sum_all_users(d_uj)分配，分母须有证据、正值且为同功能兼容需求。仅有因果依据时可用可用容量时间，不默认货物吨公里或运价分配。 |  |
-| all_user_life | operated_truck_hire | 逐项将初始资产及每次更换/维护/退役归属自身兼容服务寿命及全部真实使用者，包括其他租用、自营、待命/支持及各期间。采集观测/预测寿命需求及不确定性；不设通用寿命、利用率或份额，不向一次约定计整项资产。 |  |
+| all_user_life | operated_truck_hire | 逐项将初始资产及每次更换/维护/退役归属自身兼容服务寿命及全部真实使用者，包括其他租用、自营、待命/支持及各期间。采集观测/预测寿命需求及不确定性；不设通用寿命、利用率或份额，不得无依据地默认向一次约定计整项资产。 |  |
 | output_and_reject | operated_truck_hire | 列全真实独立预期输出及交接；直接归属优先于有证据因果分配。待核输出/分配决定为阻断项。客户货物非所生产租用联产品。不自动抵扣废物或扣减反事实服务；保留失败/被拒活动负荷而不计失败输出。 |  |
 | runs_and_pools | operated_truck_hire | 申明约定/事件/连续车队报告模式。清洁/换用、待命、调位及替车事件关联原租用或有证据共享池一次。先合计归属原生量，再除一致验收约定数N；不平均不同容量、时长、作业或地区强度。 |  |
 
@@ -236,7 +236,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | engagement_count | 参考输出 | N = count(independently accepted qualifying hire obligations); H > 0。保留原约/真实变更功能及接口。行程、发票、换班或替车不增加N。 | 验收及真实可用区间 | 一致N及限定H |  |
 | native_stock | 消耗产品投入 | U = opening_stock + receipts - closing_stock - returns - outward_transfers。核对实际使用/废物；仅库存平衡不证明消耗或释放。 | 兼容原生库存及事件 | 原生归属U |  |
-| shared_native | 共享原生量或生命周期事件 | q_ej = Q_j * d_ej / sum_all_users(d_uj)。各分母须正值及同功能兼容，纳入全部真实使用者/期间。初始/更换/维护/退役及供应商项目各计一次。 | 实际原生Q_j；有证据需求及完整寿命/供应商覆盖 | 归属原生q_ej |  |
+| shared_native | 共享原生量或生命周期事件 | q_ej = Q_j * d_ej / sum_all_users(d_uj)。各分母须正值及同功能兼容，纳入全部真实使用者/期间。初始/更换/维护/退役及供应商项目各计一次。 仅当证据证明目标租用/队列覆盖同一资产/事件相关寿命内全部兼容使用者需求时，才允许份额为1。全部真实使用者的份额须合计为1；不得默认计入整项资产。 | 实际原生Q_j；有证据需求及完整寿命/供应商覆盖 | 归属原生q_ej |  |
 | normalize_once | 一致租用队列清单 | q_ref = sum_e(q_e) / N, N > 0。仅汇总兼容配置/容量/时间/控制/接口/地区/作业，不同则保留分层。 选择分子及N前须执行reference_compatibility与completed_obligation_cohort。 | 归属原生量；一致N | 每声明参考流的量 |  |
 | ac_native | 实际外供交流电，不以付款方或是否付费为条件 | E_MJ = E_kWh * 3.6。使用原生净热值支持，仅转换一次并保留实际接口/损失/供应商覆盖。 | 计量兼容交流电 | MJ |  |
 | substance_release | 各实际排放物质 | 用实际逐物质质量测量或有依据兼容来源消耗方法，保留碳源、接收区室、残留/转移/氧化份额及不确定性。不设通用因子或整库存释放。 | 真实来源及去向依据 | 实际原生物质质量 |  |

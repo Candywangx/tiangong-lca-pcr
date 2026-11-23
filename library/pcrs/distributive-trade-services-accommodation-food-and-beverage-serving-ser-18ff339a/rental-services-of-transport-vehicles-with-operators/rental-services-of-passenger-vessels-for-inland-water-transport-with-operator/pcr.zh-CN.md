@@ -203,7 +203,7 @@ sync_with: pcr.en-US.md
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
 | direct_first | operated_inland_passenger_vessel_hire | 尽可能将真实船舶/事件/供应商/岸上记录直接归属租用义务。共享原生Q_j按q_ej = Q_j * d_ej / sum_all_users(d_uj)，分母须有依据、正值且为同功能兼容全部使用者需求。仅有因果依据时可用可用容量时间，乘客公里、客票、航距、租价或港费非默认租用驱动。 |  |
-| all_user_life | operated_inland_passenger_vessel_hire | 逐项将真实初始船/总成/岸上资产及每次更换、维护、退役事件归属自身兼容使用寿命及全部真实使用者/功能/期间，包括其他租用、自营运输、待命/舱室/支持及同期容量。保留观测/预测需求、不确定性及敏感性，不设通用寿命或每租用整项资产。 |  |
+| all_user_life | operated_inland_passenger_vessel_hire | 逐项将真实初始船/总成/岸上资产及每次更换、维护、退役事件归属自身兼容使用寿命及全部真实使用者/功能/期间，包括其他租用、自营运输、待命/舱室/支持及同期容量。保留观测/预测需求、不确定性及敏感性，不设通用寿命，不得无依据地默认每次租用计入整项资产。 |  |
 | outputs_and_rejects | operated_inland_passenger_vessel_hire | 列全真实独立预期输出及各交接，直接归属优先于有证据因果分配。待核输出/归属/去向决定阻断完成。客运/保管不构成第二所产租用输出。保留失败/不可用/被拒活动负荷而不计验收H/N，不自动抵扣废物或反事实替代。 |  |
 | events_and_periods | operated_inland_passenger_vessel_hire | 申明真实约定/事件/船队报告期间。准备、清洁/换用、待命、调位、故障、救援及替船事件关联原义务或有依据共享池一次，保留实物转移编号及供应商归属。先合计归属原生量再除一致N，不平均不同容量、时长、水体、作业或技术强度。 |  |
 
@@ -239,7 +239,7 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | engagement_count | 真实参考输出 | N = count(independently accepted qualifying hire obligations); H > 0。保留真实原约/变更船舶/配置/所租容量/船员/接口。航行、乘客、发票、班次或替船不增加N。 | 验收及真实可用区间 | 一致N及限定H |  |
 | native_stock | 原生消耗产品 | U = opening_stock + receipts - closing_stock - returns - outward_transfers。纳入真实初始/客户库存及保管转移，核对真实使用/废物。仅库存平衡不证明消耗或释放。 | 兼容原生库存及事件 | 真实归属原生U |  |
-| shared_native | 共享原生量或生命周期事件 | q_ej = Q_j * d_ej / sum_all_users(d_uj)。分母须正值及同功能兼容，覆盖真实船舶/资产寿命及全部使用者/功能/期间。初始/更换/维护/退役/供应商项目各归属一次。 | 真实原生Q_j；有依据全部使用者需求及精确覆盖 | 归属原生q_ej |  |
+| shared_native | 共享原生量或生命周期事件 | q_ej = Q_j * d_ej / sum_all_users(d_uj)。分母须正值及同功能兼容，覆盖真实船舶/资产寿命及全部使用者/功能/期间。初始/更换/维护/退役/供应商项目各归属一次。 仅当证据证明目标租用/队列覆盖同一资产/事件相关寿命内全部兼容使用者需求时，才允许份额为1。全部真实使用者的份额须合计为1；不得默认计入整项资产。 | 真实原生Q_j；有依据全部使用者需求及精确覆盖 | 归属原生q_ej |  |
 | normalize_once | 一致租用队列清单 | q_ref = sum_e(q_e) / N, N > 0。仅汇总兼容所租配置/容量/时间/责任/接口/水体/作业，其他保留分层。 选择分子及N前须执行reference_compatibility与completed_obligation_cohort。 | 归属原生量；一致N | 每声明参考流的量 |  |
 | ac_native | 实际外供交流电，不以付款方或是否付费为条件 | E_MJ = E_kWh * 3.6。使用原生净热值支持及真实使用点接口，转换一次并计真实损失/供应商覆盖。 | 计量兼容交流电 | MJ |  |
 | substance_release | 各实际排放物质 | 用实际逐物质质量测量或来源/技术/原生消耗兼容有依据方法。保留真实碳源、接收介质、氧化/残留/转移/处理份额及不确定性；不设通用因子、全库存释放或供应等于排放假设。 | 真实来源及去向依据 | 真实原生物质质量 |  |
