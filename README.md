@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-04
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
-lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
+lastReviewedAt: 2026-11-22
+lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
+lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
 ---
 
 # TianGong LCA PCR Library

@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-17
-lastReviewedNote: "PR172: integrate d1c8953e5 Brotli search transport and required v8/v9 packing dependencies; preserve logical search content, PCR artifacts and resource budgets. Final-source CI remains required."
-lastReviewedCommit: 989050f32ca7c647c9c248a0f2d2bd4b165e88c7
+lastReviewedAt: 2026-11-23
+lastReviewedNote: "PR172 conflict resolution retains the bounded v8/v9/v10 search transport and PCR #182 source-document concurrency, heap/RSS limits, deterministic errors and publication checks."
+lastReviewedCommit: aaed66b3908b7142e32f562c381221671076ac18
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -404,6 +404,15 @@ only the sealed-product importer, whose separate 15-minute download/materializat
 deadline, cleanup and atomic handoff remain enforced. The export uses two static workers
 with at most one static page render in flight per worker. Its 4 GB Node heap
 ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap ceiling is not proof of total resident memory.
+
+The hosted web build sets `PCR_SOURCE_VERIFY_WORKERS=2` for verification of
+independent source documents. Each admitted document still undergoes the complete
+Markdown inventory, rendered-block, link, source-marker and ordering checks.
+Two Node child processes inherit the build environment and its per-process heap
+limit. The existing process-tree RSS check includes the parent and both children.
+The verifier waits for all assigned documents and child shutdown before continuing
+with the global export checks. It reports document validation errors in source
+order. An unset value or `1` runs the serial verification path.
 
 Each attempted stage emits `build-stage` diagnostics with its command, duration,
 sampled peak process-tree RSS, measurement availability, child exit code and
