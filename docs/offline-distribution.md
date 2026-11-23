@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-20
-lastReviewedCommit: 7e2bec06ee03535bcd683c238d7b6803358c7ed0
-lastReviewedNote: "PCR #177 reviewed the coordinated 0.4.11 version sources, current source distribution, sealed publication and preserved candidate methodology and scientific states."
+lastReviewedAt: 2026-11-24
+lastReviewedCommit: 1ca1e3b62ac872f1278c5e05c119c6ebaf30bcc0
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -372,6 +372,21 @@ The EdgeOne build command runs the dependency-free
 identity, downloads only that canonical GitHub Release's manifest and web archive,
 checks hashes and identity, safely extracts to owned disk scratch and atomically
 hands the verified export to the provider. Routing headers/redirects are retained.
+Before identity validation or artifact download, the importer emits a
+`product-web-runtime` record with Node/libuv versions, raw host CPU/memory values,
+process-available CPU parallelism, constrained memory and currently available
+memory. Node's available-parallelism estimate accounts for affinity and Linux
+cgroup CPU quotas; it is an integer estimate. Raw host counts do not establish a
+build-machine entitlement. A zero native constrained-memory result is recorded
+as null because it means unknown or unconstrained, rather than zero capacity.
+
+The existing output guards emit `build-output-capacity` before and after staging.
+These records reuse the exact guard filesystem snapshots and include mount/device,
+total/free space, allocation unit, complete export allocation estimate, required
+staging capacity and the existing reserve. The post-stage record carries its own
+remaining-space check. Pre-stage or post-stage refusal retains its original
+threshold and error. Diagnostic write failures do not change acceptance or the
+atomic handoff.
 It does not rebuild the frontend. Existing disk/file limits, failure rollback and
 provider asset handoff remain enforced.
 

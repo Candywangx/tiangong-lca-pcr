@@ -1,5 +1,6 @@
 import {verifyProviderRuntimeExport,verifyProviderRuntimeSource} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { createHash, randomBytes } from "node:crypto";
 import { performance } from "node:perf_hooks";
@@ -125,6 +126,24 @@ function sameIdentity(left: ReturnType<typeof readProductIdentity>, right: Retur
     throw new Error("Product source identity changed during web materialization.");
 }
 
+function reportRuntime(log: (value: string) => unknown): void {
+  try {
+    const constrainedMemory = process.constrainedMemory();
+    log(JSON.stringify({
+      event: "product-web-runtime",
+      node: process.versions.node,
+      uv: process.versions.uv,
+      platform: process.platform,
+      architecture: process.arch,
+      rawHostLogicalCpuCount: os.cpus().length,
+      availableCpuCount: os.availableParallelism(),
+      rawHostMemoryBytes: os.totalmem(),
+      constrainedMemoryBytes: constrainedMemory > 0 ? constrainedMemory : null,
+      availableMemoryBytes: process.availableMemory(),
+    }));
+  } catch { /* Runtime diagnostics cannot change materialization acceptance. */ }
+}
+
 /** Import the canonical publisher's sealed artifact; this never invokes a build or a provider API. */
 export async function materializeProductWeb({
   root = process.cwd(), env = process.env, fetchImpl = globalThis.fetch,
@@ -134,6 +153,7 @@ export async function materializeProductWeb({
   publish = publishOutput, facts = filesystemFacts, log = console.log,
   timeoutMs = TRANSFER_TIMEOUT_MS, now = () => performance.now(),
 }: MaterializeOptions = {}) {
+  reportRuntime(log);
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1) throw new Error("Product materialization requires a finite transfer deadline.");
   root = fs.realpathSync(root);
   const identity = readIdentity(root), config = readVersion(root);
@@ -213,6 +233,7 @@ export async function materializeProductWeb({
       app: path.join(root, "packages/pcr-docs"), scratchApp,
       token: randomBytes(12).toString("hex"),
       providerRoot: isMemoryBacked(constraint) || env[PREBUILT_ASSETS_ENV] === "1" ? root : null,
+      log,
       beforeSwap() { assertDeadline(); sameIdentity(identity, readIdentity(root)); verifyProviderRuntimeSource(root, providerRuntime, identity.sourceCommit); assertDeadline(); },
     });
     const result = { identity, web: { filename: manifest.web.filename, bytes: manifest.web.bytes,
