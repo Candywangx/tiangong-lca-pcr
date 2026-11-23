@@ -58,3 +58,31 @@ test('v11 restores canonical v8 bytes and rejects forged context sizes, channel 
   await assert.rejects(read({...envelope, codedBytes:bytes.length, data:brotliCompressSync(bytes).toString('base64')}));
  }
 });
+
+test('v12 joins the dictionary and restores an authenticated physical group larger than v11', async () => {
+ const logical=Array.from({length:17},(_, i)=>wires[i%wires.length]!);
+ const inner=packSearchShards(logical,commit,language,0,8,true);
+ const bytes=Buffer.from(encodeBrotliSearchPack(inner,8,true,true));
+ const file:SearchPhysicalFile={...fixture().file,bytes:bytes.length,gzipBytes:gzipSync(bytes,{level:9}).length,
+  sha256:hash(bytes),logicalShardCount:logical.length,records:logical.length,
+  logicalShards:logical.map(wire=>({wireBytes:Buffer.byteLength(wire),wireSha256:hash(wire),records:1}))};
+ const manifest={...fixture().manifest,schemaVersion:12 as const,logicalShardCount:logical.length,files:[file]};
+ assert.throws(()=>readSearchManifest({...manifest,schemaVersion:11},language));
+ assert.deepEqual((await unpackSearchFile(readSearchManifest(manifest,language),file,bytes,hash,decodeBrotliSearchPack)).map(member=>JSON.stringify(member)),logical);
+ const envelope=JSON.parse(bytes.toString());
+ const decoded=JSON.parse(Buffer.from(decodeBrotliSearchPack(Buffer.from(envelope.data,'base64'),envelope.codedBytes)).toString());
+ assert.equal(typeof decoded.dictionary,'string');
+ decoded.dictionary=' '+decoded.dictionary;
+ const corrupt=Buffer.from(JSON.stringify(decoded));
+ const corrupted=Buffer.from(JSON.stringify({...envelope,codedBytes:corrupt.length,data:brotliCompressSync(corrupt).toString('base64')}));
+ await assert.rejects(unpackSearchFile(manifest,{...file,bytes:corrupted.length,sha256:hash(corrupted)},corrupted,hash,decodeBrotliSearchPack));
+});
+
+test('v12 retains dictionary values containing the join separator', async () => {
+ const logical=wires.map(wire=>wire.replace('"term0"','"term with spaces"'));
+ const inner=packSearchShards(logical,commit,language,0,8,true);
+ const payload=encodeBrotliSearchPack(inner,8,true,true),bytes=Buffer.from(payload);
+ const {file,manifest}=fixture();
+ const descriptor={...file,bytes:bytes.length,sha256:hash(bytes),logicalShards:logical.map(wire=>({wireBytes:Buffer.byteLength(wire),wireSha256:hash(wire),records:1}))};
+ assert.deepEqual((await unpackSearchFile({...manifest,schemaVersion:12},descriptor,bytes,hash,decodeBrotliSearchPack)).map(member=>JSON.stringify(member)),logical);
+});

@@ -683,6 +683,22 @@ length before arithmetic decoding. It authenticates the reconstructed v8 bytes
 and then every logical wire. The existing Worker Brotli decoder handles both
 envelopes. Full manifests and physical files count toward the same budgets.
 
+When v11 still exceeds either per-language budget, v12 measures a bounded
+set of wider physical groups. Their dictionaries use a space-delimited string
+when every term is nonempty and contains no space. The original dictionary order
+and values are restored exactly. A dictionary that contains a literal space uses
+the array representation. The reader charges the recovered array framing against
+the authenticated inner length before splitting the string.
+
+V12 uses at most 56 consecutive logical shards per physical group and retains
+the existing 20 MB bound on the physical file, decoded bytes and summed logical
+bytes of a group. Existing formats retain their 16-member cap. The 20 MB raw and
+4 MB gzip per-language budgets still include the manifest. The larger physical
+groups share a dictionary across more original shards. Logical boundaries,
+record fields, native exports, search cutoffs and ranking remain unchanged.
+The worker uses its existing Brotli decoder and verifies the restored v8 pack
+and each logical wire before importing the index.
+
 The generator retains the original sixteen-member greedy layout as a candidate
 and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
 At each cut position it retains at most sixteen paths. Physical dictionary strings
