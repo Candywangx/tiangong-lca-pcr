@@ -1,10 +1,987 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "38971"
-  title: "Human hair, unworked, whether or not washed or scoured; waste of human hair"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.furniture-other-transportable-goods-n-e-c.human-hair-unworked-whether-or-not-washed-or-scoured-waste-of-human-hair"
+  classification_refs: "CPC 3.0:38971, accepted narrower association for unworked natural-colour cut-hair ponytails. Worked hair and wigs in 38972 are outside this scope."
+  covered_products: "Natural-colour clean dry unworked cut ponytail hair"
+  excluded_products: "38972 dressed, thinned, bleached or otherwise worked hair, wigs and articles; animal hair; synthetic fibre; mixed-root sweepings"
+  representative_product: "Unworked ponytails first accepted from an actual purchased lot"
+  production_route: "Receipt of clean dry cut ponytails → inspection/weighing → securing/packing → first release"
+  market_state: "Loose raw-hair intermediate awaiting downstream processing"
+functional_unit:
+  what: "Supply accepted unworked natural-colour cut human hair"
+  how_much: "1 kg net human hair at first release"
+  how_well: "Document buyer acceptance, clean/dry state, original root direction and actual length distribution; no sanitation performance claim"
+  how_long_or_cycle: "One traceable receiving cohort; no wearing lifetime"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_unworked
+      applies_to: "intake"
+      rule: "Allow receiving inspection, weighing and securing preserved root direction only. Washing alone does not exclude 38971, but no receiver rewash is presumed here. Exclude subsequent dressing, thinning, turning mixed-root hair, bleaching, dyeing, pattern matching, wefting and wig making."
+      source_ids:
+        - un-cpc-3-2025
+        - banbury-ethical
+    - rule_id: boundary_acceptance
+      applies_to: "intake"
+      rule: "Retain every arriving lot and disposition. Only physical hair meeting actual buyer specifications with documented release enters Q; posting or payment is not acceptance. Record rejected returns separately."
+      source_ids:
+        - banbury-selling
+    - rule_id: boundary_upstream
+      applies_to: "intake"
+      rule: "Document actual supplier cleaning, drying, cutting and transport services and attributable burdens; do not model human growth, assign an entire personal haircut, or default upstream burdens to zero. Clean/dry instructions do not provide energy or water quantities."
+      source_ids:
+        - banbury-selling
+        - lpt-donation-2025
+    - rule_id: boundary_complete
+      applies_to: "intake"
+      rule: "A conditional flow is inapplicable only with evidence of physical absence; missing data or UUID never means zero. Add an atomic card for each actual additional substance, cleaner, water, drying carrier, waste and emission and reassess route applicability. Retain all burdens of failed lots and zero-output periods."
+      source_ids: []
+    - rule_id: boundary_packaging
+      applies_to: "intake"
+      rule: "Apply the complete receipt/return ledger in boundary_packaging_interfaces separately to each band, envelope and container. Record physical quantities separately from burden inclusion; never omit first attached or loan receipts. Packaging does not enter Q, internal reuse creates no new purchase, and production burdens already inside the hair provider are not loaded again."
+      source_ids: []
+    - rule_id: boundary_origin_gate
+      applies_to: "intake"
+      rule: "Link first securing/cutting records to source acquisition/voluntary authorization and applicable compliance evidence, seller lot, preserved root direction, cleaning/drying/cutting/transport burdens and the first accepted raw-material release event. Hair already previously released by a buyer as equivalent accepted raw material cannot generate new Q through reinspection, resale, repacking or repeated stock receipt. Quarantine lots without demonstrated first-gate provenance outside Q; do not disclose personal identities."
+      source_ids:
+        - banbury-selling
+        - banbury-ethical
+    - rule_id: boundary_unreleased_carry
+      applies_to: "intake"
+      rule: "Carry unreleased cohorts across periods with net hair quantity, moisture state and itemized inherited upstream and incurred foreground exchange vectors into next-period opening stock. Do not discard burdens or enter Q early. Attribute carried and additional burdens on eventual first release; on return transfer inherited vectors under allocation_inherited_returns while retaining attributable actual failed services. Closing unresolved stock is not allocated as produced output."
+      source_ids: []
+    - rule_id: boundary_packaging_interfaces
+      applies_to: "intake"
+      rule: "For each article separately: opening empty/attached/borrowed stocks + new purchase receipts + first supplier-included receipts + first nonpurchase/loan receipts + genuine receipts of the same previously dispatched objects = closing stocks + accepted-hair dispatch + refused-hair returns + loan returns + other external dispatch + waste. Events are mutually exclusive and linked by object ID or evidenced lot correspondence; internal transfers cancel. At each interface record whether inherited burden is inside the hair provider, independently acquired or a loan service; load it once. Unknown material/ownership/burden interfaces remain unresolved, not zero-filled."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Receipt of already cut, clean dry natural-colour raw hair with preserved direction"
+  starting_condition_role: "Supplied physical material with upstream burdens; transaction acceptance is distinct from physical arrival"
+  product_classification_scope: "Narrower purchased raw-hair route within 38971; excludes 38972"
+  recursive_input_rule: "Same-category hair retains actual supplier boundary/burdens; internal transfers cancel without repeated production"
+  upstream_dataset_requirement: "Match actual supplier cleaning/drying/cutting, transport, electricity and individual packaging providers; missing links remain explicitly unknown"
+  disclosure: "Disclose foreground start, supplier interface, rejection handling, stocks, period and site; do not claim complete cradle-to-gate before upstream assembly"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Unworked natural-colour cut human ponytail hair"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual seller and lot"
+    - "purchase rather than donation"
+    - "natural colour and untreated history"
+    - "root direction and cuticle condition"
+    - "length distribution"
+    - "receiving specification and pass/reject records"
+    - "drying and moisture measurement conditions"
+    - "net hair mass and tare"
+    - "receipt/release dates"
+    - "stocks and returns"
+    - "supplier cleaning/drying/cutting and transport boundary/burdens"
+    - "packaging composition"
+    - "metering and shared-service allocation evidence"
+    - "treatment destinations"
+    - "site and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is net hair mass at unique first quality release; weigh on calibrated scales excluding bands, envelopes and separable foreign matter; record measured moisture and conditioning conditions. Dry does not mean oven-dry or a prescribed regain."
+  - id: count_mass
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Bundle count and length describe lots but do not replace mass. Conversion requires paired same-lot weighing. Multiply g by 0.001 for kg. Merchant payment by ounce does not establish which ounce convention applies; verify before converting transaction mass."
+  - id: denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual exchange property"
+      uuid: ""
+    required_unit: "native unit"
+    rule: "All inventory rows are per 1 kg reference flow; preserve each numerator unit and normalize by positive same-cohort first-release Q. Rejects, returns, waste, opening released goods and repeated releases do not enter Q."
+process_map:
+  - id: intake
+    name: "Purchased raw-hair receipt inspection and first release"
+    inclusion: "required"
+    inclusion_condition: "Declared purchasing route"
+    role: "Receiving quality gate, packaging and subsequent attributable services"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: intake
+    label: "Purchased raw-hair receipt inspection and first release"
+    inputs:
+      product:
+        - row_id: raw_hair
+          role: "Incoming cut ponytail hair"
+          name: "Unworked natural-colour cut human ponytail hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every incoming lot, including returned nonaccepted lots. Incoming hair already is clean and dry; keep water and impurities as non-additive composition records. Supplier cleaning, drying, cutting and transport burdens require upstream evidence."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_hair."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hair
+              source_ids:
+                - banbury-selling
+                - banbury-ethical
+            ranges: []
+        - row_id: intake_electricity
+          role: "Intake electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual powered lighting, weighing, handling or storage; obtain metered attributable consumption. Do not invent drying energy at intake."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_exchange."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids: []
+            ranges: []
+        - row_id: band_input
+          role: "New securing band"
+          name: "Natural-rubber hair band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on a verified natural-rubber band purchase. Existing bands arriving with hair have a separate physical ledger; do not repurchase their burdens. Another band material needs its own card."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: envelope_input
+          role: "New dispatch envelope"
+          name: "Cardboard envelope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual cardboard envelope use; measure net packaging mass. A carton or plastic bag is a distinct exchange requiring an additional card."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: band_received
+          role: "Natural-rubber band arriving with hair"
+          name: "Natural-rubber hair band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on verified material. Count each first physical receipt of an attached band, including supplier-included and nonpurchased receipts. Identify owner, lot and whether production burden is already inside the hair provider; attach it once, never as a second new-band purchase."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: envelope_received
+          role: "Cardboard envelope arriving with hair"
+          name: "Cardboard envelope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual material. Record first supplier-included or nonpurchased envelope receipt, actual mass and inherited burden boundary. Keep separate from new purchases and genuine returns of previously dispatched envelopes."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: borrowed_box_received
+          role: "Borrowed polypropylene transport box received"
+          name: "Reusable polypropylene hair-transport box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on an actual verified polypropylene box loan. Record box ID, owner, receipt event, mass, previous uses, upstream service burden and contracted return. A first loan is not an external return or a purchase. Another material needs its own card."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted raw hair"
+          name: "Unworked natural-colour cut human ponytail hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the unique first documented quality release of accepted physical hair enters Q. Amount is 1 kg. Root direction retained from cutting is not a claim of subsequent dressing."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hair
+              source_ids:
+                - banbury-selling
+                - banbury-ethical
+            ranges: []
+        - row_id: returned_hair
+          role: "Unaccepted hair returned to sender"
+          name: "Unaccepted cut human ponytail hair returned to sender"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record gross returned physical hair even when no purchase is completed. This is a return, not another accepted product or waste credit."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_hair."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hair
+              source_ids:
+                - banbury-selling
+                - banbury-ethical
+            ranges: []
+        - row_id: band_attached
+          role: "Band leaving with accepted hair"
+          name: "Natural-rubber hair band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on the declared band material. Packaging content is excluded from Q and is not a coproduct. Include inherited attached bands in the physical ledger without duplicating purchases."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: envelope_attached
+          role: "Envelope leaving with accepted hair"
+          name: "Cardboard envelope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual dispatch. Distinguish first release into stock from later dispatch; do not count hair production again."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: band_returned
+          role: "Received band returned with refused hair"
+          name: "Natural-rubber hair band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual same-band return. Link incoming object/lot to return event and inherited burden vector; do not also count it as accepted-hair dispatch or waste. An unrelated replacement is a new article, not a true return."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: envelope_returned
+          role: "Received envelope returned to sender"
+          name: "Cardboard envelope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual return of the same received envelope. Identify event and object; preserve inherited burden with it. A discarded envelope is waste, and a replacement return envelope is separately acquired packaging."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: borrowed_box_returned
+          role: "Borrowed polypropylene box returned to owner"
+          name: "Reusable polypropylene hair-transport box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual return of the identified loan box. Match the same box receipt and retained stock; record real return transport and any cleaning service separately. Neither a second receipt nor a new box production credit arises."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: hair_waste
+          role: "Discarded hair"
+          name: "Discarded cut human hair"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual discard rather than return; record destination and payer. A rejected consignment is not automatically waste."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_hair."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hair
+              source_ids: []
+            ranges: []
+        - row_id: band_waste
+          role: "Discarded band"
+          name: "Discarded natural-rubber hair band"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual discarded bands of this material; keep separate from hair and cardboard."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: envelope_waste
+          role: "Discarded envelope"
+          name: "Discarded cardboard envelope"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual discarded envelopes; follow the documented treatment route."
+          amount:
+            expression: "Measured attributable exchange quantity per reference flow; cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_services
+    applies_to: "intake"
+    rule: "Prefer subdivision and direct measurement; allocate shared weighing, storage and transport using measured attributable drivers with time, load and complete denominators. Do not use sale proceeds or a zero donation price as environmental burden drivers."
+    source_ids: []
+  - rule_id: allocation_haircut
+    applies_to: "supplier"
+    rule: "Subdivide common hair-material and haircut-service burdens first; attribute actual collection-specific services and evidenced shared portions with causal justification. Unjustified allocation remains unknown; do not assign an entire haircut or zero burden automatically."
+    source_ids: []
+  - rule_id: allocation_returns
+    applies_to: "intake"
+    rule: "No saleable coproduct is presumed. Rejected returns, discarded hair, packaging and waste create neither additional Q nor avoided-disposal credit. Keep attributable collection, inspection and handling burdens of failures and returns in the same-cohort numerators. A real saleable coproduct requires further allocation and boundary review."
+    source_ids: []
+  - rule_id: allocation_inherited_returns
+    applies_to: "raw_hair; returned_hair"
+    rule: "Physical arrival does not prove acquisition. Do not load another purchased-hair provider for unacquired temporarily held hair returned to its owner. For acquired hair subsequently returned, transfer its inherited upstream exchange vector with that physical return instead of also retaining it in the accepted-hair numerator. Actual intake, failed inspection and return-service burdens remain attributable by evidenced drivers. Keep the full physical ledger without avoided-disposal credits."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_hair
+      process_id: "intake"
+      flow_role: "raw hair; accepted hair; returns; discarded hair"
+      record_type: "weighing"
+      raw_fields: "lot; purchase/donation; seller; colour/history; root direction; lengths; moisture; gross/tare; incoming, Q, returns, discarded hair and opening/closing unreleased stocks"
+      collection_method: "Calibrated net weighing per lot; verify first securing/cutting event, source authorization/compliance evidence, supplier lot and burden vectors against first release; detect previous equivalent release and quarantine resale lots; sign period carryover of quantities/vectors through release or return; no drawing or dressing"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete cohort through return closure"
+      site_scope: "collector and receiver separately"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "acceptance forms, scale calibration, moisture conditions, stock records"
+    - protocol_id: cp_exchange
+      process_id: "intake"
+      flow_role: "electricity and shared services"
+      record_type: "meter and activity ledger"
+      raw_fields: "submeter electricity; opening/closing readings; drivers and complete served populations; supplier/transport interfaces"
+      collection_method: "Prefer direct meters; attribute shared portions by evidenced drivers; retain failures and zero-output periods"
+      unit: "kWh"
+      frequency: "each cohort and meter period"
+      temporal_coverage: "complete matched cohort/period"
+      site_scope: "actual supplier and receiving sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meters, time logs, supplier interfaces and attribution basis"
+    - protocol_id: cp_pack
+      process_id: "intake"
+      flow_role: "each packaging article and its waste"
+      record_type: "article ledger"
+      raw_fields: "mass per packaging material; purchases; incoming attached quantities; stocks; dispatch; external returns and waste destinations"
+      collection_method: "Weigh each object/material; record owner, first-receipt class (new purchase, supplier-included, nonpurchase or loan), actual same-object return links, period empty/attached/borrowed stocks and ultimate dispatch/return/discard; reconcile mutually exclusive boundary_packaging_interfaces ledger; verify each inherited burden against hair-provider inclusion without duplication"
+      unit: "kg"
+      frequency: "each lot and closing stock"
+      temporal_coverage: "same cohort including later packaging horizon"
+      site_scope: "receiving and dispatch sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "material declarations, invoices, stocks, treatment receipts"
+  calculation_rules:
+    - id: inventory_normalization
+      applies_to: "all inventory rows"
+      rule: "For each same-cohort exchange divide its attributable total by positive first-release net Q to obtain the amount per 1 kg reference flow; do not multiply by bundle count or divide by length again. If Q is zero retain totals without a unit result."
+      inputs:
+        - cp_hair
+        - cp_exchange
+        - cp_pack
+        - Q
+      output: "each exchange per 1 kg reference flow"
+      source_ids: []
+    - id: hair_balance
+      applies_to: "intake"
+      rule: "Opening unreleased hair + arrivals = first-release Q + returned hair + discarded hair + closing unreleased hair + independently evidenced net moisture/foreign-matter losses. Q includes this cohort closing released stock; later dispatch is not new Q. Measure composition independently; do not use one residual to infer both moisture and unknown hair loss."
+      inputs:
+        - cp_hair
+      output: "physical ledger closure and explicit discrepancies"
+      source_ids: []
+    - id: supplier_interface
+      applies_to: "raw_hair"
+      rule: "Incoming physical hair carries inherited supplier services. Record actual supplier water, cleaner, drying energy and transport individually with their collection bases and conversion to this delivered lot; presume no recipe or values. Receiver does not count the same upstream burdens again."
+      inputs:
+        - cp_hair
+        - cp_exchange
+        - "supplier data"
+      output: "traceable supplier boundary and gaps"
+      source_ids:
+        - lpt-donation-2025
+  data_quality_requirements:
+    - id: quality_intake
+      applies_to: "intake"
+      requirement: "Verify natural untreated colour, preserved roots, clean/dry state and actual intake criteria per lot. Merchant minimum 14 inches and charity minimum 10 inches with encouragement to reach 12 inches are distinct institutional terms, not a universal threshold or one lot specification."
+      evidence: "banbury-selling; banbury-ethical; lpt-donation-2025"
+    - id: quality_numbers
+      applies_to: "all inventory rows"
+      requirement: "Use collection where no defensible general range exists; do not supply yields, energy/water use, regain or wig lifetimes. Sources provide qualitative conditions rather than this lot measurements."
+      evidence: "cp_hair; cp_exchange; cp_pack"
+    - id: quality_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify each UUID, actual provider, packaging material and treatment route; unresolved identities do not establish a completed database match."
+      evidence: "verifiable original data and supplier records"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "intake"
+    rule: "Verify actual unworked incoming history; 38972 prepared hair/articles and donation data substituted for purchased-lot evidence fail applicability."
+    source_ids:
+      - un-cpc-3-2025
+      - lpt-donation-2025
+  - rule_id: validate_reference
+    applies_to: "reference_product"
+    rule: "Link the unique product output reference_product at 1 kg; Q must be positive and include only first-accepted physical hair, excluding rejects and packaging."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "all inventory rows"
+    rule: "Verify each measured numerator, same-cohort Q, stock closure, gaps and conditional-flow existence evidence; retain unexplained differences, missing upstream and unresolved identities explicitly without claiming completeness or approval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Bounded raw-hair supply input before downstream processing"
+  allowed_use: "Use only with matched actual start, state, specifications and supplier burdens after independent dataset quality review"
+  excluded_use: "Finished wigs/wearing services; dressed/thinned/dyed hair; donation performance; zero-burden or avoided-disposal claims"
+  required_metadata: "Seller/lot, quality gate, net mass/moisture, direction/length, site/period, supplier/packaging interfaces"
+  required_quality_disclosure: "Measurement coverage, rejected returns, stocks, shared services, UUID/upstream gaps and scientific review state"
+  update_trigger: "Changed supply start, treatment, buyer specification, packaging material or provider"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC 3.0 Structure and Explanatory Notes, 30 June 2025, PDF p.197, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "38971/38972 boundary; page gives no additional process quantities"
+  - id: "banbury-selling"
+    type: "literature"
+    reference: "Banbury Postiche, Selling your hair, https://www.banburypostiche.co.uk/sellingYourHair"
+    used_for: "First-party purchase and rejected-return conditions; not measured lot data or downstream wig inventory"
+  - id: "banbury-ethical"
+    type: "literature"
+    reference: "Banbury Postiche, Ethical Policy, https://www.banburypostiche.co.uk/EthicalPolicy"
+    used_for: "First-party raw-hair purchasing, preserved root direction/cuticle; not independent ethical certification or proof of an unworked terminal"
+  - id: "lpt-donation-2025"
+    type: "literature"
+    reference: "The Little Princess Trust, Hair Donation Guidelines, May 2025, https://www.littleprincesses.org.uk/Documents/Hair%20Donation%20Guidelines%20-%20English%20-%20May%202025%20WEB.pdf"
+    used_for: "Distinct donation route: clean/dry preparation, rinsing out conditioners, secured cutting and cardboard envelope guidance; dyed-hair allowance is scope counterevidence, not purchased-lot quantities"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:8a47b7321780a21ecef16eb0161a0ec7674eda01a7076af137d6f2f63a6afd0d"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5077"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5077
+          line: 59
+          column: 1
+        end:
+          offset: 9619
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Receipt of already cut, clean dry natural-colour raw hair with preserved direction |\n| starting_condition_role | Supplied physical material with upstream burdens; transaction acceptance is distinct from physical arrival |\n| product_classification_scope | Narrower purchased raw-hair route within 38971; excludes 38972 |\n| recursive_input_rule | Same-category hair retains actual supplier boundary/burdens; internal transfers cancel without repeated production |\n| upstream_dataset_requirement | Match actual supplier cleaning/drying/cutting, transport, electricity and individual packaging providers; missing links remain explicitly unknown |\n| disclosure | Disclose foreground start, supplier interface, rejection handling, stocks, period and site; do not claim complete cradle-to-gate before upstream assembly |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_unworked | intake | Allow receiving inspection, weighing and securing preserved root direction only. Washing alone does not exclude 38971, but no receiver rewash is presumed here. Exclude subsequent dressing, thinning, turning mixed-root hair, bleaching, dyeing, pattern matching, wefting and wig making. | un-cpc-3-2025; banbury-ethical |\n| boundary_acceptance | intake | Retain every arriving lot and disposition. Only physical hair meeting actual buyer specifications with documented release enters Q; posting or payment is not acceptance. Record rejected returns separately. | banbury-selling |\n| boundary_upstream | intake | Document actual supplier cleaning, drying, cutting and transport services and attributable burdens; do not model human growth, assign an entire personal haircut, or default upstream burdens to zero. Clean/dry instructions do not provide energy or water quantities. | banbury-selling; lpt-donation-2025 |\n| boundary_complete | intake | A conditional flow is inapplicable only with evidence of physical absence; missing data or UUID never means zero. Add an atomic card for each actual additional substance, cleaner, water, drying carrier, waste and emission and reassess route applicability. Retain all burdens of failed lots and zero-output periods. |  |\n| boundary_packaging | intake | Apply the complete receipt/return ledger in boundary_packaging_interfaces separately to each band, envelope and container. Record physical quantities separately from burden inclusion; never omit first attached or loan receipts. Packaging does not enter Q, internal reuse creates no new purchase, and production burdens already inside the hair provider are not loaded again. |  |\n| boundary_origin_gate | intake | Link first securing/cutting records to source acquisition/voluntary authorization and applicable compliance evidence, seller lot, preserved root direction, cleaning/drying/cutting/transport burdens and the first accepted raw-material release event. Hair already previously released by a buyer as equivalent accepted raw material cannot generate new Q through reinspection, resale, repacking or repeated stock receipt. Quarantine lots without demonstrated first-gate provenance outside Q; do not disclose personal identities. | banbury-selling; banbury-ethical |\n| boundary_unreleased_carry | intake | Carry unreleased cohorts across periods with net hair quantity, moisture state and itemized inherited upstream and incurred foreground exchange vectors into next-period opening stock. Do not discard burdens or enter Q early. Attribute carried and additional burdens on eventual first release; on return transfer inherited vectors under allocation_inherited_returns while retaining attributable actual failed services. Closing unresolved stock is not allocated as produced output. |  |\n| boundary_packaging_interfaces | intake | For each article separately: opening empty/attached/borrowed stocks + new purchase receipts + first supplier-included receipts + first nonpurchase/loan receipts + genuine receipts of the same previously dispatched objects = closing stocks + accepted-hair dispatch + refused-hair returns + loan returns + other external dispatch + waste. Events are mutually exclusive and linked by object ID or evidenced lot correspondence; internal transfers cancel. At each interface record whether inherited burden is inside the hair provider, independently acquired or a loan service; load it once. Unknown material/ownership/burden interfaces remain unresolved, not zero-filled. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 335
+              line: 10
+              column: 1
+            end:
+              offset: 412
+              line: 10
+              column: 78
+          text: "# Natural-colour unworked cut ponytail hair: purchased-lot intake and release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5077
+              line: 59
+              column: 1
+            end:
+              offset: 5098
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21333"
+      family: "allocation"
+      span:
+        start:
+          offset: 21333
+          line: 354
+          column: 1
+        end:
+          offset: 22978
+          line: 363
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_services | intake | Prefer subdivision and direct measurement; allocate shared weighing, storage and transport using measured attributable drivers with time, load and complete denominators. Do not use sale proceeds or a zero donation price as environmental burden drivers. |  |\n| allocation_haircut | supplier | Subdivide common hair-material and haircut-service burdens first; attribute actual collection-specific services and evidenced shared portions with causal justification. Unjustified allocation remains unknown; do not assign an entire haircut or zero burden automatically. |  |\n| allocation_returns | intake | No saleable coproduct is presumed. Rejected returns, discarded hair, packaging and waste create neither additional Q nor avoided-disposal credit. Keep attributable collection, inspection and handling burdens of failures and returns in the same-cohort numerators. A real saleable coproduct requires further allocation and boundary review. |  |\n| allocation_inherited_returns | raw_hair; returned_hair | Physical arrival does not prove acquisition. Do not load another purchased-hair provider for unacquired temporarily held hair returned to its owner. For acquired hair subsequently returned, transfer its inherited upstream exchange vector with that physical return instead of also retaining it in the accepted-hair numerator. Actual intake, failed inspection and return-service burdens remain attributable by evidenced drivers. Keep the full physical ledger without avoided-disposal credits. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 335
+              line: 10
+              column: 1
+            end:
+              offset: 412
+              line: 10
+              column: 78
+          text: "# Natural-colour unworked cut ponytail hair: purchased-lot intake and release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21333
+              line: 354
+              column: 1
+            end:
+              offset: 21373
+              line: 354
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27777"
+      family: "validation"
+      span:
+        start:
+          offset: 27777
+          line: 389
+          column: 1
+        end:
+          offset: 28579
+          line: 397
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_scope | intake | Verify actual unworked incoming history; 38972 prepared hair/articles and donation data substituted for purchased-lot evidence fail applicability. | un-cpc-3-2025; lpt-donation-2025 |\n| validate_reference | reference_product | Link the unique product output reference_product at 1 kg; Q must be positive and include only first-accepted physical hair, excluding rejects and packaging. |  |\n| validate_completeness | all inventory rows | Verify each measured numerator, same-cohort Q, stock closure, gaps and conditional-flow existence evidence; retain unexplained differences, missing upstream and unresolved identities explicitly without claiming completeness or approval. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 335
+              line: 10
+              column: 1
+            end:
+              offset: 412
+              line: 10
+              column: 78
+          text: "# Natural-colour unworked cut ponytail hair: purchased-lot intake and release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27777
+              line: 389
+              column: 1
+            end:
+              offset: 27799
+              line: 389
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_unworked"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 6076
+          line: 74
+          column: 1
+        end:
+          offset: 6426
+          line: 74
+          column: 351
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_acceptance"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 6427
+          line: 75
+          column: 1
+        end:
+          offset: 6685
+          line: 75
+          column: 259
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 6686
+          line: 76
+          column: 1
+        end:
+          offset: 7020
+          line: 76
+          column: 335
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 7021
+          line: 77
+          column: 1
+        end:
+          offset: 7371
+          line: 77
+          column: 351
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 7372
+          line: 78
+          column: 1
+        end:
+          offset: 7782
+          line: 78
+          column: 411
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_origin_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 7783
+          line: 79
+          column: 1
+        end:
+          offset: 8378
+          line: 79
+          column: 596
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_unreleased_carry"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 8379
+          line: 80
+          column: 1
+        end:
+          offset: 8902
+          line: 80
+          column: 524
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_packaging_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 8903
+          line: 81
+          column: 1
+        end:
+          offset: 9617
+          line: 81
+          column: 715
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_services"
+      identity_kind: "explicit"
+      unit_id: "normative_21333"
+      source_span:
+        start:
+          offset: 21446
+          line: 358
+          column: 1
+        end:
+          offset: 21736
+          line: 358
+          column: 291
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_haircut"
+      identity_kind: "explicit"
+      unit_id: "normative_21333"
+      source_span:
+        start:
+          offset: 21737
+          line: 359
+          column: 1
+        end:
+          offset: 22046
+          line: 359
+          column: 310
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_21333"
+      source_span:
+        start:
+          offset: 22047
+          line: 360
+          column: 1
+        end:
+          offset: 22421
+          line: 360
+          column: 375
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_inherited_returns"
+      identity_kind: "explicit"
+      unit_id: "normative_21333"
+      source_span:
+        start:
+          offset: 22422
+          line: 361
+          column: 1
+        end:
+          offset: 22976
+          line: 361
+          column: 555
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_27777"
+      source_span:
+        start:
+          offset: 27872
+          line: 393
+          column: 1
+        end:
+          offset: 28083
+          line: 393
+          column: 212
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_27777"
+      source_span:
+        start:
+          offset: 28084
+          line: 394
+          column: 1
+        end:
+          offset: 28288
+          line: 394
+          column: 205
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_27777"
+      source_span:
+        start:
+          offset: 28289
+          line: 395
+          column: 1
+        end:
+          offset: 28577
+          line: 395
+          column: 289
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 5077
+          line: 59
+          column: 1
+        end:
+          offset: 5098
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5077"
+      source_span:
+        start:
+          offset: 5126
+          line: 63
+          column: 1
+        end:
+          offset: 6003
+          line: 70
+          column: 171
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21333"
+      source_span:
+        start:
+          offset: 21333
+          line: 354
+          column: 1
+        end:
+          offset: 21373
+          line: 354
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27777"
+      source_span:
+        start:
+          offset: 27777
+          line: 389
+          column: 1
+        end:
+          offset: 27799
+          line: 389
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8a47b7321780a21ecef16eb0161a0ec7674eda01a7076af137d6f2f63a6afd0d"
+  generated_content_sha256: "sha256:56bbd93ca6b8875141db6a5eb90a6ef900195e5446ae4d89b3025d1c25ce008b"

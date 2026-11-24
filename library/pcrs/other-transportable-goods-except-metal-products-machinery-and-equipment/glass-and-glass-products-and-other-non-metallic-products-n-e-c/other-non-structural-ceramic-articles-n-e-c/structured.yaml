@@ -1,10 +1,1230 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "37299"
-  title: "Other non-structural ceramic articles n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.other-non-structural-ceramic-articles-n-e-c"
+  classification_refs: "CPC:3.0:37299; narrower"
+  covered_products: "Glazed porcelain cabinet knob bodies from plastic forming"
+  excluded_products: "Other uses, objects and routes excluded in Section 1"
+  representative_product: "One accepted glazed porcelain cabinet knob body SKU"
+  production_route: "Purchased plastic body; moulding/trimming; drying; biscuit firing; clear glazing; glaze firing; finishing/testing/packing"
+  market_state: "Unassembled fired ceramic body, packed ex factory"
+functional_unit:
+  what: "Supply a ceramic cabinet gripping body for later attachment"
+  how_much: "1 kg"
+  how_well: "Declared drawing, hole geometry, fired dimensions, glaze coverage, crack/warpage and strength acceptance; thresholds supplied by actual specification"
+  how_long_or_cycle: "One manufacturing campaign; no installed service-life claim"
+  reference_flow_link: "finished_knob"
+system_boundary:
+  rules:
+    - rule_id: b_complete
+      applies_to: "manufacture"
+      rule: "Include every actual operation and failure through first acceptance and packing. Retain opening/closing raw and WIP stock with inherited burdens; closing accepted finished stock stays in Q. Reconcile campaign stock corrections once."
+      source_ids:
+        - jrc-ceramics-2007
+    - rule_id: b_extend
+      applies_to: "all exchanges"
+      rule: "Screen actual chemistry, safety sheets and discharge monitoring; add each actual unlisted reagent, fuel, packaging component, waste and species as its own card before dataset use. Absence needs evidence; missing measurement is not zero. Transport links retain actual supplier distance, mode and load."
+      source_ids:
+        - jrc-ceramics-2007
+boundary_abstraction:
+  declared_starting_condition: "Whole purchased plastic porcelain body and aqueous clear glaze at receipt"
+  starting_condition_role: "foreground_material_receipt"
+  product_classification_scope: "CPC:3.0:37299; narrower"
+  recursive_input_rule: "Internal unfired scrap return is a transfer, not a new purchase or credit; purchased finished knob bodies cannot substitute for manufacturing"
+  upstream_dataset_requirement: "Match whole body/glaze supplied state, moisture, supplier and preparation boundary; do not also purchase constituent minerals already included"
+  disclosure: "Foreground receipt-to-packed-body gate; cradle-to-gate only after compatible upstream material, utility, transport and treatment links"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Glazed porcelain cabinet knob body"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "SKU and drawing"
+    - "porcelain body and glaze supplier/formulation/moisture"
+    - "forming route"
+    - "each firing and atmosphere"
+    - "measured accepted net mass Q"
+    - "quality specification and tests"
+    - "campaign and site/period"
+    - "energy provider"
+    - "stocks and losses"
+    - packaging
+    - "boundary exclusions and unresolved identities"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted ceramic bodies with calibrated scales; Q excludes packaging and metal fittings and counts unique first acceptance once. Record moisture and grade; no count-to-mass assumption."
+  - id: native_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: "f6811440-ee37-11de-8a39-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Meter electricity separately from the supplier product identity. Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 uses MJ as reference and kWh factor 3.6: MJ = kWh × 3.6. Confirm actual supplier flow and its native property/unit before binding; mass-based supplier records do not change metered electricity into kg."
+  - id: gas_volume
+    applies_to: "gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Retain measured gas volume with temperature/pressure convention; native volume-property identity remains unconfirmed. Energy conversion requires matching supplier heating value and reference conditions."
+process_map:
+  - id: manufacture
+    name: "Glazed porcelain cabinet knob bodies from plastic forming"
+    inclusion: "required"
+    inclusion_condition: "Dedicated one-SKU campaign"
+    role: "Preparation through packing, including controls"
+    quantitative_reference: "finished_knob; Q"
+process_inventory:
+  - id: manufacture
+    label: "Glazed porcelain cabinet knob bodies from plastic forming"
+    inputs:
+      product:
+        - row_id: body
+          role: "Plastic porcelain body"
+          name: "Plastic porcelain body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: glaze
+          role: "Aqueous clear porcelain glaze"
+          name: "Aqueous clear porcelain glaze"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: water
+          role: "Liquid tap water"
+          name: "Liquid tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_material."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: electricity
+          role: "Electricity at plant meter"
+          name: "Electricity at plant meter"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / kWh"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_energy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: gas
+          role: "Natural gas at plant meter"
+          name: "Natural gas at plant meter"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_energy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: mould
+          role: "Gypsum forming mould"
+          name: "Gypsum forming mould"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record attributable service from actual purchase/stock/use/retirement records, not one whole new asset per kg. No fixed lifetime is assigned."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_asset."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_asset
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: setter
+          role: "Alumina kiln setter plate"
+          name: "Alumina kiln setter plate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record attributable service from actual purchase/stock/use/retirement records, not one whole new asset per kg. No fixed lifetime is assigned."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_asset."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_asset
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: carton
+          role: "Corrugated cardboard box"
+          name: "Corrugated cardboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual purchased corrugated cardboard boxes only; retain new-purchase mass separately from first non-purchase receipts and verified returns. Attribute actual consumption/service burden once using the complete stock/provenance bridge in cp_pack."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: film
+          role: "Polyethylene wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual purchased polyethylene film only; retain new-purchase mass separately from first non-purchase receipts and verified returns. Attribute actual consumption/service burden once using the complete stock/provenance bridge in cp_pack."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_pack."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: carton_first_receipt
+          role: "First non-purchase external receipt — Corrugated cardboard box"
+          name: "Corrugated cardboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual first non-purchase receipt, including incoming-material packaging, independent borrowing and gifts, whether or not the upstream provider included its burden. Record incoming provenance, ownership, state and inherited burden evidence; do not mislabel as a return."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: carton_return_received
+          role: "Verified return of this site’s earlier dispatch — Corrugated cardboard box"
+          name: "Corrugated cardboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual return traceable by item or documented cohort to this site’s earlier external dispatch. Match original shipment, quantity/state and new damage or additions. An unrelated loan or gift is a first receipt."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: film_first_receipt
+          role: "First non-purchase external receipt — Polyethylene wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual first non-purchase receipt, including incoming-material packaging, independent borrowing and gifts, whether or not the upstream provider included its burden. Record incoming provenance, ownership, state and inherited burden evidence; do not mislabel as a return."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: film_return_received
+          role: "Verified return of this site’s earlier dispatch — Polyethylene wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual return traceable by item or documented cohort to this site’s earlier external dispatch. Match original shipment, quantity/state and new damage or additions. An unrelated loan or gift is a first receipt."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_knob
+          role: "Glazed porcelain cabinet knob body"
+          name: "Glazed porcelain cabinet knob body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: carton_dispatch
+          role: "Gross external dispatch — Corrugated cardboard box"
+          name: "Corrugated cardboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the full actual outgoing material mass, including repeat shipments, separately from ceramic Q and purchase/service burdens."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: carton_return_out
+          role: "Return to external owner or supplier — Corrugated cardboard box"
+          name: "Corrugated cardboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the full actual physical material returned to the external owner or supplier; no automatic credit or reversal of an earlier dispatch amount."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: film_dispatch
+          role: "Gross external dispatch — Polyethylene wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the full actual outgoing material mass, including repeat shipments, separately from ceramic Q and purchase/service burdens."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: film_return_out
+          role: "Return to external owner or supplier — Polyethylene wrapping film"
+          name: "Polyethylene wrapping film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the full actual physical material returned to the external owner or supplier; no automatic credit or reversal of an earlier dispatch amount."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+      waste:
+        - row_id: green_scrap
+          role: "Unfired porcelain body scrap"
+          name: "Unfired porcelain body scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: fired_scrap
+          role: "Fired glazed porcelain rejects"
+          name: "Fired glazed porcelain rejects"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: sludge
+          role: "Porcelain glaze treatment sludge"
+          name: "Porcelain glaze treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: wastewater
+          role: "Porcelain processing wastewater"
+          name: "Porcelain processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: spent_mould
+          role: "Spent gypsum mould"
+          name: "Spent gypsum mould"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: spent_setter
+          role: "Spent alumina kiln setter plate"
+          name: "Spent alumina kiln setter plate"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this exchange only when present; preserve actual grade, state and destination."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: carton_waste
+          role: "Waste packaging transfer — Waste corrugated cardboard box"
+          name: "Waste corrugated cardboard box"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh this material separately at its actual waste destination; retain wet/dry state and treatment evidence."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: film_waste
+          role: "Waste packaging transfer — Waste polyethylene wrapping film"
+          name: "Waste polyethylene wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh this material separately at its actual waste destination; retain wet/dry state and treatment evidence."
+          amount:
+            expression: "Full measured gross quantity of this physical leg / Q; ledger-only, separate from attributed purchase/service burden."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+      elementary:
+        - row_id: co2_fuel
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: co2_body
+          role: "Carbon dioxide, mineral origin, to air"
+          name: "Carbon dioxide, mineral origin, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: water_air
+          role: "Water vapour to air"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: hf
+          role: "Hydrogen fluoride to air"
+          name: "Hydrogen fluoride to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: hcl
+          role: "Hydrogen chloride to air"
+          name: "Hydrogen chloride to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: no
+          role: "Nitrogen monoxide to air"
+          name: "Nitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+        - row_id: pm
+          role: "Particulate matter below 2.5 micrometres to air"
+          name: "Particulate matter below 2.5 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require independent species/origin and air-compartment evidence. Total NOx, total dust or a mass residual cannot identify this flow. Do not assert absence from a non-detect without its detection limit."
+          amount:
+            expression: "Use the final normalized result from Section 8; raw totals are retained by cp_emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - jrc-ceramics-2007
+            ranges: []
+allocation_rules:
+  - rule_id: a_campaign
+    applies_to: "manufacture"
+    rule: "Use a dedicated single-SKU campaign with all attributable drying/firing, rejects, idle and controls. Submeter and segregate other production before assigning loads. Unresolved shared kiln causality blocks a unit dataset; neither mass nor price is a default allocation key."
+    source_ids:
+      - jrc-ceramics-2007
+  - rule_id: a_recycle
+    applies_to: "scrap"
+    rule: "Internal recycle carries its real collection and reprocessing burdens; cancel internal transfers once. External rejects remain waste unless an independently documented product function and allocation decision exist. No avoided virgin-body credit."
+    source_ids:
+      - jrc-ceramics-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "manufacture"
+      flow_role: "accepted output"
+      record_type: "foreground_record"
+      raw_fields: "release_id; SKU; accepted net mass Q; moisture; rejects; opening and closing stocks"
+      collection_method: "Calibrated net weighing and signed first-release inspection; exclude packing/fittings"
+      unit: "kg"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+    - protocol_id: cp_material
+      process_id: "manufacture"
+      flow_role: "materials"
+      record_type: "foreground_record"
+      raw_fields: "receipt; issue; return; wet mass; moisture; assay; raw/WIP stocks; inherited burdens"
+      collection_method: "Weigh each whole purchased formulation; reconcile issues, returns, stocks and internal recycling"
+      unit: "kg"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+    - protocol_id: cp_energy
+      process_id: "manufacture"
+      flow_role: "energy"
+      record_type: "foreground_record"
+      raw_fields: "meter start/end; cycles; idle; temperature; pressure; supplier; heating value"
+      collection_method: "Dedicated meter readings for all actual cycles and auxiliaries; preserve native units"
+      unit: "kWh; m3"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+    - protocol_id: cp_asset
+      process_id: "manufacture"
+      flow_role: "asset service"
+      record_type: "foreground_record"
+      raw_fields: "asset id; opening/closing stock; additions; uses; retirement; service evidence"
+      collection_method: "Trace mould/setter actual cohort service without a default life; physical stock separate from attributed service"
+      unit: "kg"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+    - protocol_id: cp_pack
+      process_id: "manufacture"
+      flow_role: "packaging"
+      record_type: "foreground_record"
+      raw_fields: "material; item/cohort; ownership; true purchases; first non-purchase receipts with origin; traceable returned items and original outbound IDs; opening/closing empty/WIP/finished/reusable stocks; dispatch; owner/supplier returns; waste; inherited burden coverage; repair and water changes"
+      collection_method: "Weigh each material/leg. Opening stock + purchases + all first non-purchase external receipts + verified returns + measured actual additions = closing stock + gross dispatch + owner/supplier returns + waste + separately measured actual removals. First receipts include incoming supplies, independent loans and gifts regardless of upstream burden coverage. Internal reuse cancels once. Record repair additions/removals and water changes separately when present; avoid double counting wet mass. Gross physical legs are ledger-only. Attribute actual purchase/service and inherited burdens once by provenance; upstream-uncovered receipts are not automatically burden-free, and upstream-included supply is not purchased twice. Missing provenance or attribution evidence blocks its dataset use."
+      unit: "kg"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+    - protocol_id: cp_waste
+      process_id: "manufacture"
+      flow_role: "waste"
+      record_type: "foreground_record"
+      raw_fields: "stream; wet mass; moisture; composition; destination; transfer receipt"
+      collection_method: "Weigh each segregated waste and wastewater shipment or metered discharge; treatment burdens linked once"
+      unit: "kg"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+    - protocol_id: cp_emission
+      process_id: "manufacture"
+      flow_role: "species"
+      record_type: "foreground_record"
+      raw_fields: "species; origin; compartment; concentration; gas flow; time; state; detection limit; uncertainty"
+      collection_method: "Integrate representative independent stack assays and matched gas-flow/time records; identify dust size and sources; analyse body/glaze volatile releases"
+      unit: "kg"
+      frequency: "Each batch/cycle"
+      temporal_coverage: "Complete declared campaign, including failures and idle"
+      site_scope: "One site, one SKU"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; source records; stock reconciliation; uncertainty"
+  calculation_rules:
+    - id: calc_campaign
+      applies_to: "all inventory rows"
+      rule: "For each non-reference exchange i, q_i = A_i / Q. A_i is its campaign-attributable extensive quantity after one documented raw/WIP inherited-burden stock adjustment; do not repeat a correction already in consumption records. Q is measured unique accepted net kg. Keep Q = 0 loads in investigation records and issue no quotient. Reference output is 1 kg. For packaging ledger-only physical legs, A_i is instead the full measured gross mass of that leg, without inherited-burden stock adjustment, economic allocation, duplicate purchase or automatic credit; report A_i/Q separately from attributed purchase/service burdens."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+      output: "q_i"
+      source_ids:
+        - jrc-ceramics-2007
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all rows"
+      requirement: "Confirm each UUID, supplied state and unit independently; blank UUIDs cannot be substituted by generic ceramic, pure oxide or aggregate gas flows."
+      evidence: "Direct identity record; supplier specification"
+    - id: dq_balance
+      applies_to: "campaign"
+      requirement: "Reconcile physical dry solids and water separately through raw/WIP/finished stocks, scrap, effluent and actual air emissions. Firing shrinkage does not determine gas species or reaction loss."
+      evidence: "Independent assays and measured uncertainty"
+    - id: dq_quality
+      applies_to: "accepted output"
+      requirement: "Retain drawing-based dimensional/hole, glaze coverage, crack/warpage and mechanical acceptance results; no invented universal threshold. Disclose gaps and failed batches."
+      evidence: "Specification; signed quality release"
+validation_rules:
+  - rule_id: v_scope
+    applies_to: "reference"
+    rule: "Require cabinet fitting use, porcelain body and specified forming/firing route, no included metal assembly; technical or refractory products fail applicability."
+    source_ids:
+      - unsd-cpc3-2025
+      - us2197a-knobs-1841
+  - rule_id: v_basis
+    applies_to: "all rows"
+    rule: "Check identical per-kg basis, positive Q, undivided raw totals, stock adjustments once, actual quality release and actual energy cycles. Missing species or identities remain explicit; a successful engineering check proves no plant data or scientific approval."
+    source_ids:
+      - jrc-ceramics-2007
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Grade-specific ceramic-body input to later furniture fitting assembly"
+  allowed_use: "Only after identity confirmation, actual campaign collection and independent applicability review"
+  excluded_use: "Installed locksets, service equivalence, complete CPC leaf, technical ceramics or claims of safety/compliance"
+  required_metadata: "SKU and drawing; porcelain body and glaze supplier/formulation/moisture; forming route; each firing and atmosphere; measured accepted net mass Q; quality specification and tests; campaign and site/period; energy provider; stocks and losses; packaging; boundary exclusions and unresolved identities"
+  required_quality_disclosure: "All missing identities, data gaps, proxy/upstream boundaries, uncertainty, campaign coverage and review status"
+  update_trigger: "Body/glaze, use, forming/firing, energy provider, quality or boundary change"
+data_sources:
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC 3.0 explanatory notes, 30 June 2025, pp. 182–183; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Residual category and neighbouring positive categories; no itemized CPC3–HS concordance claimed."
+  - id: "us2197a-knobs-1841"
+    type: "literature"
+    reference: "US2197A, 29 July 1841, description and drawing; https://patents.google.com/patent/US2197A/en"
+    used_for: "Historical primary evidence of clay/porcelain furniture knobs and moulding, turning, burning, glazing; not a modern recipe or measured inventory. Metal attachment is downstream of this ceramic-body boundary."
+  - id: "jrc-ceramics-2007"
+    type: "official_guidance"
+    reference: "European Commission, Ceramic Manufacturing Industry BREF, August 2007, sections 2.2 and 2.3.6.3–2.3.6.5; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/cer_bref_0807.pdf"
+    used_for: "Qualitative plastic shaping, drying, glazing, firing, finishing and environmental exchange screening. Household-sector examples transfer as process analogues only; no temperature, yield, mould life, intensity or emission range adopted."
+  - id: "cbp-n014163-2007"
+    type: "official_guidance"
+    reference: "US CBP, NY N014163, 20 July 2007; https://rulings.cbp.gov/ruling/N014163 ; original text https://rulings.cbp.gov/api/ruling/N014163"
+    used_for: "Independent product/category countercheck: porcelain cabinet knobs classified under other ceramic articles. Historical US tariff decision is not current CPC acceptance or a ruling on this unassembled body. No tariff rate or sample dimension adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:babdb084b92e82891d2eff85fc73336c243abf6261b4ff36bec7dd634d4ca3e2"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5426"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5426
+          line: 59
+          column: 1
+        end:
+          offset: 6944
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole purchased plastic porcelain body and aqueous clear glaze at receipt |\n| starting_condition_role | foreground_material_receipt |\n| product_classification_scope | CPC:3.0:37299; narrower |\n| recursive_input_rule | Internal unfired scrap return is a transfer, not a new purchase or credit; purchased finished knob bodies cannot substitute for manufacturing |\n| upstream_dataset_requirement | Match whole body/glaze supplied state, moisture, supplier and preparation boundary; do not also purchase constituent minerals already included |\n| disclosure | Foreground receipt-to-packed-body gate; cradle-to-gate only after compatible upstream material, utility, transport and treatment links |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_complete | manufacture | Include every actual operation and failure through first acceptance and packing. Retain opening/closing raw and WIP stock with inherited burdens; closing accepted finished stock stays in Q. Reconcile campaign stock corrections once. | `jrc-ceramics-2007` |\n| b_extend | all exchanges | Screen actual chemistry, safety sheets and discharge monitoring; add each actual unlisted reagent, fuel, packaging component, waste and species as its own card before dataset use. Absence needs evidence; missing measurement is not zero. Transport links retain actual supplier distance, mode and load. | `jrc-ceramics-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 258
+              line: 8
+              column: 1
+            end:
+              offset: 317
+              line: 8
+              column: 60
+          text: "# Glazed porcelain cabinet knob bodies from plastic forming"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5426
+              line: 59
+              column: 1
+            end:
+              offset: 5447
+              line: 59
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_33572"
+      family: "allocation"
+      span:
+        start:
+          offset: 33572
+          line: 645
+          column: 1
+        end:
+          offset: 34305
+          line: 652
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_campaign | manufacture | Use a dedicated single-SKU campaign with all attributable drying/firing, rejects, idle and controls. Submeter and segregate other production before assigning loads. Unresolved shared kiln causality blocks a unit dataset; neither mass nor price is a default allocation key. | `jrc-ceramics-2007` |\n| a_recycle | scrap | Internal recycle carries its real collection and reprocessing burdens; cancel internal transfers once. External rejects remain waste unless an independently documented product function and allocation decision exist. No avoided virgin-body credit. | `jrc-ceramics-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 258
+              line: 8
+              column: 1
+            end:
+              offset: 317
+              line: 8
+              column: 60
+          text: "# Glazed porcelain cabinet knob bodies from plastic forming"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 33572
+              line: 645
+              column: 1
+            end:
+              offset: 33612
+              line: 645
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40372"
+      family: "validation"
+      span:
+        start:
+          offset: 40372
+          line: 680
+          column: 1
+        end:
+          offset: 41003
+          line: 687
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | reference | Require cabinet fitting use, porcelain body and specified forming/firing route, no included metal assembly; technical or refractory products fail applicability. | `unsd-cpc3-2025`; `us2197a-knobs-1841` |\n| v_basis | all rows | Check identical per-kg basis, positive Q, undivided raw totals, stock adjustments once, actual quality release and actual energy cycles. Missing species or identities remain explicit; a successful engineering check proves no plant data or scientific approval. | `jrc-ceramics-2007` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 258
+              line: 8
+              column: 1
+            end:
+              offset: 317
+              line: 8
+              column: 60
+          text: "# Glazed porcelain cabinet knob bodies from plastic forming"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40372
+              line: 680
+              column: 1
+            end:
+              offset: 40394
+              line: 680
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5426"
+      source_span:
+        start:
+          offset: 6303
+          line: 74
+          column: 1
+        end:
+          offset: 6588
+          line: 74
+          column: 286
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_extend"
+      identity_kind: "explicit"
+      unit_id: "normative_5426"
+      source_span:
+        start:
+          offset: 6589
+          line: 75
+          column: 1
+        end:
+          offset: 6942
+          line: 75
+          column: 354
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_campaign"
+      identity_kind: "explicit"
+      unit_id: "normative_33572"
+      source_span:
+        start:
+          offset: 33685
+          line: 649
+          column: 1
+        end:
+          offset: 34010
+          line: 649
+          column: 326
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_33572"
+      source_span:
+        start:
+          offset: 34011
+          line: 650
+          column: 1
+        end:
+          offset: 34303
+          line: 650
+          column: 293
+    - pointer: "/validation_rules/0"
+      rule_id: "v_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_40372"
+      source_span:
+        start:
+          offset: 40467
+          line: 684
+          column: 1
+        end:
+          offset: 40694
+          line: 684
+          column: 228
+    - pointer: "/validation_rules/1"
+      rule_id: "v_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_40372"
+      source_span:
+        start:
+          offset: 40695
+          line: 685
+          column: 1
+        end:
+          offset: 41001
+          line: 685
+          column: 307
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5426"
+      source_span:
+        start:
+          offset: 5426
+          line: 59
+          column: 1
+        end:
+          offset: 5447
+          line: 59
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5426"
+      source_span:
+        start:
+          offset: 5475
+          line: 63
+          column: 1
+        end:
+          offset: 6230
+          line: 70
+          column: 152
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_33572"
+      source_span:
+        start:
+          offset: 33572
+          line: 645
+          column: 1
+        end:
+          offset: 33612
+          line: 645
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40372"
+      source_span:
+        start:
+          offset: 40372
+          line: 680
+          column: 1
+        end:
+          offset: 40394
+          line: 680
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:babdb084b92e82891d2eff85fc73336c243abf6261b4ff36bec7dd634d4ca3e2"
+  generated_content_sha256: "sha256:b8d14e21665bf377df8aa5513346a47f29edc8f0dd01fe5a169898873c2950b8"

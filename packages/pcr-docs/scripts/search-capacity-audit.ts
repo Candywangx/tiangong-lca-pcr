@@ -1,10 +1,11 @@
+import {decodeBrotliSearchPack} from "./search-brotli.ts";
 /** Compare transports over exact captured logical wires, including over-budget baseline diagnostics. */
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
 import {createHash} from "node:crypto";
 import {gzipSync} from "node:zlib";
-import {packSearchShards,unpackSearchFile,readSearchManifest,SEARCH_RAW_LIMIT,SEARCH_GZIP_LIMIT,type SearchManifest,type SearchPhysicalFile} from "../lib/search-pack.ts";
+import {packSearchShards,unpackSearchFile,readSearchManifest,SEARCH_RAW_LIMIT,SEARCH_GZIP_LIMIT,SEARCH_PACK_MEMBERS,SEARCH_COMPACT_PACK_MEMBERS,type SearchManifest,type SearchPhysicalFile} from "../lib/search-pack.ts";
 import {decodeSearchEntries} from "../lib/search-wire.ts";
 import {isUnknownRecord} from "../../pcr-core/src/types.ts";
 import {escapeSearchDictionary} from "./search-layout.ts";
@@ -18,7 +19,7 @@ const reports=[];
 for(const language of ["en-US","zh-CN"]){
  const manifestBytes=fs.readFileSync(path.join(source,language,"manifest.json"));
  const raw:unknown=JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(manifestBytes));
- assert.ok(isUnknownRecord(raw)&&(raw.schemaVersion===5||raw.schemaVersion===6||raw.schemaVersion===7||raw.schemaVersion===8));
+ assert.ok(isUnknownRecord(raw)&&(raw.schemaVersion===5||raw.schemaVersion===6||raw.schemaVersion===7||raw.schemaVersion===8||raw.schemaVersion===9||raw.schemaVersion===10||raw.schemaVersion===11||raw.schemaVersion===12));
  assert.equal(raw.language,language);assert.ok(typeof raw.sourceCommit==="string"&&/^[0-9a-f]{40}$/.test(raw.sourceCommit));
  assert.ok(!Object.hasOwn(raw,"shards")&&!Object.hasOwn(raw,"termDictionary")&&Array.isArray(raw.files));
  // Baseline budgets intentionally may fail. Each actual physical/logical identity is still verified below.
@@ -27,24 +28,31 @@ for(const language of ["en-US","zh-CN"]){
  const files:SearchPhysicalFile[]=[],wires:string[]=[],nativeHashes:string[]=[],recordHashes:string[]=[],physical=[];
  const urls=new Set<string>();
  for(const file of manifest.files){
-  assert.equal(file.firstLogicalShard,next);assert.ok(file.logicalShardCount>0&&file.logicalShardCount<=16&&file.logicalShards.length===file.logicalShardCount);
+  assert.equal(file.firstLogicalShard,next);assert.ok(file.logicalShardCount>0&&file.logicalShardCount<=(manifest.schemaVersion===12?SEARCH_COMPACT_PACK_MEMBERS:SEARCH_PACK_MEMBERS)&&file.logicalShards.length===file.logicalShardCount);
   assert.ok(new RegExp(`^/generated/search/${language}/[A-Za-z0-9-]+\\.json$`).test(file.url)&&!urls.has(file.url));urls.add(file.url);
   const original=fs.readFileSync(path.join(source,language,path.basename(file.url)));
   assert.equal(file.gzipBytes,gzip(original));
-  const restored=await unpackSearchFile(manifest,file,original,hash),logical=restored.map(value=>JSON.stringify(value));
+  const restored=await unpackSearchFile(manifest,file,original,hash,decodeBrotliSearchPack),logical=restored.map(value=>JSON.stringify(value));
   for(const shard of restored){
    const native=decodeSearchEntries(shard.entries,shard.sparseMaps,4,shard.scoreMasks,shard.postingDeltas,shard.columnarMaps,shard.joinedTerms,undefined,shard.dictionaryTerms);
    nativeHashes.push(hash(JSON.stringify(native)));recordHashes.push(hash(JSON.stringify(shard.records)));
   }
-  const canonical=packSearchShards(logical,manifest.sourceCommit,language,next,8),escaped=escapeSearchDictionary(canonical);
-  const candidate=Buffer.from(Buffer.byteLength(escaped)<=SEARCH_RAW_LIMIT&&gzip(escaped)<gzip(canonical)?escaped:canonical);
-  const descriptor={...file,bytes:candidate.length,gzipBytes:gzip(candidate),sha256:hash(candidate)};
-  assert.deepEqual((await unpackSearchFile({...manifest,schemaVersion:8},descriptor,candidate,hash)).map(value=>JSON.stringify(value)),logical);
-  const directory=path.join(destination,"generated/search",language);fs.mkdirSync(directory,{recursive:true});
-  fs.writeFileSync(path.join(directory,path.basename(file.url)),candidate);
-  physical.push({url:file.url,baseline:{bytes:original.length,gzipBytes:file.gzipBytes,sha256:hash(original)},candidate:{bytes:candidate.length,gzipBytes:descriptor.gzipBytes,sha256:descriptor.sha256},logicalShards:file.logicalShards});
-  wires.push(...logical);files.push(descriptor);next+=file.logicalShardCount;records+=file.records;
-  baselineRaw+=original.length;baselineGzip+=file.gzipBytes;candidateRaw+=candidate.length;candidateGzip+=descriptor.gzipBytes;
+  const candidates=[];
+  for(let offset=0;offset<logical.length;offset+=SEARCH_PACK_MEMBERS){
+   const group=logical.slice(offset,offset+SEARCH_PACK_MEMBERS),logicalShards=file.logicalShards.slice(offset,offset+SEARCH_PACK_MEMBERS);
+   const canonical=packSearchShards(group,manifest.sourceCommit,language,next+offset,8),escaped=escapeSearchDictionary(canonical);
+   const candidate=Buffer.from(Buffer.byteLength(escaped)<=SEARCH_RAW_LIMIT&&gzip(escaped)<gzip(canonical)?escaped:canonical);
+   const descriptor={...file,url:logical.length<=SEARCH_PACK_MEMBERS?file.url:file.url.replace(".json","-"+offset+".json"),firstLogicalShard:next+offset,logicalShardCount:group.length,
+    records:logicalShards.reduce((sum,shard)=>sum+shard.records,0),logicalShards,bytes:candidate.length,gzipBytes:gzip(candidate),sha256:hash(candidate)};
+   assert.deepEqual((await unpackSearchFile({...manifest,schemaVersion:8},descriptor,candidate,hash)).map(value=>JSON.stringify(value)),group);
+   const directory=path.join(destination,"generated/search",language);fs.mkdirSync(directory,{recursive:true});
+   fs.writeFileSync(path.join(directory,path.basename(descriptor.url)),candidate);
+   candidates.push(descriptor);files.push(descriptor);
+   candidateRaw+=descriptor.bytes;candidateGzip+=descriptor.gzipBytes;
+  }
+  physical.push({url:file.url,baseline:{bytes:original.length,gzipBytes:file.gzipBytes,sha256:hash(original)},...(candidates.length===1?{candidate:{bytes:candidates[0]!.bytes,gzipBytes:candidates[0]!.gzipBytes,sha256:candidates[0]!.sha256}}:{candidates}),logicalShards:file.logicalShards});
+  wires.push(...logical);next+=file.logicalShardCount;records+=file.records;
+  baselineRaw+=original.length;baselineGzip+=file.gzipBytes;
  }
  assert.equal(next,manifest.logicalShardCount);
  const candidateManifest={...manifest,schemaVersion:8,files};

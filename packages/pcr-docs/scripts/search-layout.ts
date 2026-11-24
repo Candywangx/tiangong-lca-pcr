@@ -1,10 +1,12 @@
+import {encodeBrotliSearchPack} from './search-brotli.ts';
+import {SearchChannelCapacityError} from '../lib/search-arithmetic.ts';
 /** Node-only physical layout selection; logical search wires and browser readers are unchanged. */
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {isUnknownRecord} from '../../pcr-core/src/types.ts';
-import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchPhysicalFile} from '../lib/search-pack.ts';
+import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_COMPACT_PACK_MEMBERS,SEARCH_RAW_LIMIT,SEARCH_GZIP_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchManifestV10,type SearchManifestV11,type SearchManifestV12,type SearchPhysicalFile} from '../lib/search-pack.ts';
 interface Transport {payload:string;bytes:number;gzipBytes:number;sha256:string}
-export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
+export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9|SearchManifestV10|SearchManifestV11|SearchManifestV12;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
 const hash=(text:string)=>'sha256:'+createHash('sha256').update(text).digest('hex');
 const gzip=(text:string)=>gzipSync(text,{level:9}).length;
 const transport=(payload:string):Transport=>({payload,bytes:Buffer.byteLength(payload),gzipBytes:gzip(payload),sha256:hash(payload)});
@@ -18,7 +20,7 @@ export function escapeSearchDictionary(payload:string):string{
   return payload.slice(0,at)+'"dictionary":'+escaped+payload.slice(at+key.length);
 }
 /** Keep a bounded beam near balanced cuts plus the complete original greedy layout. */
-function planVersion(wires:readonly string[],sourceCommit:string,language:string,version:7|8):SearchLayout|undefined{
+function planVersion(wires:readonly string[],sourceCommit:string,language:string,version:7|8|9):SearchLayout|undefined{
   if(!/^[a-f0-9]{40}$/.test(sourceCommit))throw Error('Invalid search source commit');
   const identities=wires.map(wire=>{
     const value:unknown=JSON.parse(wire);
@@ -40,7 +42,7 @@ function planVersion(wires:readonly string[],sourceCommit:string,language:string
       const descriptor:SearchPhysicalFile={url:`/generated/search/${encodeURIComponent(language)}/pack-${String(index).padStart(3,'0')}.json`,bytes:packed.bytes,gzipBytes:packed.gzipBytes,sha256:packed.sha256,firstLogicalShard:start,logicalShardCount:end-start,records:logicalShards.reduce((sum,v)=>sum+v.records,0),logicalShards};
       start=end;return {payload:packed.payload,descriptor};
     });
-    const manifest:SearchManifestV7|SearchManifestV8={schemaVersion:version,sourceCommit,language,logicalShardCount:wires.length,files:files.map(f=>f.descriptor)},manifestText=JSON.stringify(manifest);
+    const manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9={schemaVersion:version,sourceCommit,language,logicalShardCount:wires.length,files:files.map(f=>f.descriptor)},manifestText=JSON.stringify(manifest);
     return {manifest,manifestText,files,rawBytes:Buffer.byteLength(manifestText)+files.reduce((n,f)=>n+f.descriptor.bytes,0),gzipBytes:gzip(manifestText)+files.reduce((n,f)=>n+f.descriptor.gzipBytes,0)};
   }
   const count=Math.ceil(wires.length/SEARCH_PACK_MEMBERS),greedy=Array.from({length:count},(_,i)=>Math.min((i+1)*SEARCH_PACK_MEMBERS,wires.length));
@@ -63,10 +65,74 @@ function planVersion(wires:readonly string[],sourceCommit:string,language:string
   bounded.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
   return bounded[0];
 }
-/** Compare complete v7/v8 manifests; an eligible original v7 layout remains available. */
+function envelopeLayout(version: 10 | 11 | 12, baseline: SearchLayout, files: SearchLayout['files']): SearchLayout {
+  const manifest = {...baseline.manifest, schemaVersion: version, files: files.map(file => file.descriptor)};
+  const manifestText = JSON.stringify(manifest);
+  return {manifest, manifestText, files,
+    rawBytes: Buffer.byteLength(manifestText) + files.reduce((n, f) => n + f.descriptor.bytes, 0),
+    gzipBytes: gzip(manifestText) + files.reduce((n, f) => n + f.descriptor.gzipBytes, 0)};
+}
+/** Try the context profile only when the older transports exceed the language budget. */
+function contextLayout(wires: readonly string[], baseline: SearchLayout, ends: readonly number[], compact = false): SearchLayout | undefined {
+  const {sourceCommit, language} = baseline.manifest;
+  const identities = baseline.manifest.files.flatMap(file => file.logicalShards);
+  const files: SearchLayout['files'] = [];
+  let start = 0;
+  for (const end of ends) {
+    const group = wires.slice(start, end);
+    const logicalShards = identities.slice(start, start + group.length);
+    if (logicalShards.reduce((sum, shard) => sum + shard.wireBytes, 0) > SEARCH_RAW_LIMIT) return;
+    const inner = packSearchShards(group, sourceCommit, language, start, 8, compact);
+    if (Buffer.byteLength(inner) > SEARCH_RAW_LIMIT) return;
+    let payload: string;
+    try { payload = encodeBrotliSearchPack(inner, 8, true, compact); }
+    catch (error) { if (error instanceof SearchChannelCapacityError) return; throw error; }
+    const packed = transport(payload);
+    if (packed.bytes > SEARCH_RAW_LIMIT) return;
+    files.push({payload, descriptor: {
+      url: `/generated/search/${encodeURIComponent(language)}/pack-${String(files.length).padStart(3, '0')}.json`,
+      bytes: packed.bytes, gzipBytes: packed.gzipBytes, sha256: packed.sha256,
+      firstLogicalShard: start, logicalShardCount: group.length, logicalShards,
+      records: logicalShards.reduce((sum, shard) => sum + shard.records, 0),
+    }});
+    start = end;
+  }
+  return envelopeLayout(compact ? 12 : 11, baseline, files);
+}
+/** Compare complete v7/v8/v9 manifests; an eligible original v7 layout remains available. */
 export function planSearchPacks(wires:readonly string[],sourceCommit:string,language:string):SearchLayout{
-  const candidates=([7,8] as const).map(version=>planVersion(wires,sourceCommit,language,version)).filter((candidate):candidate is SearchLayout=>candidate!==undefined);
+  const candidates=([7,8,9] as const).map(version=>{try{return planVersion(wires,sourceCommit,language,version);}catch(error){if(version===9&&error instanceof SearchChannelCapacityError)return undefined;throw error;}}).filter((candidate):candidate is SearchLayout=>candidate!==undefined);
   if(!candidates.length)throw Error('No search layout satisfies the physical and restored-wire limits');
   candidates.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
-  return candidates[0]!;
+  const original=candidates[0]!;
+  // Compress only the chosen original layout: no change to buckets, ownership or logical bytes.
+  const files=original.files.map(file=>{
+    const packed=transport(encodeBrotliSearchPack(file.payload,original.manifest.schemaVersion as 7|8|9));
+    return {payload:packed.payload,descriptor:{...file.descriptor,bytes:packed.bytes,gzipBytes:packed.gzipBytes,sha256:packed.sha256}};
+  });
+  const candidate = envelopeLayout(10, original, files);
+  const baseline = candidate.rawBytes <= SEARCH_RAW_LIMIT && candidate.gzipBytes < original.gzipBytes ? candidate : original;
+  if (baseline.rawBytes <= SEARCH_RAW_LIMIT && baseline.gzipBytes <= SEARCH_GZIP_LIMIT) return baseline;
+  const endsFor = (width: number) => Array.from({length: Math.ceil(wires.length / width)}, (_, i) =>
+    Math.min((i + 1) * width, wires.length));
+  let selected = baseline;
+  const consider = (candidate: SearchLayout | undefined) => {
+    if (candidate && candidate.rawBytes <= SEARCH_RAW_LIMIT &&
+        (selected.rawBytes > SEARCH_RAW_LIMIT || candidate.gzipBytes < selected.gzipBytes)) selected = candidate;
+  };
+  consider(contextLayout(wires, baseline, endsFor(SEARCH_PACK_MEMBERS)));
+  if (selected.rawBytes <= SEARCH_RAW_LIMIT && selected.gzipBytes <= SEARCH_GZIP_LIMIT) return selected;
+  // Larger physical groups still charge each exact restored wire against the same byte limit.
+  // Try a bounded set of cuts to account for variation in logical shard sizes and vocabulary.
+  const compactCount = Math.ceil(wires.length / SEARCH_COMPACT_PACK_MEMBERS);
+  const cuts = [endsFor(48), endsFor(SEARCH_COMPACT_PACK_MEMBERS),
+    Array.from({length:compactCount}, (_, i) => Math.floor((i + 1) * wires.length / compactCount))];
+  const seen = new Set<string>();
+  for (const ends of cuts) {
+    const key = ends.join(",");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    consider(contextLayout(wires, baseline, ends, true));
+  }
+  return selected;
 }

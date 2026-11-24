@@ -1,10 +1,1481 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39340"
-  title: "Ferrous waste and scrap"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.ferrous-waste-and-scrap"
+  classification_refs: "CPC 3.0:39340, segregated HC340LA sheet offcut bales under the maintained narrower classification decision"
+  covered_products: "One segregated uncoated HC340LA cold-stamping offcut stream; mechanically sheared when necessary and hydraulically baled; accepted as low-alloy steel feed"
+  excluded_products: "Mixed ferrous families; stainless/cast iron; coated/electrical sheet; oily sludge or contaminated scrap; turnings/borings and their briquettes; oxide scale/slag; remelted ingots; loose scrap delivery; purchased finished bales repacking; treatment-service reference"
+  representative_product: "One declared HC340LA stamping-offcut bale specification; no universal bale density or impurity limit"
+  production_route: "Burdened whole sheet receipt → cold blanking/piercing/forming and co-output separation → segregated collection/inspection → necessary mechanical shear → hydraulic baling → first receiver-grade release → cohort-linked storage/handling/road supply and actual steelworks receipt"
+  market_state: "Unmelted metallic HC340LA offcuts in declared bales; measured net as-released mass with actual accepted surface state, excluding strapping/seals/containers"
+functional_unit:
+  what: "Supply segregated metallic bales qualified for the declared steelworks with attributable supply services"
+  how_much: "1 kg first-released net feed with cohort-linked services to receiving gate; not a net-delivered-kg equivalence"
+  how_well: "Actual HC340LA origin and agreed bale/contamination/receiver tests passed"
+  how_long_or_cycle: "One traceable first-release cohort and disclosed supply-service history; no assumed melting yield/lifetime"
+  reference_flow_link: "finished_bale"
+system_boundary:
+  rules:
+    - rule_id: b_route
+      applies_to: "complete scoped route"
+      rule: "Include source sheet receipt and upstream steel formation burden, original cold-stamping formation and full co-output, segregated collection, necessary shear/baling, QA and all attributable supply services through the steelworks receiving gate. The named sources support compatible unit operations; this is a transparent technical synthesis, not a claim that one SKU/factory/order demonstrates every operation. AHSS sources supply qualitative recording/lubrication concepts only; their loads/settings do not transfer to this conventional HSLA grade."
+      source_ids:
+        - voestalpine-hsla-2024
+        - was-quality-control
+        - was-lubrication
+        - rema-ferrous-2026
+        - jrc-ilcd-2010
+    - rule_id: b_grade
+      applies_to: "whole product and receiver"
+      rule: "Use one actually certified HC340LA heat stream and agreed receiver specification. Source-sheet chemical maxima/minima are not the lot assay or fractions to add as purchases. No automatic ReMA 207/208/234/235 certification: alloy-free clauses and consumer-specific dimensions differ. Independently observe oil/moisture/rust, other metals, non-metal inclusions and hazardous contamination before acceptance. Thermal cutting, de-oiling, chemical washing of scrap, melting, blending with other grades or turnings requires a reviewed different route."
+      source_ids:
+        - voestalpine-hsla-2024
+        - rema-ferrous-2026
+    - rule_id: b_first_q
+      applies_to: "finished_bale"
+      rule: "Fix the first receiver-grade quality-release gate at the preparation facility. Q_c is newly first-released net qualifying steel-feed mass in cohort c, excluding every package and previous release. Accepted closing FG from c already belongs to Q_c; never add it again. Storage, dispatch, steelworks reception and repeat tests create no production. Reverse an invalid first release only with that lot and its whole vector; a corrected repeat release restores previously reversed eligible mass to its original cohort, never new current Q."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: b_wip
+      applies_to: "all inventory rows"
+      rule: "Retain failed and zero-output batches, start/stop, idle, cleanup and real rework. Every opening/closing WIP lot carries physical quantity/state and a complete per-exchange inherited vector covering materials, utilities, emissions, waste and services. Transfer the vector with the lot. A_jc is current allocated raw load plus opening-WIP vectors entering c minus closing-WIP vectors retained, with failure loads conserved. Do not deduct closing accepted FG production burden again. Old accepted FG sent to rework transfers its original vector in and out once; assign only real incremental rework to its original cohort."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: b_services
+      applies_to: "cohort services to steelworks gate"
+      rule: "Keep post-release storage, packaging/repacking, handling, dispatch, actual transport, reception tests, external returns and incremental rework in disjoint H_jc ledgers linked to original Q_c. H is a service load, never a production denominator. Record gross shipments, steelworks accepted mass, rejects and return/reversal of original deliveries. Customer return reverses its original delivery leg with history retained; it does not erase original production or manufacture new Q. Unserved FG and unfinished cohort services remain disclosed; a partial service history is not complete delivered-gate evidence."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: b_physical
+      applies_to: "manufacturing FG and consolidated gates"
+      rule: "Use the same physical interfaces in all balances. Manufacturing: opening raw/fluid/empty-package stores and WIP + external inputs + old FG sent to rework = closing corresponding stores/WIP + V_new + V_old returned to FG + external rejects/waste/emissions. V_new contains Q_c and actual attached packages; Q_c is not another output. FG: opening gross FG + V_new + external accepted returns + V_old returned + service packaging issued + measured moisture uptake = closing gross FG + gross dispatch + old FG to rework + external losses. Cancel all internal transfers at consolidation, retaining all external physical legs. Gross V and burden A are different ledgers."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: b_packages
+      applies_to: "each packaging component"
+      rule: "For each individual material: opening empty + opening attached WIP + opening attached FG + opening reusable stock + external purchases/first receipts P + external returns received ER = closing empty + closing attached WIP + closing attached FG + closing reusable stock + material on gross physical shipments S + external returns out EO + waste W. Include original sheet-supply straps, solid-wood supports and PE film from first external receipt. In this component ledger attached WIP includes packages still attached to received raw sheet awaiting issue; count those components once and keep raw-steel stores net of them in the manufacturing mass balance. Avoid a second upstream burden if embedded in the sheet provider. Internal reuse cancels and is not procurement, Q, coproduct or credit. Do not use net sales in S."
+      source_ids:
+        - jrc-ilcd-2010
+    - rule_id: b_extend
+      applies_to: "all actual exchanges"
+      rule: "Add a physically specific atomic row for every actual unlisted material, purchased formulation, fuel, refrigerant, water stream, package, service, waste mixture and identified emitted species before reporting. Unknown is not absent or zero. This selected route uses electrical mechanical handling/shearing/hydraulic baling and outsourced road freight; onsite combustion is not presumed. If onsite fuel equipment actually exists, add that fuel and each measured combustion species with proper air/resource interfaces and review scope. No boiler, steam, condensate or heat-exchanger-water return is presumed; any real external return requires its own Product return with mass, temperature/enthalpy and supplier water/energy agreement."
+      source_ids:
+        - was-quality-control
+        - was-lubrication
+        - jrc-ilcd-2010
+    - rule_id: b_receiver
+      applies_to: "receiver-grade release"
+      rule: "Use actual bale-form and heat-specific buyer agreement, sample the interior where required, retain nonconformity/rejection and receiving records. Loose busheling acceptance does not establish hydraulic-bale acceptance; neither cited site establishes an HC340LA receiver or a universal impurity/density limit."
+      source_ids:
+        - sdi-scrap-2023
+        - sdi-roanoke-2026
+boundary_abstraction:
+  declared_starting_condition: "Received uncoated HC340LA cold-rolled sheet at least 600 mm wide before source cold stamping; complete actual upstream steel and supplier oil/packaging history retained"
+  starting_condition_role: "Physical upstream handover with inherited burden, not a waste cut-off or purchased-bale packing gate"
+  product_classification_scope: "Only segregated metallic-sheet HC340LA cold-stamping bales within CPC 39340; oxide scale and remelting ingots excluded"
+  recursive_input_rule: "Do not receive finished scrap bales as raw sheet for this manufacture. Real external returns preserve original cohort, physical state and burden vector; internal circulation cancels without new production"
+  upstream_dataset_requirement: "One actual compatible sheet provider covers declared iron/steel route, refining/microalloy additions, rolling/annealing and real mill-oil/packaging boundary. Import its allocated burden once; do not reauthor embedded steelmaking or assume BF-BOF/EAF route, virgin fraction or recycled credit. Actual upstream road legs are included exactly once"
+  disclosure: "All qualifiers; first Q_c gate separate from final steelworks receiving service gate; allocation; stock vectors; complete co-outputs; physical and package balances; uncertainties and incomplete services"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Segregated uncoated HC340LA cold-stamping offcut bale"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual HC340LA heat/coil certificate and independently sampled whole-alloy assay"
+    - "uncoated cold-rolled supply width at least 600 mm and declared thickness"
+    - "supplier steelmaking and rolling/annealing/oiling boundary with inherited burden"
+    - "one segregated cold blanking/piercing/forming source and site in China"
+    - "actual bale dimensions/integrity and necessary mechanical shearing/hydraulic compaction"
+    - "receiver and mutually agreed low-alloy steel-feed specification"
+    - "sampled moisture/residual oil/rust/foreign metal and hazardous contamination results"
+    - "actual legal Product supply status distinct from a Waste-treatment service"
+    - "first-release gate/event IDs and net Q_c excluding every package"
+    - "gross physical V and complete attributed exchange vector A"
+    - "opening/closing WIP and raw/FG stock quantities with stage/cohort history"
+    - "failures and Q-zero/start-stop/idle/cleanup/rework loads"
+    - "gross shipments and actual steelworks receipts/returns/reversals linked to original Q_c"
+    - "every packaging component and first external receipt/return ledger"
+    - "real provider and native type/route/form/geography/property/unit restrictions for each exchange"
+    - "actual electricity voltage and grid/time and supplier oil formulation and hydraulic-fluid density state"
+    - "uncertainty and incomplete downstream-service cohorts"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "First quality release at preparation gate: weigh net as-released HC340LA feed and exclude every package using cp_release. Reference is 1 kg; Q_c is new first release only, not net sales or received steelworks mass."
+  - id: unit_state
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "actual row property"
+      uuid: ""
+    required_unit: "actual row unit"
+    rule: "Keep raw units/state; convert before attribution then normalize only in c_normalize_once. Integrate true rates once; cumulative readings never gain an extra time factor. Use independently measured formulation-specific density and preserve hydraulic Volume/m3."
+  - id: alloy_components
+    applies_to: "whole material and relevant elements"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Whole steel/formulation and physical species balances are independent of burden allocation. Actual alloy assay and oil/free-water/solid partitions do not add to the whole product. No assumed oxidation, chemical water or residual-fitted composition."
+process_map:
+  - id: steel_feed_supply
+    name: "Source stamping through baled metallic feed supply"
+    inclusion: "required"
+    inclusion_condition: "Only the complete conjunction of scope conditions"
+    role: "foreground"
+    quantitative_reference: "new first-release net Q_c; services keep original Q_c"
+process_inventory:
+  - id: steel_feed_supply
+    label: "Source stamping through baled metallic feed supply"
+    inputs:
+      product:
+        - row_id: received_sheet
+          role: "Whole source steel sheet"
+          name: "Uncoated HC340LA cold-rolled steel sheet, width at least 600 mm"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole uncoated HC340LA cold-rolled sheet supply at least 600 mm wide. Trace actual heat, width, thickness and supplier steelmaking/rolling/annealing/oiling boundary. No native alloy/non-alloy classification is inferred from a trade grade: flow UUID remains unresolved. Preserve whole sheet mass once, with separately tracked attached mill oil and packages; do not duplicate embedded burden."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_origin
+              source_ids:
+                - voestalpine-hsla-2024
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: electricity
+          role: "Metered electrical supply"
+          name: "Low-voltage alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter electrical supply to the actual site interface. Include press, conveyors, shear, hydraulic-baler drives, actual cooling/cleanup, testing, electric handling and idle/start-stop loads. Energy uses Net calorific value/MJ support and metered kWh converts by 3.6 once. The flow UUID, voltage and geographic/temporal provider require confirmation; internal generation and embedded grid losses are not purchased twice."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: hydraulic_fluid
+          role: "Hydraulic-system fluid replenishment"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "One whole mineral- or synthetic-base-oil hydraulic formulation with additives for power transmission/lubrication/heat transfer. Native Product uses Volume, not Mass; record externally supplied replenishment in m3 and circuit stocks/leaks/withdrawal separately. A mass balance requires independently measured density of this formulation at its real temperature, not water density or an assumed grade. This identity does not approve a supplier/viscosity or a water-glycol formulation. Internal circulation is not another supply."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: forming_oil
+          role: "Whole purchased stamping oil"
+          name: "Straight mineral-oil press-forming lubricant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual additional press application, distinct from supplier-embedded sheet oil. Count the complete purchased oil/additive formulation once; retain SDS, supplier composition and applied/recovered/retained/waste quantities. It is not a hot sheet-rolling oil, solvent or hydraulic fluid. No fixed dosage or active-ingredient purchase is inferred. An actual aqueous emulsion or onsite mix needs separate whole-formulation or each separately purchased ingredient and real mixing energy/loss records."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - was-lubrication
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: process_water
+          role: "Treated make-up and cleaning water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional externally treated industrial water at the actual declared quality/treatment/supply interface. Native Product/Mass establishes no source or provider. Record real cooling or housekeeping makeup only; internal recirculation cancels. No wet scrap-deoiling route is presumed. Natural water abstraction needs its own resource/treatment inventory. A volume-to-mass conversion uses independent water density at measured state."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: road_freight
+          role: "Outsourced road freight"
+          name: "transport in t*km"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a3f30-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "mass*distance 838aaa20-0117-11db-92e3-0800200c9a66 / t*km"
+          description: "The archived generic Product flow identifies transport workload in t*km, not a verified road vehicle or provider. Use one actual outsourced road-freight service with matched geography, period, vehicle and loaded/empty-return coverage. Workload = actual carried gross kg times km / 1000, before attribution. Maintain production A and disjoint cohort-service H separately; never add vehicle fuel/emissions already included in the provider."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: cotton_wipe
+          role: "Purchased cotton cleaning cloth"
+          name: "Cotton cleaning cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional one supplied cotton cloth for actual press/baler maintenance cleaning; identify composition and its own provider. Solvent/detergent additions are separate real materials, never hidden inside an assumed cloth dose."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: incoming_steel_band
+          role: "Steel band arriving with sheet"
+          name: "Carbon-steel coil packaging band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Count actual band from first external sheet receipt, including external returns. It is packaging, not HC340LA feed. Preserve actual procurement/embedded-provider treatment and lifecycle."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: incoming_wood_support
+          role: "Solid-wood coil support at receipt"
+          name: "Untreated solid-wood coil support"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual solid-wood support at first receipt; no plywood, treated wood, agglomerated wood waste or fuel identity. Trace reusable stocks and measured moisture separately."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: incoming_pe_film
+          role: "PE film arriving with sheet"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual polyethylene coil wrapping film at first receipt; preserve whole composition, tare, attached stocks and disposal. PET, multilayer composites and resin-only inputs require another specific identity. Flow UUID remains unresolved; no generic family or resin-plus-film duplicate is allowed."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: bale_band
+          role: "Additional bale securing band"
+          name: "Uncoated carbon-steel bale securing band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual separately purchased securing band after hydraulic compression. Self-supporting bales do not imply an invented band. Keep it outside net steel-feed Q even if the steelworks later charges the band; do not credit it as HC340LA feed."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: bale_seal
+          role: "Carbon-steel band seal"
+          name: "Uncoated carbon-steel strapping seal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual seal, separate from band procurement and mass. No band/seal combined card or assumed pieces-to-kg factor; weigh actual seals when only count is recorded."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: reusable_bin_in
+          role: "Externally received reusable steel collection bin"
+          name: "Reusable welded-steel scrap collection bin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual external first receipt or return of one welded-steel bin; count its whole mass and actual life/repair service. Internal transfers/reuse cancel, with no new bin purchase or coproduct."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_bale
+          role: "First-released HC340LA steel-feed bale"
+          name: "Segregated uncoated HC340LA cold-stamping offcut bale"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One unmelted metallic offcut stream from the declared uncoated HC340LA source, hydraulically baled after only necessary mechanical shear. Accept only actual agreed receiver-grade dimensions/integrity/contamination with legal Product supply function. This is not a Waste-treatment service, mixed ferrous family, turning briquette, pure iron, mill scale or remelted ingot. First quality-release Q_c excludes all straps/seals/bins and earlier releases; keep steelworks receipt as its cohort service/physical leg, not another output. A generic Waste identity cannot be rebound as this Product."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - rema-ferrous-2026
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: stamped_blank
+          role: "Original stamped-blank co-output"
+          name: "Uncoated HC340LA cold-stamped structural blank"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the complete original drawing/heat-specific blank output with its actual retained oil state and allocation. It is not packaging or another scrap reference. Its gross physical mass V is retained independently of burdens attributed to the scrap. Any dedicated later processing outside the source-stamping gate is excluded and its market value is adjusted back to the common source gate for residual allocation."
+          amount:
+            expression: "Use only the same section-8 physical-context result v_jc; it is not attributed burden or additional production."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_origin
+              source_ids:
+                - voestalpine-hsla-2024
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: bin_return
+          role: "Reusable bin returned externally"
+          name: "Reusable welded-steel scrap collection bin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual external whole-item return to its owner, with real mass/state and return documentation; preserve original burden/lifetime and any real repair. Physical return is neither new scrap production nor automatic sale/credit. Internal return is paired and cancels."
+          amount:
+            expression: "Use only the same section-8 physical-context result v_jc; it is not attributed burden or additional production."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: wood_return
+          role: "Solid-wood supports returned externally"
+          name: "Untreated solid-wood coil support"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual external whole-item return to its owner, with real mass/state and return documentation; preserve original burden/lifetime and any real repair. Physical return is neither new scrap production nor automatic sale/credit. Internal return is paired and cancels."
+          amount:
+            expression: "Use only the same section-8 physical-context result v_jc; it is not attributed burden or additional production."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+      waste:
+        - row_id: rejected_scrap
+          role: "Unaccepted clean source offcuts sent to recycling"
+          name: "Clean HC340LA cold-stamping offcut waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual segregated unaccepted clean HC340LA offcut waste stream sent to its documented recycling provider. Record whole mass, state, actual fate and receiver; flow UUID remains unresolved. This Waste cannot bind the finished_bale Product. No recovery yield or assembly-scrap percentage is assumed. Oily sludge, turnings and oxide scale require other specific rows."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - rema-ferrous-2026
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: captured_steel_dust
+          role: "Captured metallic cutting dust"
+          name: "Captured HC340LA mechanical-cutting dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual captured solid metallic mixture from the scoped mechanical operations, weighed whole with assay and one receiver. Source-origin partitions are not extra exports; do not identify it as pure iron or mill scale."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: waste_forming_oil
+          role: "Spent press-forming oil"
+          name: "Spent mineral-oil press-forming lubricant"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separately collected whole spent formulation with actual water/solids/oil analysis and one treatment provider. Do not add its contained oil/water as extra waste outputs or infer all applied oil becomes waste."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: waste_hydraulic_fluid
+          role: "Withdrawn hydraulic oil"
+          name: "Spent hydraulic-oil formulation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional whole circuit withdrawal with measured mass, composition and one provider; distinguish leakage, stocks and legitimate reuse. Never identify it as regenerated saleable lubricant merely because a recycling record exists."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: oily_cotton_wipe
+          role: "Used oily cotton cleaning cloth"
+          name: "Cotton cloth contaminated with press oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual whole waste cloth including retained oil/water/solids; measure it and keep constituent/source subaccounts non-additive with one actual treatment provider."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Collected equipment/floor-cleaning water"
+          name: "Collected maintenance-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual whole wastewater crossing to one external treatment provider with independent water/oil/solid/species measurements. COD is a quality metric, not a molecular export. Direct discharge instead needs its actual water body and individual species, not a wastewater service plus duplicate elementary exports."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outputs
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: band_waste
+          role: "Discarded steel packaging band"
+          name: "Discarded uncoated carbon-steel packaging band"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual separate band waste, excluding any seals; preserve sheet-receipt/bale source partitions without adding both whole waste and origins. Do not include it in HC340LA reference Q."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: seal_waste
+          role: "Discarded steel band seal"
+          name: "Discarded uncoated carbon-steel strapping seal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual seal waste weighed separately from band, with one compatible receiver; count-to-mass requires measurement."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: wood_waste
+          role: "Discarded solid-wood support"
+          name: "Discarded untreated solid-wood coil support"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional whole non-agglomerated untreated wood support waste with moisture and one real receiver. Do not use agglomerated wood-waste/fuel identity or assume a recycling credit."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+        - row_id: pe_waste
+          role: "Discarded PE wrapping film"
+          name: "Discarded polyethylene coil wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual film waste including measured contamination, with one whole-waste provider; polymer mass and contaminant subledger do not become separate duplicated exports."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+      elementary:
+        - row_id: water_vapour
+          role: "Actual evaporated water to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Elementary water vapour, CAS 7732-18-5, uses Mass/kg and the emissions-to-air-unspecified compartment. Use only for that actual net gaseous-water emission; a known urban, non-urban/high-stack, long-term or upper-atmosphere interface needs its matching verified flow, not an unspecified-compartment substitution. Broad synonym lists do not authorize heavy/tritiated water, ice, bound water or a liquid-water export. Conditional measured H2O vapour from actual cooling/housekeeping; distinguish incoming ambient humidity and captured liquid carryover. This is free-water phase change, not assumed chemical reaction/structural-water formation. Unexplained mass loss or wastewater COD does not establish vapour. Identify other actual emitted substances separately using species evidence, real medium and speciation; do not treat VOC/NOx totals as one invented chemical."
+          amount:
+            expression: "Use the same section-8 a_jc and disjoint s_jc results once; retain undivided raw records and physical V without a further Q division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - jrc-ilcd-2010
+            ranges: []
+allocation_rules:
+  - rule_id: a_context
+    applies_to: "whole route"
+    rule: "Use only an attributional study context in which allocation is required. Do not mix substitution/system expansion or automatic end-of-waste/zero-burden conventions with this inventory. Waste labels and sale prices alone decide neither burdens nor technical Product status."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_separate
+    applies_to: "each exchange"
+    rule: "First separately meter dedicated scrap collection, shear, baling and supply operations and perform feasible real or virtual subdivision. Retain the original stamped-blank co-output and all source-steel quantities. Dedicated co-output finishing belongs to that co-output. Assign physically embodied HC340LA sheet and its inherited supplier burden by independently traced material content; do not purchase Fe/C/Mn/Si/Nb/Ti again as additional ingredients."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_physical
+    applies_to: "remaining multifunctional exchanges"
+    rule: "For each still shared exchange establish the determining physical causal relation with functions using process evidence; different electricity, lubrication, transport and emission exchanges may need different criteria. Mass share is not a universal shortcut for press work or idle load. State equation, observations and uncertainty and conserve every raw numerator across functions."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_residual
+    applies_to: "genuinely residual common process"
+    rule: "Only for exchanges unresolved after the preceding steps use co-function market values at the same common process gate, actual state and contemporaneous period. Reconcile downstream baling/conditioning/packaging/transport costs to that gate before deriving prices. State currencies, quantities and sensitivity; missing/zero/negative or incomparable values require methodological resolution, not an invented ratio. No fixed allocation share or arbitrary choice between physical and economic allocation."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: a_no_credit
+    applies_to: "recycling and external wastes"
+    rule: "Scrap supply is not a substitute for virgin steel or a credited recycling service. Link each externally treated whole waste mixture to one real provider and retain source partitions as a non-additive analysis ledger. Avoid counting both a mixture and its contained metals/oil/water as separate exports or duplicating a provider’s included emissions."
+    source_ids:
+      - jrc-ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_origin
+      process_id: "steel_feed_supply"
+      flow_role: "origin steel and stamped co-output"
+      record_type: "material_records"
+      raw_fields: "heat; coil; supplier; grade; width; thickness; gross/tare/net kg; whole assay; mill oil; packaging; supplier boundary; stamped blank V; source scrap V"
+      collection_method: "Receive traceable heat certificates and weigh sheet and full co-outputs; sample the alloy and attached oil/water independently; retain original raw quantities and provider burden before attribution."
+      unit: "kg; mass fraction; mm"
+      frequency: "each receipt and stamping lot"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "certificates; scale calibration; sampling; provider boundaries"
+    - protocol_id: cp_release
+      process_id: "steel_feed_supply"
+      flow_role: "first quality release and receiver receipts"
+      record_type: "quality_records"
+      raw_fields: "cohort; first event ID; gross kg; tare kg; net Q_c; bale dimensions; actual contamination results; spec; test date; receipt; rejection; original delivery; reversal"
+      collection_method: "Calibrated weighing excluding each package; independent moisture/oil/metal/hazard sampling and actual agreed tests. Record first release once, stock and gross delivery/reception/return separately; no prior division."
+      unit: "kg; mm; mass fraction"
+      frequency: "each release and receipt/return"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "signed release and steelworks receipt; raw lab results"
+    - protocol_id: cp_energy
+      process_id: "steel_feed_supply"
+      flow_role: "electrical load"
+      record_type: "meter_records"
+      raw_fields: "meter; voltage; provider; raw kWh/MJ; timestamps; equipment/stage; idle/start-stop/cleanup; cohort partition"
+      collection_method: "Read cumulative meters or integrate actual power rates over measured time; subtract paired internal meters only where boundaries overlap. Preserve raw records by production and cohort service; apply unit conversion before allocation."
+      unit: "kWh; MJ"
+      frequency: "each run and zero-output period"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; coverage and equipment ledger"
+    - protocol_id: cp_materials
+      process_id: "steel_feed_supply"
+      flow_role: "each atomic material"
+      record_type: "material_records"
+      raw_fields: "row_id; batch; whole supplied mass/volume; formulation; density state; external receipt; opening/closing store/circuit; recovery; loss; stage/cohort"
+      collection_method: "Weigh or meter each specific whole supply; retain supplier/SDS composition as non-additive subledger. Measure formulation-specific density when conversion is needed and record internal mixing energy/ingredients separately when actually performed. Keep raw numerator undivided."
+      unit: "kg; m3; kg/m3"
+      frequency: "each receipt/issue and stock boundary"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "invoice; SDS; calibration; density measurement"
+    - protocol_id: cp_outputs
+      process_id: "steel_feed_supply"
+      flow_role: "each separate external waste"
+      record_type: "waste_records"
+      raw_fields: "whole waste kg; constituent assay; origin partitions; receiver; hazard/state; storage; physical fate; provider coverage"
+      collection_method: "Weigh each whole separate mixture with representative sampling and one actual receiver/provider. Retain origin partitions summing to the whole; they are not additional exports. Do not use a total residual to invent oil and water separately."
+      unit: "kg; mass fraction"
+      frequency: "each withdrawal and failure lot"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "transfer tickets; laboratory records; provider boundary"
+    - protocol_id: cp_species
+      process_id: "steel_feed_supply"
+      flow_role: "actual elementary species"
+      record_type: "emission_records"
+      raw_fields: "chemical; CAS; phase; medium; location; concentration; measured gas/liquid state; integrated volume or true rate; time; background; uncertainty"
+      collection_method: "Use actual species-resolved measurement or independent stoichiometric evidence with measured reaction extent. Distinguish vapour/liquid entrainment and ambient humidity. Integrated volume is not multiplied by duration again; true rate is integrated once. COD/VOC totals remain indicators until actual molecular speciation exists."
+      unit: "kg; actual raw concentration/volume/rate units"
+      frequency: "each actual emission interval"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling calibration; detection limits; speciation and medium"
+    - protocol_id: cp_packaging
+      process_id: "steel_feed_supply"
+      flow_role: "each package and reusable item"
+      record_type: "packaging_records"
+      raw_fields: "component; material; actual supply/provider; opening/closing empty/WIP/FG/reusable; first receipts P; ER; gross shipment S; EO; waste W; actual item mass"
+      collection_method: "Weigh each separate band/seal/wood support/film/bin from first external receipt. Track attached stock and all gross external legs; paired internal reuse cancels. If recorded as counts, weigh actual configuration; no default kg/item. Preserve raw mass and embodied-provider flags without prior normalization."
+      unit: "kg; actual count with weighed mass"
+      frequency: "each receipt/issue/shipment/return and period end"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "stocktake; tare and calibration; external return receipts"
+    - protocol_id: cp_transport
+      process_id: "steel_feed_supply"
+      flow_role: "road freight workload"
+      record_type: "transport_records"
+      raw_fields: "actual leg; supplier; route km; gross cargo/package kg; vehicle; loaded/empty return; service boundary; production/cohort ID"
+      collection_method: "Retain each leg distance and carried mass plus provider coverage and shared-function allocation evidence. Calculate actual workload before attribution and distinguish original receipt/dispatch/return legs; do not manufacture tonne-km from net reference Q alone."
+      unit: "kg; km; t*km; kg*km"
+      frequency: "each physical leg"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighbridge; carrier records; route and empty-leg evidence"
+    - protocol_id: cp_stock
+      process_id: "steel_feed_supply"
+      flow_role: "WIP/FG and inherited vectors"
+      record_type: "stock_records"
+      raw_fields: "lot; stage; cohort; raw/finished status; opening/closing physical state; each historical exchange vector; failure/rework; source and correction links"
+      collection_method: "Reconcile physical stocktake with batch history and every input/emission/waste/service inherited amount. Preserve old FG vector on paired rework transfers; segregate new incremental service. Retain Q-zero load and unserved FG history."
+      unit: "kg; each exchange unit"
+      frequency: "each stock boundary and transfer"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "signed stocktake; immutable lot/vector reconciliation"
+    - protocol_id: cp_allocation
+      process_id: "steel_feed_supply"
+      flow_role: "exclusive and shared raw loads"
+      record_type: "allocation_records"
+      raw_fields: "exchange; function; dedicated meter; embodied material; determining physical relation; residual; common gate; actual state; price period/currency; adjusted cost; uncertainty"
+      collection_method: "Collect raw function-specific records before any ratio. Document real/virtual subdivision and independent causal evidence; only genuinely residual exchange values use same-gate contemporary market evidence after downstream adjustments. Keep all function shares and sensitivity; no preset fraction."
+      unit: "actual exchange units; actual currency"
+      frequency: "each route/period change and cohort"
+      temporal_coverage: "complete period and cross-period cohorts including zero-output periods"
+      site_scope: "actual source/preparation sites through declared steelworks"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter traces; causal reasoning evidence; market/cost records"
+  calculation_rules:
+    - id: c_units
+      applies_to: "all inventory rows"
+      rule: "Reconcile receipts with opening/closing raw stores to obtain actual issued/consumed supplies before attribution; retain receipts as separate physical legs. Convert raw units before attribution; 1 kWh = 3.6 MJ and 1 t*km = 1000 kg*km. Mass from volume uses independently measured material-specific density at its actual state; whole supplied formulations remain one purchase."
+      inputs:
+        - "raw records"
+        - "independent density"
+        - cp_materials
+        - cp_energy
+        - cp_transport
+      output: "converted raw records"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_q
+      applies_to: "finished_bale"
+      rule: "Q_c = sum of newly first-released qualifying net bale mass in cohort c after documented original-cohort corrections; exclude all packages and prior releases. Closing accepted FG is already included."
+      inputs:
+        - cp_release
+        - cp_stock
+      output: "Q_c"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_attribution
+      applies_to: "all inventory rows"
+      rule: "For each j conserve raw exchange quantity across functions after dedicated/virtual subdivision; determine exchange-specific physical causality and allocate only genuinely residual shared load by actual common-gate market value. Keep gross V unchanged by burden shares."
+      inputs:
+        - "converted raw records"
+        - cp_allocation
+        - cp_origin
+      output: "allocated raw load B_jc"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_inheritance
+      applies_to: "all inventory rows"
+      rule: "A_jc = B_jc + historical opening-WIP exchange vector transferred into c - closing-WIP vector retained outside release. Preserve failure/idle/cleanup and actual loss burdens. Do not subtract accepted closing FG again; old-FG rework transfers its inherited vector in/out and only its increment enters H_jc."
+      inputs:
+        - B_jc
+        - cp_stock
+        - cp_outputs
+      output: "A_jc"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_service
+      applies_to: "all inventory rows"
+      rule: "H_jc is the disjoint actual post-release service/incremental-rework vector for original cohort c, including actual gross delivery/return legs and terminal receiver testing. Maintain unfinished service scope explicitly. H is never an output denominator."
+      inputs:
+        - cp_stock
+        - cp_transport
+        - cp_packaging
+        - cp_release
+      output: "H_jc"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_normalize_once
+      applies_to: "all inventory rows"
+      rule: "For Q_c > 0 perform the only normalization: a_jc=A_jc/Q_c and s_jc=H_jc/Q_c; final exchange per reference is a_jc+s_jc for disjoint production/service components. Gross physical context v_jc=V_jc/Q_c is a separate non-burden view of complete co-output/return/shipment quantities. Cards and aggregation tags reference these same results once. For Q_c=0 retain all real loads/stock and report no unit result; neither H nor current-period Q can replace original Q_c."
+      inputs:
+        - A_jc
+        - H_jc
+        - V_jc
+        - Q_c
+      output: "a_jc; s_jc; v_jc"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_physical
+      applies_to: "all material interfaces"
+      rule: "Reconcile manufacturing and FG equations in b_physical and consolidated external V independently for whole physical mass, alloy metal, oil, water and measured relevant elements. Element assays are non-additive analyses of whole alloy/mixtures. Source chemistry limits do not close a balance; a single residual cannot solve two unknowns. No chemical reaction/oxygen uptake or structural water is presumed."
+      inputs:
+        - cp_origin
+        - cp_materials
+        - cp_stock
+        - cp_outputs
+        - cp_species
+      output: "physical mass and element reconciliations"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_packages
+      applies_to: "each separate package"
+      rule: "Apply the complete opening+P+ER=closing+S+EO+W ledger in b_packages to each material across empty/attached WIP/attached FG/reusable stocks. S follows gross physical shipments; cancel internal reuse and retain all first external receipts."
+      inputs:
+        - cp_packaging
+        - cp_stock
+        - cp_release
+      output: "each package reconciliation"
+      source_ids:
+        - jrc-ilcd-2010
+    - id: c_residual
+      applies_to: "physical diagnostics"
+      rule: "Report F as the difference of the fixed-side physical ledger. Adding newly identified X adjusts only an exact duplicate already in OTHER on the same side by the same amount; do not fit X to F or erase unexplained uncertainty. Whole external waste and origin partitions sum once with one provider."
+      inputs:
+        - cp_outputs
+        - cp_stock
+        - cp_species
+      output: "diagnostic residual and evidence gap"
+      source_ids:
+        - jrc-ilcd-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "each supply and output"
+      requirement: "Actual grade/form/route/native type/geography/provider matched independently; Product reference cannot be established by a Waste identity or family basename."
+      evidence: "full native records; heat certificates; signed receiver specification"
+    - id: dq_raw
+      applies_to: "all records"
+      requirement: "Retain meter/weighbridge originals, detection limits, sampling design and uncertainty; no literature factory recipe or fabricated grade/amount/density."
+      evidence: "calibration; laboratory records; raw ledgers"
+    - id: dq_stock
+      applies_to: "all cohorts"
+      requirement: "Complete physical and inherited per-exchange vectors, failures, Q-zero, stock/rework and receiver services; unfinished service coverage remains explicit."
+      evidence: "cohort genealogy; c_physical; c_packages"
+    - id: dq_sources
+      applies_to: "method and science"
+      requirement: "Separate classification, manufacturer technical scope, industry preparation guidance and attributional allocation guidance; source examples are not a same-site recipe or scientific/translation approval."
+      evidence: "source context and independent applicability assessment"
+validation_rules:
+  - rule_id: v_scope
+    applies_to: "whole route"
+    rule: "Check the complete source-to-receiver supply route and exclusions; confirm one certified HC340LA stream and actual receiver agreement without automatic ReMA grade or virgin-steel substitution."
+    source_ids:
+      - un-cpc-2025
+      - voestalpine-hsla-2024
+      - rema-ferrous-2026
+  - rule_id: v_identity
+    applies_to: "every UUID and provider"
+    rule: "Use only compatible native flow type/route/form/CAS/geography and all property/unit restrictions. Core Product identity unresolved means unavailable final native binding; auxiliary gaps remain specific named exchanges. Generic identity does not certify a provider."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: v_quantity
+    applies_to: "all cards and cohorts"
+    rule: "Enforce one new first-release Q_c, complete WIP inheritance and disjoint service H_jc at original Q_c. Verify raw records are undivided and c_normalize_once is performed once; Q-zero produces no unit result."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: v_conservation
+    applies_to: "all physical interfaces"
+    rule: "Independently close whole mass and relevant-element/oil/water ledgers with measured evidence, matched gates and every individual package from first receipt. Retain unexplained residuals; no two-unknown fit, mixture-origin duplication or internal transfer output."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: v_complete
+    applies_to: "all actual burdens"
+    rule: "Verify dedicated/virtual subdivision, exchange-specific causality and only residual same-gate market allocation; conserve raw loads including failures. Confirm all observed chemicals/energy/packages/wastes/species and outsourced boundaries; unknowns never pass as zero."
+    source_ids:
+      - jrc-ilcd-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Declared prepared metallic steel-feed supply after actual identity/provider and completeness checks"
+  allowed_use: "One explicitly qualified HC340LA bale supply with first-release denominator and complete cohort services; expose actual steelworks received mass/yield separately"
+  excluded_use: "Universal ferrous scrap; net-delivered-kg equivalence; treatment-service substitution; scale/ingots/stainless/cast-iron; automatic credit or zero upstream burden"
+  required_metadata: "All required qualifiers and each selected card restriction; source and provider boundaries; real terminal receiving records; distinct Q_c/V/A/H ledgers"
+  required_quality_disclosure: "Data/site/period representativeness; measured contamination and uncertainties; all unserved FG/returns; native identity and provider gaps; calculation and service completeness"
+  update_trigger: "Different grade/coating/origin, physical form or prep route; receiver specification/legal role; native identity/provider revision; source/technology/period or stock-service boundary change"
+data_sources:
+  - id: "un-cpc-2025"
+    type: "official_guidance"
+    reference: "UN CPC Version 3.0 explanatory notes, 30 June 2025, printed p.203; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "39340 scrap distinguished from 39310 scale and 39350 remelting ingots"
+  - id: "voestalpine-hsla-2024"
+    type: "handbook"
+    reference: "voestalpine Micro-alloyed steels data sheet, 11/2024, pp.1–4; https://www.voestalpine.com/stahl/content/download/4681/file/Data-sheet-micro-alloyed-steels-voestalpine-EN-030225.pdf?inLanguage=eng-GB"
+    used_for: "HC340LA and uncoated supply identity; heat-analysis and coating counterexamples; no lot assay or footprint transfer"
+  - id: "was-quality-control"
+    type: "handbook"
+    reference: "WorldAutoSteel AHSS Guidelines, Quality Control, publisher HTML accessed 2026-11-20; https://ahssinsights.org/forming/quality-control/quality-control/"
+    used_for: "Qualitative stamping input/trim-scrap and recording concepts; AHSS loads and settings do not transfer to conventional HSLA"
+  - id: "was-lubrication"
+    type: "handbook"
+    reference: "WorldAutoSteel AHSS Guidelines, Lubrication, publisher HTML accessed 2026-11-20; https://ahssinsights.org/forming/tooling/lubrication/"
+    used_for: "Qualitative distinction between mill oil, whole supplied press lubricant and application; no AHSS numeric transfer"
+  - id: "rema-ferrous-2026"
+    type: "standard"
+    reference: "ReMA ISRI Specifications January 2026, FS-2023, printed pp.20–23; https://www.isrispecs.org/wp-content/uploads/2026/01/2026-January-ReMA_ISRI_Specifications.pdf"
+    used_for: "Actual buyer agreement, cleanliness, sheet clippings/bundles versus turnings/mill-scale/cast-iron distinctions; no automatic trade-grade or density assignment"
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "JRC ILCD Handbook General guide for LCA—Detailed guidance, first edition March 2010, §§7.9.2–7.9.3; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional multifunctionality hierarchy and exchange-specific allocation; foreground stock/protocol requirements are explicit method implementation, not industrial observations"
+  - id: "sdi-scrap-2023"
+    type: "handbook"
+    reference: "Steel Dynamics Structural & Rail Division, Iron & Steel Scrap Manual, 1400-020-001 Rev.0, 18 December 2023, pp.5–10; https://www.steeldynamics.com/wp-content/uploads/2024/01/1400-020-001-STEEL-SCRAP-IRON-AND-STEEL-SCRAP-MANUAL-V.0-12-18-2023.pdf"
+    used_for: "Columbia City inspection and separate #1 Busheling/#1 Bundles forms; site-specific counterexample only, no automatic numerical transfer or HC340LA acceptance"
+  - id: "sdi-roanoke-2026"
+    type: "handbook"
+    reference: "Steel Dynamics Roanoke Bar Division, Inspection of Scrap AP019 Rev.2, 29 April 2026, pp.1–2,7–8; https://lpg.steeldynamics.com/pdf/Roanoke/Documentation/Op-Procedure-Receiving-Inspection-Scrap.pdf"
+    used_for: "Separate receiving-site inspection, chemistry and bundle interior controls; same corporate group as Columbia City, no industry-wide acceptance or verified HC340LA receiver"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0f796146f9c2da1ea19e320fc694711897ac0003f16692df1f275bd557b3ea01"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8148"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8148
+          line: 64
+          column: 1
+        end:
+          offset: 15733
+          line: 89
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received uncoated HC340LA cold-rolled sheet at least 600 mm wide before source cold stamping; complete actual upstream steel and supplier oil/packaging history retained |\n| starting_condition_role | Physical upstream handover with inherited burden, not a waste cut-off or purchased-bale packing gate |\n| product_classification_scope | Only segregated metallic-sheet HC340LA cold-stamping bales within CPC 39340; oxide scale and remelting ingots excluded |\n| recursive_input_rule | Do not receive finished scrap bales as raw sheet for this manufacture. Real external returns preserve original cohort, physical state and burden vector; internal circulation cancels without new production |\n| upstream_dataset_requirement | One actual compatible sheet provider covers declared iron/steel route, refining/microalloy additions, rolling/annealing and real mill-oil/packaging boundary. Import its allocated burden once; do not reauthor embedded steelmaking or assume BF-BOF/EAF route, virgin fraction or recycled credit. Actual upstream road legs are included exactly once |\n| disclosure | All qualifiers; first Q_c gate separate from final steelworks receiving service gate; allocation; stock vectors; complete co-outputs; physical and package balances; uncertainties and incomplete services |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | complete scoped route | Include source sheet receipt and upstream steel formation burden, original cold-stamping formation and full co-output, segregated collection, necessary shear/baling, QA and all attributable supply services through the steelworks receiving gate. The named sources support compatible unit operations; this is a transparent technical synthesis, not a claim that one SKU/factory/order demonstrates every operation. AHSS sources supply qualitative recording/lubrication concepts only; their loads/settings do not transfer to this conventional HSLA grade. | `voestalpine-hsla-2024`; `was-quality-control`; `was-lubrication`; `rema-ferrous-2026`; `jrc-ilcd-2010` |\n| b_grade | whole product and receiver | Use one actually certified HC340LA heat stream and agreed receiver specification. Source-sheet chemical maxima/minima are not the lot assay or fractions to add as purchases. No automatic ReMA 207/208/234/235 certification: alloy-free clauses and consumer-specific dimensions differ. Independently observe oil/moisture/rust, other metals, non-metal inclusions and hazardous contamination before acceptance. Thermal cutting, de-oiling, chemical washing of scrap, melting, blending with other grades or turnings requires a reviewed different route. | `voestalpine-hsla-2024`; `rema-ferrous-2026` |\n| b_first_q | finished_bale | Fix the first receiver-grade quality-release gate at the preparation facility. Q_c is newly first-released net qualifying steel-feed mass in cohort c, excluding every package and previous release. Accepted closing FG from c already belongs to Q_c; never add it again. Storage, dispatch, steelworks reception and repeat tests create no production. Reverse an invalid first release only with that lot and its whole vector; a corrected repeat release restores previously reversed eligible mass to its original cohort, never new current Q. | `jrc-ilcd-2010` |\n| b_wip | all inventory rows | Retain failed and zero-output batches, start/stop, idle, cleanup and real rework. Every opening/closing WIP lot carries physical quantity/state and a complete per-exchange inherited vector covering materials, utilities, emissions, waste and services. Transfer the vector with the lot. A_jc is current allocated raw load plus opening-WIP vectors entering c minus closing-WIP vectors retained, with failure loads conserved. Do not deduct closing accepted FG production burden again. Old accepted FG sent to rework transfers its original vector in and out once; assign only real incremental rework to its original cohort. | `jrc-ilcd-2010` |\n| b_services | cohort services to steelworks gate | Keep post-release storage, packaging/repacking, handling, dispatch, actual transport, reception tests, external returns and incremental rework in disjoint H_jc ledgers linked to original Q_c. H is a service load, never a production denominator. Record gross shipments, steelworks accepted mass, rejects and return/reversal of original deliveries. Customer return reverses its original delivery leg with history retained; it does not erase original production or manufacture new Q. Unserved FG and unfinished cohort services remain disclosed; a partial service history is not complete delivered-gate evidence. | `jrc-ilcd-2010` |\n| b_physical | manufacturing FG and consolidated gates | Use the same physical interfaces in all balances. Manufacturing: opening raw/fluid/empty-package stores and WIP + external inputs + old FG sent to rework = closing corresponding stores/WIP + V_new + V_old returned to FG + external rejects/waste/emissions. V_new contains Q_c and actual attached packages; Q_c is not another output. FG: opening gross FG + V_new + external accepted returns + V_old returned + service packaging issued + measured moisture uptake = closing gross FG + gross dispatch + old FG to rework + external losses. Cancel all internal transfers at consolidation, retaining all external physical legs. Gross V and burden A are different ledgers. | `jrc-ilcd-2010` |\n| b_packages | each packaging component | For each individual material: opening empty + opening attached WIP + opening attached FG + opening reusable stock + external purchases/first receipts P + external returns received ER = closing empty + closing attached WIP + closing attached FG + closing reusable stock + material on gross physical shipments S + external returns out EO + waste W. Include original sheet-supply straps, solid-wood supports and PE film from first external receipt. In this component ledger attached WIP includes packages still attached to received raw sheet awaiting issue; count those components once and keep raw-steel stores net of them in the manufacturing mass balance. Avoid a second upstream burden if embedded in the sheet provider. Internal reuse cancels and is not procurement, Q, coproduct or credit. Do not use net sales in S. | `jrc-ilcd-2010` |\n| b_extend | all actual exchanges | Add a physically specific atomic row for every actual unlisted material, purchased formulation, fuel, refrigerant, water stream, package, service, waste mixture and identified emitted species before reporting. Unknown is not absent or zero. This selected route uses electrical mechanical handling/shearing/hydraulic baling and outsourced road freight; onsite combustion is not presumed. If onsite fuel equipment actually exists, add that fuel and each measured combustion species with proper air/resource interfaces and review scope. No boiler, steam, condensate or heat-exchanger-water return is presumed; any real external return requires its own Product return with mass, temperature/enthalpy and supplier water/energy agreement. | `was-quality-control`; `was-lubrication`; `jrc-ilcd-2010` |\n| b_receiver | receiver-grade release | Use actual bale-form and heat-specific buyer agreement, sample the interior where required, retain nonconformity/rejection and receiving records. Loose busheling acceptance does not establish hydraulic-bale acceptance; neither cited site establishes an HC340LA receiver or a universal impurity/density limit. | `sdi-scrap-2023`; `sdi-roanoke-2026` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 231
+              line: 9
+              column: 1
+            end:
+              offset: 302
+              line: 9
+              column: 72
+          text: "# Segregated HC340LA cold-stamping offcuts supplied as baled steel feed"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8148
+              line: 64
+              column: 1
+            end:
+              offset: 8169
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_42444"
+      family: "allocation"
+      span:
+        start:
+          offset: 42444
+          line: 537
+          column: 1
+        end:
+          offset: 44830
+          line: 547
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_context | whole route | Use only an attributional study context in which allocation is required. Do not mix substitution/system expansion or automatic end-of-waste/zero-burden conventions with this inventory. Waste labels and sale prices alone decide neither burdens nor technical Product status. | `jrc-ilcd-2010` |\n| a_separate | each exchange | First separately meter dedicated scrap collection, shear, baling and supply operations and perform feasible real or virtual subdivision. Retain the original stamped-blank co-output and all source-steel quantities. Dedicated co-output finishing belongs to that co-output. Assign physically embodied HC340LA sheet and its inherited supplier burden by independently traced material content; do not purchase Fe/C/Mn/Si/Nb/Ti again as additional ingredients. | `jrc-ilcd-2010` |\n| a_physical | remaining multifunctional exchanges | For each still shared exchange establish the determining physical causal relation with functions using process evidence; different electricity, lubrication, transport and emission exchanges may need different criteria. Mass share is not a universal shortcut for press work or idle load. State equation, observations and uncertainty and conserve every raw numerator across functions. | `jrc-ilcd-2010` |\n| a_residual | genuinely residual common process | Only for exchanges unresolved after the preceding steps use co-function market values at the same common process gate, actual state and contemporaneous period. Reconcile downstream baling/conditioning/packaging/transport costs to that gate before deriving prices. State currencies, quantities and sensitivity; missing/zero/negative or incomparable values require methodological resolution, not an invented ratio. No fixed allocation share or arbitrary choice between physical and economic allocation. | `jrc-ilcd-2010` |\n| a_no_credit | recycling and external wastes | Scrap supply is not a substitute for virgin steel or a credited recycling service. Link each externally treated whole waste mixture to one real provider and retain source partitions as a non-additive analysis ledger. Avoid counting both a mixture and its contained metals/oil/water as separate exports or duplicating a provider’s included emissions. | `jrc-ilcd-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 231
+              line: 9
+              column: 1
+            end:
+              offset: 302
+              line: 9
+              column: 72
+          text: "# Segregated HC340LA cold-stamping offcuts supplied as baled steel feed"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 42444
+              line: 537
+              column: 1
+            end:
+              offset: 42484
+              line: 537
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_58091"
+      family: "validation"
+      span:
+        start:
+          offset: 58091
+          line: 587
+          column: 1
+        end:
+          offset: 59717
+          line: 597
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | whole route | Check the complete source-to-receiver supply route and exclusions; confirm one certified HC340LA stream and actual receiver agreement without automatic ReMA grade or virgin-steel substitution. | `un-cpc-2025`; `voestalpine-hsla-2024`; `rema-ferrous-2026` |\n| v_identity | every UUID and provider | Use only compatible native flow type/route/form/CAS/geography and all property/unit restrictions. Core Product identity unresolved means unavailable final native binding; auxiliary gaps remain specific named exchanges. Generic identity does not certify a provider. | `jrc-ilcd-2010` |\n| v_quantity | all cards and cohorts | Enforce one new first-release Q_c, complete WIP inheritance and disjoint service H_jc at original Q_c. Verify raw records are undivided and c_normalize_once is performed once; Q-zero produces no unit result. | `jrc-ilcd-2010` |\n| v_conservation | all physical interfaces | Independently close whole mass and relevant-element/oil/water ledgers with measured evidence, matched gates and every individual package from first receipt. Retain unexplained residuals; no two-unknown fit, mixture-origin duplication or internal transfer output. | `jrc-ilcd-2010` |\n| v_complete | all actual burdens | Verify dedicated/virtual subdivision, exchange-specific causality and only residual same-gate market allocation; conserve raw loads including failures. Confirm all observed chemicals/energy/packages/wastes/species and outsourced boundaries; unknowns never pass as zero. | `jrc-ilcd-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 231
+              line: 9
+              column: 1
+            end:
+              offset: 302
+              line: 9
+              column: 72
+          text: "# Segregated HC340LA cold-stamping offcuts supplied as baled steel feed"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 58091
+              line: 587
+              column: 1
+            end:
+              offset: 58113
+              line: 587
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_route"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 9621
+          line: 79
+          column: 1
+        end:
+          offset: 10314
+          line: 79
+          column: 694
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_grade"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 10315
+          line: 80
+          column: 1
+        end:
+          offset: 10950
+          line: 80
+          column: 636
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_first_q"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 10951
+          line: 81
+          column: 1
+        end:
+          offset: 11536
+          line: 81
+          column: 586
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_wip"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 11537
+          line: 82
+          column: 1
+        end:
+          offset: 12206
+          line: 82
+          column: 670
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_services"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 12207
+          line: 83
+          column: 1
+        end:
+          offset: 12887
+          line: 83
+          column: 681
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 12888
+          line: 84
+          column: 1
+        end:
+          offset: 13628
+          line: 84
+          column: 741
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_packages"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 13629
+          line: 85
+          column: 1
+        end:
+          offset: 14510
+          line: 85
+          column: 882
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "b_extend"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 14511
+          line: 86
+          column: 1
+        end:
+          offset: 15341
+          line: 86
+          column: 831
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "b_receiver"
+      identity_kind: "explicit"
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 15342
+          line: 87
+          column: 1
+        end:
+          offset: 15731
+          line: 87
+          column: 390
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_context"
+      identity_kind: "explicit"
+      unit_id: "normative_42444"
+      source_span:
+        start:
+          offset: 42557
+          line: 541
+          column: 1
+        end:
+          offset: 42877
+          line: 541
+          column: 321
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_separate"
+      identity_kind: "explicit"
+      unit_id: "normative_42444"
+      source_span:
+        start:
+          offset: 42878
+          line: 542
+          column: 1
+        end:
+          offset: 43382
+          line: 542
+          column: 505
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_42444"
+      source_span:
+        start:
+          offset: 43383
+          line: 543
+          column: 1
+        end:
+          offset: 43838
+          line: 543
+          column: 456
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_42444"
+      source_span:
+        start:
+          offset: 43839
+          line: 544
+          column: 1
+        end:
+          offset: 44410
+          line: 544
+          column: 572
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_42444"
+      source_span:
+        start:
+          offset: 44411
+          line: 545
+          column: 1
+        end:
+          offset: 44828
+          line: 545
+          column: 418
+    - pointer: "/validation_rules/0"
+      rule_id: "v_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_58091"
+      source_span:
+        start:
+          offset: 58186
+          line: 591
+          column: 1
+        end:
+          offset: 58468
+          line: 591
+          column: 283
+    - pointer: "/validation_rules/1"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_58091"
+      source_span:
+        start:
+          offset: 58469
+          line: 592
+          column: 1
+        end:
+          offset: 58794
+          line: 592
+          column: 326
+    - pointer: "/validation_rules/2"
+      rule_id: "v_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_58091"
+      source_span:
+        start:
+          offset: 58795
+          line: 593
+          column: 1
+        end:
+          offset: 59061
+          line: 593
+          column: 267
+    - pointer: "/validation_rules/3"
+      rule_id: "v_conservation"
+      identity_kind: "explicit"
+      unit_id: "normative_58091"
+      source_span:
+        start:
+          offset: 59062
+          line: 594
+          column: 1
+        end:
+          offset: 59389
+          line: 594
+          column: 328
+    - pointer: "/validation_rules/4"
+      rule_id: "v_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_58091"
+      source_span:
+        start:
+          offset: 59390
+          line: 595
+          column: 1
+        end:
+          offset: 59715
+          line: 595
+          column: 326
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 8148
+          line: 64
+          column: 1
+        end:
+          offset: 8169
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8148"
+      source_span:
+        start:
+          offset: 8197
+          line: 68
+          column: 1
+        end:
+          offset: 9548
+          line: 75
+          column: 220
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_42444"
+      source_span:
+        start:
+          offset: 42444
+          line: 537
+          column: 1
+        end:
+          offset: 42484
+          line: 537
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_58091"
+      source_span:
+        start:
+          offset: 58091
+          line: 587
+          column: 1
+        end:
+          offset: 58113
+          line: 587
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0f796146f9c2da1ea19e320fc694711897ac0003f16692df1f275bd557b3ea01"
+  generated_content_sha256: "sha256:d9194bcae8f1e8edac85c2f0b4e728df6d487853536c25ef1b1bdd00bcd07fdb"
