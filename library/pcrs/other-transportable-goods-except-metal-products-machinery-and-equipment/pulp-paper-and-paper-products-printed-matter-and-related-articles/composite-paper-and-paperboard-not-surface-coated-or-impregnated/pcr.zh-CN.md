@@ -515,7 +515,7 @@ Q=0、失败批次、启停、待机、清洗及试车保留真实负荷；以�
 | rule_id | applies_to | 规则 | source_ids |
 | --- | --- | --- | --- |
 | validate_scope | product | 检查平层/胶/表面/厂门状态及实际路线。任一未知需审查；不得由分类或solid-board名称推定。 | wco-hs-2022-ch48; klug-es-adhesive; solidus-board |
-| validate_final_sheet_dimensions | product | 首次供应时核对最终分切后的矩形片材（含正方形），实测展开长边 > 36 cm、短边 > 15 cm。任一尺寸等于门槛均不合格。形态或尺寸缺失须审查后才可应用。超出范围的产出不计入合格参考质量。 | wco-hs-2022-ch48; cp_mass |
+| validate_final_sheet_dimensions | product | 首次供应时核对最终分切后的矩形片材（含正方形），实测展开长边 > 36 cm、短边 > 15 cm。任一尺寸等于门槛均不合格。形态或尺寸缺失须审查后才可应用。超出范围的产出不计入合格参考质量。 按采集协议 `cp_mass` 留存最终形态及尺寸测量记录。 | wco-hs-2022-ch48 |
 | validate_reference | reference | 恰有一个board_output作为1kg参考产品输出；身份必须有可核查的物理限定，不能借邻近产品UUID。 |  |
 | validate_balances | collection | 核所有Amount的原单位、真实速率积分、转换范围、逐流细分及共同归属、原料/WIP/FG继承向量和最后一次A/Q。独立审查毛V干物质/水/碳账、库存、真实共同产出、零Q负荷及包装首次外部接收；新期末FG已在Q内，回货复验不造Q。不得以通过有限计量检查代替实际数据完整性。 | eu-pef-multifunctionality-2021 |
 | validate_air | emissions | 三个颗粒粒级不得与累计PM10或总颗粒重复合计；捕集粉尘与排出空气分开。零量须筛查证据，未知排放或背景基准不得报完整通过。 | ec-paper-bref-2015 |

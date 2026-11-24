@@ -297,8 +297,10 @@ Published chapter aliases use the exact source-owned root `middleware.ts` profil
 `generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
 anchors and the importer rechecks actual source bytes before atomic handoff. Provider profile 2
 adds bounded, content-addressed Next tree packs and a verified compilation binding; the source-owned
-handler restores original navigation URLs and bytes. Other navigation files and all source downloads
-retain their physical contracts. Native history normalization
+handler restores original navigation URLs and bytes. When the physical file budget requires it, the
+[bounded page-prefetch exception](docs/pcr-documentation-site-contract.md) also permits packing up to
+600 eligible `__PAGE__.txt` responses under `/en/docs/` and `/zh/docs/`, preserving their original URLs
+and bytes. Other navigation files and all source downloads retain their physical contracts. Native history normalization
 and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,

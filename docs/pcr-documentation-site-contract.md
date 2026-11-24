@@ -164,7 +164,7 @@ this same source-owned handler and forwards its Response. Product probes bind th
 whole transport plus root/English/Chinese original URL responses; these checks do
 not replace the complete browser suite or establish live provider deployment.
 
-PR #38 extends the transport only when tree packing and full/index aliases would
+[Fork PR #38](https://github.com/Candywangx/tiangong-lca-pcr/pull/38) extends the transport only when tree packing and full/index aliases would
 still exceed the file budget after reserving the sealed routing configuration.
 The additional eligible files have the exact Next page-prefetch basename
 `__next.$d$lang.docs.$oc$slug.__PAGE__.txt` under `/en/docs/` or `/zh/docs/`.
