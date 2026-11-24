@@ -182,13 +182,14 @@ test("generate pool rejects invalid pool size, worker faults, and propagates tas
             else if (behavior === "early-close") emitter.emit("close", 1);
             else emitter.emit("message", { type: "ready", pid: emitter.pid, heapLimitBytes: 1024 * 1024 });
           });
-        } else if (msg.type === "pcr" && behavior === "fail-first") {
+        } else if (msg.type === "batch" && behavior === "fail-first") {
+          const first = (msg.items as Array<{ index: number; pcr: { id: string } }>)[0]!;
           setImmediate(() =>
             emitter.emit("message", {
               type: "failure",
-              index: msg.index,
-              pcrId: (msg.pcr as { id: string }).id,
-              error: { name: "Error", message: "boom:" + (msg.pcr as { id: string }).id },
+              index: first.index,
+              pcrId: first.pcr.id,
+              error: { name: "Error", message: "boom:" + first.pcr.id },
             }),
           );
         } else if (msg.type === "stop") {

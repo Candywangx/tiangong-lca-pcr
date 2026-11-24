@@ -46,35 +46,42 @@ process.on("message", (message: unknown) => {
     process.disconnect();
     return;
   }
-  if (
-    !context ||
-    message.type !== "pcr" ||
-    typeof message.index !== "number" ||
-    !Number.isInteger(message.index) ||
-    message.index < 0 ||
-    !isUnknownRecord(message.pcr) ||
-    typeof message.pcr.id !== "string" ||
-    typeof message.pcr.path !== "string"
-  ) {
+  if (!context || message.type !== "batch" || !Array.isArray(message.items)) {
     throw new Error("Invalid PCR generation task");
   }
-  const pcr = message.pcr as unknown as PcrWorkItem;
-  try {
-    const result = withPcrReadContextSession({
-      root: context.root,
-      context: context.readContext,
-      read: () => generatePcrEntry(pcr, context!),
-    });
-    send({ type: "result", index: message.index, pcrId: pcr.id, result });
-  } catch (error) {
-    send({
-      type: "failure",
-      index: message.index,
-      pcrId: pcr.id,
-      error: {
-        name: error instanceof Error ? error.name : "Error",
-        message: error instanceof Error ? error.message : String(error),
-      },
-    });
-  }
+  const items = message.items as Array<{ index: number; pcr: PcrWorkItem }>;
+  withPcrReadContextSession({
+    root: context.root,
+    context: context.readContext,
+    read: () => {
+      for (const item of items) {
+        if (
+          !isUnknownRecord(item) ||
+          typeof item.index !== "number" ||
+          !Number.isInteger(item.index) ||
+          item.index < 0 ||
+          !isUnknownRecord(item.pcr) ||
+          typeof item.pcr.id !== "string" ||
+          typeof item.pcr.path !== "string"
+        ) {
+          throw new Error("Invalid PCR generation batch item");
+        }
+        try {
+          const result = generatePcrEntry(item.pcr as unknown as PcrWorkItem, context!);
+          send({ type: "result", index: item.index, pcrId: item.pcr.id, result });
+        } catch (error) {
+          send({
+            type: "failure",
+            index: item.index,
+            pcrId: item.pcr.id,
+            error: {
+              name: error instanceof Error ? error.name : "Error",
+              message: error instanceof Error ? error.message : String(error),
+            },
+          });
+          return;
+        }
+      }
+    },
+  });
 });

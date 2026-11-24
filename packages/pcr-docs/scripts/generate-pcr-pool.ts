@@ -22,9 +22,10 @@ export interface GeneratePcrPoolOptions {
 interface ChildState {
   readonly child: ChildProcess;
   readonly joined: Promise<number | null>;
+  readonly assigned: Set<number>;
   ready: boolean;
+  dispatched: boolean;
   closed: boolean;
-  index: number | undefined;
 }
 
 export function parseGenerateWorkers(raw: string | undefined): 1 | 2 {
@@ -61,10 +62,12 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
     new URL(import.meta.url.endsWith(".js") ? "./generate-pcr-worker.js" : "./generate-pcr-worker.ts", import.meta.url);
   const createChild = options.createChild ?? fork;
   const children: ChildState[] = [];
+  const batches: Array<Array<{ index: number; pcr: PcrWorkItem }>> = Array.from({ length: workerCount }, () => []);
+  context.pcrs.forEach((pcr, index) => {
+    batches[index % workerCount]!.push({ index, pcr: { id: pcr.id, path: pcr.path, readiness: pcr.readiness } });
+  });
   const outcomes = new Map<number, { result?: PcrEntryResult; error?: Error }>();
-  let next = 0,
-    frontier = 0,
-    firstFailure = Infinity;
+  let frontier = 0;
   let ending = false,
     infrastructureFailure: Error | undefined;
   let wake: (() => void) | undefined;
@@ -89,7 +92,6 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
   function complete(index: number, outcome: { result?: PcrEntryResult; error?: Error }): void {
     if (index < frontier || outcomes.has(index)) throw new Error("Duplicate PCR generation result");
     outcomes.set(index, outcome);
-    if (outcome.error) firstFailure = Math.min(firstFailure, index);
     changed();
   }
   function advance(): Error | undefined {
@@ -101,14 +103,6 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
       frontier++;
     }
     return undefined;
-  }
-  function dispatch(state: ChildState): void {
-    while (state.ready && state.index === undefined && next < context.pcrs.length && next <= firstFailure && !infrastructureFailure) {
-      const index = next++;
-      const pcr = context.pcrs[index]!;
-      state.index = index;
-      send(state, { type: "pcr", index, pcr: { id: pcr.id, path: pcr.path, readiness: pcr.readiness } });
-    }
   }
   function receive(state: ChildState, message: unknown): void {
     try {
@@ -128,28 +122,26 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
         changed();
         return;
       }
-      const index = state.index;
+      const index = typeof message.index === "number" ? message.index : -1;
       if (
         ending ||
         !state.ready ||
-        index === undefined ||
-        message.index !== index ||
-        message.pcrId !== context.pcrs[index]!.id ||
+        !state.assigned.has(index) ||
+        message.pcrId !== context.pcrs[index]?.id ||
         !["result", "failure"].includes(String(message.type))
       ) {
         throw new Error("Unexpected PCR generation result");
       }
+      state.assigned.delete(index);
       if (message.type === "failure") {
         if (!isUnknownRecord(message.error) || typeof message.error.name !== "string" || typeof message.error.message !== "string") {
           throw new Error("Malformed PCR generation failure");
         }
         const failure = new Error(message.error.message);
         failure.name = message.error.name;
-        state.index = undefined;
         complete(index, { error: failure });
         return;
       }
-      state.index = undefined;
       complete(index, { result: message.result as PcrEntryResult });
     } catch (error) {
       rejectInfrastructure(error instanceof Error ? error : new Error(String(error)));
@@ -157,6 +149,7 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
   }
   try {
     for (let number = 0; number < workerCount; number++) {
+      const batch = batches[number]!;
       const child = createChild(workerFile, [], {
         serialization: "advanced",
         stdio: ["ignore", "inherit", "inherit", "ipc"],
@@ -165,9 +158,10 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
       });
       const state: ChildState = {
         child,
+        assigned: new Set(batch.map((item) => item.index)),
         ready: false,
+        dispatched: false,
         closed: false,
-        index: undefined,
         joined: new Promise((resolve) =>
           child.once("close", (code) => {
             state.closed = true;
@@ -198,7 +192,12 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
       let failure = advance();
       if (failure) throw failure;
       if (infrastructureFailure) throw infrastructureFailure;
-      for (const state of children) dispatch(state);
+      for (const [number, state] of children.entries()) {
+        if (state.ready && !state.dispatched) {
+          state.dispatched = true;
+          send(state, { type: "batch", items: batches[number]! });
+        }
+      }
       failure = advance();
       if (failure) throw failure;
       if (infrastructureFailure) throw infrastructureFailure;
@@ -207,7 +206,7 @@ export async function runGeneratePcrPool(context: GeneratePcrPoolContext, option
         wake = resolve;
       });
     }
-    if (next !== context.pcrs.length || outcomes.size || children.some((state) => state.index !== undefined)) {
+    if (outcomes.size || children.some((state) => state.assigned.size > 0)) {
       throw new Error("Incomplete PCR generation inventory");
     }
     ending = true;
