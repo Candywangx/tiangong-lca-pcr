@@ -1,19 +1,15 @@
 import {decodeBrotliSearchPack} from "./search-brotli.ts";
 import {createProviderRuntime} from './provider-runtime.ts';
 import {serializeSiteMetadata} from "../lib/site-wire.ts";
-import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/types.ts";
+import {unknownField,errorMessage} from "../../pcr-core/src/types.ts";
 import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResult} from "../lib/types.ts";
-import type {BuilderManifest} from "../../../builder/lib/types.ts";
 import {compileDocsBrowserAssets} from "./browser-assets.ts";
 import {writeRecordDataPacks} from "./record-data-packs.ts";
-type ClassificationRef={system:string;version:string;code:string;title?:string;mapping_type?:string};
-interface SiteAuthoringManifest extends BuilderManifest {classification_refs?:ClassificationRef[];modules?:Record<string,string[]>}
-type GeneratedRecord=Omit<SitePcrRecord,"slug"> & {slug:[string,string,string]};
+import {generatePcrEntries,parseGenerateWorkers} from "./generate-pcr-pool.ts";
+import type {GeneratedRecord} from "./generate-pcr-entry.ts";
 type GeneratedManifest=Omit<SiteManifest,"records"|"historicalRecords"> & {records:GeneratedRecord[];historicalRecords:GeneratedRecord[]};
 interface SearchDocument {record:SearchResult;text:string}
 import type {GenerationReport} from "./generation-report.ts";
-function checkedManifest(raw:unknown):SiteAuthoringManifest {assertManifest(raw);if(!isUnknownRecord(raw))throw new Error("Manifest must be an object");return raw as SiteAuthoringManifest;}
-function slugFor(pcrPath:string):[string,string,string] {const segments=pcrPath.slice("library/pcrs/".length).split("/");if(segments.length!==3||segments.some(part=>!part))throw new Error("Invalid canonical PCR source path: "+pcrPath);return segments as [string,string,string];}
 function availableLanguages(value:{languages:{available?:string[]}}):string[] {const languages=value.languages.available;if(!languages)throw new Error("PCR languages are not declared");return languages;}
 import fs from "node:fs";
 import path from "node:path";
@@ -26,19 +22,11 @@ import { gzipSync } from "node:zlib";
 import { parseHTML } from "linkedom";
 import {
   listPcrs,
-  createPcrReadContext,
-  withPcrReadContextSession,
-  readPcrDocumentBundle,
   readPcrModuleDocumentBundle,
   readClassificationCoverageSnapshot,
 } from "../../pcr-core/src/index.ts";
 import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
-import { readPcrDocumentHistory } from "../../../builder/lib/pcr-document-history.ts";
 import { readProductIdentity } from "../../../builder/scripts/product-identity.ts";
-import {
-  assertManifest,
-  assertMarkdownFrontmatter,
-} from "../../../builder/lib/schema-contracts.ts";
 import { routeFor, publicLanguage } from "./language-policy.ts";
 import { gettingStartedGuides } from "../lib/getting-started.ts";
 import { categoryTitle } from "./category-titles.ts";
@@ -392,38 +380,6 @@ function renderDocument({
   });
   return { urls, frontmatter: rendered.frontmatter };
 }
-function validateFrontmatter(bundle: ReturnType<typeof readPcrDocumentBundle>, language: string, fm: unknown) {
-  assertMarkdownFrontmatter(fm);
-  if(!isUnknownRecord(fm))throw new Error("Markdown frontmatter must be an object");
-  if (fm.pcr_id !== bundle.manifest.id || fm.language !== language)
-    throw new Error(
-      "Markdown identity mismatch: " + bundle.pcr.path + " " + language,
-    );
-  if (language !== "en-US" && fm.sync_with !== "pcr.en-US.md")
-    throw new Error(
-      "Translation sync source mismatch: " + bundle.pcr.path + " " + language,
-    );
-  const state = unknownField(unknownField(bundle.manifest,"translation_status"),language);
-  if (language !== "en-US" && !state)
-    throw new Error(
-      "Missing declared translation state: " + bundle.pcr.path + " " + language,
-    );
-  if (
-    language !== "en-US" &&
-    fm.translation_status &&
-    fm.translation_status !== state
-  )
-    throw new Error(
-      "Conflicting translation states: " +
-        bundle.manifest.id +
-        " " +
-        language +
-        " " +
-        state +
-        " / " +
-        fm.translation_status,
-    );
-}
 function catalogRecordList(language: string, records: readonly SitePcrRecord[]) {
   return (
     '<ul class="pcr-catalog-list">' +
@@ -557,195 +513,60 @@ async function generate() {
           ...pcr.path.slice("library/pcrs/".length).split("/"),
         ]),
       );
-  const context = createPcrReadContext({ root });
-  withPcrReadContextSession({
-    root,
-    context,
-    read: () => {
-      for (const [number, pcr] of pcrs.entries()) {
-        const bundle = readPcrDocumentBundle({ root, pcrId: pcr.id, context }),
-          m = checkedManifest(bundle.manifest),
-          slug = slugFor(pcr.path);
-        assertManifest(m);
-        const downloads = Object.values(bundle.artifacts).map((a) =>
-            download(a.path, a.bytes),
-          ),
-          urls = Object.fromEntries(
-            bundle.languages
-              .filter((code) => publicLanguage(m, code))
-              .map((code) => [code, urlFor(code, ["pcr", ...slug])]),
-          );
-        const dataPath = "data/" + short(pcr.id) + ".json",
-          data = { manifest: m, structured: bundle.structured };
-        json(dataPath, data);
-        const record: GeneratedRecord = {
-          id: pcr.id,
-          slug,
-          title: m.title,
-          status: m.status,
-          maturity: m.content_maturity,
-          version: m.version ?? null,
-          updatedAt: m.updated_at_utc ?? null,
-          sourcePath: pcr.path,
-          translationStatus: m.translation_status ?? {},
-          readiness: pcr.readiness,
-          urls,
-          pages: {},
-          downloads,
-          dataPath,
-          dataUrl: "/generated/" + dataPath,
-          classificationRefs: m.classification_refs ?? [],
-          modules: m.modules ?? {},
-        };
-        for (const language of bundle.languages) {
-          const artifact = bundle.artifacts["pcr." + language + ".md"]!;
-          validateFrontmatter(
-            bundle,
-            language,
-            parseYaml(
-              /^---\r?\n([\s\S]*?)\r?\n---/u.exec(artifact.text)?.[1] ?? "",
-            ),
-          );
-          if (!publicLanguage(m, language)) continue;
-          const indexable =
-            language === "en-US" ||
-            ["aligned", "reviewed"].includes(m.translation_status[language]!);
-          const alternates = Object.fromEntries(
-            bundle.languages
-              .filter(
-                (code) =>
-                  code === "en-US" ||
-                  ["aligned", "reviewed"].includes(
-                    m.translation_status[code]!,
-                  ),
-              )
-              .map((code) => [code, origin + urls[code]]),
-          );
-          const rendered = renderDocument({
-            artifact,
-            language,
-            slugs: ["pcr", ...slug],
-            extra: {
-              kind: "pcr",
-              pcrId: pcr.id,
-              domain: slug[0],
-              subdomain: slug[1],
-              indexable,
-            },
-            downloads,
-            alternates: indexable ? alternates : {},
-          });
-          validateFrontmatter(bundle, language, rendered.frontmatter);
-          record.pages[language] = rendered.urls;
-        }
-        manifest.records.push(record);
-        const history = readPcrDocumentHistory({
-          root,
-          pcrDir: path.join(root, pcr.path),
-        });
-        for (const artifact of Object.values(history.artifacts)) {
-          const item = download(
-            path.relative(root, artifact.path).split(path.sep).join("/"),
-            artifact.bytes,
-          );
-          if (!record.downloads.some((existing) => existing.url === item.url))
-            record.downloads.push(item);
-        }
-        record.versions = history.releases.map((release) => ({
-          version: release.version,
-          urls: Object.fromEntries(
-            release.languages.map((code) => [
-              code,
-              urlFor(code, ["pcr", ...slug, "versions", release.version]),
-            ]),
-          ),
-        }));
-        for (const release of history.releases) {
-          const releaseManifest=checkedManifest(release.manifest);
-          for (const code of release.languages)
-            if (!codes.includes(code)) {
-              codes.push(code);
-              manifest.languages.push({
-                code,
-                route: routeFor(code),
-                label: new Intl.DisplayNames([code], { type: "language" }).of(
-                  code,
-                )!,
-                htmlLang: code,
-                required: false,
-              });
-            }
-          const historicalSlug = ["pcr", ...slug, "versions", release.version];
-          const historicalUrls = Object.fromEntries(
-            release.languages.map((code) => [
-              code,
-              urlFor(code, historicalSlug),
-            ]),
-          );
-          const historicalDownloads = Object.values(release.artifacts).map(
-            (artifact) =>
-              download(
-                path.relative(root, artifact.path).split(path.sep).join("/"),
-                artifact.bytes,
-              ),
-          );
-          const historicalDataPath =
-            "data/" + short(pcr.id + "@" + release.version) + ".json";
-          const historicalData = {
-            manifest: release.manifest,
-            structured: release.structured,
-          };
-          json(historicalDataPath, historicalData);
-          const historical: GeneratedRecord = {
-            ...record,
-            title: releaseManifest.title,
-            status: releaseManifest.status,
-            maturity: releaseManifest.content_maturity,
-            version: release.version,
-            updatedAt: releaseManifest.updated_at_utc ?? null,
-            sourcePath: pcr.path + "/releases/" + release.version,
-            translationStatus: releaseManifest.translation_status,
-            urls: historicalUrls,
-            pages: {},
-            downloads: historicalDownloads,
-            dataPath: historicalDataPath,
-            dataUrl: "/generated/" + historicalDataPath,
-            classificationRefs: releaseManifest.classification_refs ?? [],
-            modules: releaseManifest.modules ?? {},
-          };
-          for (const code of release.languages) {
-            const raw = release.artifacts["pcr." + code + ".md"]!;
-            const artifact = {
-              ...raw,
-              path: path.relative(root, raw.path).split(path.sep).join("/"),
-            };
-            sourceRoutes.set(artifact.path, historicalUrls[code]!);
-            const rendered = renderDocument({
-              artifact,
-              language: code,
-              slugs: historicalSlug,
-              extra: {
-                kind: "pcr",
-                pcrId: pcr.id,
-                recordVersion: release.version,
-                currentUrl: urls[code] ?? urls["en-US"],
-                currentLanguage: urls[code] ? code : "en-US",
-                domain: slug[0],
-                subdomain: slug[1],
-                indexable: true,
-              },
-              downloads: historicalDownloads,
-              alternates: Object.fromEntries(
-                release.languages.map((language) => [
-                  language,
-                  origin + historicalUrls[language],
-                ]),
-              ),
-            });
-            historical.pages[code] = rendered.urls;
+  const generateWorkers = parseGenerateWorkers(process.env.PCR_DOCS_GENERATE_WORKERS);
+  await generatePcrEntries(
+    {
+      root,
+      stage,
+      origin,
+      sourceDate,
+      modified,
+      tracked,
+      pcrs,
+      onEntry(number, entry) {
+        for (const binding of entry.sourceBindings) {
+          const prior = sourceFiles.get(binding.relative);
+          if (prior && prior.sha256 !== binding.sha256)
+            throw new Error("Source changed: " + binding.relative);
+          if (!prior) {
+            sourceFiles.set(binding.relative, { sha256: binding.sha256, bytes: binding.bytes });
+            manifest.counts.sourceBytes += binding.bytes;
           }
-          manifest.historicalRecords.push(historical);
         }
+        for (const item of entry.downloads) {
+          if (!downloadsBySource.has(item.sourcePath)) {
+            const { sourcePath, ...downloadItem } = item;
+            downloadsBySource.set(sourcePath, downloadItem);
+          }
+          if (!downloadUrls.has(item.url)) {
+            report.downloads.push(item);
+            downloadUrls.add(item.url);
+          }
+        }
+        summaries.pages += entry.summaryCounts.pages;
+        summaries.title_only += entry.summaryCounts.title_only;
+        summaries.context_dropped += entry.summaryCounts.context_dropped;
+        summaries.clipped += entry.summaryCounts.clipped;
+        for (const [artifactPath, entries] of entry.anchors)
+          sourceAnchors.set(artifactPath, new Map(entries));
+        for (const [artifactPath, url] of entry.routes)
+          sourceRoutes.set(artifactPath, url);
+        for (const code of entry.extraLanguages)
+          if (!codes.includes(code)) {
+            codes.push(code);
+            manifest.languages.push({
+              code,
+              route: routeFor(code),
+              label: new Intl.DisplayNames([code], { type: "language" }).of(code)!,
+              htmlLang: code,
+              required: false,
+            });
+          }
+        for (const item of entry.searches) addSearch(item.page, item.text);
+        manifest.pages.push(...entry.pages);
+        report.documents.push(...entry.documents);
+        manifest.records.push(entry.record);
+        manifest.historicalRecords.push(...entry.historicalRecords);
         if ((number + 1) % 50 === 0)
           console.log(
             "Rendered " +
@@ -756,9 +577,10 @@ async function generate() {
               Math.round((Date.now() - started) / 1000) +
               "s).",
           );
-      }
+      },
     },
-  });
+    generateWorkers,
+  );
   // Only authored, pinned translations become real counterparts.
   const guides = gettingStartedGuides.filter(guide => tracked.has(guide.sourcePath));
   const guideAlternates = Object.fromEntries(guides.map(guide => [guide.language, origin + guide.url]));

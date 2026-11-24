@@ -34,7 +34,7 @@ test('sealed browser selects a real bounded inline download and rejects a missin
   assert.throws(()=>findInlineDownload(inspectSiteExport(f.root)),/manifest.yaml/u);
  }finally{f.close();}
 });
-test('site browser requires explicit single root/report arguments without silent skip',()=>{assert.equal(parseSiteBrowserArguments(['--help']),'help');for(const args of [[],['--root','x'],['--report','x'],['--root','x','--report','y','--report','z'],['--root','--report','x'],['--unknown','x']])assert.throws(()=>parseSiteBrowserArguments(args),{code:'SITE_BROWSER_ARGUMENT'});assert.deepEqual(parseSiteBrowserArguments(['--root','x','--report','y']),{root:path.resolve('x'),report:path.resolve('y')});});
+test('site browser requires explicit single root/report arguments without silent skip',()=>{assert.equal(parseSiteBrowserArguments(['--help']),'help');for(const args of [[],['--root','x'],['--report','x'],['--root','x','--report','y','--report','z'],['--root','--report','x'],['--unknown','x'],['--root','x','--report','y','--engine','safari'],['--root','x','--report','y','--engine','chromium','--engine','firefox']])assert.throws(()=>parseSiteBrowserArguments(args),{code:'SITE_BROWSER_ARGUMENT'});assert.deepEqual(parseSiteBrowserArguments(['--root','x','--report','y']),{root:path.resolve('x'),report:path.resolve('y')});assert.deepEqual(parseSiteBrowserArguments(['--root','x','--report','y','--engine','firefox']),{root:path.resolve('x'),report:path.resolve('y'),engines:['firefox']});});
 test('site export validates identity, required routes and deterministic full-tree binding',()=>{const f=fixture();try{const before=inspectSiteExport(f.root);assert.equal(before.routes.length,10);assert.ok(before.availability.some(item=>item.kind==='history'&&!item.present));assert.equal(inspectSiteExport(f.root).treeSha256,before.treeSha256);f.put('en/docs/pcr/a/b/c/index.html','<h1>Changed</h1>');assert.notEqual(inspectSiteExport(f.root).treeSha256,before.treeSha256);f.put('generated/product-release.json','{}');assert.throws(()=>inspectSiteExport(f.root),{code:'SITE_EXPORT_IDENTITY'});}finally{f.close();}});
 test('emitted optional French stays supported and cannot be chosen as an unsupported browser probe',()=>{
  const f=fixture();try{
@@ -179,7 +179,9 @@ test('new exports require declared aliases but explicit archived product identit
 });
 
 test('missing native samples retain a failed browser receipt before any engine launch',async()=>{
- const f=fixture();try{const report=path.join(f.parent,'missing-native-report');await assert.rejects(qualifySiteBrowser({root:f.root,report}),/Missing native/u);const receipt=JSON.parse(readFileSync(path.join(report,'report.json'),'utf8'));assert.equal(receipt.status,'failed');assert.match(receipt.failure,/Missing native/u);assert.deepEqual(receipt.nativeDownloads,[]);assert.deepEqual(receipt.results,[]);}finally{f.close();}
+ for(const engines of [undefined,['webkit'] as SiteBrowserEngine[]]){
+  const f=fixture();try{const report=path.join(f.parent,'missing-native-report');await assert.rejects(qualifySiteBrowser({root:f.root,report,...(engines?{engines}:{})}),/Missing native/u);const receipt=JSON.parse(readFileSync(path.join(report,'report.json'),'utf8'));assert.equal(receipt.status,'failed');assert.match(receipt.failure,/Missing native/u);assert.deepEqual(receipt.nativeDownloads,[]);assert.deepEqual(receipt.results,[]);assert.deepEqual(receipt.engines,engines??['chromium','firefox','webkit']);assert.deepEqual(receipt.pagePrefetchHttp,[]);}finally{f.close();}
+ }
 });
 test('HTTP 200 RSC aliases use verified encoded routes with queries and exact target bytes',async()=>{
  const f=fixture();try{
