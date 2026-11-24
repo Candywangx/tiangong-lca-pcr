@@ -6,14 +6,14 @@ import {fileURLToPath} from 'node:url';
 import {readProductArchive,validateProductManifest,verifyProductArtifacts,verifyProductWebTree} from '../../builder/scripts/product-release.ts';
 import type {ProductIdentity} from '../../builder/scripts/product-identity.ts';
 import type {ArtifactProof,ProductManifest} from '../../builder/scripts/release-types.ts';
-import {prepareSiteBrowserReport,qualifySiteBrowser,verifySiteExportAliases} from './site-browser.ts';
+import {SITE_BROWSER_ENGINES,parseSiteBrowserEngine,prepareSiteBrowserReport,qualifySiteBrowser,verifySiteExportAliases,type SiteBrowserEngine} from './site-browser.ts';
 
 export class SealedWebError extends Error {
   readonly code:string;
   constructor(code:string,message:string,options?:ErrorOptions){super(message,options);this.name='SealedWebError';this.code=code;}
 }
 export interface SealedWebInput {root:string;expectedSource:string;expectedIdentity?:ProductIdentity}
-export interface SealedWebOptions extends SealedWebInput {report:string}
+export interface SealedWebOptions extends SealedWebInput {report:string;engines?:readonly SiteBrowserEngine[]}
 export interface BundleFileBinding extends ArtifactProof {statIdentity:string}
 export interface ExtractedSealedWeb {
   directory:string;
@@ -89,14 +89,18 @@ async function extractSealedWeb<T>(options:SealedWebInput,read:(web:ExtractedSea
 export function parseSealedWebArguments(args:readonly string[]):SealedWebOptions|'help'{
   if(args.length===1&&args[0]==='--help')return 'help';
   const fields:Record<string,string>={};
-  for(let index=0;index<args.length;index+=2){const key=args[index],value=args[index+1];if(!key||!['--bundle','--report','--expected-source'].includes(key)||!value||value.startsWith('--')||fields[key]!==undefined)fail('SEALED_WEB_ARGUMENT','Require exactly --bundle, --report and --expected-source.');fields[key]=value;}
-  if(!fields['--bundle']||!fields['--report']||!fields['--expected-source'])fail('SEALED_WEB_ARGUMENT','All sealed web arguments are required.');expectedSource(fields['--expected-source']);return {root:path.resolve(fields['--bundle']),report:path.resolve(fields['--report']),expectedSource:fields['--expected-source']};
+  for(let index=0;index<args.length;index+=2){const key=args[index],value=args[index+1];if(!key||!['--bundle','--report','--expected-source','--engine'].includes(key)||!value||value.startsWith('--')||fields[key]!==undefined)fail('SEALED_WEB_ARGUMENT','Require --bundle, --report, --expected-source, and optional --engine <chromium|firefox|webkit>.');fields[key]=value;}
+  if(!fields['--bundle']||!fields['--report']||!fields['--expected-source'])fail('SEALED_WEB_ARGUMENT','All sealed web arguments are required.');expectedSource(fields['--expected-source']);
+  let engines:SiteBrowserEngine[]|undefined;
+  if(fields['--engine']!==undefined){try{engines=[parseSiteBrowserEngine(fields['--engine'])];}catch(error){throw new SealedWebError('SEALED_WEB_ARGUMENT',errorMessage(error),{cause:error});}}
+  return {root:path.resolve(fields['--bundle']),report:path.resolve(fields['--report']),expectedSource:fields['--expected-source'],...(engines?{engines}:{})};
 }
 export async function qualifySealedWeb(options:SealedWebOptions){
   expectedSource(options.expectedSource);const root=bundleRoot(options.root),report=prepareSiteBrowserReport(options.report,root);
-  const receipt:{schemaVersion:number;operation:string;expectedSource:string;bundle:string;startedAt:string;completedAt:string;status:string;identity?:ProductIdentity;archive?:ProductManifest['web'];inputFiles?:readonly BundleFileBinding[];tree?:ExtractedSealedWeb['tree'];browserReport?:string;browserCases?:number;nativeDownloadCases?:number;chapterCompatibilityCases?:number;publishedChapterRoutes?:number;staticRouteAliasPairs?:number;extractionDirectory?:string;extractionRemoved:boolean;immutableInputVerified:boolean;failure?:string}={schemaVersion:1,operation:'sealed-product-web-browser-qualification',expectedSource:options.expectedSource,bundle:root,startedAt:new Date().toISOString(),completedAt:'',status:'running',extractionRemoved:true,immutableInputVerified:false};
+  const selectedEngines=options.engines?[...options.engines]:[...SITE_BROWSER_ENGINES];
+  const receipt:{schemaVersion:number;operation:string;expectedSource:string;bundle:string;engines:SiteBrowserEngine[];startedAt:string;completedAt:string;status:string;identity?:ProductIdentity;archive?:ProductManifest['web'];inputFiles?:readonly BundleFileBinding[];tree?:ExtractedSealedWeb['tree'];browserReport?:string;browserCases?:number;nativeDownloadCases?:number;chapterCompatibilityCases?:number;publishedChapterRoutes?:number;staticRouteAliasPairs?:number;extractionDirectory?:string;extractionRemoved:boolean;immutableInputVerified:boolean;failure?:string}={schemaVersion:1,operation:'sealed-product-web-browser-qualification',expectedSource:options.expectedSource,bundle:root,engines:selectedEngines,startedAt:new Date().toISOString(),completedAt:'',status:'running',extractionRemoved:true,immutableInputVerified:false};
   try{
-    await extractSealedWeb(options,async web=>{receipt.identity=web.manifest.identity;receipt.archive=web.manifest.web;receipt.inputFiles=web.inputFiles;receipt.tree=web.tree;const browser=await qualifySiteBrowser({root:web.directory,report:path.join(report,'browser')});receipt.browserCases=browser.results.length;receipt.chapterCompatibilityCases=browser.chapterCompatibility.length;receipt.publishedChapterRoutes=browser.publishedChapterHttp.length;receipt.nativeDownloadCases=browser.nativeDownloads.length;receipt.staticRouteAliasPairs=browser.staticRouteAliases?.pairs.length??0;if(receipt.nativeDownloadCases!==9)fail('SEALED_WEB_DOWNLOADS','Every engine must verify all three native download filenames.');},{directory(directory){receipt.extractionDirectory=directory;receipt.extractionRemoved=false;},inputUnchanged(){receipt.immutableInputVerified=true;}});
+    await extractSealedWeb(options,async web=>{receipt.identity=web.manifest.identity;receipt.archive=web.manifest.web;receipt.inputFiles=web.inputFiles;receipt.tree=web.tree;const browser=await qualifySiteBrowser({root:web.directory,report:path.join(report,'browser'),engines:selectedEngines});receipt.browserCases=browser.results.length;receipt.chapterCompatibilityCases=browser.chapterCompatibility.length;receipt.publishedChapterRoutes=browser.publishedChapterHttp.length;receipt.nativeDownloadCases=browser.nativeDownloads.length;receipt.staticRouteAliasPairs=browser.staticRouteAliases?.pairs.length??0;if(receipt.nativeDownloadCases!==selectedEngines.length*3)fail('SEALED_WEB_DOWNLOADS','Every selected engine must verify all three native download filenames.');},{directory(directory){receipt.extractionDirectory=directory;receipt.extractionRemoved=false;},inputUnchanged(){receipt.immutableInputVerified=true;}});
     receipt.status='passed';return receipt;
   }catch(error){receipt.status='failed';receipt.failure=errorMessage(error);throw error;}
   finally{if(existsSync(path.join(report,'browser/report.json')))receipt.browserReport='browser/report.json';receipt.extractionRemoved=receipt.extractionDirectory===undefined||!existsSync(path.dirname(receipt.extractionDirectory));receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'qualification.json'),JSON.stringify(receipt,null,2)+'\n');}
