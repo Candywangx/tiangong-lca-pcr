@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-11-04
-lastReviewedCommit: 31074a2ca383d458abad6c5823d8c37a8f2645c9
-lastReviewedNote: "PCR #165: owner-reviewed reusable method source/package boundary, complete bilingual context projection, independently pinned consumer identities and honest review/scientific/study states. Existing PCR publication, mappings, catalog and runtime pins retain their contracts; independent source/translation review and final qualification evidence are tracked separately."
+lastReviewedAt: 2026-11-22
+lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
+lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -408,9 +408,11 @@ JavaScript filenames. Browsers receive emitted JavaScript, never TypeScript sour
 
 The `browser` suite is an explicit part of `all`/`root`, using the existing Node
 test runner and pinned Playwright library rather than a second test-runner contract.
-Qualification currently uses exact Playwright 1.64.1; the root dependency, runtime
+Qualification currently uses exact Playwright 1.65.0; the root dependency, runtime
 preflight and receipt version remain coordinated, with fresh engine evidence when
-they change. Install its exact matching engines with `npm run browser:install`; Linux CI uses
+they change. The published 1.65.0 descriptor selects Chromium and headless shell
+revision 1254 (158.0.8127.18), Firefox 1572 (159.0), and WebKit 2388 (27.2).
+Fresh receipts retain the actual launched engine versions. Install its exact matching engines with `npm run browser:install`; Linux CI uses
 Playwright's `install --with-deps` so missing system libraries fail qualification.
 Tests exercise the actual compiled Viewer assets in Chromium, Firefox and WebKit:
 lazy detail fetch, literal filtering, language selection, escaped Markdown,
@@ -531,7 +533,7 @@ missing metadata, document/asset/navigation failures and failed HTTP responses
 remain blocking; case counts and functional assertions are unchanged.
 
 The Playwright [Request contract](https://playwright.dev/docs/api/class-request)
-and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
+and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.65.0/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
 provide request identity and engine cancellation semantics. Exact WebKit strings
 and prefetch evidence were also reproduced against the pinned browser runtime in
 [PCR #106](https://github.com/tiangong-lca/pcr/issues/106#issuecomment-6064168510).
@@ -561,9 +563,9 @@ prefetch rules are unchanged. Receipts retain all original request failures,
 separate expected disabled-script events, asset bindings and policy observations.
 A `csp` request reason alone never proves that a server policy is harmless.
 
-The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crPage.ts#L518-L519)
+The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.65.0/packages/playwright-core/src/server/chromium/crPage.ts#L563)
 disables script execution through the browser protocol; its
-[network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L490)
+[network implementation](https://github.com/microsoft/playwright/blob/v1.65.0/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L544)
 can expose the protocol's blocked reason as failure text. Regression evidence must
 include realistic preload/modulepreload markup, positive native downloads,
 JavaScript-enabled controls and actual CSP/HTTP/hash failures in all three engines.

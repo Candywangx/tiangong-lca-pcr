@@ -1,3 +1,4 @@
+import { parseSourceVerifyWorkers, verifySourceDocuments } from "./verify-source-pool.ts";
 import {createProviderRuntime,verifyProviderRuntimeExport,verifyPublishedChapterAnchors} from './provider-runtime.ts';
 import {verifyStaticRouteAliases} from "./static-route-aliases.ts";
 import {verifySearchAssets} from "./search-assets.ts";
@@ -13,8 +14,6 @@ import { parseHTML, DOMParser } from "linkedom";
 import { verifyHostingContract } from "./hosting-contract.ts";
 import { publicHomeLanguages, canonicalHome } from "../lib/home-policy.ts";
 import {
-  inventoryMarkdown,
-  verifyRenderedBlocks,
   sha256,
   normalizeText,
 } from "./markdown.ts";
@@ -27,6 +26,7 @@ import { gettingStartedGuides, gettingStartedGuide } from "../lib/getting-starte
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
   out = path.join(app, "out");
+const sourceVerifyWorkers = parseSourceVerifyWorkers(process.env.PCR_SOURCE_VERIFY_WORKERS);
 const manifest = parseSiteManifest(
     fs.readFileSync(path.join(app, ".generated/site.json"), "utf8"),
   ),
@@ -132,65 +132,8 @@ for (const record of [...manifest.records, ...(manifest.historicalRecords ?? [])
   const restored = decodeRecordData(JSON.parse(fs.readFileSync(path.join(out, record.dataUrl), "utf8")), record.dataKey);
   requireThat(JSON.stringify(restored) === expected, "Inspector data changed " + record.dataPath);
 }
-for (const source of report.documents) {
-  const original = fs.readFileSync(path.join(root, source.sourcePath), "utf8");
-  const inventory = inventoryMarkdown(original, source.sourcePath).nodes;
-  const rawMapping: unknown = JSON.parse(
-    fs.readFileSync(path.join(app, ".generated", source.inventoryPath), "utf8"),
-  );
-  const rawTargets=unknownField(rawMapping,"anchorTargets");
-  requireThat(isUnknownRecord(rawTargets)&&Object.values(rawTargets).every(value=>typeof value === "string"),"Invalid source anchor mapping");
-  const anchorTargets=rawTargets as Record<string,string>;
-  const resolveLink = (value: string) => {
-    if (value.startsWith("#"))
-      return anchorTargets[decodeURIComponent(value.slice(1))]!;
-    return (
-      report.links.find(
-        (link) => link.source === source.sourcePath && link.original === value,
-      )?.target ?? value
-    );
-  };
-  const pages = manifest.pages.filter(
-    (p) => p.sourcePath === source.sourcePath,
-  );
-  const allIds = pages.flatMap((p) => p.sourceNodeIds);
-  const actualOrder: string[] = [];
-  const orderedSource = inventory
-    .filter((node) => !node.isFootnote)
-    .map((node) => node.id);
-  requireThat(
-    allIds.length === inventory.length &&
-      new Set(allIds).size === inventory.length,
-    "Source coverage mismatch " + source.sourcePath,
-  );
-  for (const page of pages) {
-    const document = readPage(page.url);
-    verifyRenderedBlocks(document, inventory, page.sourceNodeIds, {
-      verifyLinks: true,
-      resolveLink,
-    });
-    const renderedIds = [
-      ...document.querySelectorAll("[data-source-node]"),
-    ].map((node) => node.getAttribute("data-source-node"));
-    requireThat(
-      renderedIds.length === page.sourceNodeIds.length &&
-        renderedIds.every((id) => id!==null&&page.sourceNodeIds.includes(id)),
-      "Unexpected source marker " + page.url,
-    );
-    actualOrder.push(...renderedIds.filter((id):id is string=>id!==null&&orderedSource.includes(id)));
-    requireThat(
-      document.querySelector(
-        '[data-source-document="' + source.sourcePath + '"]',
-      ),
-      "Missing document boundary " + page.url,
-    );
-    parsed.delete(page.url);
-  }
-  requireThat(
-    actualOrder.join("\n") === orderedSource.join("\n"),
-    "Source block order changed " + source.sourcePath,
-  );
-}
+await verifySourceDocuments({app, root, out, origin: manifest.origin, manifest, report,
+  documents: report.documents, parsed, readPage}, sourceVerifyWorkers);
 const publicHomes = publicHomeLanguages(manifest);
 const homeAlternates = Object.fromEntries(
   publicHomes.map((language) => [

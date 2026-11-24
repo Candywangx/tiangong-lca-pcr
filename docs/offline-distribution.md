@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-24
+lastReviewedCommit: 1ca1e3b62ac872f1278c5e05c119c6ebaf30bcc0
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -106,6 +106,18 @@ Canonical PCR/classification bytes, methodology and translation states, reader
 compatibility minimum 0.4.1, Node 24.19.0/npm 12.2.0 construction pins and provider
 Node 24.18.0 remain unchanged. Existing immutable release assets and receipts stay
 intact. Publish only the tag's sealed bundle through the existing unified workflow.
+
+## Product 0.4.11 preparation
+
+Product 0.4.11 distributes the already reviewed Main sources from PCR #161,
+#166 and #173. It includes the candidate PCR batch and its lossless published-link
+compatibility, the source-bound PEF method module and the qualified Playwright
+runtime update. Existing candidate, translation and scientific-review states stay
+attached to their original records. The PEF module retains
+`scientific_approval=false`. Product publication requires the existing complete
+qualification, sealed npm pair, verified production website and stable GitHub
+receipt. The version source and three mirrors advance together; dependency
+resolutions retain the qualified Main graph.
 
 ## Build and transport
 
@@ -360,6 +372,21 @@ The EdgeOne build command runs the dependency-free
 identity, downloads only that canonical GitHub Release's manifest and web archive,
 checks hashes and identity, safely extracts to owned disk scratch and atomically
 hands the verified export to the provider. Routing headers/redirects are retained.
+Before identity validation or artifact download, the importer emits a
+`product-web-runtime` record with Node/libuv versions, raw host CPU/memory values,
+process-available CPU parallelism, constrained memory and currently available
+memory. Node's available-parallelism estimate accounts for affinity and Linux
+cgroup CPU quotas; it is an integer estimate. Raw host counts do not establish a
+build-machine entitlement. A zero native constrained-memory result is recorded
+as null because it means unknown or unconstrained, rather than zero capacity.
+
+The existing output guards emit `build-output-capacity` before and after staging.
+These records reuse the exact guard filesystem snapshots and include mount/device,
+total/free space, allocation unit, complete export allocation estimate, required
+staging capacity and the existing reserve. The post-stage record carries its own
+remaining-space check. Pre-stage or post-stage refusal retains its original
+threshold and error. Diagnostic write failures do not change acceptance or the
+atomic handoff.
 It does not rebuild the frontend. Existing disk/file limits, failure rollback and
 provider asset handoff remain enforced.
 
