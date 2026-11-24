@@ -1,0 +1,55 @@
+commit d5e0403c348b718968946cdb0f73d8d0e6108bb0
+Merge: 1801f54fd 475e04edb
+Author:     Codex PCR Controller <codex@users.noreply.github.com>
+AuthorDate: Tue Nov 24 23:53:18 2026 +0800
+Commit:     Codex PCR Controller <codex@users.noreply.github.com>
+CommitDate: Tue Nov 24 23:53:18 2026 +0800
+
+    Merge upstream main and retain engine and page-prefetch receipts
+
+diff --git a/packages/pcr-docs/scripts/generate.ts b/packages/pcr-docs/scripts/generate.ts
+index 64123257e..dd019ba63 100644
+--- a/packages/pcr-docs/scripts/generate.ts
++++ b/packages/pcr-docs/scripts/generate.ts
+@@ -1,7 +1,7 @@
+ import {decodeBrotliSearchPack} from "./search-brotli.ts";
+ import {createProviderRuntime} from './provider-runtime.ts';
+ import {serializeSiteMetadata} from "../lib/site-wire.ts";
+-import {isUnknownRecord,unknownField,errorMessage} from "../../pcr-core/src/types.ts";
++import {unknownField,errorMessage} from "../../pcr-core/src/types.ts";
+ import type {DocPage,Download,PcrRecord as SitePcrRecord,SiteManifest,SearchResult} from "../lib/types.ts";
+ import {compileDocsBrowserAssets} from "./browser-assets.ts";
+ import {writeRecordDataPacks} from "./record-data-packs.ts";
+diff --git a/scripts/engineering/site-browser.test.ts b/scripts/engineering/site-browser.test.ts
+index 71abdb7e9..0a95c91b3 100644
+--- a/scripts/engineering/site-browser.test.ts
++++ b/scripts/engineering/site-browser.test.ts
+@@ -179,7 +179,9 @@ test('new exports require declared aliases but explicit archived product identit
+ });
+ 
+ test('missing native samples retain a failed browser receipt before any engine launch',async()=>{
+- const f=fixture();try{const report=path.join(f.parent,'missing-native-report');await assert.rejects(qualifySiteBrowser({root:f.root,report}),/Missing native/u);const receipt=JSON.parse(readFileSync(path.join(report,'report.json'),'utf8'));assert.equal(receipt.status,'failed');assert.match(receipt.failure,/Missing native/u);assert.deepEqual(receipt.nativeDownloads,[]);assert.deepEqual(receipt.results,[]);}finally{f.close();}
++ for(const engines of [undefined,['webkit'] as SiteBrowserEngine[]]){
++  const f=fixture();try{const report=path.join(f.parent,'missing-native-report');await assert.rejects(qualifySiteBrowser({root:f.root,report,...(engines?{engines}:{})}),/Missing native/u);const receipt=JSON.parse(readFileSync(path.join(report,'report.json'),'utf8'));assert.equal(receipt.status,'failed');assert.match(receipt.failure,/Missing native/u);assert.deepEqual(receipt.nativeDownloads,[]);assert.deepEqual(receipt.results,[]);assert.deepEqual(receipt.engines,engines??['chromium','firefox','webkit']);assert.deepEqual(receipt.pagePrefetchHttp,[]);}finally{f.close();}
++ }
+ });
+ test('HTTP 200 RSC aliases use verified encoded routes with queries and exact target bytes',async()=>{
+  const f=fixture();try{
+diff --git a/scripts/engineering/site-browser.ts b/scripts/engineering/site-browser.ts
+remerge CONFLICT (content): Merge conflict in scripts/engineering/site-browser.ts
+index d8dd82319..c2722aad9 100644
+--- a/scripts/engineering/site-browser.ts
++++ b/scripts/engineering/site-browser.ts
+@@ -503,11 +503,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
+  const languagePreferences:LanguagePreferenceEvidence[]=[];let nativeSamples:NativeDownload[]=[],inlineSamples:InlineDownload[]=[];
+  const nativeDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[];
+  const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
+-<<<<<<< 1801f54fd (Clarify sheet-dimension evidence and bounded navigation exception)
+- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+-=======
+- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),engines:selectedEngines,source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+->>>>>>> 475e04edb (Merge pull request #190 from tiangong-lca/codex/pcr-ci-perf)
++ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),engines:selectedEngines,source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
+   const boundSource=exported.source.sourceCommit;assert.ok(typeof boundSource==='string');const boundProvider=verifyProviderRuntimeExport(exported.root,boundSource);
+   if(boundProvider?.schemaVersion===2){
