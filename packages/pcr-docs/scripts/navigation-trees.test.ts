@@ -8,7 +8,7 @@ import {createServer} from 'node:http';
 import {gzipSync} from 'node:zlib';
 import {prepareStaticRouteAliases} from './static-route-aliases.ts';
 import {verifyNavigationTrees,planNavigationTrees,applyNavigationPlan,navigationFiles,navigationWebProof,navigationProbeFiles} from './navigation-tree-export.ts';
-import {createNavigationHandler,readNavigationBinding,readNavigationManifest,readNavigationPack,verifyNavigationRow,treeRequestPath} from '../lib/navigation-trees.ts';
+import {createNavigationHandler,readNavigationBinding,readNavigationManifest,readNavigationPack,verifyNavigationRow,treeRequestPath,PREFETCH_NAME,prefetchRequestPath} from '../lib/navigation-trees.ts';
 const hash=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const source='a'.repeat(40),url='/en/docs/pcr/a/b/c/__next._tree.txt',body=Buffer.from('0:{"tree":"完整😀"}\n');
 function fixture(){
@@ -97,4 +97,57 @@ test('complete namespace and bounded product proofs reject missing, extra and su
 test('early rejected HTTP responses release their bodies and abort fetch signals',async()=>{
  for(const mode of ['status','mime','length'] as const){const f=fixture();let cancelled=false,signal:AbortSignal|null|undefined;const loader:typeof fetch=async(_input,init)=>{signal=init?.signal;return new Response(new ReadableStream({cancel(){cancelled=true;}}),{status:mode==='status'?500:200,headers:{'content-type':mode==='mime'?'text/html':'application/json',...(mode==='length'?{'content-length':'1'}:{})}});};
  assert.equal((await createNavigationHandler(f.binding,loader)(new Request('https://example.test'+url)))?.status,503);assert.equal(cancelled,true);assert.equal(signal?.aborted,true);}
+});
+
+test('capacity fallback restores only the designated page prefetches with the original URL spelling',async()=>{
+ const out=fs.mkdtempSync(path.join(os.tmpdir(),'navigation-prefetch-'));
+ function put(name:string,body:string|Buffer){
+  const file=path.join(out,name);
+  fs.mkdirSync(path.dirname(file),{recursive:true});
+  fs.writeFileSync(file,body);
+ }
+ const prefixes=['','en/docs/pcr/','zh/docs/pcr/','en/docs/pcr/physical/'];
+ const name='en/docs/pcr/'+PREFETCH_NAME,physical='en/docs/pcr/physical/'+PREFETCH_NAME;
+ try{
+  put('generated/provider-runtime.json',JSON.stringify({schemaVersion:2,sourceCommit:source,navigationBinding:null}));
+  for(const prefix of prefixes){put(prefix+'index.txt','complete');put(prefix+'__next._tree.txt','tree:'+prefix);}
+  put(name,body);
+  put('zh/docs/pcr/'+PREFETCH_NAME,'zh page');
+  put(physical,Buffer.alloc(1_000_001));
+  put('en/docs/pcr/__next._head.txt','untouched');
+  const plan=planNavigationTrees(out,source,navigationFiles(out),true)!;
+  assert.equal(plan.binding.schemaVersion,2);
+  assert(!plan.removed.includes(physical));
+  applyNavigationPlan(out,plan);
+  const checked=verifyNavigationTrees(out,source,true)!;
+  const proof=navigationWebProof(checked);
+  assert.equal(proof.samples.length,5);
+  assert.equal(navigationProbeFiles(proof).length,plan.added.length);
+  assert.equal(fs.existsSync(path.join(out,name)),false);
+  assert.equal(fs.statSync(path.join(out,physical)).size,1_000_001);
+  assert.equal(fs.readFileSync(path.join(out,'en/docs/pcr/__next._head.txt'),'utf8'),'untouched');
+  const calls:string[]=[];
+  const handler=createNavigationHandler(checked.binding,async input=>{
+   const pathname=new URL(String(input)).pathname;
+   calls.push(pathname);
+   return new Response(fs.readFileSync(path.join(out,pathname)),{headers:{'content-type':'application/json'}});
+  });
+  const origin='https://example.test/';
+  assert.equal(await handler(new Request(origin+physical)),undefined);
+  assert.deepEqual(calls,[]);
+  for(const url of [origin+name,origin+'en/docs/pcr/'+encodeURIComponent(PREFETCH_NAME)+'?_rsc=a']){
+   const response=await handler(new Request(url));assert.ok(response);
+   assert.equal(response.status,200);assert.deepEqual(Buffer.from(await response.arrayBuffer()),body);
+  }
+  const head=await handler(new Request(origin+name,{method:'HEAD'}));
+  assert.equal(head?.headers.get('content-length'),String(body.length));
+  assert.equal((await head?.arrayBuffer())?.byteLength,0);
+  assert.equal(calls.length,2);
+  assert.equal(prefetchRequestPath('/generated/raw/'+PREFETCH_NAME),undefined);
+  assert.equal(prefetchRequestPath('/en/docs/pcr/__next._head.txt'),undefined);
+  put(name,'shadow');
+  assert.throws(()=>verifyNavigationTrees(out,source,true),/Page prefetch inventory/);
+  fs.unlinkSync(path.join(out,name));fs.unlinkSync(path.join(out,physical));
+  assert.throws(()=>verifyNavigationTrees(out,source,true),/Page prefetch inventory/);
+ }finally{fs.rmSync(out,{recursive:true,force:true});}
 });

@@ -1,5 +1,6 @@
 import {createProviderMiddleware} from '../../middleware.ts';
-import {NAVIGATION_BINDING_FILE} from '../../packages/pcr-docs/lib/navigation-trees.ts';
+import {NAVIGATION_BINDING_FILE,PREFETCH_NAME,prefetchRequestPath} from '../../packages/pcr-docs/lib/navigation-trees.ts';
+import {navigationWebProof,verifyNavigationTrees,type NavigationProbe} from '../../packages/pcr-docs/scripts/navigation-tree-export.ts';
 import {verifyProviderRuntimeExport,verifyProviderRuntimeSource,providerRuntimeSourceRoot,type ProviderRuntime} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -460,17 +461,43 @@ export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserE
  return results;
 }
 
+async function checkPagePrefetchResponses(origin:string,samples:readonly NavigationProbe[]):Promise<void>{
+ for(const sample of samples){
+  const literal=sample.path.replace(encodeURIComponent(PREFETCH_NAME),PREFETCH_NAME);
+  for(const url of [sample.path,literal+'?_rsc=sealed-prefetch']){
+   const response=await fetch(origin+url,{redirect:'error'});
+   assert.equal(response.status,200);
+   assert.equal(response.headers.get('content-type'),'text/plain; charset=utf-8');
+   assert.equal(response.headers.get('x-content-type-options'),'nosniff');
+   assert.equal(response.headers.get('cache-control'),'public, max-age=0, must-revalidate');
+   const body=Buffer.from(await response.arrayBuffer());
+   assert.equal(body.length,sample.bytes);
+   assert.equal('sha256:'+hash(body),sample.sha256);
+  }
+  const response=await fetch(origin+literal,{method:'HEAD',redirect:'error'});
+  assert.equal(response.status,200);
+  assert.equal(response.headers.get('content-length'),String(sample.bytes));
+  assert.equal((await response.arrayBuffer()).byteLength,0);
+ }
+}
+
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.64.1')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.64.1.');
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
  const chapterCompatibility:ChapterCompatibilityEvidence[]=[];
  const publishedChapterHttp:{from:string;to:string;sha256:string}[]=[];
+ const pagePrefetchHttp:NavigationProbe[]=[];
  const languagePreferences:LanguagePreferenceEvidence[]=[];let nativeSamples:NativeDownload[]=[],inlineSamples:InlineDownload[]=[];
  const nativeDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[];
  const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
   const boundSource=exported.source.sourceCommit;assert.ok(typeof boundSource==='string');const boundProvider=verifyProviderRuntimeExport(exported.root,boundSource);
+  if(boundProvider?.schemaVersion===2){
+   const navigation=verifyNavigationTrees(exported.root,boundSource,true)!;
+   const prefetch=navigationWebProof(navigation).samples.filter(sample=>prefetchRequestPath(sample.path));
+   await checkPagePrefetchResponses(origin,prefetch);pagePrefetchHttp.push(...prefetch);
+  }
   if(boundProvider)for(const route of boundProvider.routes){const response=await fetch(origin+route.from+'?compat=a+b&compat=%2F');assert.equal(response.status,200);const body=Buffer.from(await response.arrayBuffer()),expected=readRegular(exported.root,decodeURIComponent(route.to.slice(1))+'index.html');assert.ok(body.equals(expected),'Rewritten published document differs from target: '+route.from);publishedChapterHttp.push({from:route.from,to:route.to,sha256:hash(body)});}
   for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
    try {const chapterSource=exported.source.sourceCommit;assert.ok(typeof chapterSource==='string');const chapterProof=verifyProviderRuntimeExport(exported.root,chapterSource);if(chapterProof)chapterCompatibility.push(...await checkPublishedChapters(browser,name,origin,chapterProof,report));

@@ -19,7 +19,7 @@ This is a transparent technology synthesis, not one SKU, recipe, plant or contem
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.furniture-other-transportable-goods-n-e-c.uv-finished-jute-backed-linoleum-rolls |
-| classification_refs | CPC 3.0 38930; narrower product and route boundary |
+| classification_refs | Accepted narrower CPC 3.0 38930 product and route |
 | covered_products | Complete compact woven-jute-backed linoleum flooring rolls with fully factory-cured waterborne UV finish |
 | excluded_products | PVC/vinyl; bitumen/roofing/waterproof felt; unfinished binder; separate backing; foam/acoustic/click composites; furniture linoleum; installed floor; purchased-finished-roll repacking |
 | representative_product | One specified compact roll grade with oxidized linseed-oil/rosin binder; actual declared tall oil and each flour/filler/pigment; woven jute and a double-layer whole waterborne UV formulation system; no fixed recipe or size |

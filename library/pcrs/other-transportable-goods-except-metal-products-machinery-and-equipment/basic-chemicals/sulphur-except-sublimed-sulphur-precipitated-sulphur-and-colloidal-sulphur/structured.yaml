@@ -1,10 +1,1408 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34520"
-  title: "Sulphur, except sublimed sulphur, precipitated sulphur and colloidal sulphur"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.sulphur-except-sublimed-sulphur-precipitated-sulphur-and-colloidal-sulphur"
+  classification_refs: "CPC 3.0:34520, accepted narrower association for the specified bulk molten refinery-recovered elemental sulfur"
+  covered_products: "Bulk molten refinery-recovered elemental sulfur, air-degassed without additives as required"
+  excluded_products: "All exclusions in section 1; no entire-leaf claim"
+  representative_product: "Accepted bulk molten elemental sulfur"
+  production_route: "Air-fed Claus furnace, catalytic converters and condensers, thermal incineration; additive-free air degassing and heated delivery"
+  market_state: "Molten bulk, declared temperature, purity, moisture and dissolved H2S"
+functional_unit:
+  what: "Supply the declared elemental sulfur product for further chemical manufacture"
+  how_much: "1 kg accepted net molten product"
+  how_well: "The actual contract acceptance specification; purity and impurity tests, not a universal assumed concentration"
+  how_long_or_cycle: "One gate-delivery event within a declared representative reporting period"
+  reference_flow_link: "sulfur_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "foreground_system_boundary"
+      rule: "Include reaction, reheating, condensation, waste-heat boilers, additive-free air degassing, heated storage/loading, tailgas incineration, fugitive losses and attributable utility/waste interfaces. Consolidate these stages into sru; retain separate stage meters and internal links with identical endpoint amounts."
+      source_ids:
+        - sulphur-degassing-1994
+        - ec-ref-bref-2015
+        - epa-ap42-sulfur-2015
+    - rule_id: boundary_route
+      applies_to: "foreground_system_boundary"
+      rule: "Tailgas is incinerated without reductive or scrubber TGTU in this route. Incineration changes sulfur species, not total sulfur removal. If actual abatement, oxygen enrichment, additives, onsite wastewater treatment or another fuel is present, expand the physical map and atomic rows before using this PCR."
+      source_ids:
+        - ec-ref-bref-2015
+        - epa-ap42-sulfur-2015
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "| boundary_first_release | Fix the reference gate at the first externally accepted bulk molten refinery-product handoff after the declared recovery, degassing, heated holding and loading stages. Record first saleable production release R separately from accepted net gate delivery Q. Internal tank movements, trading, title transfers and resale are not new production. Identify the actual refiner, recovery operator, outsourced degassing/storage/loading provider and physical receiver, their locations, timestamps, meters and responsibility cutoffs. Include pre-gate provider heat, losses, stocks, transport and services once, reconciling any supplier dataset already covering them. Post-gate receiving terminal storage, transport and forming are outside this product gate. Public producer and receiver documents do not establish a trading link between them. Unknown handoff, service scope or supplier coverage prevents a complete unit result. | tesoro-molten-sulfur-2018; mmlp-sulfur-services-2025 | | boundary_bulk_equipment | Bulk molten delivery uses no disposable product packaging or pallet pool. Tanker tare is excluded from product kg; attributable equipment/transport service burdens within the gate remain included once. If the actual system uses drums, bags or pallets, this bulk-only inventory is insufficient: define each component as an atomic exchange and reconcile purchases, first non-purchased external receipts (including incoming goods, loans and free transfers regardless of supplier coverage), genuine returns traced to the same item previously dispatched from this site, outward movements and opening/closing stock. Assign each physical movement and each actually incurred purchase/transport/service burden once; absent supplier coverage stays unresolved. | mmlp-sulfur-services-2025; jrc-ilcd-lci-2010 |"
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Measured H2S-rich refinery amine-regenerator acid gas at the SRU inlet and declared utility interfaces"
+  starting_condition_role: "foreground recovery input, not burden-free natural resource"
+  product_classification_scope: "CPC 3.0 34520, refinery Claus molten subset"
+  recursive_input_rule: "Purchased sulfur is outside this recovery-only route; internal sulfur recirculation is not a new product input. Independently purchased same-category sulfur requires separate upstream dataset and conditioning scope."
+  upstream_dataset_requirement: "Connect actual acid-gas preparation, utilities, catalyst manufacture and waste treatment; declare inherited refinery allocation. Do not recreate refinery throughput or credit desulfurisation twice."
+  disclosure: "Gate-to-gate recovery plus identified upstream/background links; report missing links, period, physical route, utility returns and co-product functions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bulk molten refinery-recovered elemental sulfur"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "site and refinery feed origin"
+    - "acid-gas composition"
+    - "Claus stage count"
+    - "incinerator configuration"
+    - "catalyst grade"
+    - "additive-free air degassing route"
+    - "product purity and moisture"
+    - "dissolved H2S/polysulfides"
+    - "delivery temperature"
+    - "acceptance specification"
+    - "utility supply/return conditions"
+    - "allocation and upstream burden boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use accepted net product mass excluding transport equipment and tare; purity and moisture are measured attributes, not allocation shares."
+  - id: same_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "measured row reference property"
+      uuid: ""
+    required_unit: "row unit"
+    rule: "Every row is per 1 kg reference flow; collect all attributable exchanges over the same reporting period and divide by accepted net sulfur-product output."
+  - id: gas_volume
+    applies_to: "natural_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Supplier volume basis, T/P, wet/dry composition and Z must match actual meter conversions before background linkage; never infer density from a secondary property coefficient."
+  - id: steam_basis
+    applies_to: "steam_import; steam_export"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve steam mass and actual supply/return enthalpy ledger separately. Unknown delivered usable heat remains unresolved; no mass-to-MJ default."
+process_map:
+  - id: sru
+    name: "Claus recovery, tailgas incineration and molten delivery"
+    inclusion: "required"
+    inclusion_condition: "Route limited by section 1"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted product"
+process_inventory:
+  - id: sru
+    label: "Claus recovery, tailgas incineration and molten delivery"
+    inputs:
+      product:
+        - row_id: acid_gas
+          role: "Refinery H2S-rich acid gas mixture"
+          name: "Refinery H2S-rich acid gas mixture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the whole amine-regenerator acid-gas mixture, its water and all gas components. The H2S component is not a second feed exchange. A component-mass H2S identity cannot represent the whole H2S/CO2/H2O/N2 mixture; retain measured component masses and their wet/dry analytical basis, including identified hydrocarbons and other carriers. Exclude ammonia-rich sour-water-stripper gas."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Meter imported electricity for blowers, pumps, controls and handling, recording voltage, geography, supplier and generation mix. Use the technical Energy property f6811440-ee37-11de-8a39-0800200c9a66 and Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 for the meter ledger: 1 kWh = 3.6 MJ. The actual supplier flow and its native reference property remain unresolved; a shared energy unit group does not establish net calorific value."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: natural_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record gaseous pipeline natural gas separately for pilot flames, reheating and incineration. Use supplier-compatible m3 with temperature, pressure, wet/dry composition and compressibility; the database secondary mass coefficient is not a density. Require the actual supplier mixture and native property/unit before linkage. A mass-based high-pressure gas record cannot be used as a volume-based interface without a verified state/composition conversion."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: refinery_fuel_gas
+          role: "Refinery fuel gas mixture"
+          name: "Refinery fuel gas mixture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual refinery fuel gas supply. Record the whole mixture and composition; do not substitute pure methane or generic liquid fuel. Keep combustion emissions in this foreground when burning occurs here."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: boiler_feed_water
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record actual de-ionised boiler makeup water; imported condensate is separate. No default purity or treatment yield is assumed."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df413bba-3c03-412b-a80a-c6082b6b9b33"
+          property_unit: "Mass / kg"
+          description: "Record cooling water crossing the unit boundary, its supply quality, temperature and actual mass; document utility return separately. Internal circulating throughput is not fresh consumption."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: steam_import
+          role: "Steam, in chemical industry"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record imported steam for reheating, sulfur tracing or additive-free air degassing. Mass identity does not establish usable heat: record actual pressure, temperature, dryness and condensate-return enthalpy and match the provider."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: condensate_import
+          role: "Returned steam condensate for boiler feed"
+          name: "Returned steam condensate for boiler feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only condensate imported across this unit boundary; measure quality and mass. Internal steam condensation is an internal link, not a second imported input."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: claus_catalyst
+          role: "Shaped activated-alumina Claus catalyst"
+          name: "Shaped activated-alumina Claus catalyst"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Scope is an activated-alumina catalyst grade. Record manufacturer, SKU, support, binders, activation state and replacement mass over its campaign. Pure Al2O3 is not the complete catalyst; titania or other catalyst routes require a separately supported adaptation."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_catalyst
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: combustion_air
+          role: "air"
+          name: "air"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa4-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure air drawn from the atmosphere for reaction, incineration and air degassing. Use dry/wet air mass reconciled with actual flow, composition and density; exclude purchased oxygen enrichment."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+    outputs:
+      product:
+        - row_id: sulfur_product
+          role: "Bulk molten refinery-recovered elemental sulfur"
+          name: "Bulk molten refinery-recovered elemental sulfur"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One bulk molten accepted product leaves this integrated unit after required additive-free air degassing. Exclude tanker tare and downstream forming. Declare sulfur purity, moisture, dissolved H2S/polysulfides, delivery temperature and acceptance specification; no universal grade limit is imposed. Qualifiers must accompany every foreground dataset. Reference mass is the accepted whole chemical product; dry elemental-S content is a separately reported property, not a silent change of denominator. The declared reference is one concrete whole-product mass interface; its product UUID remains unresolved. Mass support does not certify phase, Claus origin, purity or geography. Record molten delivery and actual refinery route separately; neither a crude-sulfur grade nor a mineral/pyrite or rubber-compounding route can be inferred from the category label."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids:
+                - sulphur-degassing-1994
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: steam_export
+          role: "Steam, in chemical industry"
+          name: "Steam, in chemical industry"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered steam delivered to a named external utility user, separately from imported steam. Only usable exported enthalpy at the receiving conditions can support a co-product function; internal use or venting earns no export credit."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: condensate_return
+          role: "Steam condensate returned to utility supplier"
+          name: "Steam condensate returned to utility supplier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure supplier return separately; retain mass and return enthalpy. Do not count return again as fresh-water discharge."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: cooling_return
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df413bba-3c03-412b-a80a-c6082b6b9b33"
+          property_unit: "Mass / kg"
+          description: "Record uncontaminated cooling-water return to the utility supplier with temperature and mass. Purge sent for treatment is a separate waste row; direct environmental discharge requires its own receiving-medium exchanges."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+      waste:
+        - row_id: spent_claus_catalyst
+          role: "Spent activated-alumina Claus catalyst"
+          name: "Spent activated-alumina Claus catalyst"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure the removed catalyst with retained sulfur, moisture and contamination; record destination, hazard classification and treatment. No metal recovery yield or substitute catalyst is assumed."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: boiler_blowdown
+          role: "Sulfur-recovery boiler blowdown water"
+          name: "Sulfur-recovery boiler blowdown water"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record blowdown mass, dissolved solids and treatment destination; retain wet mass and dry dissolved material separately, without treating pollutant components as duplicate wastewater shipments."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: acidgas_knockout
+          role: "Refinery acid-gas knockout aqueous condensate"
+          name: "Refinery acid-gas knockout aqueous condensate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When liquid is separated at the declared inlet, record water, H2S and hydrocarbon contamination, measured mass and sour-water treatment interface. It is not clean steam condensate."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: cooling_purge
+          role: "Sulfur-recovery cooling-water purge"
+          name: "Sulfur-recovery cooling-water purge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include actual utility purge sent for treatment; record chemistry, temperature, wet mass and destination; exclude cooling return already recorded."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: sulfur_residue
+          role: "Sulfur-pit contaminated solid residue"
+          name: "Sulfur-pit contaminated solid residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include unrecovered pit cleanout material sent off site; record sulfur, catalyst fines, water and receiver. Recovered sulfur reused internally is not an external waste or second saleable output."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+      elementary:
+        - row_id: so2_air
+          role: "sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure actual SO2 after final oxidation; the sulfur-oxides aggregate is not this species. Do not use recovery factors as default emissions or assume complete oxidation without evidence."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-method-6-2017
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: h2s_air
+          role: "hydrogen sulfide"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measure H2S escaping final stack, pit, degassing and loading; routed pit off-gas is counted only at its final release. Product-dissolved H2S is not an atmospheric release."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-method-15-2017
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: cos_air
+          role: "Carbonyl sulfide"
+          name: "Carbonyl sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "cb28e592-6d08-4cfc-8696-74d788f55175"
+          property_unit: "Mass / kg"
+          description: "Record carbonyl sulfide CAS 463-58-1 actually released after controls; unrelated COS-like compounds are rejected."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-method-15-2017
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: cs2_air
+          role: "carbon disulphide"
+          name: "carbon disulphide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9245-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record carbon disulfide CAS 75-15-0 actually released after controls, separately from COS and H2S."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - epa-method-15-2017
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: co_air
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record carbon monoxide mass of fossil origin from combustion and process gas, not CO2-equivalent mass."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: co2_air
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include fossil CO2 entering with acid gas and released plus newly formed combustion/process CO2; avoid counting gas carbon twice. No biogenic input is within this route. If detected, expand the inventory with a separate biogenic CO2 row instead of deleting it."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: no_air
+          role: "nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured nitrogen monoxide species mass. If only NOx as NO2-equivalent is available, retain the original observation and unresolved speciation; do not enter it as NO mass."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: no2_air
+          role: "nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96e5-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured nitrogen dioxide species mass; do not duplicate NOx aggregate, or include N2O as NOx."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: methane_air
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil methane measured in stack gas, fuel leaks or loading fugitive gas. Total hydrocarbon as propane is not methane mass; other identified hydrocarbons require their own atomic rows."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: water_vapour_air
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record water vapor actually crossing to outdoor air from final stack and declared utilities, including reaction water. Distinguish feed humidity, evaporation and returned liquid water."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: pm_air
+          role: "Particulate matter, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on measured residual particulate emissions; this row is total mass with size unspecified. If size-resolved data exist replace this total by disjoint PM2.5, PM2.5–PM10 and >PM10 rows with verified identities. Never add overlapping fractions or include collected fines."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: sulfur_vapour_air
+          role: "sulfur"
+          name: "sulfur"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "2905c658-6556-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Conditional on residual elemental sulfur vapor after the final control or handling point. Restrict this row to vapor; sulfur-bearing particles stay in PM and their composition is a balance attribute, not a second counted mass."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: n2_air
+          role: "dinitrogen"
+          name: "dinitrogen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aad2-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record molecular N2 actually leaving final stack and declared vents from feed and air. Preserve its measured dry/wet gas basis and gross mass even when it has no impact factor; never substitute NOx or a default air fraction."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+        - row_id: o2_air
+          role: "oxygen"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9745-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual residual molecular O2 leaving final stack and declared vents. Use measured oxygen fraction and corresponding gas quantity; retain consumed oxygen through the elemental O balance, without adding a second oxygen input to the air exchange."
+          amount:
+            expression: "Measure through the collection protocol and divide by accepted net product mass for the same period; document evidence of absence rather than entering zero for missing data."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - ec-ref-bref-2015
+                - epa-ap42-sulfur-2015
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep recovery-stage direct burdens separate from shared refinery services; first investigate subdivision or system expansion, then a justified relevant physical relationship, finally another justified relationship such as period-specific economic value. Record rejected alternatives, function/basis and sensitivity. Do not use sulfur/steam mass ratio as an unexamined physical relationship."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_ledger
+    applies_to: "foreground_burden_allocation"
+    rule: "Preserve physical outputs at their measured amounts. Allocate only shared environmental burdens in a separate ledger; fractions close to one within declared precision. Do not multiply physical sulfur/steam/waste outputs by shares, or both allocate and subtract the same steam substitution credit. No credit for hypothetical avoided sulfur emissions or assumed refinery desulfurisation service."
+    source_ids:
+      - ec-pef-2021
+      - ec-ref-bref-2015
+  - rule_id: allocation_upstream
+    applies_to: "foreground_burden_allocation"
+    rule: "An acid gas by-product or waste designation alone never establishes zero upstream burden. State the refinery boundary and inherited allocation decision; retain treatment responsibility and background consistency. Export steam requires a real receiver and compatible useful-energy definition before claiming a function."
+    source_ids:
+      - ec-pef-2021
+      - ec-ref-bref-2015
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "sru"
+      flow_role: "accepted product"
+      record_type: "measured_record"
+      raw_fields: "SKU; lot; delivery temperature; gross/tare; accepted net product mass; dry elemental-S assay and method; moisture and method; dissolved H2S and hydrogen polysulfides separately; sample point/time; seal and sample mass; elapsed time to analysis; inventory opening/closing; rejected lots ; matched route/grade/state period and unique lot history; first production release R; outward molten product D_gross before return netting; actual received returns U; original dispatch/burden reversal; unique accepted net delivery Q; opening/closing raw/WIP/FG mass and original-unit per-exchange carried burden vectors; failed/zero-output/idle/cleaning/rework records; row_id; current-activity basis (gross receipts or stock-reconciled issues/consumption); linked raw receipt/issue/return reconciliation IDs; raw-stock adjustment already applied flag; original-unit same-exchange vector/lot/stage provenance; physical return U versus original delivery/burden reversal IDs; refiner and physical receiver; first accepted handoff location/time/meter; outsourced pre-gate supplier scope, stocks, heat, loss and covered service exchanges"
+      collection_method: "Use calibrated loading mass meters or traceable calibrated weighbridge records and lot acceptance tests; reconcile tanks, dispatch and stock change. For dissolved H2S/H2Sx use promptly sealed, weighed sulfur samples and separately calibrated liquid-sulfur FTIR responses described in sulphur-degassing-1994, p.44; preserve raw spectra and sampling/analysis delay. This is not an elemental-S purity or moisture assay, nor a gas-space H2S measurement. Supply the applicable matrix-specific elemental-S and moisture procedures before asserting analytical completeness. Preserve all raw mass/acceptance/carried-burden records undivided, distinguish actual accepted net delivery Q from first release R and retain complete failed/zero-output campaign records. period_normalization owns the sole reporting division."
+      unit: "kg"
+      frequency: "each delivery and lot"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; laboratory method; acceptance and dispatch records; first release and physical handoff; outsourced supplier coverage and once-only burden ledger"
+    - protocol_id: cp_feed
+      process_id: "sru"
+      flow_role: "acid gas mixture"
+      record_type: "measured_record"
+      raw_fields: "volume; T/P; Z; wet/dry composition; H2S; CO2; H2O; N2; identified hydrocarbons and other gases; composition closure; molecular basis; analytical method and calibration; density; period; refinery origin"
+      collection_method: "Continuously meter inlet gas and sample actual composition with a validated gas analysis; convert to mixture mass from measured state/composition, preserving separate component masses. Establish an actual analytical procedure for the complete inlet matrix, including H2O and N2; reduced-sulfur GC alone does not establish complete feed composition."
+      unit: "kg"
+      frequency: "continuous plus representative composition sampling"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; sampling plan; gas chromatograms; upstream allocation statement"
+    - protocol_id: cp_utilities
+      process_id: "sru"
+      flow_role: "electricity and each fuel separately"
+      record_type: "measured_record"
+      raw_fields: "meter id; stage; electricity kWh; gas actual and standard m3; T/P; Z; composition; NCV/GCV; supplier reference basis; stock and leaks"
+      collection_method: "Use calibrated submetering and delivery reconciliation; keep each fuel separate and preserve supplier unit/conversion definitions; reconcile shared utilities with a documented attribution."
+      unit: "MJ; m3; kg"
+      frequency: "continuous meter totals and each delivery"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meters; supplier basis; conversion and attribution records"
+    - protocol_id: cp_water
+      process_id: "sru"
+      flow_role: "each supply and return separately"
+      record_type: "measured_record"
+      raw_fields: "source; supply quality; mass; volume; density; temperature; return; purge; inventory"
+      collection_method: "Meter each boundary inlet and return separately; reconcile water inventory and steam ledger. Circulation flow and makeup are distinct; classify receiving utility versus environmental release."
+      unit: "kg"
+      frequency: "continuous totals and sample campaigns"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; water analysis; utility receiving record"
+    - protocol_id: cp_steam
+      process_id: "sru"
+      flow_role: "imported and exported steam separately"
+      record_type: "measured_record"
+      raw_fields: "mass; P; T; dryness; enthalpy; inlet/return conditions; condensate mass; external receiver; internal use; vents"
+      collection_method: "Meter both directions independently; derive enthalpy from traceable actual state and reconcile condensate return. Declare receiver-compatible net delivered heat; unknown states remain missing."
+      unit: "kg"
+      frequency: "continuous totals and operating-state records"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; actual state; receiver and property basis"
+    - protocol_id: cp_catalyst
+      process_id: "sru"
+      flow_role: "activated-alumina catalyst"
+      record_type: "measured_record"
+      raw_fields: "manufacturer; SKU; formulation; support; binder; charge; replacement; operating campaign; grade; stage"
+      collection_method: "Weigh actual new charges and removed material; prorate campaign replacement against the documented sulfur production covered by that campaign, rather than a recipe default."
+      unit: "kg"
+      frequency: "each charge/replacement"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "purchase; grade certificate; replacement and campaign attribution"
+    - protocol_id: cp_air
+      process_id: "sru"
+      flow_role: "atmospheric air"
+      record_type: "measured_record"
+      raw_fields: "blower flow; P; T; humidity; composition; density; degassing air; period"
+      collection_method: "Meter ambient air at actual state and convert volume to mass with actual density, including process and degassing air; retain carrier N2/O2 in the physical gas balance."
+      unit: "kg"
+      frequency: "continuous/representative operating measurements"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "blower meter; actual state and conversion"
+    - protocol_id: cp_waste
+      process_id: "sru"
+      flow_role: "each waste separately"
+      record_type: "measured_record"
+      raw_fields: "waste id; wet mass; dry solids; sulfur; water; contamination; hazardous status; receiver; treatment; campaign"
+      collection_method: "Weigh each segregated shipment and sample actual composition; reconcile stock changes and campaign waste; do not duplicate constituents as shipments or assume generic treatment."
+      unit: "kg"
+      frequency: "each shipment and representative sampling"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing; analysis; waste transfer and treatment evidence"
+    - protocol_id: cp_emissions
+      process_id: "sru"
+      flow_role: "each atmospheric species separately"
+      record_type: "measured_record"
+      raw_fields: "release point; species/CAS; phase; size fraction; concentration; detection limit; dry/wet gas flow; T/P; O2 correction; duration; bypass; uncertainty"
+      collection_method: "For final stack H2S/COS/CS2 use EPA Method 15 GC/FPD with its sample-line recovery, CO/CO2 interference, moisture and calibration checks; for SO2 use Method 6 separated absorption/titration with its interference controls or a documented matrix-validated equivalent. These methods do not quantify elemental sulfur vapor or prove gas/particle separation. Use actual validated stack/fugitive measurements with matched gas-flow basis and operating coverage; document a separate applicable method for each remaining species and release point. Convert species concentration and flow to actual mass; preserve raw total NOx/THC data without pretending they resolve species. Include startup, shutdown and bypass."
+      unit: "kg"
+      frequency: "continuous SO2/gas-flow where available; representative tests and fugitive assessment"
+      temporal_coverage: "declared representative period and same product coverage"
+      site_scope: "recovery unit and declared utility interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "method; instrument calibration; sampling coverage; detection limits; speciation and uncertainty"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Q is unique positive actual accepted net molten-product delivery kg at the declared recovery-unit gate, excluding tare; first production release R is a separate record. Use the complete matched route/grade/state period, including failed/zero-output, startup/shutdown, idle, turnaround, rejected, cleaning and rework activity. Reconcile physical molten/WIP/FG stocks, outward dispatch D_gross before return netting, actual received returns U and losses/removals separately; derive net accepted Q once without double returns. Construct each original-unit attributable burden numerator from the once-reconciled current-activity contribution plus separately evidenced opening WIP/FG carried vectors and traced return carry after original reversal, minus independently evidenced closing WIP/FG carry and justified other-cofunction assignments. Preserve full physical sulfur/steam/waste/gas outputs independently of burden shares; physical stock kg is not an energy/burden vector. period_normalization alone reports numerator / Q after conversion/carry attribution; all cards/protocol aggregation labels denote that same operation, never collection division. For Q<=0 or unresolved cohort/carry attribution retain all raw burdens/stocks and report no unit result; do not erase failed campaigns or borrow another cohort denominator. This accounting clarification supplies none of the still-missing product-assay, inlet-mixture or vapor/particle analytical methods. For each material/feed row affected by raw stocks, record whether current activity is gross external receipts at the chosen raw-material gate or an already stock-reconciled issued/charged/consumed quantity under its linked protocol. Reconcile receipts, external returns and opening/closing raw stock exactly once. If current activity is already that reconciled issue/consumption, do not again add opening raw-stock carry or subtract closing raw-stock carry; attach the original source/lot burden represented by that issue once rather than creating another purchase. If a row instead starts from gross receipts, use its raw-stock reconciliation once to derive the issued contribution, and do not also treat the resulting issues as another addition. Apply the separately evidenced WIP/FG cohort bridge at the unchanged declared product gate only after this raw-material step. Complete carried vectors contain each original exchange in its own unit and lot/stage provenance, not physical stock kg or an impact score. Physical return receipt U and its inherited stock vector are distinct from the signed correction of the original delivery and original burden vector: identify both events and apply each once; do not reverse again if already included in the reported net correction. Unresolved activity basis, stock/transfer linkage or original return vector makes the normalized result incomplete; retain raw records without a finite unit result. Other metered inputs and physical outputs retain their own verified raw measurement basis; do not invent raw-stock adjustments for them."
+      inputs:
+        - "period exchange totals"
+        - "accepted net sulfur-product mass"
+      output: "row amount per 1 kg reference flow"
+      source_ids:
+        - ec-ref-bref-2015
+        - jrc-ilcd-lci-2010
+    - id: physical_balances
+      applies_to: "sru"
+      rule: "For gross mass and each elemental S/C/H/O/N ledger, inputs minus outputs minus closing-minus-opening stock equal the closure residual. Convert each identified component to element mass using its actual chemical formula and measured component mass; whole-product mass is not elemental-S mass. Retain reaction water in the H/O and water ledgers; include feed CO2/H2O/N2, fuel composition, all air components, final N2/O2 and other carriers, sulfur vapor, particles, dissolved sulfur species, waste moisture and catalyst stock. Keep component attributes separate from whole-mixture exchanges to prevent duplicate mass. Report every fate, measurement uncertainty and unresolved component; do not force closure or assume recovery yield."
+      inputs:
+        - cp_feed
+        - cp_product
+        - cp_steam
+        - cp_water
+        - cp_waste
+        - cp_emissions
+        - cp_air
+        - cp_utilities
+      output: "unallocated physical ledger and residual"
+      source_ids:
+        - epa-ap42-sulfur-2015
+        - ec-ref-bref-2015
+    - id: usable_steam
+      applies_to: "steam_import; steam_export"
+      rule: "Compute actual usable heat from delivered steam mass and actual supply/receiver/return enthalpy with explicit reference conditions; disclose vents, condensate and loss. Missing state/provider definitions block a heat claim."
+      inputs:
+        - cp_steam
+        - cp_water
+      output: "separate actual heat ledger"
+      source_ids:
+        - ec-ref-bref-2015
+    - id: energy_stock_ledger
+      applies_to: "sru"
+      rule: "Reconcile electricity, each fuel on its measured NCV/GCV basis, material and steam/condensate enthalpy inflows/outflows, chemical conversion energy, rejected heat and changes in stored material/thermal energy on explicit common reference states. Keep gross imports/exports and losses separately; internal heat recovery is not another external energy output. Missing thermodynamic/composition evidence remains unresolved; never use a fixed heat-recovery credit or steam enthalpy."
+      inputs:
+        - cp_utilities
+        - cp_feed
+        - cp_product
+        - cp_steam
+        - cp_water
+        - cp_emissions
+        - cp_waste
+      output: "unallocated energy/stock ledger and residual"
+      source_ids:
+        - ec-ref-bref-2015
+        - epa-ap42-sulfur-2015
+    - id: species_release
+      applies_to: "sru"
+      rule: "Integrate measured species concentration times matching actual gas flow over represented operation; undo reporting oxygen correction and reconcile dry/wet conditions explicitly before mass conversion. Do not replace species by total NOx, THC or SOx observations."
+      inputs:
+        - cp_emissions
+      output: "actual species mass and uncertainty"
+      source_ids:
+        - epa-ap42-sulfur-2015
+  data_quality_requirements:
+    - id: q_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify physical identity separately from supplier/background quantity basis; blank UUID or unknown pressure/composition cannot establish a complete linked dataset."
+      evidence: "specification; provider definition"
+    - id: q_period
+      applies_to: "sru"
+      requirement: "Use a documented representative period covering steady operation, startup, shutdown, turnaround and exceptional releases; align product, waste and utility attribution, disclose missing modes."
+      evidence: "operating log; meter coverage"
+    - id: q_no_defaults
+      applies_to: "sru"
+      requirement: "BREF illustrative utility/yield/CO2 cases, EPA recovery/emission tables and producer market statements are not this site’s activity quantities or default factors; retain real tests, uncertainty and detection limits."
+      evidence: "original method limits and actual collection"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require exactly one accepted sulfur output reference, declared net mass/purity/market state and route qualifiers. Intermediate sulfur movements remain internal measured links, never duplicate reference outputs."
+    source_ids:
+      - ec-ref-bref-2015
+  - rule_id: validate_completeness
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every atomic row needs measured quantity, compatible property/unit/basis, collection coverage, applicability and destination/medium; blanks, unresolved NOx/THC speciation, missing provider bases or unsupported treatment are incomplete, not zero. Add real identified exchanges when present before modelling."
+    source_ids:
+      - epa-ap42-sulfur-2015
+      - ec-ref-bref-2015
+  - rule_id: validate_balances
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check gross mass, elemental S/C/H/O/N, water, energy and stock closure, carrier quantities and all recorded fates, utility directions and unchanged internal-link endpoint amounts before allocation; disclose uncertainty and unresolved residuals. Check burden allocation separately. Particle fractions and routed gases must not be counted twice."
+    source_ids:
+      - ec-ref-bref-2015
+      - epa-ap42-sulfur-2015
+      - ec-pef-2021
+published_dataset_profile:
+  dataset_role: "site-specific recovery production dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Explicitly qualified refinery Claus bulk molten sulfur at declared gate; only after applicable foreground collection and background linkage are complete"
+  excluded_use: "Full CPC-leaf proxy; mined sulfur; solid formed sulfur; rubber formulation; unspecified sulfur production mix; regulatory or BAT compliance declaration"
+  required_metadata: "all section 3 qualifiers; period; site; gate; input and supplier definitions; measured quantities; upstream and co-product decisions"
+  required_quality_disclosure: "coverage, unresolved identities/provider bases, blank quantities, detection limits, uncertainty, balances, allocation sensitivity and limitations"
+  update_trigger: "feed origin/composition, catalyst/Claus stages, tailgas control, degassing, market state, utility pressure or upstream allocation changes"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, PDF p.163; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "34520 label and explicit exclusions; classification does not prescribe production method"
+  - id: "ec-ref-bref-2015"
+    type: "official_guidance"
+    reference: "European Commission JRC, Refining of Mineral Oil and Gas BREF (2015), §4.23.5.2.1, pp.482–485 and §4.23.5.2.4 p.496; Figure 4.53; https://eippcb.jrc.ec.europa.eu/sites/default/files/2019-11/REF_BREF_2015.pdf"
+    used_for: "Claus process, sulfur pit, side species, utility/waste interfaces and stored-sulfur degassing need with oxidation/additive alternatives; no specific additive-free stripping protocol or numerical examples adopted"
+  - id: "epa-ap42-sulfur-2015"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 §8.13 Sulfur Recovery, April 2015, §§8.13.1–8.13.4, Figure 8.13-1 and Tables 8.13-1/2 footnotes; https://www.epa.gov/sites/default/files/2020-09/documents/8.13_sulfur_recovery.pdf"
+    used_for: "Reaction and process map, sulfur species, oxidative controls and limitations of SO2/NOx/THC factors; no generic factor adopted"
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission C(2021) 9332 final, Annexes 1 to 2, Annex I §4.5 pp.63–64; https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "Multifunctionality hierarchy and justification; methodological reference, no claim of complete PEF conformity"
+  - id: "epa-method-15-2017"
+    type: "official_guidance"
+    reference: "US EPA, Method 15, 2 August 2017, §§1–4, 6–8, 10–13; https://www.epa.gov/sites/default/files/2017-08/documents/method_15.pdf"
+    used_for: "H2S/COS/CS2 GC/FPD sampling, calibration, line loss and matrix interference; excludes SO2 and elemental sulfur vapor measurement; technical method reference, not regulatory acceptance"
+  - id: "epa-method-6-2017"
+    type: "official_guidance"
+    reference: "US EPA, Method 6, 3 August 2017, §§1–4, 6–12; https://www.epa.gov/sites/default/files/2017-08/documents/method_6.pdf"
+    used_for: "Separated SO2 absorption/titration and interference controls; not total sulfur, vapor sulfur or sulfuric-acid-mist mass; technical method reference, not regulatory acceptance"
+  - id: "sulphur-degassing-1994"
+    type: "literature"
+    reference: "Liquid Sulphur Degassing, Sulphur No.233, July–August 1994, pp.38, 40 and 44–45, publisher-authorized AMETEK reprint; https://www.ametekpi.com/-/media/ametekpi/files/products/western-research/model-881/liquid-sulfur-degassing.pdf"
+    used_for: "Additive-free air stripping with steam ejector/preheater utilities; closed weighed samples and liquid-sulfur FTIR for separate dissolved H2S/H2Sx; no copied operating defaults, purity/moisture assay or zinc-absorption chemistry"
+  - id: "jrc-ilcd-lci-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment—Detailed guidance, first edition March2010, sections7.4.2.6–7 and7.4.2.9, printed pp.200–204 / PDF pp.220–224. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Complete operational/service cycle and matching-period reference scaling only. Historical stock/cohort burden vectors, once-only raw-stock reconciliation and nonpositive-output hold are this PCR consistency implementation, not a literal handbook ledger or formula. No site quantity, recipe, emission factor, gate choice or default allocation."
+  - id: "tesoro-molten-sulfur-2018"
+    type: "literature"
+    reference: "Tesoro Refining & Marketing Co., Sulfur, Molten SDS 888100004468, revision 2.02, 24 July 2018, §1 p.1; https://www.marathonpetroleum.com/content/documents/Operations/Tesoro_SDS/Sulfur__Molten_SDS_Tesoro.pdf"
+    used_for: "Producer product/state identity as refining byproduct only; no site quantities, universal assay, acceptance threshold or actual receiver link"
+  - id: "mmlp-sulfur-services-2025"
+    type: "literature"
+    reference: "Martin Midstream Partners L.P., 2025 Form 10-K, Sulfur Services Segment pp.9–10 and revenue recognition; https://www.sec.gov/Archives/edgar/data/1176334/000117633426000012/mmlp-20251231.htm"
+    used_for: "Independent receiving-operator context: refinery molten collection, transport/storage service contracts and separate formed states. Boundary implementation requires actual site handoff and supplier coverage; no operating defaults or producer/receiver link inferred"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:efe3806ecce22a8c70d290a629ed21b74c497223b47956a044e01d225693564a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5632"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5632
+          line: 64
+          column: 1
+        end:
+          offset: 9343
+          line: 85
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Measured H2S-rich refinery amine-regenerator acid gas at the SRU inlet and declared utility interfaces |\n| starting_condition_role | foreground recovery input, not burden-free natural resource |\n| product_classification_scope | CPC 3.0 34520, refinery Claus molten subset |\n| recursive_input_rule | Purchased sulfur is outside this recovery-only route; internal sulfur recirculation is not a new product input. Independently purchased same-category sulfur requires separate upstream dataset and conditioning scope. |\n| upstream_dataset_requirement | Connect actual acid-gas preparation, utilities, catalyst manufacture and waste treatment; declare inherited refinery allocation. Do not recreate refinery throughput or credit desulfurisation twice. |\n| disclosure | Gate-to-gate recovery plus identified upstream/background links; report missing links, period, physical route, utility returns and co-product functions |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_complete` | Include reaction, reheating, condensation, waste-heat boilers, additive-free air degassing, heated storage/loading, tailgas incineration, fugitive losses and attributable utility/waste interfaces. Consolidate these stages into sru; retain separate stage meters and internal links with identical endpoint amounts. | `sulphur-degassing-1994`; `ec-ref-bref-2015`; `epa-ap42-sulfur-2015` |\n| `boundary_route` | Tailgas is incinerated without reductive or scrubber TGTU in this route. Incineration changes sulfur species, not total sulfur removal. If actual abatement, oxygen enrichment, additives, onsite wastewater treatment or another fuel is present, expand the physical map and atomic rows before using this PCR. | `ec-ref-bref-2015`; `epa-ap42-sulfur-2015` |\n\n| `boundary_first_release` | Fix the reference gate at the first externally accepted bulk molten refinery-product handoff after the declared recovery, degassing, heated holding and loading stages. Record first saleable production release R separately from accepted net gate delivery Q. Internal tank movements, trading, title transfers and resale are not new production. Identify the actual refiner, recovery operator, outsourced degassing/storage/loading provider and physical receiver, their locations, timestamps, meters and responsibility cutoffs. Include pre-gate provider heat, losses, stocks, transport and services once, reconciling any supplier dataset already covering them. Post-gate receiving terminal storage, transport and forming are outside this product gate. Public producer and receiver documents do not establish a trading link between them. Unknown handoff, service scope or supplier coverage prevents a complete unit result. | `tesoro-molten-sulfur-2018`; `mmlp-sulfur-services-2025` |\n| `boundary_bulk_equipment` | Bulk molten delivery uses no disposable product packaging or pallet pool. Tanker tare is excluded from product kg; attributable equipment/transport service burdens within the gate remain included once. If the actual system uses drums, bags or pallets, this bulk-only inventory is insufficient: define each component as an atomic exchange and reconcile purchases, first non-purchased external receipts (including incoming goods, loans and free transfers regardless of supplier coverage), genuine returns traced to the same item previously dispatched from this site, outward movements and opening/closing stock. Assign each physical movement and each actually incurred purchase/transport/service burden once; absent supplier coverage stays unresolved. | `mmlp-sulfur-services-2025`; `jrc-ilcd-lci-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 311
+              line: 10
+              column: 1
+            end:
+              offset: 369
+              line: 10
+              column: 59
+          text: "# Refinery Claus recovery of bulk molten elemental sulphur"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5632
+              line: 64
+              column: 1
+            end:
+              offset: 5653
+              line: 64
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40736"
+      family: "allocation"
+      span:
+        start:
+          offset: 40736
+          line: 610
+          column: 1
+        end:
+          offset: 42106
+          line: 618
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_hierarchy` | Keep recovery-stage direct burdens separate from shared refinery services; first investigate subdivision or system expansion, then a justified relevant physical relationship, finally another justified relationship such as period-specific economic value. Record rejected alternatives, function/basis and sensitivity. Do not use sulfur/steam mass ratio as an unexamined physical relationship. | `ec-pef-2021` |\n| `allocation_ledger` | Preserve physical outputs at their measured amounts. Allocate only shared environmental burdens in a separate ledger; fractions close to one within declared precision. Do not multiply physical sulfur/steam/waste outputs by shares, or both allocate and subtract the same steam substitution credit. No credit for hypothetical avoided sulfur emissions or assumed refinery desulfurisation service. | `ec-pef-2021`; `ec-ref-bref-2015` |\n| `allocation_upstream` | An acid gas by-product or waste designation alone never establishes zero upstream burden. State the refinery boundary and inherited allocation decision; retain treatment responsibility and background consistency. Export steam requires a real receiver and compatible useful-energy definition before claiming a function. | `ec-pef-2021`; `ec-ref-bref-2015` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 311
+              line: 10
+              column: 1
+            end:
+              offset: 369
+              line: 10
+              column: 59
+          text: "# Refinery Claus recovery of bulk molten elemental sulphur"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40736
+              line: 610
+              column: 1
+            end:
+              offset: 40776
+              line: 610
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_57696"
+      family: "validation"
+      span:
+        start:
+          offset: 57696
+          line: 654
+          column: 1
+        end:
+          offset: 58844
+          line: 662
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require exactly one accepted sulfur output reference, declared net mass/purity/market state and route qualifiers. Intermediate sulfur movements remain internal measured links, never duplicate reference outputs. | `ec-ref-bref-2015` |\n| `validate_completeness` | Every atomic row needs measured quantity, compatible property/unit/basis, collection coverage, applicability and destination/medium; blanks, unresolved NOx/THC speciation, missing provider bases or unsupported treatment are incomplete, not zero. Add real identified exchanges when present before modelling. | `epa-ap42-sulfur-2015`; `ec-ref-bref-2015` |\n| `validate_balances` | Check gross mass, elemental S/C/H/O/N, water, energy and stock closure, carrier quantities and all recorded fates, utility directions and unchanged internal-link endpoint amounts before allocation; disclose uncertainty and unresolved residuals. Check burden allocation separately. Particle fractions and routed gases must not be counted twice. | `ec-ref-bref-2015`; `epa-ap42-sulfur-2015`; `ec-pef-2021` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 311
+              line: 10
+              column: 1
+            end:
+              offset: 369
+              line: 10
+              column: 59
+          text: "# Refinery Claus recovery of bulk molten elemental sulphur"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 57696
+              line: 654
+              column: 1
+            end:
+              offset: 57718
+              line: 654
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5632"
+      source_span:
+        start:
+          offset: 6717
+          line: 79
+          column: 1
+        end:
+          offset: 7126
+          line: 79
+          column: 410
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5632"
+      source_span:
+        start:
+          offset: 7127
+          line: 80
+          column: 1
+        end:
+          offset: 7500
+          line: 80
+          column: 374
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "system_boundary_rule_3"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_5632"
+      source_span:
+        start:
+          offset: 7502
+          line: 82
+          column: 1
+        end:
+          offset: 9341
+          line: 83
+          column: 833
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_40736"
+      source_span:
+        start:
+          offset: 40830
+          line: 614
+          column: 1
+        end:
+          offset: 41265
+          line: 614
+          column: 436
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_40736"
+      source_span:
+        start:
+          offset: 41266
+          line: 615
+          column: 1
+        end:
+          offset: 41721
+          line: 615
+          column: 456
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_40736"
+      source_span:
+        start:
+          offset: 41722
+          line: 616
+          column: 1
+        end:
+          offset: 42104
+          line: 616
+          column: 383
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_57696"
+      source_span:
+        start:
+          offset: 57772
+          line: 658
+          column: 1
+        end:
+          offset: 58030
+          line: 658
+          column: 259
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_57696"
+      source_span:
+        start:
+          offset: 58031
+          line: 659
+          column: 1
+        end:
+          offset: 58412
+          line: 659
+          column: 382
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_57696"
+      source_span:
+        start:
+          offset: 58413
+          line: 660
+          column: 1
+        end:
+          offset: 58842
+          line: 660
+          column: 430
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5632"
+      source_span:
+        start:
+          offset: 5632
+          line: 64
+          column: 1
+        end:
+          offset: 5653
+          line: 64
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5632"
+      source_span:
+        start:
+          offset: 5681
+          line: 68
+          column: 1
+        end:
+          offset: 6663
+          line: 75
+          column: 169
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40736"
+      source_span:
+        start:
+          offset: 40736
+          line: 610
+          column: 1
+        end:
+          offset: 40776
+          line: 610
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_57696"
+      source_span:
+        start:
+          offset: 57696
+          line: 654
+          column: 1
+        end:
+          offset: 57718
+          line: 654
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:efe3806ecce22a8c70d290a629ed21b74c497223b47956a044e01d225693564a"
+  generated_content_sha256: "sha256:b0b62ef6e1e57deacb39e37075f8b7464fafa207f36847c1bbbcfedf1aa2cd48"

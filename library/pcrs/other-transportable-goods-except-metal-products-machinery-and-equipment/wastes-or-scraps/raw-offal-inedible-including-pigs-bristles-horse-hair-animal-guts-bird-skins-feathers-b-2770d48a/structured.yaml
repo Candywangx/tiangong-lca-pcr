@@ -1,10 +1,2159 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39110"
-  title: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.raw-offal-inedible-including-pigs-bristles-horse-hair-animal-guts-bird-skins-feathers-b-2770d48a"
+  classification_refs: "CPC3.0:39110, accepted narrower raw inedible bovine bone scope under docs/adr/2026-11-22-accept-cpc-39110-raw-inedible-bovine-bone-at-first-release.md"
+  covered_products: "One traceable wet raw cattle-bone by-product supply stream for permitted nonfood industrial use before deep processing"
+  excluded_products: "Food/soup bones; edible organs; other species; mixed offal; defatted bone; calcined ash; bone meal; MBM; gelatine; collagen; ossein; bone char; shaped crafts; human material"
+  representative_product: "1 kg wet raw inedible bovine bone at its first quality release with actual later gate services separately retained"
+  production_route: "Actual meat-production by-product separation interface; collection; sorting; conditional initial cleaning and chilling; first release; actual packaging and gate custody"
+  market_state: "Raw nonfood bovine bone; residual tissue and water recorded; no imposed purity or moisture fraction"
+functional_unit:
+  what: "Supply a traceable raw inedible bovine-bone material for its permitted industrial destination"
+  how_much: "1 kg net wet bone material at first release; packaging excluded"
+  how_well: "Actual lot specification and competent destination acceptance; no universal hygiene or composition threshold"
+  how_long_or_cycle: "One first release in its declared cohort; record actual service horizon H without assumed lifetime"
+  reference_flow_link: "released_bone"
+system_boundary:
+  rules:
+    - rule_id: boundary_scope
+      applies_to: "all processes"
+      rule: "Use the actual collection-to-gate route. Initial cleaning may remove loose contamination but must not conceal thermal rendering, chemical degreasing, hydrolysis, demineralisation, drying to bone chips, grinding to meal or shape cutting. If such a conversion occurred, preserve its actual burden and classify the changed terminal separately; it is not conforming raw bone."
+      source_ids:
+        - un-cpc3-2025
+        - un-cpc3-2026
+        - mla-bone-disposition
+        - ilcd-allocation-2010
+    - rule_id: boundary_origin
+      applies_to: "raw_bone"
+      rule: "Require a traceable bovine lot and documented nonfood destination. Preserve actual live-animal/meat-system burdens and allocation at separation. Zero price, waste wording, a handling fee or recovered status cannot set a zero provider or create avoided-production credit. A true discarded Waste cannot replace the raw Product input/output UUID."
+      source_ids:
+        - ec-animal-by-products
+        - ilcd-allocation-2010
+    - rule_id: boundary_q
+      applies_to: "released_bone"
+      rule: "Q sums only NEW net wet mass at the first whole-batch quality release. Conforming closing FG is already part of Q: never add it again as production. Receipt, packaging, storage, shipment, return and retest do not create Q. For current manufacture Qc=Q; subsequent services use each original cohort Qc. At Qc=0 retain real burdens, stocks and history with no unit result."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_stocks
+      applies_to: "all inventory rows"
+      rule: "Keep physical opening/closing raw material, WIP, rejected stock, equipment charge and FG separate from inherited per-exchange environmental vectors. F is genuine newly occurring burden; X cancels only a proven OTHER same-side duplicate event. New cleaning water, repair, replacement, leakage and rework are F, never X. Transfer each physical quantity and vector once; do not equate stored kg with environmental burden."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_fg
+      applies_to: "fg_service"
+      rule: "Retain opening/closing FG, gross dispatch and actual external returns by original release cohort. Reverse an original delivery once in the custody ledger for a genuine return, while retaining its historic manufacturing burden. New cleaning/repacking/cooling/rework adds actual F to original Qc. Combine preparation and FG gates only by cancelling their paired internal release transfer and vector. Report unobserved future service beyond H."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_gross
+      applies_to: "all inventory rows"
+      rule: "Physical gross V and environmental attribution A are separate channels. All real waste, emissions, repair/replacement and carrier returns keep V/Qc against their actual originating cohort; economic/service shares cannot shrink their mass. Origin partitions must be non-overlapping and sum to observed total V. Whole wet mixture and its components are alternative or bridged non-additive representations with one actual provider."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_pack
+      applies_to: "fg_service"
+      rule: "For EACH PE liner and HDPE crate use disjoint empty, attached WIP/FG and reusable stock accounts: opening + purchases + first non-purchase external receipts + true returns received = closing + gross shipments + other external exits + waste. First receipts include packaging with incoming bone, separately borrowed or freely transferred, whether or not a supplier inventory covers it. True returns require the SAME article linked to an earlier dispatch from THIS site; unlinked receipts remain first receipts. Internal reuse cancels. Record ownership, prior service and supplier coverage; actual purchase, transport and service burdens occur once, with unavailable provider data explicitly pending."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_actual
+      applies_to: "all processes"
+      rule: "Include all actual failed/zero-output runs, start-stop, idle cooling, trials, cleanup, rework, inspection and rejected/unauthorized activity. A quality or veterinary gate controls saleable output and destination only. Declare each additional actual purchased formulation, component, fuel, heat carrier, refrigerant, waste and gas species as its own atomic card and collection event before claiming completeness."
+      source_ids:
+        - ilcd-allocation-2010
+    - rule_id: boundary_water
+      applies_to: "all processes"
+      rule: "Close wet material, total physical mass and relevant C/N/P/Ca/S balances independently; record free, tissue-bound, phase-change and mineral structural water without assuming a reaction. Water meters provide integrated volume unless explicitly rate meters; density requires independent substance-specific state measurement. Refrigeration condensate is not boiler condensate. Any real external heat-carrier Product return retains actual mass, enthalpy, state and supplier water/energy agreement."
+      source_ids:
+        - ilcd-allocation-2010
+boundary_abstraction:
+  declared_starting_condition: "Separated raw bovine bone awaiting first supply release at one documented collection interface after actual slaughter/cutting"
+  starting_condition_role: "foreground_starting_condition"
+  product_classification_scope: "39110 raw inedible cattle-bone subset, not an entire-leaf coverage claim"
+  recursive_input_rule: "Same-category receipts retain provider, original state and inherited vectors. Previously released raw bone cannot be relabelled as newly produced by receipt/reinspection; handling-only service uses its original Qc."
+  upstream_dataset_requirement: "Trace actual animal husbandry, live-animal transport, slaughter, meat cutting/separation and their allocation into one compatible upstream provider at this handover. Add only omitted operations; disclose unavailable providers without silently zeroing them."
+  disclosure: "Wet basis; legal/use designation; separation and release events; inherited raw/WIP/FG vectors; original cohort Qc; physical V versus attributed A; actual observation horizon H"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
+    uuid: "4d9c6b8c-c040-4b38-86f9-980adb462eec"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cattle taxon and source animal class"
+    - "anatomical source and lot genealogy"
+    - "nonfood designation and authorized destination"
+    - "actual Product or Waste status at each handover"
+    - "unworked or simply prepared state without deep processing"
+    - "residual meat fat and marrow on the whole supplied bone"
+    - "free water versus tissue water versus mineral structural water"
+    - "wet mass and tare at the declared gate"
+    - "first quality release Q and original cohort Qc"
+    - "actual site geography provider and upstream allocation"
+    - "actual chilling state and time history"
+    - "opening and closing raw WIP FG physical stocks and inherited vectors"
+    - "gross dispatch returns losses and original delivery links"
+    - "each package and reusable-container balance"
+    - "native flow restrictions and precise reference unit"
+    - "observed service horizon H and unobserved later service"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is net wet whole-bone mass first released in the cohort, determined by calibrated gross-minus-tare weighing. Do not infer kg from animal count, bone count, secondary density or assumed composition."
+  - id: measurement_once
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual native extensive property"
+      uuid: ""
+    required_unit: "declared original unit"
+    rule: "Preserve unnormalized raw amounts; convert units and integrate only true rates before attribution. Each card uses the single report_once N/Qc result. H is an observation window, never a second divisor."
+  - id: measurement_wet
+    applies_to: "raw_bone"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use one whole wet material account. Residual meat, fat, marrow, protein, minerals, tissue water and free water are non-additive composition subaccounts. Independent measurements constrain elements and phases; mineral hydroxyl/structural water is not free washing water."
+  - id: measurement_energy
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Meter actual electricity and convert kWh to MJ by 3.6 once. Metering uses technical Energy; shared MJ/kWh unit support cannot establish a supplier property. The selected fixed-version electricity original independently declares Net calorific value; retain it only for that verified supply identity. Other providers require independent verification. External heat requires one energy account and measured carrier mass/state/enthalpy/return bridge; do not invent a boiler or its fuel."
+  - id: measurement_species
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Determine each actual molecular species and receiving medium independently. COD, TOC, TN, ammonia-N and odour units are indicators, not molecular emission masses. Do not use a mass residual to fit two unknowns or emit all biological carbon by assumption."
+process_map:
+  - id: bone_preparation
+    name: "Collection sorting and first raw-bone release"
+    inclusion: "required"
+    inclusion_condition: "Actual separation handover to first release"
+    role: "foreground_manufacturing"
+    quantitative_reference: "Q kg"
+  - id: fg_service
+    name: "Postrelease packaging storage and handover"
+    inclusion: "conditional"
+    inclusion_condition: "Actual postrelease services in H with original cohorts"
+    role: "foreground_service"
+    quantitative_reference: "original Qc kg"
+process_inventory:
+  - id: bone_preparation
+    label: "Collection sorting and first raw-bone release"
+    inputs:
+      product:
+        - row_id: raw_bone
+          role: "Separated raw bovine bone received"
+          name: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d9c6b8c-c040-4b38-86f9-980adb462eec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the complete wet supplied bone with residual meat/fat/marrow and record source slaughter/cutting interface and the inherited per-exchange vector. Receipt alone is not new production. The incoming cohort must be distinguishable from previously released FG; disclose all raw/WIP losses and rejects. The native Product family expressly includes unworked/simply prepared bones and is at plant with unspecified treatment; no CAS, fixed grade, species or geography is supplied. Here one actual bovine-bone lot alone is selected, not a bundle of bristles/hair/guts/feathers/ivory. Its official family display does not widen this method. Keep origin, anatomical part, nonfood designation, residual tissue/water, actual treatment and provider in this card’s dataset context; discarded Waste is not this Product."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bone
+              source_ids:
+                - un-cpc3-2025
+                - ec-animal-by-products
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: inbound_transport
+          role: "Actual refrigerated inbound road service"
+          name: "Refrigerated freight transport by lorry"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23859e16-623e-4ece-8994-d9af546ba56c"
+          property_unit: "mass*distance 118f2a40-50ec-457c-aa60-9bc6b6af9931 / kg*km"
+          description: "Conditional: use only when this service crosses the selected upstream handover and is not already in the bone provider. A same-site separation has no invented truck leg. Native refrigerated lorry service describes collection/slaughterhouse-to-plant-gate transport and a global industry-average interface. Its illustrative200km/0.2t-km is an expert estimate, never a site default. Exact reference is mass*distance in kg*km; t-km converts by1000. Record actual payload, route, distance, temperature service and provider, including empty-trip responsibility; do not duplicate provider fuel/refrigerant burdens in foreground."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Collection sorting and first cooling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value (electrical energy) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter collection equipment, sorting, weighing, actual refrigeration, ventilation and electrically heated cleaning separately by operation before common-meter reconciliation. Retain start-stop, idle, rejected batches and Q0 use. Native identity is CN grid-average consumption-mix AC below1kV delivered to the user; only that actual supply may use this UUID. It is not hydro-only power, generation at a plant or a transformation service. Different voltage/geography/provider requires a compatible identity and explicit gap until verified; actual electricity is still recorded. Reference property is energy/MJ."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: initial_cleaning_water
+          role: "Initial bone cleaning water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional initial rinse only if actually performed and still simple preparation; record fresh inlet, recycled internal water, adherent water and separate effluent. An actual hot degreasing/extraction operation changes the terminal and is outside this method. Native Product is treated potable municipal tap water at plant/to consumer, Mass/kg, with no fixed geography. Its secondary0.001m3-per-kg property is not an independently measured site density. Use actual mass or independent state-specific density for volume conversion; do not bind raw, recycled or untreated water to it."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: hygiene_water
+          role: "Equipment and collection-area wash water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual container, sorting-table, floor and collection-equipment cleaning water including unsuccessful work and cleanup. Do not deduct genuinely new wash water as duplicate or count internally reused water as a new external purchase. Native Product is treated potable municipal tap water at plant/to consumer, Mass/kg, with no fixed geography. Its secondary0.001m3-per-kg property is not an independently measured site density. Use actual mass or independent state-specific density for volume conversion; do not bind raw, recycled or untreated water to it."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: caustic_solution
+          role: "Purchased50% caustic cleaning solution"
+          name: "Sodium hydroxide solution, 50%"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0a3e69c3-32c9-4cb8-b26c-21059c919d80"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional equipment/floor hygiene input, not a bone demineralisation or hydrolysis recipe. Weigh the entire purchased solution once; in-house dilution records actual added water, mixing electricity and loss. Native industrial sodium hydroxide solution50% at plant uses total solution Mass/kg, not active NaOH mass. Its source-specific references support identity only. Apply only to genuinely purchased50% solution; record carrier water and assay in non-additive subaccounts and add separately only actual dilution water. Other formulations require a separate identity."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_formulations
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: hypochlorite_solution
+          role: "Purchased sodium hypochlorite disinfectant solution"
+          name: "Sodium hypochlorite aqueous disinfectant solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional hygiene input only when actually used. Record the complete supplier formulation and solution mass once; available-chlorine assay is a non-additive subaccount, not a second input or a universal concentration. The complete solution mass basis must be established before binding a supplier identity; an active-substance object cannot stand for the whole formulation."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_formulations
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: ammonia_makeup
+          role: "Actual refrigeration ammonia makeup"
+          name: "Ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9874382d-672c-4601-a3ce-9a4ae21e663b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional ammonia system only. Reconcile opening charge + external makeup + recovered receipt against closing charge + recovered external transfer + actual leakage + waste. Internal recirculation is not consumption. Record actual service allocation separately from gross charge/loss. Native ammonia NH3, CAS7664-41-7, permits refrigerant use, Mass/kg, without a fixed route/grade/geography. Apply only to the actual anhydrous ammonia charge/makeup, not aqueous ammonia, ammonia-N, salts or total refrigeration service. Record actual purity/state and supplier; do not infer a required refrigerant from this optional card."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: sorting_table_replacement
+          role: "Stainless-steel sorting-table replacement"
+          name: "Manufactured stainless-steel sorting table"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual replacement article with measured mass, alloy/composition, assembly provider and installed/retired dates. Steel stock alone is not the manufactured table. Retain actual replacement physical V and lifetime/service burden ledger without assuming life or fixed mass; enumerate each other actual equipment/component separately."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: lubricating_oil
+          role: "Mineral lubricating oil for handling equipment"
+          name: "Mineral lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional complete purchased oil formulation, not base oil plus duplicated additives. Record actual oil type and mass, spent oil and leaks separately. A fully synthetic PAO oil must not be substituted for an actual mineral-oil formulation."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: oxygen_uptake
+          role: "Actual atmospheric oxygen uptake"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "e2fb04b0-6555-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional chemically demonstrated net O2 uptake in actual biological change, not the entire circulating ventilation-air volume. Do not infer uptake from COD or balance two unknown gas/water terms with one residual. Keep inert carrier air outside net material accounting unless measured and explicitly bridged. Native oxygen CAS7782-44-7 is an Elementary resource from air, Mass/kg. This binding is only molecular O2 actually taken from air; the native liquid-oxygen, dissolved-reagent and dioxygenyl-ion aliases do not expand that medium/species. It is neither a purchased oxygen Product nor oxygen emitted to air, and has no assumed uptake rate."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+    outputs:
+      product:
+        - row_id: released_bone
+          role: "First released raw bovine bone"
+          name: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d9c6b8c-c040-4b38-86f9-980adb462eec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The sole reference output: NEW first-overall-released wet bone Q includes conforming closing FG. Record the release event, specification, accepted nonfood destination and actual wet net mass. Rejects and previous releases cannot be relabelled into Q; later custody/service movement carries this original cohort. The native Product family expressly includes unworked/simply prepared bones and is at plant with unspecified treatment; no CAS, fixed grade, species or geography is supplied. Here one actual bovine-bone lot alone is selected, not a bundle of bristles/hair/guts/feathers/ivory. Its official family display does not widen this method. Keep origin, anatomical part, nonfood designation, residual tissue/water, actual treatment and provider in this card’s dataset context; discarded Waste is not this Product."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - un-cpc3-2025
+                - ec-animal-by-products
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        - row_id: rejected_bone
+          role: "Discarded bovine bone"
+          name: "Discarded raw bovine bone"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual rejected/spoiled bone sent to its permitted treatment, measured as the whole wet stream with residual tissue; no Product substitution or credit. Require a whole wet Mass reference for discarded bone; a chemical-element-content property cannot replace that physical basis."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: flesh_residue
+          role: "Separated inedible bovine flesh residue"
+          name: "Inedible bovine flesh residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected actual tissue removed in initial sorting; record wet mass, attached fat and moisture as non-additive composition. It is not the residual tissue already included in the whole bone or the suspended fraction already in gross wastewater. If no independent stream exists, retain its mass only in its actual parent stream."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: bone_fines
+          role: "Captured raw bone fines"
+          name: "Raw bovine bone fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional loose fines physically captured during collection/handling, not manufactured bone meal. Weigh wet material with documented state; do not duplicate fines in effluent or rejected bone. Actual grinding is outside this raw route."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: organic_wastewater
+          role: "Organic collection and cleaning wastewater"
+          name: "Bovine-bone collection wash wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One actual gross wet wastewater stream sent to one documented provider. Retain measured flow, independent density, dissolved/suspended matter and COD/TOC/TN as distinct indicators. Do not add constituent water, suspended flesh or pollutant molecular masses again to the whole-waste mass. On-site treatment, if actual, needs its full own atomic inventory and actual species, never a hidden zero."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: refrigeration_condensate
+          role: "Refrigeration condensate sent to drain"
+          name: "Refrigeration condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional actual condensate or defrost water sent separately to drain; identify atmospheric moisture, product moisture and added water origins independently. If joined into organic_wastewater before the chosen boundary, use a non-additive subaccount there instead of a second gross waste. This is not evaporation-process or steam-return condensate."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: spent_ammonia
+          role: "Discarded ammonia refrigerant"
+          name: "Spent anhydrous ammonia refrigerant"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional actual discarded refrigerant leaving for authorized treatment. Distinguish recovered Product return, actual molecular leakage and remaining charge; do not select ammonia-N or chemically unrelated amine waste. Each external Product return requires its own actual identity and gross mass."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: retired_table
+          role: "Retired stainless-steel sorting table"
+          name: "Discarded stainless-steel sorting table"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional complete retired article; retain gross mass, actual alloy/components and destination. Do not silently use a316/430 external scrap identity when grade and retirement route do not agree. Any dismantled separate components require non-overlapping measured partitions."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent mineral lubrication oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional weighed oil actually removed from handling equipment. Require actual used mineral oil from this handling operation with its contamination and treatment destination recorded. Retain actual spill species/media separately when present; do not invent an emission from all lubricant consumed. Native used lubricating oil is a Waste at its generation point, Mass/kg, covering petroleum-based or synthetic oil contaminated through use, with treatment unspecified. This row selects only actual spent mineral oil from handling equipment; keep full contaminated waste mass and actual treatment provider, without assuming recycling, combustion, a fixed assay or credit."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_maintenance
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      elementary:
+        - row_id: ammonia_leak
+          role: "Ammonia refrigerant leakage"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional, measured at the actual receiving air compartment and release time. Actual NH3 CAS7664-41-7 leakage only; do not sum both charge-balance loss and the same leak meter. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: ammonia_decomposition
+          role: "Biological ammonia emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional, measured at the actual receiving air compartment and release time. Actual NH3 CAS7664-41-7 from decomposition, separate from refrigerant origin. Total ammonia-N or salts are not NH3 mass. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: hydrogen_sulfide
+          role: "Hydrogen sulfide emission"
+          name: "Hydrogen sulfide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional, measured at the actual receiving air compartment and release time. Actual H2S CAS7783-06-4 only; neither total sulfur, mercaptans nor odour units. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: biogenic_methane
+          role: "Biogenic methane emission"
+          name: "Biogenic methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional, measured at the actual receiving air compartment and release time. Actual CH4 CAS74-82-8 with evidenced biological carbon origin; not total organic carbon, biogas volume or whole carbon loss. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: biogenic_co2
+          role: "Biogenic carbon dioxide emission"
+          name: "Biogenic carbon dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional, measured at the actual receiving air compartment and release time. Actual gaseous CO2 CAS124-38-9 with biological origin. No automatic conversion of retained bone carbon or carbonate mineral carbon to a biogenic emission. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: water_evaporation
+          role: "Water vapour leaving the boundary"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional, measured at the actual receiving air compartment and release time. Actual H2O CAS7732-18-5 net evaporation after independent inlet/outlet humidity and moisture accounting; not steam purchase, liquid water or structural hydroxyl. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+  - id: fg_service
+    label: "Postrelease packaging storage and handover"
+    inputs:
+      product:
+        - row_id: released_bone_transfer
+          role: "Internal first-release bone transfer"
+          name: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d9c6b8c-c040-4b38-86f9-980adb462eec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive the paired internal released_bone quantity and its inherited vector once. This transfer cancels on the combined gate and is not a second purchase/provider or another Q. Opening FG retains historical Qc and burden. The native Product family expressly includes unworked/simply prepared bones and is at plant with unspecified treatment; no CAS, fixed grade, species or geography is supplied. Here one actual bovine-bone lot alone is selected, not a bundle of bristles/hair/guts/feathers/ivory. Its official family display does not widen this method. Keep origin, anatomical part, nonfood designation, residual tissue/water, actual treatment and provider in this card’s dataset context; discarded Waste is not this Product."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: returned_bone
+          role: "Actual returned raw-bone product"
+          name: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d9c6b8c-c040-4b38-86f9-980adb462eec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional genuine external return only while still this raw Product and legally eligible for the intended nonfood route. Link original delivery reversal, wet mass change, original Qc and all historic burdens; a rejected waste return needs the actual Waste identity instead. Reinspection does not create Q. The native Product family expressly includes unworked/simply prepared bones and is at plant with unspecified treatment; no CAS, fixed grade, species or geography is supplied. Here one actual bovine-bone lot alone is selected, not a bundle of bristles/hair/guts/feathers/ivory. Its official family display does not widen this method. Keep origin, anatomical part, nonfood designation, residual tissue/water, actual treatment and provider in this card’s dataset context; discarded Waste is not this Product."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_electricity
+          role: "Postrelease cooling and handling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value (electrical energy) 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Actual service electricity in H, separately metered or causally assigned to original cohorts, including idle cooling, returns, repacking and failed inspection. Never absorb all FG operations into a production-only denominator or add closingFG again to Q. Native identity is CN grid-average consumption-mix AC below1kV delivered to the user; only that actual supply may use this UUID. It is not hydro-only power, generation at a plant or a transformation service. Different voltage/geography/provider requires a compatible identity and explicit gap until verified; actual electricity is still recorded. Reference property is energy/MJ."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_energy
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_water
+          role: "Postrelease package and area wash water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual new wash water for postrelease custody service and reusable crates; assign to original cohort Qc while preserving full physical V. Do not erase it as internal reuse or repeat manufacture. Native Product is treated potable municipal tap water at plant/to consumer, Mass/kg, with no fixed geography. Its secondary0.001m3-per-kg property is not an independently measured site density. Use actual mass or independent state-specific density for volume conversion; do not bind raw, recycled or untreated water to it."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_water
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: liner_purchase
+          role: "Purchased PE liner bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual purchased liner article. Reconcile empty/attached stock, gross shipment and waste. It remains outside net bone Q. Native PE bag, CAS9002-88-4, Mass/kg; one supplied liner bag is the article. Record polymer grade, additives, dimensions and measured tare. It does not cover laminate, paper or an unspecified packaging collection; count requires measured lot-specific article mass."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: liner_return_received
+          role: "Previously dispatched PE liner genuinely returned"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a genuine return of the same article linked to an earlier dispatch from this site. Retain gross kg, inherited history and actual new return transport/services without reacquiring manufacture. Unlinked receipts use liner_first_receipt."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: liner_first_receipt
+          role: "PE liner first non-purchase receipt"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual PE liner received with bone, separately borrowed or freely transferred. Record physical mass, ownership, prior service, supplier coverage and actual uncovered manufacture, transport and service once; missing provider data stays pending. This is not a new bone release or an unproven return."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: crate_purchase
+          role: "Purchased reusable HDPE crate"
+          name: "Plastic crate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3eec684a-d54a-4c38-94af-77fd14d7f9b1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional new manufactured container; retain capital/service allocation separately from actual purchased physical mass. Internal reuse is not purchase; no default trips or lifetime. Native Plastic crate is one supplied article, Mass/kg, with no fixed polymer/grade/route/geography. The CPC bags classification is an isolated taxonomy defect; the basename and unit consistently identify a crate, not resin or a bag. Restrict here to an actual documented reusable HDPE crate; retain its complete manufactured-article provider and measured mass, service history and repair."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: crate_first_receipt
+          role: "HDPE crate first non-purchase receipt"
+          name: "Plastic crate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3eec684a-d54a-4c38-94af-77fd14d7f9b1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual HDPE crate accompanying bone, borrowed separately or freely transferred, not a proven same-article return. Record gross kg, ownership, prior service and supplier coverage regardless of coverage availability; include actual uncovered manufacture, transport and services once."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: crate_return_received
+          role: "Reusable crate returned from outside"
+          name: "Plastic crate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3eec684a-d54a-4c38-94af-77fd14d7f9b1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only the SAME crate previously dispatched from THIS site qualifies; unlinked receipts use crate_first_receipt. Conditional actual external return, measured by article identity and mass with inherited history. Do not reacquire manufacturing burden or count internal reuse as this inflow. Native Plastic crate is one supplied article, Mass/kg, with no fixed polymer/grade/route/geography. The CPC bags classification is an isolated taxonomy defect; the basename and unit consistently identify a crate, not resin or a bag. Restrict here to an actual documented reusable HDPE crate; retain its complete manufactured-article provider and measured mass, service history and repair."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_ammonia_makeup
+          role: "Postrelease actual refrigeration ammonia makeup"
+          name: "Ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9874382d-672c-4601-a3ce-9a4ae21e663b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional ammonia system only. Reconcile opening charge + external makeup + recovered receipt against closing charge + recovered external transfer + actual leakage + waste. Internal recirculation is not consumption. Record actual service allocation separately from gross charge/loss. Native ammonia NH3, CAS7664-41-7, permits refrigerant use, Mass/kg, without a fixed route/grade/geography. Apply only to the actual anhydrous ammonia charge/makeup, not aqueous ammonia, ammonia-N, salts or total refrigeration service. Record actual purity/state and supplier; do not infer a required refrigerant from this optional card."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_refrigerant
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fg_oxygen_uptake
+          role: "Postrelease atmospheric oxygen uptake"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "e2fb04b0-6555-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual disjoint postrelease uptake in H uses the original cohort Qc. Conditional chemically demonstrated net O2 uptake in actual biological change, not the entire circulating ventilation-air volume. Do not infer uptake from COD or balance two unknown gas/water terms with one residual. Keep inert carrier air outside net material accounting unless measured and explicitly bridged. Native oxygen CAS7782-44-7 is an Elementary resource from air, Mass/kg. This binding is only molecular O2 actually taken from air; the native liquid-oxygen, dissolved-reagent and dioxygenyl-ion aliases do not expand that medium/species. It is neither a purchased oxygen Product nor oxygen emitted to air, and has no assumed uptake rate."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+    outputs:
+      product:
+        - row_id: dispatched_bone
+          role: "Raw bovine bone physically dispatched"
+          name: "Raw offal, inedible (including pigs' bristles, horse hair, animal guts, bird skins, feathers, bones and ivory)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d9c6b8c-c040-4b38-86f9-980adb462eec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Gross physical gate handover by original cohort, destination, measured wet mass and condition. It is not the reference production row and does not redefine Q. Account for moisture change, rejection and genuine returns separately; disclosed service horizon includes actual storage/handling to this handover. The native Product family expressly includes unworked/simply prepared bones and is at plant with unspecified treatment; no CAS, fixed grade, species or geography is supplied. Here one actual bovine-bone lot alone is selected, not a bundle of bristles/hair/guts/feathers/ivory. Its official family display does not widen this method. Keep origin, anatomical part, nonfood designation, residual tissue/water, actual treatment and provider in this card’s dataset context; discarded Waste is not this Product."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - un-cpc3-2025
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: liner_dispatched
+          role: "PE liner leaving on gross shipments"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual attached packaging leaves with gross physical product shipment, including re-shipments. This is a custody transfer of the same purchased article, not a coproduct credit or product Q. Native PE bag, CAS9002-88-4, Mass/kg; one supplied liner bag is the article. Record polymer grade, additives, dimensions and measured tare. It does not cover laminate, paper or an unspecified packaging collection; count requires measured lot-specific article mass."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: liner_external_return
+          role: "PE liner returned to external owner"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual separate return to an external owner, excluding packaging already counted on bone shipments. Retain gross kg and actual return transport/service once; no credit."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: crate_dispatched
+          role: "HDPE crate leaving on gross shipments"
+          name: "Plastic crate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3eec684a-d54a-4c38-94af-77fd14d7f9b1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Track actual gross container exit and return responsibility, without multiplying purchase by number of trips. Separate container stock, residual service burden and bone payload. Native Plastic crate is one supplied article, Mass/kg, with no fixed polymer/grade/route/geography. The CPC bags classification is an isolated taxonomy defect; the basename and unit consistently identify a crate, not resin or a bag. Restrict here to an actual documented reusable HDPE crate; retain its complete manufactured-article provider and measured mass, service history and repair."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: crate_external_return
+          role: "Empty crate returned to external owner"
+          name: "Plastic crate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3eec684a-d54a-4c38-94af-77fd14d7f9b1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual empty-container return across the boundary; it is distinct from a crate leaving with dispatched bone and from internal reuse. Preserve gross mass and history without a credit. Native Plastic crate is one supplied article, Mass/kg, with no fixed polymer/grade/route/geography. The CPC bags classification is an isolated taxonomy defect; the basename and unit consistently identify a crate, not resin or a bag. Restrict here to an actual documented reusable HDPE crate; retain its complete manufactured-article provider and measured mass, service history and repair."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      waste:
+        - row_id: liner_waste
+          role: "Discarded PE liner"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separately measured discarded bag substrate. Retain attached organic contamination with one gross-waste parent or a non-overlapping measured partition; do not count both gross bag waste and polymer fraction as additive. Generated PE waste identity remains unresolved; a cleaned waste mixture at a mechanical recycling plant is incompatible with this as-generated gate. Apply to the measured PE article substrate only when actually discarded; record contamination separately within a non-additive gross-waste bridge. Recycling language is no automatic recycling provider or credit. Do not double count polymer waste plus a gross contaminated package stream."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: crate_waste
+          role: "Discarded HDPE crate"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional measured HDPE crate substrate actually retired; not a sold reusable container or generic mixed plastic. Separate any metal fittings before using a polymer-only partition; gross retirement remains complete. Generated PE waste identity remains unresolved; a cleaned waste mixture at a mechanical recycling plant is incompatible with this as-generated gate. Apply to the measured PE article substrate only when actually discarded; record contamination separately within a non-additive gross-waste bridge. Recycling language is no automatic recycling provider or credit. Do not double count polymer waste plus a gross contaminated package stream."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_spoiled_bone
+          role: "Postrelease spoiled bovine bone"
+          name: "Spoiled raw bovine bone"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual discarded wet bone against original Qc with its inherited vector and new service burdens. Spoilage does not retrospectively create a new first-release cohort or cancel actual manufacturing."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_wastewater
+          role: "Postrelease crate wash wastewater"
+          name: "HDPE bone-crate wash wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual wet effluent from postrelease crate/area washing by cohort; use one gross stream/provider and non-additive pollutant subaccounts. Do not duplicate production effluent or cleaning water already inside this wastewater mass."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_wastewater
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_spent_ammonia
+          role: "Postrelease discarded ammonia refrigerant"
+          name: "Spent anhydrous ammonia refrigerant"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional actual discarded refrigerant leaving for authorized treatment. Distinguish recovered Product return, actual molecular leakage and remaining charge; do not select ammonia-N or chemically unrelated amine waste. Each external Product return requires its own actual identity and gross mass."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_refrigerant
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+      elementary:
+        - row_id: fg_ammonia_leak
+          role: "Postrelease ammonia refrigerant leakage"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional, measured at the actual receiving air compartment and release time. Actual NH3 CAS7664-41-7 leakage only; do not sum both charge-balance loss and the same leak meter. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_refrigerant
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_ammonia_decomposition
+          role: "Postrelease biological ammonia emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional, measured at the actual receiving air compartment and release time. Actual NH3 CAS7664-41-7 from decomposition, separate from refrigerant origin. Total ammonia-N or salts are not NH3 mass. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_hydrogen_sulfide
+          role: "Postrelease hydrogen sulfide emission"
+          name: "Hydrogen sulfide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional, measured at the actual receiving air compartment and release time. Actual H2S CAS7783-06-4 only; neither total sulfur, mercaptans nor odour units. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_biogenic_methane
+          role: "Postrelease biogenic methane emission"
+          name: "Biogenic methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional, measured at the actual receiving air compartment and release time. Actual CH4 CAS74-82-8 with evidenced biological carbon origin; not total organic carbon, biogas volume or whole carbon loss. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_biogenic_co2
+          role: "Postrelease biogenic carbon dioxide emission"
+          name: "Biogenic carbon dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional, measured at the actual receiving air compartment and release time. Actual gaseous CO2 CAS124-38-9 with biological origin. No automatic conversion of retained bone carbon or carbonate mineral carbon to a biogenic emission. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_species
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: fg_water_evaporation
+          role: "Postrelease water vapour leaving the boundary"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual postrelease events in H assigned to original cohort Qc, disjoint from the preparation event ledger. Conditional, measured at the actual receiving air compartment and release time. Actual H2O CAS7732-18-5 net evaporation after independent inlet/outlet humidity and moisture accounting; not steam purchase, liquid water or structural hydroxyl. Retain gross molecular V and source partition; do not infer occurrence from a candidate flow. Require an unambiguous match of the molecular species, CAS, phase, origin and receiving medium before binding an identity; a broad synonym does not establish chemical equivalence."
+          amount:
+            expression: "N / Qc; take the calculated result once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg_water
+              source_ids:
+                - ilcd-allocation-2010
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "all processes"
+    rule: "Use this hierarchy only for attributional situations requiring allocation. Industrial source descriptions do not establish LCA allocation or a default economic share. Describe the actual animal/meat/bone functions and their common interface before allocating upstream burdens."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_subdivide
+    applies_to: "all inventory rows"
+    rule: "First directly assign dedicated collection, species-specific sorting, cooling and cleaning using actual submeter/job records and physical or virtual subdivision. Keep the complete common process inventory; retain residual and Q0 activity explicitly rather than selecting only successful shifts."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_causality
+    applies_to: "all inventory rows"
+    rule: "For each remaining exchange identify and evidence the determining physical causal relationship with each co-function. Cooling heat load and duration may jointly determine one service; cleaning event/soiling may determine another. Mass, time, protein, energy or animal count is not automatically causal merely because available. One criterion need not apply to all exchanges."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_residual
+    applies_to: "all inventory rows"
+    rule: "Only genuinely unresolved common-process burden proceeds to market-value allocation. Use contemporaneous values of the actual co-functions at the SAME common process gate and actual state; document quantity, price, period, treatment of paid services and sensitivity. Do not combine raw bone prices with downstream meat/gelatine prices at different gates. If the basis is unavailable or unsuitable, preserve an explicit unresolved allocation rather than inventing a ratio or zero."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: allocation_no_credit
+    applies_to: "all processes"
+    rule: "Internal raw-bone transfers, returned packaging and recirculated water cancel only within their physical interfaces. They do not create extra production, substitute products, avoided disposal credits or a second upstream provider. Waste treatment is linked to the actual treatment provider and mass once; retained bone carbon is not an automatic negative emission."
+    source_ids:
+      - ilcd-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw
+      process_id: "bone_preparation"
+      flow_role: "Every atomic event and inherited vector"
+      record_type: "foreground_record"
+      raw_fields: "event ID; row ID; operation; cohort; provider; source and destination; original unit; raw amount or rate; interval; opening and closing stock; inherited exchange vector; actual F; proven OTHER duplicate X; Qc"
+      collection_method: "Reconcile invoices, scales, meters and custody logs without predivision; retain missing-data and uncertainty flags."
+      unit: "original unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_bone
+      process_id: "bone_preparation"
+      flow_role: "Whole wet raw bone and upstream link"
+      record_type: "foreground_record"
+      raw_fields: "bovine taxon; source part; lot; slaughter and cutting interface; nonfood designation; veterinary destination decision; gross and tare kg; tissue composition; water phases; provider boundary; inherited vector"
+      collection_method: "Use calibrated gross/tare scales and lot documents; measure composition and water independently with stated sampling method, not nominal handbook ratios."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_release
+      process_id: "bone_preparation"
+      flow_role: "First overall quality release"
+      record_type: "foreground_record"
+      raw_fields: "release event ID; original cohort; lot genealogy; net wet kg; scale calibration; tare; nonfood acceptance; rejection; closing FG; previous release exclusion; Q; Qc"
+      collection_method: "Join calibrated wet weighing to first release evidence; check uniqueness across previously released lots and accepted closingFG."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_transport
+      process_id: "bone_preparation"
+      flow_role: "Actual inbound cold road service"
+      record_type: "foreground_record"
+      raw_fields: "route; provider; payload kg; actual distance km; refrigerated service; empty-trip responsibility; provider coverage; duplicate upstream leg"
+      collection_method: "Use actual consignment and dispatch records; compute raw kg*km once before normalization and reject illustrative native distances as defaults."
+      unit: "kg*km"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "bone_preparation"
+      flow_role: "Equipment cooling hygiene and FG electricity"
+      record_type: "foreground_record"
+      raw_fields: "meter ID; voltage; geography; provider mix; meter start and end; kWh or MJ; operation; first release or FG service; idle and failure; causal service driver; observed H"
+      collection_method: "Submeter where possible, reconcile to complete site totals and actual jobs; distinguish electricity from supplied heat and its carrier."
+      unit: "original energy unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_water
+      process_id: "bone_preparation"
+      flow_role: "Fresh wash water and each water phase"
+      record_type: "foreground_record"
+      raw_fields: "meter start and end; integrated volume or true rate; interval; independent density and state; fresh inlet; internal reuse; liquid outlet; adherent water; humidity; evaporation; condensate; structural water; uncertainty"
+      collection_method: "Measure inlet/outlet totals and water states independently. Integrate only actual rates; a cumulative volume is not multiplied by time. Retain origin partitions and no arbitrary reaction-water residual."
+      unit: "original mass or volume unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_formulations
+      process_id: "bone_preparation"
+      flow_role: "Complete purchased cleaning formulations"
+      record_type: "foreground_record"
+      raw_fields: "supplier formulation; SDS or specification; whole-solution mass; assay; active substance; carrier water; actual dilution water; mixing electricity; spill; stock; concentration compatibility"
+      collection_method: "Weigh complete purchased formulation once. Keep assay/active/carrier as non-additive subaccounts; measure separate actual in-house mixing inputs and loss."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_refrigerant
+      process_id: "bone_preparation"
+      flow_role: "Ammonia charge makeup recovery and loss"
+      record_type: "foreground_record"
+      raw_fields: "equipment and refrigerant identity; charge start and end; actual makeup; recovery received; recovered transfer; waste; molecular leakage; leak test; service cohort; phase and purity"
+      collection_method: "Reconcile charge balance to maintenance and leak records. Do not count the same leakage from both balance and detector; split origins and cohorts without shrinking gross losses."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_maintenance
+      process_id: "bone_preparation"
+      flow_role: "Actual equipment replacements and oils"
+      record_type: "foreground_record"
+      raw_fields: "article ID; measured mass; alloy or oil formulation; supplier manufacture; installation and retirement; actual repair; replaced part; gross waste; prior service history; allocation evidence"
+      collection_method: "Use actual purchase and maintenance logs; whole articles need manufacturing providers, not only material mass. Preserve physical replacement/retirement and new F."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_waste
+      process_id: "bone_preparation"
+      flow_role: "Each rejected solid stream"
+      record_type: "foreground_record"
+      raw_fields: "source event; original cohort; wet gross mass; bone or tissue or fines identity; residual moisture; non-overlapping origin partition; storage; destination; treatment provider; return distinction"
+      collection_method: "Weigh each actual separately collected stream and reconcile to material stocks. Keep the whole wet stream or measured non-additive constituents, never both as added total."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_wastewater
+      process_id: "bone_preparation"
+      flow_role: "One physical wastewater stream per outlet"
+      record_type: "foreground_record"
+      raw_fields: "outlet ID; measured total wet amount; independent density; sampling time; dissolved solids; suspended solids; COD; TOC; TN; species-specific analysis; actual provider; internal origin partition"
+      collection_method: "Reconcile actual gross effluent and sampling; a quality indicator is not a molecular mass. Count one treatment interface and retain actual on-site treatment separately if present."
+      unit: "original mass or volume unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_species
+      process_id: "bone_preparation"
+      flow_role: "Actual chemical species and receiving medium"
+      record_type: "foreground_record"
+      raw_fields: "species; CAS; physical phase; carbon origin; source operation; receiving medium; emission point; concentration basis; true gas rate or integrated volume; temperature; pressure; humidity; interval; independent uptake; uncertainty"
+      collection_method: "Use species-specific measurement and actual dry/wet reference-state conversion; integrate rate once or use accumulated volume directly. Keep gross and net labels and independent total/element closure; no invented emissions from aggregate indicators."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg
+      process_id: "fg_service"
+      flow_role: "FG custody service and returns by original cohort"
+      record_type: "foreground_record"
+      raw_fields: "original Qc; first-release link; opening and closing FG kg; inherited per-exchange vector; gross dispatch; return; original delivery reversal; spoilage; water change; reinspection; real service F; H"
+      collection_method: "Reconcile custody by lot and time. Keep services and burden vectors separate from physical stock; cancellation applies only to paired internal release."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_pack
+      process_id: "fg_service"
+      flow_role: "Every packaging article and external return"
+      record_type: "foreground_record"
+      raw_fields: "article and polymer; measured tare; empty opening and closing; attached WIP FG opening and closing; reusable opening and closing; purchases; first non-purchase external receipts; ownership and supplier coverage; same-article prior-site-dispatch-linked true returns; gross dispatched packaging; external return out; waste; internal reuse; inherited service burden"
+      collection_method: "Count and independently weigh each actual article lot. Reconcile the complete boundary_pack equation; no assumed item mass or packaging per net dispatch shortcut."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg_raw
+      process_id: "fg_service"
+      flow_role: "Postrelease only: Every atomic event and inherited vector"
+      record_type: "foreground_record"
+      raw_fields: "event ID; row ID; operation; cohort; provider; source and destination; original unit; raw amount or rate; interval; opening and closing stock; inherited exchange vector; actual F; proven OTHER duplicate X; Qc"
+      collection_method: "Disjoint postrelease events in H retain original Qc. Reconcile invoices, scales, meters and custody logs without predivision; retain missing-data and uncertainty flags."
+      unit: "original unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg_energy
+      process_id: "fg_service"
+      flow_role: "Postrelease only: Equipment cooling hygiene and FG electricity"
+      record_type: "foreground_record"
+      raw_fields: "meter ID; voltage; geography; provider mix; meter start and end; kWh or MJ; operation; first release or FG service; idle and failure; causal service driver; observed H"
+      collection_method: "Disjoint postrelease events in H retain original Qc. Submeter where possible, reconcile to complete site totals and actual jobs; distinguish electricity from supplied heat and its carrier."
+      unit: "original energy unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg_water
+      process_id: "fg_service"
+      flow_role: "Postrelease only: Fresh wash water and each water phase"
+      record_type: "foreground_record"
+      raw_fields: "meter start and end; integrated volume or true rate; interval; independent density and state; fresh inlet; internal reuse; liquid outlet; adherent water; humidity; evaporation; condensate; structural water; uncertainty"
+      collection_method: "Disjoint postrelease events in H retain original Qc. Measure inlet/outlet totals and water states independently. Integrate only actual rates; a cumulative volume is not multiplied by time. Retain origin partitions and no arbitrary reaction-water residual."
+      unit: "original mass or volume unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg_refrigerant
+      process_id: "fg_service"
+      flow_role: "Postrelease only: Ammonia charge makeup recovery and loss"
+      record_type: "foreground_record"
+      raw_fields: "equipment and refrigerant identity; charge start and end; actual makeup; recovery received; recovered transfer; waste; molecular leakage; leak test; service cohort; phase and purity"
+      collection_method: "Disjoint postrelease events in H retain original Qc. Reconcile charge balance to maintenance and leak records. Do not count the same leakage from both balance and detector; split origins and cohorts without shrinking gross losses."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg_wastewater
+      process_id: "fg_service"
+      flow_role: "Postrelease only: One physical wastewater stream per outlet"
+      record_type: "foreground_record"
+      raw_fields: "outlet ID; measured total wet amount; independent density; sampling time; dissolved solids; suspended solids; COD; TOC; TN; species-specific analysis; actual provider; internal origin partition"
+      collection_method: "Disjoint postrelease events in H retain original Qc. Reconcile actual gross effluent and sampling; a quality indicator is not a molecular mass. Count one treatment interface and retain actual on-site treatment separately if present."
+      unit: "original mass or volume unit"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+    - protocol_id: cp_fg_species
+      process_id: "fg_service"
+      flow_role: "Postrelease only: Actual chemical species and receiving medium"
+      record_type: "foreground_record"
+      raw_fields: "species; CAS; physical phase; carbon origin; source operation; receiving medium; emission point; concentration basis; true gas rate or integrated volume; temperature; pressure; humidity; interval; independent uptake; uncertainty"
+      collection_method: "Disjoint postrelease events in H retain original Qc. Use species-specific measurement and actual dry/wet reference-state conversion; integrate rate once or use accumulated volume directly. Keep gross and net labels and independent total/element closure; no invented emissions from aggregate indicators."
+      unit: "kg"
+      frequency: "Each event and close"
+      temporal_coverage: "Complete H and opening/closing inherited history"
+      site_scope: "Actual site and provider interfaces"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; raw records; custody genealogy; gaps and uncertainty"
+  calculation_rules:
+    - id: release_cohort
+      applies_to: "released_bone"
+      rule: "Sum measured NEW first-release wet net kg after duplicate-release exclusion to form Q. Assign original cohort Qc=Q; accepted closingFG is included once, never added a second time. Previously released returns or receipts retain their original Qc."
+      inputs:
+        - cp_release
+        - cp_bone
+        - cp_fg
+      output: "Q; Qc"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: raw_numerator
+      applies_to: "all inventory rows"
+      rule: "Convert original units and integrate actual rates once. Reconcile physical V and inherited vectors independently; determine attributed environmental A using section7. N selects the labelled V or A channel with provenance; physical waste/emissions/repair/replacement/returns always retain full V. Add actual F and cancel only proven OTHER same-side X."
+      inputs:
+        - cp_raw
+        - cp_bone
+        - cp_energy
+        - cp_water
+        - cp_formulations
+        - cp_transport
+        - cp_refrigerant
+        - cp_maintenance
+        - cp_waste
+        - cp_wastewater
+        - cp_species
+        - cp_fg
+        - cp_pack
+        - cp_fg_raw
+        - cp_fg_energy
+        - cp_fg_water
+        - cp_fg_refrigerant
+        - cp_fg_wastewater
+        - cp_fg_species
+      output: "N"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: report_once
+      applies_to: "all inventory rows"
+      rule: "r = N / Qc for Qc > 0, once for each row/cohort/channel. For new preparation Qc=Q; postrelease services retain original Qc. Physical channels use gross V; environmental channels use attributed A with inherited vectors. At Qc=0 retain all actual activity and stock but produce no unit result. For released_bone only N=Qc of newly first-released physical kg, giving exactly1kg. Cards and collection aggregation labels reference this result without dividing again; never divide by H."
+      inputs:
+        - N
+        - Qc
+        - cp_raw
+        - cp_release
+        - cp_fg
+        - cp_fg_raw
+      output: "r"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: physical_closure
+      applies_to: "all inventory rows"
+      rule: "At preparation, FG and combined gates separately close opening + genuine external inputs + internal receipts = closing + genuine external exits + internal transfers. Cancel paired internal transfers only in the combined ledger. Independently close relevant elements and water phases; residuals remain uncertainty, not invented reaction water or gases."
+      inputs:
+        - cp_bone
+        - cp_water
+        - cp_waste
+        - cp_wastewater
+        - cp_species
+        - cp_fg
+        - cp_pack
+        - cp_fg_water
+        - cp_fg_wastewater
+        - cp_fg_species
+      output: "physical_balance"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: package_closure
+      applies_to: "all inventory rows"
+      rule: "Apply boundary_pack separately to each article and original cohort. Record internal reuse as a paired transfer only; gross package shipment, true outside returns and actual waste remain. Link service burdens to actual original Qc without reducing measured article kg."
+      inputs:
+        - cp_pack
+        - cp_fg
+      output: "package_balance"
+      source_ids:
+        - ilcd-allocation-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Match whole native identity including every name/comment/synonym, CAS, route, grade, geography, medium, type and all properties. Ambiguous or incompatible candidates stay unbound; concrete exchanges remain."
+      evidence: "Direct identity evidence; exact support chain; actual supplier specification"
+    - id: dq_origin
+      applies_to: "raw_bone"
+      requirement: "Keep actual bovine source, nonfood destination, separation state and upstream provider allocation; an animal-fit certificate does not by itself establish nonfood use."
+      evidence: "Lot origin and custody evidence; veterinary/destination record; provider boundary"
+    - id: dq_complete
+      applies_to: "all processes"
+      requirement: "Retain failures, idle, trials, start-stop, cleanup, rework, Q0 and all raw/WIP/FG physical and inherited stocks. Missing measurements and unobserved later service remain visible; a blank UUID is not a zero exchange."
+      evidence: "Full event logs; stock balance; missing-data register"
+    - id: dq_measurement
+      applies_to: "all inventory rows"
+      requirement: "Document calibration, sample representativeness, actual unit/state conversion and uncertainty; no fixed bone composition, density, yield, temperature, lifetime or emission factor."
+      evidence: "Scale and meter certificates; test methods; raw readings"
+    - id: dq_sources
+      applies_to: "all processes"
+      requirement: "Use UN for classification, MLA for Australian bone-market distinctions, Akiolis for collection and food-material counterevidence, and ILCD for allocation. Conditional inventory and closure requirements are this PCR’s methodological synthesis, not measured industry defaults. Do not infer one factory or current statutory conformance from this synthesis."
+      evidence: "Source-specific scope and date assessment; original context"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "released_bone"
+    rule: "Exactly one linked first-release Product output defines1kg wet reference; its core UUID, property, unit, bovine nonfood scope and both languages agree. A true discarded Waste cannot be its substitute."
+    source_ids:
+      - un-cpc3-2025
+      - ec-animal-by-products
+  - rule_id: validate_boundary
+    applies_to: "all processes"
+    rule: "Verify raw terminal and actual handover before accepting the method; preserve upstream animal/meat burdens and exclude deep conversion. Permission failures affect qualified destination/Q, not actual load retention."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_accounting
+    applies_to: "all inventory rows"
+    rule: "Check unique Q, original Qc, Q0, unnormalized collection, single N/Qc, full raw/WIP/FG inheritance and all three physical gates. No shrinking gross wastes or emissions by allocation, no second H divisor, no hidden actual F deducted as X."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_atomic
+    applies_to: "all inventory rows"
+    rule: "Require a specific atomic identity, native unit and linked protocol/source context for every actual exchange including new inputs not in the initial list. Do not hide actual inputs, emissions or residues in other/zero/aggregate cards; alternatives need a documented non-additive bridge."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_pack_species
+    applies_to: "all inventory rows"
+    rule: "Verify each packaging equation and actual molecular species/media independently from total wet mass and element balances. Never convert COD/TN/TOC directly to a molecule or fit two unknowns from one residual."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: validate_missing
+    applies_to: "all processes"
+    rule: "Disclose unavailable provider/auxiliary identities and future site quantities as ordinary data requirements. A genuine unproven core terminal or unresolved method relationship remains a substantive hold; engineering checks do not approve science, translation, mapping or publication."
+    source_ids:
+      - ilcd-allocation-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Declared raw-bone supply to a compatible permitted nonfood industrial process before conversion"
+  allowed_use: "Only the documented bovine raw state, wet mass, provider interface, first-release cohort and service horizon"
+  excluded_use: "Whole39110 coverage; food/soup bone; rendered or chemically converted products; automatic zero-burden waste; fixed composition or avoided credits; veterinary permission"
+  required_metadata: "All reference qualifiers, each atomic native restriction, provider boundary, source/protocol/calculation links, Q/Qc/H, physical V and attributed A, raw/WIP/FG inherited vectors"
+  required_quality_disclosure: "Actual measurement coverage, uncertainty, ordinary UUID/provider gaps, unresolved true holds, evidence synthesis and unobserved later service"
+  update_trigger: "Species/source/destination change; deep-processing change; core identity or provider change; release/stock boundary change; new actual exchange or measured method evidence"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division. CPC Ver.3.0 Explanatory Notes, 30 June 2025, pp.33–36,64,69–72,88–91,198–199. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "39110 includes unworked or simply prepared bones; distinguish edible offal, raw hides, rendered fats and meal. This method is a narrower subset; it excludes powder even where the full classification includes it."
+  - id: "ec-animal-by-products"
+    type: "official_guidance"
+    reference: "Regulation (EC) 1069/2009, Articles 8–10, especially 10(a). https://eur-lex.europa.eu/eli/reg/2009/1069/oj/eng"
+    used_for: "Risk categories and material not intended for human consumption, including commercially redirected parts initially fit for food. Category and slaughter eligibility do not prove a bone lot, nonfood destination or local permission; no transfer of EU requirements to other sites."
+  - id: "akiolis-category3"
+    type: "literature"
+    reference: "Akiolis. Collection from the meat industry. https://www.akiolis.com/en/sourcing/collection-meat-industry"
+    used_for: "First-party collection of meat-industry bones and by-products. Bones for gelatine are explicitly described as food material: commercial bone availability alone cannot establish this nonfood route. No site quantities or supplier eligibility are inferred."
+  - id: "ilcd-allocation-2010"
+    type: "handbook"
+    reference: "European Commission JRC. ILCD Handbook, General guide for LCA—Detailed guidance, first edition March2010, section7.9.3, printed257–258/PDF277–278. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional cases needing allocation: virtual subdivision, exchange-specific determining physical causality, then residual market value at the actual common gate/state. No fixed share, arbitrary choice, avoided-production credit or recycling formula is imported."
+  - id: "mla-bone-disposition"
+    type: "literature"
+    reference: "Coleby Process Consulting for Meat & Livestock Australia. Beef Bone Disposition, Australia 2024, V.RMH.2402, PDF pages 2–3 (printed 2–3). https://www.mla.com.au/globalassets/mla-corporate/research-and-development/documents/v.rmh.2402-mla-beef-bone-disposition-memo-0125.pdf"
+    used_for: "Distinguishes slaughter-floor and boning-room bone and downstream rendering, degreased chips and marrow markets. Supports an industrial raw-bone interface, not an actual batch, nonfood eligibility or a site-specific yield. National estimates and carcass weights are not foreground measurements; conversion remains excluded."
+  - id: "un-cpc3-2026"
+    type: "official_guidance"
+    reference: "UNSD. CPC Ver.3.0 explanatory notes, 23 October 2026 workbook, CPC3!A1861:D1861. https://unstats.un.org/unsd/econstats/classifications/cpc"
+    used_for: "Corroborates the frozen 2025 raw-bone inclusion and neighbouring exclusions; does not change the frozen classification inventory or approve the narrower method."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:e9f5396fd12ea7e4f71b44077bf5bfc5798991e16cec1d9a570720b9a13426cd"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7722"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7722
+          line: 63
+          column: 1
+        end:
+          offset: 13518
+          line: 88
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Separated raw bovine bone awaiting first supply release at one documented collection interface after actual slaughter/cutting |\n| starting_condition_role | foreground_starting_condition |\n| product_classification_scope | 39110 raw inedible cattle-bone subset, not an entire-leaf coverage claim |\n| recursive_input_rule | Same-category receipts retain provider, original state and inherited vectors. Previously released raw bone cannot be relabelled as newly produced by receipt/reinspection; handling-only service uses its original Qc. |\n| upstream_dataset_requirement | Trace actual animal husbandry, live-animal transport, slaughter, meat cutting/separation and their allocation into one compatible upstream provider at this handover. Add only omitted operations; disclose unavailable providers without silently zeroing them. |\n| disclosure | Wet basis; legal/use designation; separation and release events; inherited raw/WIP/FG vectors; original cohort Qc; physical V versus attributed A; actual observation horizon H |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_scope | all processes | Use the actual collection-to-gate route. Initial cleaning may remove loose contamination but must not conceal thermal rendering, chemical degreasing, hydrolysis, demineralisation, drying to bone chips, grinding to meal or shape cutting. If such a conversion occurred, preserve its actual burden and classify the changed terminal separately; it is not conforming raw bone. | un-cpc3-2025; un-cpc3-2026; mla-bone-disposition; ilcd-allocation-2010 |\n| boundary_origin | raw_bone | Require a traceable bovine lot and documented nonfood destination. Preserve actual live-animal/meat-system burdens and allocation at separation. Zero price, waste wording, a handling fee or recovered status cannot set a zero provider or create avoided-production credit. A true discarded Waste cannot replace the raw Product input/output UUID. | ec-animal-by-products; ilcd-allocation-2010 |\n| boundary_q | released_bone | Q sums only NEW net wet mass at the first whole-batch quality release. Conforming closing FG is already part of Q: never add it again as production. Receipt, packaging, storage, shipment, return and retest do not create Q. For current manufacture Qc=Q; subsequent services use each original cohort Qc. At Qc=0 retain real burdens, stocks and history with no unit result. | ilcd-allocation-2010 |\n| boundary_stocks | all inventory rows | Keep physical opening/closing raw material, WIP, rejected stock, equipment charge and FG separate from inherited per-exchange environmental vectors. F is genuine newly occurring burden; X cancels only a proven OTHER same-side duplicate event. New cleaning water, repair, replacement, leakage and rework are F, never X. Transfer each physical quantity and vector once; do not equate stored kg with environmental burden. | ilcd-allocation-2010 |\n| boundary_fg | fg_service | Retain opening/closing FG, gross dispatch and actual external returns by original release cohort. Reverse an original delivery once in the custody ledger for a genuine return, while retaining its historic manufacturing burden. New cleaning/repacking/cooling/rework adds actual F to original Qc. Combine preparation and FG gates only by cancelling their paired internal release transfer and vector. Report unobserved future service beyond H. | ilcd-allocation-2010 |\n| boundary_gross | all inventory rows | Physical gross V and environmental attribution A are separate channels. All real waste, emissions, repair/replacement and carrier returns keep V/Qc against their actual originating cohort; economic/service shares cannot shrink their mass. Origin partitions must be non-overlapping and sum to observed total V. Whole wet mixture and its components are alternative or bridged non-additive representations with one actual provider. | ilcd-allocation-2010 |\n| boundary_pack | fg_service | For EACH PE liner and HDPE crate use disjoint empty, attached WIP/FG and reusable stock accounts: opening + purchases + first non-purchase external receipts + true returns received = closing + gross shipments + other external exits + waste. First receipts include packaging with incoming bone, separately borrowed or freely transferred, whether or not a supplier inventory covers it. True returns require the SAME article linked to an earlier dispatch from THIS site; unlinked receipts remain first receipts. Internal reuse cancels. Record ownership, prior service and supplier coverage; actual purchase, transport and service burdens occur once, with unavailable provider data explicitly pending. | ilcd-allocation-2010 |\n| boundary_actual | all processes | Include all actual failed/zero-output runs, start-stop, idle cooling, trials, cleanup, rework, inspection and rejected/unauthorized activity. A quality or veterinary gate controls saleable output and destination only. Declare each additional actual purchased formulation, component, fuel, heat carrier, refrigerant, waste and gas species as its own atomic card and collection event before claiming completeness. | ilcd-allocation-2010 |\n| boundary_water | all processes | Close wet material, total physical mass and relevant C/N/P/Ca/S balances independently; record free, tissue-bound, phase-change and mineral structural water without assuming a reaction. Water meters provide integrated volume unless explicitly rate meters; density requires independent substance-specific state measurement. Refrigeration condensate is not boiler condensate. Any real external heat-carrier Product return retains actual mass, enthalpy, state and supplier water/energy agreement. | ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 334
+              line: 10
+              column: 1
+            end:
+              offset: 389
+              line: 10
+              column: 56
+          text: "# Raw inedible bovine bone collection and first release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7722
+              line: 63
+              column: 1
+            end:
+              offset: 7743
+              line: 63
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_73359"
+      family: "allocation"
+      span:
+        start:
+          offset: 73359
+          line: 947
+          column: 1
+        end:
+          offset: 75605
+          line: 957
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | all processes | Use this hierarchy only for attributional situations requiring allocation. Industrial source descriptions do not establish LCA allocation or a default economic share. Describe the actual animal/meat/bone functions and their common interface before allocating upstream burdens. | ilcd-allocation-2010 |\n| allocation_subdivide | all inventory rows | First directly assign dedicated collection, species-specific sorting, cooling and cleaning using actual submeter/job records and physical or virtual subdivision. Keep the complete common process inventory; retain residual and Q0 activity explicitly rather than selecting only successful shifts. | ilcd-allocation-2010 |\n| allocation_causality | all inventory rows | For each remaining exchange identify and evidence the determining physical causal relationship with each co-function. Cooling heat load and duration may jointly determine one service; cleaning event/soiling may determine another. Mass, time, protein, energy or animal count is not automatically causal merely because available. One criterion need not apply to all exchanges. | ilcd-allocation-2010 |\n| allocation_residual | all inventory rows | Only genuinely unresolved common-process burden proceeds to market-value allocation. Use contemporaneous values of the actual co-functions at the SAME common process gate and actual state; document quantity, price, period, treatment of paid services and sensitivity. Do not combine raw bone prices with downstream meat/gelatine prices at different gates. If the basis is unavailable or unsuitable, preserve an explicit unresolved allocation rather than inventing a ratio or zero. | ilcd-allocation-2010 |\n| allocation_no_credit | all processes | Internal raw-bone transfers, returned packaging and recirculated water cancel only within their physical interfaces. They do not create extra production, substitute products, avoided disposal credits or a second upstream provider. Waste treatment is linked to the actual treatment provider and mass once; retained bone carbon is not an automatic negative emission. | ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 334
+              line: 10
+              column: 1
+            end:
+              offset: 389
+              line: 10
+              column: 56
+          text: "# Raw inedible bovine bone collection and first release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 73359
+              line: 947
+              column: 1
+            end:
+              offset: 73399
+              line: 947
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_94748"
+      family: "validation"
+      span:
+        start:
+          offset: 94748
+          line: 1006
+          column: 1
+        end:
+          offset: 96690
+          line: 1017
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | released_bone | Exactly one linked first-release Product output defines1kg wet reference; its core UUID, property, unit, bovine nonfood scope and both languages agree. A true discarded Waste cannot be its substitute. | un-cpc3-2025; ec-animal-by-products |\n| validate_boundary | all processes | Verify raw terminal and actual handover before accepting the method; preserve upstream animal/meat burdens and exclude deep conversion. Permission failures affect qualified destination/Q, not actual load retention. | ilcd-allocation-2010 |\n| validate_accounting | all inventory rows | Check unique Q, original Qc, Q0, unnormalized collection, single N/Qc, full raw/WIP/FG inheritance and all three physical gates. No shrinking gross wastes or emissions by allocation, no second H divisor, no hidden actual F deducted as X. | ilcd-allocation-2010 |\n| validate_atomic | all inventory rows | Require a specific atomic identity, native unit and linked protocol/source context for every actual exchange including new inputs not in the initial list. Do not hide actual inputs, emissions or residues in other/zero/aggregate cards; alternatives need a documented non-additive bridge. | ilcd-allocation-2010 |\n| validate_pack_species | all inventory rows | Verify each packaging equation and actual molecular species/media independently from total wet mass and element balances. Never convert COD/TN/TOC directly to a molecule or fit two unknowns from one residual. | ilcd-allocation-2010 |\n| validate_missing | all processes | Disclose unavailable provider/auxiliary identities and future site quantities as ordinary data requirements. A genuine unproven core terminal or unresolved method relationship remains a substantive hold; engineering checks do not approve science, translation, mapping or publication. | ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 334
+              line: 10
+              column: 1
+            end:
+              offset: 389
+              line: 10
+              column: 56
+          text: "# Raw inedible bovine bone collection and first release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 94748
+              line: 1006
+              column: 1
+            end:
+              offset: 94770
+              line: 1006
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 8930
+          line: 78
+          column: 1
+        end:
+          offset: 9411
+          line: 78
+          column: 482
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_origin"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 9412
+          line: 79
+          column: 1
+        end:
+          offset: 9834
+          line: 79
+          column: 423
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_q"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 9835
+          line: 80
+          column: 1
+        end:
+          offset: 10261
+          line: 80
+          column: 427
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 10262
+          line: 81
+          column: 1
+        end:
+          offset: 10746
+          line: 81
+          column: 485
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_fg"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 10747
+          line: 82
+          column: 1
+        end:
+          offset: 11241
+          line: 82
+          column: 495
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_gross"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 11242
+          line: 83
+          column: 1
+        end:
+          offset: 11735
+          line: 83
+          column: 494
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "boundary_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 11736
+          line: 84
+          column: 1
+        end:
+          offset: 12489
+          line: 84
+          column: 754
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "boundary_actual"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 12490
+          line: 85
+          column: 1
+        end:
+          offset: 12962
+          line: 85
+          column: 473
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "boundary_water"
+      identity_kind: "explicit"
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 12963
+          line: 86
+          column: 1
+        end:
+          offset: 13516
+          line: 86
+          column: 554
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_73359"
+      source_span:
+        start:
+          offset: 73472
+          line: 951
+          column: 1
+        end:
+          offset: 73810
+          line: 951
+          column: 339
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_73359"
+      source_span:
+        start:
+          offset: 73811
+          line: 952
+          column: 1
+        end:
+          offset: 74176
+          line: 952
+          column: 366
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_73359"
+      source_span:
+        start:
+          offset: 74177
+          line: 953
+          column: 1
+        end:
+          offset: 74622
+          line: 953
+          column: 446
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_73359"
+      source_span:
+        start:
+          offset: 74623
+          line: 954
+          column: 1
+        end:
+          offset: 75172
+          line: 954
+          column: 550
+    - pointer: "/allocation_rules/4"
+      rule_id: "allocation_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_73359"
+      source_span:
+        start:
+          offset: 75173
+          line: 955
+          column: 1
+        end:
+          offset: 75603
+          line: 955
+          column: 431
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 94843
+          line: 1010
+          column: 1
+        end:
+          offset: 95122
+          line: 1010
+          column: 280
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 95123
+          line: 1011
+          column: 1
+        end:
+          offset: 95400
+          line: 1011
+          column: 278
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_accounting"
+      identity_kind: "explicit"
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 95401
+          line: 1012
+          column: 1
+        end:
+          offset: 95708
+          line: 1012
+          column: 308
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 95709
+          line: 1013
+          column: 1
+        end:
+          offset: 96061
+          line: 1013
+          column: 353
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_pack_species"
+      identity_kind: "explicit"
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 96062
+          line: 1014
+          column: 1
+        end:
+          offset: 96342
+          line: 1014
+          column: 281
+    - pointer: "/validation_rules/5"
+      rule_id: "validate_missing"
+      identity_kind: "explicit"
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 96343
+          line: 1015
+          column: 1
+        end:
+          offset: 96688
+          line: 1015
+          column: 346
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 7722
+          line: 63
+          column: 1
+        end:
+          offset: 7743
+          line: 63
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7722"
+      source_span:
+        start:
+          offset: 7771
+          line: 67
+          column: 1
+        end:
+          offset: 8857
+          line: 74
+          column: 193
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_73359"
+      source_span:
+        start:
+          offset: 73359
+          line: 947
+          column: 1
+        end:
+          offset: 73399
+          line: 947
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_94748"
+      source_span:
+        start:
+          offset: 94748
+          line: 1006
+          column: 1
+        end:
+          offset: 94770
+          line: 1006
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e9f5396fd12ea7e4f71b44077bf5bfc5798991e16cec1d9a570720b9a13426cd"
+  generated_content_sha256: "sha256:b002e94f29fb501690dc13216389b5c9f945112b0188398c32d431c119b0bdc5"

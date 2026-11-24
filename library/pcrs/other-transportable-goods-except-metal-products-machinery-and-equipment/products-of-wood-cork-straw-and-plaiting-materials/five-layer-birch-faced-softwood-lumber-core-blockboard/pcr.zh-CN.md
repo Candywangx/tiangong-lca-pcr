@@ -19,7 +19,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.five-layer-birch-faced-softwood-lumber-core-blockboard |
-| classification_refs | CPC 3.0 31423 保留为候选 narrower coverage 关联；依据 docs/adr/2026-11-10-hold-blockboard-cpc-associations.md，mapping_acceptance = held_pending_classification_review。2026-11-06 batch-03 接受记录为历史，不建立当前正向映射。官方 31413 说明包含细木工板，并允许中央芯采用不同材料；31423 也有交叉单板条件，不能仅因实木条芯就排除 31413 或判定 31423。不主张替代分类或整个叶类覆盖。 |
+| classification_refs | 本库接受 CPC 3.0 31423 的较窄映射，限定产品为四张经证实属于垂枝桦或毛桦的温带桦木单板包覆一层松木或云杉实木条芯，实物层间纹理交错，板面未饰面，外层无热带木材。联合国统计司 2026 年 10 月 23 日白皮本在标准五位父类下的 31423.01 明列相应细木工板（附录第 138–143 段、印刷页 928）。标准 31413 的说明仍明列细木工板并允许其他中央芯材。五层实物按 0/90/0/90/0 交错，去除中央实木芯后四张单板为 0/90/90/0，仅凭层序不足以裁定交叉单板条文的适用性。本裁定综合附录明确的下级品名、父级规则和正文反证。具体研究须核实垂枝桦或毛桦面板及横纹单板、松木或云杉条芯、交叉纹理、胶黏剂、供应者和成品状态。Paged 技术资料所列桦木选项不能证明某批的树种。决定见 docs/adr/2026-11-21-accept-cpc-31423-retained-birch-faced-strip-core-blockboard.md，11 月 10 日的暂缓记录作为历史证据保留。 |
 | covered_products | 未涂饰五层桦木面松木／云杉条芯细木工板，PVAc 芯条胶接、UF 面层胶接；两张表背单板及横向单板均核实为温带 Betula pendula/pubescens。 |
 | excluded_products | 全单板胶合板；针叶或热带面层；MDF／刨花芯；双芯；三层；覆面；结构或压密产品；湿料／厂内锅炉路线。 |
 | representative_product | 净验收、已砂光、非结构用五层未饰面板，供后续家具／细木加工；尺寸、胶配方及性能为实际批描述，不设固定默认值。 |
@@ -45,7 +45,7 @@ sync_with: pcr.en-US.md
 | 参考单位 | kg |
 | 必需限定信息 | 工厂及期间；芯材树种；每张单板植物学树种及采伐来源；五层及纹理轴；干料含水率；外购 PVAc 及 UF 组成；尺寸；最终含水率及测法；净验收质量；唯一首次验收批群；等级／胶合试验；供电电压及供应方；净热界面；存量／负荷历史；包装／处理范围 |
 
-每项限定信息均须在数据包中明确。参考 UUID 是更宽的本地产品身份，不能证明较窄构造或供应者。其真实类型为 Product flow，支持 Mass／kg，分类为 3142／31423。备注重复官方交错单板措辞；原生 3142／31423 标签不是分类裁决。官方 31413 说明也包含细木工板及其他中央芯材料，因此依据 docs/adr/2026-11-10-hold-blockboard-cpc-associations.md，该关联保持 held_pending_classification_review。实木条芯不自动排除 31413，也不据此改归 31413。来源：un-cpc-3-2025；un-cpc-31413-2025。仅在四张单板加实木条芯、两面植物学身份、实际胶及状态均证明且供应者兼容时使用；无可用匹配保持缺口。标题相似或该定位符均不建立映射接受。
+每项限定信息均须在数据包中明确。参考 UUID 是更宽的本地产品身份，不能证明较窄构造或供应者。其真实类型为 Product flow，支持 Mass／kg，分类为 3142／31423。备注重复官方交错单板措辞；原生 3142／31423 标签不是分类裁决。官方 31413 说明也包含细木工板及其他中央芯材料，11 月 10 日的暂缓记录保留了该反证。后续限定范围裁定结合联合国统计司部门扩展的独立证据，见 docs/adr/2026-11-21-accept-cpc-31423-retained-birch-faced-strip-core-blockboard.md。实木条芯不自动排除 31413，也不据此改归 31413。来源：un-cpc-3-2025；un-cpc-31413-2025。仅在四张单板加实木条芯、两面植物学身份、实际胶及状态均证明且供应者兼容时使用；无可用匹配保持缺口。标题相似或该定位符均不建立映射接受。
 
 ## 4. 计量与单位规则
 
@@ -511,7 +511,7 @@ sync_with: pcr.en-US.md
 | allowed_use | 以匹配上游材料／能源及处理数据集组装明确限定、供应兼容的摇篮到门模型；下游家具／细木加工模型保留本工厂门／状态。 |
 | excluded_use | 整个分类叶覆盖、针叶／热带面或全单板替代、结构主张、使用期／气候箱排放、全生命周期比较及通用密度／配方／因子默认值。 |
 | required_metadata | 全部参考限定信息；阶段／批群／存量谱系；本地流／属性／单位及供应者身份；方法边界；实际试验／测量证据；分配和归一化公式；缺失项。 |
-| required_quality_disclosure | 仅前景或组装边界；参考／其他 UUID 或供应者未知项；实际覆盖／不确定度／检出限；植物学／化学缺口；科学及翻译审查状态；held_pending_classification_review 候选关联及决定 ADR；原事件 Q／Q0、实测验收基准及完整净去向残差。 |
+| required_quality_disclosure | 仅前景或组装边界；参考／其他 UUID 或供应者未知项；实际覆盖／不确定度／检出限；植物学／化学缺口；科学及翻译审查状态；已接受的较窄关联、其适用条件及决定 ADR；原事件 Q／Q0、实测验收基准及完整净去向残差。 |
 | update_trigger | 树种供应、芯材／层几何、外购胶配方、电压／供热源、测量／存量／批群基准、废物去向、本地身份变化或新相关证据。 |
 
 ## 11. 数据源

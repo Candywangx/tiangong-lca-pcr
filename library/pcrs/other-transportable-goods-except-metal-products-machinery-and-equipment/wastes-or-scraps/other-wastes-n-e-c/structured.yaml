@@ -1,10 +1,872 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39990"
-  title: "Other wastes n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.other-wastes-n-e-c"
+  classification_refs: "CPC 3.0 39990, accepted narrower association under docs/adr/2026-11-21-accept-cpc-39990-whole-crude-soybean-deodorizer-distillate.md"
+  covered_products: "Whole crude soybean deodorizer distillate from chemical refining only"
+  excluded_products: "Physical-refining fatty acid distillates; selective hot/cold scrubber fractions; isolated tocopherols, sterols and commercial fatty acids; soapstock; feed preparations; edible soybean oil; municipal waste, sewage sludge, waste solvents and chemical wastes under other HS branches; brewery wastewater; downstream recovery services."
+  representative_product: "Unfractionated single-scrubber crude residual lot"
+  production_route: "Chemical refining; deodorization; whole condensate recovery; segregated storage; first release"
+  market_state: "Bulk crude residual feedstock; record solid/paste/liquid state at actual handover temperature"
+functional_unit:
+  what: "Whole crude soybean oil deodorizer distillate at first bulk release"
+  how_much: "1 kg"
+  how_well: "Accepted for contracted recovery on lot analysis; no purity or yield default"
+  how_long_or_cycle: "One original release cohort; no resale or transfer creates new production"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "release"
+      rule: "Include segregated holding, heating, pumping, sampling, cleaning and actual release. Ending gate is the refinery outlet before external carriage. Record title, operator, custody point and receiver contract independently; outsourced operations stay included."
+      source_ids:
+        - aocs-deodorization
+        - cafc-adm-2009
+    - rule_id: boundary_state
+      applies_to: "release"
+      rule: "Cooling or heating without separation may retain crude identity; exclude reaction, neutralisation, solvent extraction, esterification, fractionation and selective condensation. Verify actual lot route."
+      source_ids:
+        - aocs-deodorization
+        - cafc-adm-2009
+    - rule_id: boundary_transport
+      applies_to: "release"
+      rule: "Accept only lots with documented composition, compatibility, transport classification, temperature limits, closed bulk vessel and receiver acceptance. Do not infer safety from tariff identity. Exclude infectious, mixed unknown and unassessed hazardous lots."
+      source_ids:
+        - aocs-deodorization
+        - cafc-adm-2009
+    - rule_id: boundary_equipment
+      applies_to: "release"
+      rule: "This configuration has no circulating packaging or pallet pool. Tank and vehicle are equipment, not product tare. If drums, liners or pallets actually cross the gate, this bulk configuration is incomplete: add each material and every purchase, first non-purchase external receipt and traceable same-item return, outward transfer, retirement and stock event before use. Allocate actual purchase, transport and service burdens once, even when omitted by suppliers; missing supplier coverage remains unresolved."
+      source_ids:
+        - aocs-deodorization
+        - cafc-adm-2009
+boundary_abstraction:
+  declared_starting_condition: "Whole condensate at the dedicated single-scrubber discharge before release holding"
+  starting_condition_role: "intermediate_product"
+  product_classification_scope: "Only the bounded whole chemical-refining soybean residual product"
+  recursive_input_rule: "Include compatible upstream refinery burdens for incoming crude lot; recurse through provider coverage without overlap"
+  upstream_dataset_requirement: "Exact source refinery, route, output cohort, allocation, utilities and gate coverage; unknown coverage blocks a complete study"
+  disclosure: "Foreground release gate only; upstream production remains required. No avoided recovery credit."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Whole crude soybean oil deodorizer distillate"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Soybean origin"
+    - "chemical-refining route"
+    - "single-scrubber whole recovery"
+    - "site and operator"
+    - "lot and time"
+    - "first release and receiver"
+    - "wet/as-received mass"
+    - "moisture and composition test basis"
+    - "temperature and physical state"
+    - "hazard/transport class"
+    - "contracted use"
+    - "upstream burden and allocation"
+    - "heating and cleaning configuration"
+reference_flows:
+  []
+measurement_rules:
+  - id: mass_basis
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use net as-received whole lot mass excluding tank and vehicle tare. Water is part of the declared whole product; measure moisture and never silently switch to dry mass or tocopherol mass."
+  - id: meter_energy
+    applies_to: "release_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Keep electrical meter kWh distinct from supplier native property. 1 kWh = 3.6 MJ; a common energy unit group does not establish net calorific value."
+process_map:
+  - id: release
+    name: "Segregated whole crude lot release"
+    inclusion: "required"
+    inclusion_condition: "Verified eligible original lot"
+    role: "foreground"
+    quantitative_reference: "reference_product"
+process_inventory:
+  - id: release
+    label: "Segregated whole crude lot release"
+    inputs:
+      product:
+        - row_id: crude_intake
+          role: "Whole crude soybean oil deodorizer distillate before release"
+          name: "Whole crude soybean oil deodorizer distillate before release"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Measured newly recovered net receipt from the single scrubber into the dedicated lot tank. Carry opening unreleased heel as stock with its inherited burden; never treat previously released stock as new crude production."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crude_intake
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+        - row_id: release_electricity
+          role: "Electricity at release tank meter"
+          name: "Electricity at release tank meter"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Metered tank pumping and tracing electricity attributable to the lot; exclude supplier-meter overlap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_electricity
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+        - row_id: release_steam
+          role: "Purchased steam for tank heating"
+          name: "Purchased steam for tank heating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Conditional on actual steam heating; collect delivered steam mass and pressure, temperature and condensate state."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_steam
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+        - row_id: cleaning_water
+          role: "Water for tank cleaning"
+          name: "Water for tank cleaning"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Conditional on actual water cleaning within the lot boundary; meter delivered water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+        - row_id: cleaning_naoh
+          role: "Sodium hydroxide aqueous cleaning solution"
+          name: "Sodium hydroxide aqueous cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Conditional on actual use; weigh solution and record NaOH mass fraction; never count dry active mass as solution mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_naoh
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Whole crude soybean oil deodorizer distillate"
+          name: "Whole crude soybean oil deodorizer distillate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+        - row_id: steam_condensate
+          role: "Returned steam condensate"
+          name: "Returned steam condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Conditional on actual off-site condensate return; measure returned mass and avoid supplier credit duplication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam_condensate
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+      waste:
+        - row_id: offspec_distillate
+          role: "Off-specification crude soybean oil deodorizer distillate"
+          name: "Off-specification crude soybean oil deodorizer distillate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Conditional on rejection; weigh separately and document receiver and disposal or rework route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_offspec_distillate
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+        - row_id: cleaning_liquor
+          role: "Spent alkaline tank-cleaning liquor"
+          name: "Spent alkaline tank-cleaning liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One atomic exchange across the release-process boundary; obtain its amount under the linked lot protocol."
+          amount:
+            expression: "Conditional on actual alkaline cleaning; weigh or meter with measured density and document treatment provider."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_liquor
+              source_ids:
+                - aocs-deodorization
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "This is an attributional supply dataset with an explicit allocation partition. Document why subdivision cannot remove joint production and why substitution/system expansion does not answer this dataset goal; consequential recovery-credit claims require a separate model. The general allocation hierarchy is supported by ILCD, not by the oil-processing chapter. [jrc-ilcd-2010]"
+    source_ids: []
+  - rule_id: allocation_upstream
+    applies_to: "release"
+    rule: "Residual-product or waste tariff language does not prove burden-free supply. First subdivide refinery operations and directly assign dedicated recovery burdens. For inseparable joint production, document causal physical allocation; if not defensible, document economic allocation over the same period with masses, prices, currencies and sensitivity. Do not prescribe a numerical share or import an oil dataset already carrying all burdens plus a second full utility inventory."
+    source_ids:
+      - jrc-ilcd-2010
+  - rule_id: allocation_release
+    applies_to: "release"
+    rule: "Directly assign lot-specific holding, heating, cleaning and rejection burdens. Shared tank time or metered use requires documented allocation across all serviced lots, retaining burdens for failed lots. Do not shift all failure burden to disposal or divide by gross intake. Retain physical outgoing condensate without unverified substitution credits."
+    source_ids:
+      - jrc-ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_crude_intake
+      process_id: "release"
+      flow_role: "crude_intake"
+      record_type: "New whole-crude receipt"
+      raw_fields: "source lot; receiving tank; gross/tare; transfer meter; opening/closing unreleased WIP; original exchange burden vector; moisture; sampling temperature"
+      collection_method: "Weigh new as-received crude net of equipment tare, or calibrated mass-meter transfer from the named single scrubber. Do not add opening heel to new receipts; carry it in the WIP ledger with its inherited upstream burden."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale/mass-meter calibration; source formation records; WIP burden ledger"
+    - protocol_id: cp_release_electricity
+      process_id: "release"
+      flow_role: "release_electricity"
+      record_type: "Tank electricity meter readings"
+      raw_fields: "meter id; voltage; supplier; location; start/end kWh; tracing/pumping runtime; allocation to lot; supplier included-scope"
+      collection_method: "Read calibrated electrical meter differences in kWh for actual pumping/tracing and shared idle periods. Record exact supplier gate and property independently; no net-calorific-value property is presumed. Remove overlap with crude-provider electricity."
+      unit: "kWh"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Meter calibration and wiring coverage; supplier scope; allocation logs"
+    - protocol_id: cp_release_steam
+      process_id: "release"
+      flow_role: "release_steam"
+      record_type: "Steam delivery record"
+      raw_fields: "steam meter; delivered kg; pressure; temperature; dryness; supplier gate; heat/mass billing convention; return condensate agreement; lot heat time"
+      collection_method: "Meter delivered steam mass for actual indirect tank heating; retain thermal state and actual supplier coverage. If billed in heat units, collect supplier enthalpy convention and condensate-return basis before conversion; do not assume a fixed MJ/kg."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Steam-meter calibration; supplier enthalpy/billing statement; heating and return logs"
+    - protocol_id: cp_cleaning_water
+      process_id: "release"
+      flow_role: "cleaning_water"
+      record_type: "Cleaning water meter record"
+      raw_fields: "cleaning event; water meter; delivered kg or volume; density and temperature if volumetric; tank; lot service allocation; supplier gate"
+      collection_method: "Meter actual external tank-cleaning water separately from condensate and formulated cleaner water. Convert volume only using compatible measured density; record returned or discharged destination."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Water-meter calibration; density measurement; cleaning work order"
+    - protocol_id: cp_cleaning_naoh
+      process_id: "release"
+      flow_role: "cleaning_naoh"
+      record_type: "Cleaning solution receipt and use"
+      raw_fields: "supplier; formulation; batch; NaOH mass fraction; gross/tare; used solution kg; opening/closing stock; purchased premix or on-site dilution"
+      collection_method: "Weigh the actual sodium hydroxide aqueous formulation consumed, preserving supplied concentration. Active NaOH assay is a non-additive subledger, not a second purchase. Record dilution water separately only when supplied separately, avoiding premix water duplication."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Formulation certificate; scales; stock/use reconciliation; cleaning record"
+    - protocol_id: cp_reference_product
+      process_id: "release"
+      flow_role: "reference_product"
+      record_type: "First quality-release weigh record"
+      raw_fields: "unique original lot; quality-release timestamp; gross/tare; net as-received kg; moisture assay; temperature/state; receiver acceptance; released FG; actual dispatch timestamp"
+      collection_method: "Use calibrated scale or mass-meter records for first accepted whole-product mass, excluding equipment tare. Distinguish first release from dispatch; include newly released closing FG in Q once and exclude historical FG, reinspection, resale and previously released returns."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated weighing; signed quality/receiver release; unique lot FG history"
+    - protocol_id: cp_offspec_distillate
+      process_id: "release"
+      flow_role: "offspec_distillate"
+      record_type: "Rejected crude removal ticket"
+      raw_fields: "lot; rejection stage; reason; net wet kg; destination; internal rework or external removal; inherited exchange vector"
+      collection_method: "Weigh off-spec whole crude separately at its actual external removal gate. Internal rework cancels within its original lot and is not an external waste input/output; carry inherited burdens and all actual added service."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Rejection certificate; calibrated net weights; treatment or rework receipt"
+    - protocol_id: cp_cleaning_liquor
+      process_id: "release"
+      flow_role: "cleaning_liquor"
+      record_type: "Spent alkaline liquor removal ticket"
+      raw_fields: "cleaning event; whole liquor wet kg; NaOH/oil content; volume and measured density if used; tank; treatment receiver; external gate"
+      collection_method: "Weigh or meter the actual spent alkaline cleaning liquor and measure density when converting volume. Preserve whole wet mass and separately assay contaminants; do not add pollutant assays again to waste mass or call retained liquor an elementary emission."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated weights/meters; density and composition test; treatment receipt"
+    - protocol_id: cp_steam_condensate
+      process_id: "release"
+      flow_role: "steam_condensate"
+      record_type: "External condensate return record"
+      raw_fields: "return meter; net kg; temperature; pressure; supplier return gate; actual return enthalpy and credit convention"
+      collection_method: "Meter condensate actually returned across the supplier gate, with thermal state and return-credit convention. Internal recirculation is not this exchange. Reconcile returned mass with steam supply and actual losses without imposing equality."
+      unit: "kg"
+      frequency: "Each lot and each event"
+      temporal_coverage: "Complete declared release cohort"
+      site_scope: "Same refinery and actual contractor interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Condensate-meter calibration; thermal state; supplier billing reconciliation"
+  calculation_rules:
+    - id: cohort_denominator
+      applies_to: "reference_product"
+      rule: "Q = sum of net kg first accepted original releases in the cohort, including newly released product still in closing finished stock, excluding tare, rejected quantities, historical released opening stock and re-releases. Record internal rework without a new external intake."
+      inputs:
+        - cp_reference_product
+      output: "Q"
+      source_ids:
+        - aocs-deodorization
+    - id: cohort_inventory
+      applies_to: "all inventory rows"
+      rule: "Divide each attributable cohort amount by the same Q; input crude includes allocated opening stock and excludes closing stock retained for later cohorts. Reconcile whole material separately from water, steam condensate and cleaning."
+      inputs:
+        - Q
+        - "collection records"
+      output: "Exchange per 1 kg reference flow"
+      source_ids:
+        - aocs-deodorization
+    - id: stock_closure
+      applies_to: "crude_intake; reference_product; offspec_distillate"
+      rule: "Unreleased gate: opening unreleased crude + new crude receipt = Q + closing unreleased crude + rejected or sampled removal + measured losses. Finished-stock gate: opening released stock + Q + genuine previously released external returns = closing released stock + all dispatch + finished-stock waste or loss. Keep internal rework inside its original gate; Q cancels when gates combine, so closing finished stock is not added again as production. Investigate residual error using measured uncertainty, not a fabricated tolerance."
+      inputs:
+        - "stock and weigh records"
+      output: "closure evidence"
+      source_ids:
+        - aocs-deodorization
+  data_quality_requirements:
+    - id: quality_lot
+      applies_to: "release"
+      requirement: "Measure moisture, fatty acids, tocopherols and sterols on a declared basis with sampling and analytical uncertainty. Literature sample values are not plant defaults, yield factors or acceptance limits."
+      evidence: "Lot certificate; pmc-soybean-2020"
+    - id: quality_burden
+      applies_to: "release"
+      requirement: "Obtain exact supplier gate and utilities coverage, documented allocation, hazard/transport assessment and signed receiver acceptance before complete LCI use. Unknown amounts stay unknown."
+      evidence: "Supplier records; signed lot release"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "release"
+    rule: "Require exact route, whole condensate state and lot origin. Reject physical-refining Waste-flow bindings, isolated compounds and source-oil substitutions."
+    source_ids:
+      - unsd-cpc3-2026
+      - cafc-adm-2009
+      - pmc-soybean-2020
+  - rule_id: validation_quantity
+    applies_to: "release"
+    rule: "Require Q > 0, first-release uniqueness, net mass and stock closure; normalize all rows to the same 1 kg reference flow. Do not use recovered vitamin mass, dry mass or truck gross mass as Q."
+    source_ids:
+      - unsd-cpc3-2026
+      - cafc-adm-2009
+      - pmc-soybean-2020
+  - rule_id: validation_completeness
+    applies_to: "release"
+    rule: "Unresolved flow identities, empirical amounts, supplier burdens or safety evidence prevent complete study qualification. Record all actual atomic exchanges and conditional absences. Mechanical PCR checks do not approve methodology or factory data."
+    source_ids:
+      - unsd-cpc3-2026
+      - cafc-adm-2009
+      - pmc-soybean-2020
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Incoming whole crude feedstock for separately modelled recovery"
+  allowed_use: "Only compatible crude chemical-refining soybean lots with matching gate and disclosed allocation"
+  excluded_use: "Physical-refining fatty acid distillates; selective hot/cold scrubber fractions; isolated tocopherols, sterols and commercial fatty acids; soapstock; feed preparations; edible soybean oil; municipal waste, sewage sludge, waste solvents and chemical wastes under other HS branches; brewery wastewater; downstream recovery services."
+  required_metadata: "All reference qualifiers, cohort Q, actual native flow/property/unit identities, upstream source coverage"
+  required_quality_disclosure: "Measured coverage, unresolved identities, allocation sensitivity, uncertainty and safety acceptance"
+  update_trigger: "Change of source oil, refining mode, scrubber arrangement, state, gate, receiver specification or supplier coverage"
+data_sources:
+  - id: "unsd-cpc3-2026"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 explanatory notes, 23 October 2026, CPC3 row 1947; June 2025 frozen structure: https://unstats.un.org/unsd/econstats/classifications/cpc"
+    used_for: "HS 2022 3825.90 link and adjacent exclusions; the case-specific mapping decision is recorded separately"
+  - id: "cafc-adm-2009"
+    type: "official_guidance"
+    reference: "ADM v United States, 2008-1342, majority opinion, 26 March 2009: https://www.cafc.uscourts.gov/opinions-orders/08-1342.pdf"
+    used_for: "Whole residual product identity; lower 3824.90 judgment reversed; no plant quantities"
+  - id: "cbp-n079775"
+    type: "official_guidance"
+    reference: "US CBP NY N079775, 30 October 2009: https://rulings.cbp.gov/ruling/N079775"
+    used_for: "Separate soybean distillate recovery-feedstock ruling; historical import only"
+  - id: "aocs-deodorization"
+    type: "handbook"
+    reference: "AOCS Lipid Library, Deodorization, revised 23 July 2019: https://www.aocs.org/resource/deodorization/"
+    used_for: "Condensation, chemical/physical route distinction and dedicated release inventory design; no default operating values or allocation share"
+  - id: "pmc-soybean-2020"
+    type: "literature"
+    reference: "Processing impact on tocopherols and triglycerides composition of soybean oil and its deodorizer distillate evaluated by high-performance liquid chromatography: https://pmc.ncbi.nlm.nih.gov/articles/PMC7763106/"
+    used_for: "Original plant samples justify lot analysis and variability disclosure; not customs-lot or plant yield evidence"
+  - id: "jrc-ilcd-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook, General guide for LCA, Detailed guidance (2010), section 7.9; https://publications.jrc.ec.europa.eu/repository/handle/JRC48157"
+    used_for: "General multifunctionality, subdivision and allocation hierarchy; PCR-specific partition and empirical shares require study evidence"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:7fc198bc692ede96e6c266b740147438c645fe7c5ef92eb22203685d277939a0"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4180"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4180
+          line: 57
+          column: 1
+        end:
+          offset: 6526
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole condensate at the dedicated single-scrubber discharge before release holding |\n| starting_condition_role | intermediate_product |\n| product_classification_scope | Only the bounded whole chemical-refining soybean residual product |\n| recursive_input_rule | Include compatible upstream refinery burdens for incoming crude lot; recurse through provider coverage without overlap |\n| upstream_dataset_requirement | Exact source refinery, route, output cohort, allocation, utilities and gate coverage; unknown coverage blocks a complete study |\n| disclosure | Foreground release gate only; upstream production remains required. No avoided recovery credit. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_gate | release | Include segregated holding, heating, pumping, sampling, cleaning and actual release. Ending gate is the refinery outlet before external carriage. Record title, operator, custody point and receiver contract independently; outsourced operations stay included. | aocs-deodorization; cafc-adm-2009 |\n| boundary_state | release | Cooling or heating without separation may retain crude identity; exclude reaction, neutralisation, solvent extraction, esterification, fractionation and selective condensation. Verify actual lot route. | aocs-deodorization; cafc-adm-2009 |\n| boundary_transport | release | Accept only lots with documented composition, compatibility, transport classification, temperature limits, closed bulk vessel and receiver acceptance. Do not infer safety from tariff identity. Exclude infectious, mixed unknown and unassessed hazardous lots. | aocs-deodorization; cafc-adm-2009 |\n| boundary_equipment | release | This configuration has no circulating packaging or pallet pool. Tank and vehicle are equipment, not product tare. If drums, liners or pallets actually cross the gate, this bulk configuration is incomplete: add each material and every purchase, first non-purchase external receipt and traceable same-item return, outward transfer, retirement and stock event before use. Allocate actual purchase, transport and service burdens once, even when omitted by suppliers; missing supplier coverage remains unresolved. | aocs-deodorization; cafc-adm-2009 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 226
+              line: 9
+              column: 1
+            end:
+              offset: 295
+              line: 9
+              column: 70
+          text: "# Whole crude soybean oil deodorizer distillate at first bulk release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4180
+              line: 57
+              column: 1
+            end:
+              offset: 4201
+              line: 57
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_13259"
+      family: "allocation"
+      span:
+        start:
+          offset: 13259
+          line: 234
+          column: 1
+        end:
+          offset: 14682
+          line: 243
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\nThis is an attributional supply dataset with an explicit allocation partition. Document why subdivision cannot remove joint production and why substitution/system expansion does not answer this dataset goal; consequential recovery-credit claims require a separate model. The general allocation hierarchy is supported by ILCD, not by the oil-processing chapter. [jrc-ilcd-2010]\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_upstream | release | Residual-product or waste tariff language does not prove burden-free supply. First subdivide refinery operations and directly assign dedicated recovery burdens. For inseparable joint production, document causal physical allocation; if not defensible, document economic allocation over the same period with masses, prices, currencies and sensitivity. Do not prescribe a numerical share or import an oil dataset already carrying all burdens plus a second full utility inventory. | jrc-ilcd-2010 |\n| allocation_release | release | Directly assign lot-specific holding, heating, cleaning and rejection burdens. Shared tank time or metered use requires documented allocation across all serviced lots, retaining burdens for failed lots. Do not shift all failure burden to disposal or divide by gross intake. Retain physical outgoing condensate without unverified substitution credits. | jrc-ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 226
+              line: 9
+              column: 1
+            end:
+              offset: 295
+              line: 9
+              column: 70
+          text: "# Whole crude soybean oil deodorizer distillate at first bulk release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 13259
+              line: 234
+              column: 1
+            end:
+              offset: 13299
+              line: 234
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_24222"
+      family: "validation"
+      span:
+        start:
+          offset: 24222
+          line: 276
+          column: 1
+        end:
+          offset: 25174
+          line: 284
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validation_identity | release | Require exact route, whole condensate state and lot origin. Reject physical-refining Waste-flow bindings, isolated compounds and source-oil substitutions. | unsd-cpc3-2026; cafc-adm-2009; pmc-soybean-2020 |\n| validation_quantity | release | Require Q > 0, first-release uniqueness, net mass and stock closure; normalize all rows to the same 1 kg reference flow. Do not use recovered vitamin mass, dry mass or truck gross mass as Q. | unsd-cpc3-2026; cafc-adm-2009; pmc-soybean-2020 |\n| validation_completeness | release | Unresolved flow identities, empirical amounts, supplier burdens or safety evidence prevent complete study qualification. Record all actual atomic exchanges and conditional absences. Mechanical PCR checks do not approve methodology or factory data. | unsd-cpc3-2026; cafc-adm-2009; pmc-soybean-2020 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 226
+              line: 9
+              column: 1
+            end:
+              offset: 295
+              line: 9
+              column: 70
+          text: "# Whole crude soybean oil deodorizer distillate at first bulk release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 24222
+              line: 276
+              column: 1
+            end:
+              offset: 24244
+              line: 276
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4180"
+      source_span:
+        start:
+          offset: 5023
+          line: 72
+          column: 1
+        end:
+          offset: 5346
+          line: 72
+          column: 324
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_state"
+      identity_kind: "explicit"
+      unit_id: "normative_4180"
+      source_span:
+        start:
+          offset: 5347
+          line: 73
+          column: 1
+        end:
+          offset: 5615
+          line: 73
+          column: 269
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_transport"
+      identity_kind: "explicit"
+      unit_id: "normative_4180"
+      source_span:
+        start:
+          offset: 5616
+          line: 74
+          column: 1
+        end:
+          offset: 5944
+          line: 74
+          column: 329
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_equipment"
+      identity_kind: "explicit"
+      unit_id: "normative_4180"
+      source_span:
+        start:
+          offset: 5945
+          line: 75
+          column: 1
+        end:
+          offset: 6524
+          line: 75
+          column: 580
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_rule_1"
+      identity_kind: "snapshot_local"
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 13301
+          line: 236
+          column: 1
+        end:
+          offset: 13677
+          line: 236
+          column: 377
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_upstream"
+      identity_kind: "explicit"
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 13750
+          line: 240
+          column: 1
+        end:
+          offset: 14278
+          line: 240
+          column: 529
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_release"
+      identity_kind: "explicit"
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 14279
+          line: 241
+          column: 1
+        end:
+          offset: 14680
+          line: 241
+          column: 402
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_24222"
+      source_span:
+        start:
+          offset: 24317
+          line: 280
+          column: 1
+        end:
+          offset: 24557
+          line: 280
+          column: 241
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_24222"
+      source_span:
+        start:
+          offset: 24558
+          line: 281
+          column: 1
+        end:
+          offset: 24834
+          line: 281
+          column: 277
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_24222"
+      source_span:
+        start:
+          offset: 24835
+          line: 282
+          column: 1
+        end:
+          offset: 25172
+          line: 282
+          column: 338
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4180"
+      source_span:
+        start:
+          offset: 4180
+          line: 57
+          column: 1
+        end:
+          offset: 4201
+          line: 57
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4180"
+      source_span:
+        start:
+          offset: 4229
+          line: 61
+          column: 1
+        end:
+          offset: 4950
+          line: 68
+          column: 113
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 13259
+          line: 234
+          column: 1
+        end:
+          offset: 13299
+          line: 234
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 13301
+          line: 236
+          column: 1
+        end:
+          offset: 13677
+          line: 236
+          column: 377
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 13750
+          line: 240
+          column: 1
+        end:
+          offset: 14278
+          line: 240
+          column: 529
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Preceding prose may govern this group but Markdown does not establish its scope; complete relevant section retained."
+      unit_id: "normative_13259"
+      source_span:
+        start:
+          offset: 14279
+          line: 241
+          column: 1
+        end:
+          offset: 14680
+          line: 241
+          column: 402
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_24222"
+      source_span:
+        start:
+          offset: 24222
+          line: 276
+          column: 1
+        end:
+          offset: 24244
+          line: 276
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7fc198bc692ede96e6c266b740147438c645fe7c5ef92eb22203685d277939a0"
+  generated_content_sha256: "sha256:2c3e78dddd88fd502814a96dc480739d752fbb3fc1b83a0cc6bba44795beb7d7"

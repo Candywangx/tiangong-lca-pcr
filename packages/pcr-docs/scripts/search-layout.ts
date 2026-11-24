@@ -4,9 +4,9 @@ import {SearchChannelCapacityError} from '../lib/search-arithmetic.ts';
 import {createHash} from 'node:crypto';
 import {gzipSync} from 'node:zlib';
 import {isUnknownRecord} from '../../pcr-core/src/types.ts';
-import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_RAW_LIMIT,SEARCH_GZIP_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchManifestV10,type SearchManifestV11,type SearchPhysicalFile} from '../lib/search-pack.ts';
+import {packSearchShards,SEARCH_PACK_MEMBERS,SEARCH_COMPACT_PACK_MEMBERS,SEARCH_RAW_LIMIT,SEARCH_GZIP_LIMIT,type SearchManifestV7,type SearchManifestV8,type SearchManifestV9,type SearchManifestV10,type SearchManifestV11,type SearchManifestV12,type SearchPhysicalFile} from '../lib/search-pack.ts';
 interface Transport {payload:string;bytes:number;gzipBytes:number;sha256:string}
-export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9|SearchManifestV10|SearchManifestV11;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
+export interface SearchLayout {manifest:SearchManifestV7|SearchManifestV8|SearchManifestV9|SearchManifestV10|SearchManifestV11|SearchManifestV12;manifestText:string;files:{descriptor:SearchPhysicalFile;payload:string}[];rawBytes:number;gzipBytes:number}
 const hash=(text:string)=>'sha256:'+createHash('sha256').update(text).digest('hex');
 const gzip=(text:string)=>gzipSync(text,{level:9}).length;
 const transport=(payload:string):Transport=>({payload,bytes:Buffer.byteLength(payload),gzipBytes:gzip(payload),sha256:hash(payload)});
@@ -65,7 +65,7 @@ function planVersion(wires:readonly string[],sourceCommit:string,language:string
   bounded.sort((a,b)=>Number(a.rawBytes>SEARCH_RAW_LIMIT)-Number(b.rawBytes>SEARCH_RAW_LIMIT)||a.gzipBytes-b.gzipBytes||a.rawBytes-b.rawBytes||(a.manifestText<b.manifestText?-1:a.manifestText>b.manifestText?1:0));
   return bounded[0];
 }
-function envelopeLayout(version: 10 | 11, baseline: SearchLayout, files: SearchLayout['files']): SearchLayout {
+function envelopeLayout(version: 10 | 11 | 12, baseline: SearchLayout, files: SearchLayout['files']): SearchLayout {
   const manifest = {...baseline.manifest, schemaVersion: version, files: files.map(file => file.descriptor)};
   const manifestText = JSON.stringify(manifest);
   return {manifest, manifestText, files,
@@ -73,18 +73,19 @@ function envelopeLayout(version: 10 | 11, baseline: SearchLayout, files: SearchL
     gzipBytes: gzip(manifestText) + files.reduce((n, f) => n + f.descriptor.gzipBytes, 0)};
 }
 /** Try the context profile only when the older transports exceed the language budget. */
-function contextLayout(wires: readonly string[], baseline: SearchLayout): SearchLayout | undefined {
+function contextLayout(wires: readonly string[], baseline: SearchLayout, ends: readonly number[], compact = false): SearchLayout | undefined {
   const {sourceCommit, language} = baseline.manifest;
   const identities = baseline.manifest.files.flatMap(file => file.logicalShards);
   const files: SearchLayout['files'] = [];
-  for (let start = 0; start < wires.length; start += SEARCH_PACK_MEMBERS) {
-    const group = wires.slice(start, start + SEARCH_PACK_MEMBERS);
+  let start = 0;
+  for (const end of ends) {
+    const group = wires.slice(start, end);
     const logicalShards = identities.slice(start, start + group.length);
     if (logicalShards.reduce((sum, shard) => sum + shard.wireBytes, 0) > SEARCH_RAW_LIMIT) return;
-    const inner = packSearchShards(group, sourceCommit, language, start, 8);
+    const inner = packSearchShards(group, sourceCommit, language, start, 8, compact);
     if (Buffer.byteLength(inner) > SEARCH_RAW_LIMIT) return;
     let payload: string;
-    try { payload = encodeBrotliSearchPack(inner, 8, true); }
+    try { payload = encodeBrotliSearchPack(inner, 8, true, compact); }
     catch (error) { if (error instanceof SearchChannelCapacityError) return; throw error; }
     const packed = transport(payload);
     if (packed.bytes > SEARCH_RAW_LIMIT) return;
@@ -94,8 +95,9 @@ function contextLayout(wires: readonly string[], baseline: SearchLayout): Search
       firstLogicalShard: start, logicalShardCount: group.length, logicalShards,
       records: logicalShards.reduce((sum, shard) => sum + shard.records, 0),
     }});
+    start = end;
   }
-  return envelopeLayout(11, baseline, files);
+  return envelopeLayout(compact ? 12 : 11, baseline, files);
 }
 /** Compare complete v7/v8/v9 manifests; an eligible original v7 layout remains available. */
 export function planSearchPacks(wires:readonly string[],sourceCommit:string,language:string):SearchLayout{
@@ -111,6 +113,26 @@ export function planSearchPacks(wires:readonly string[],sourceCommit:string,lang
   const candidate = envelopeLayout(10, original, files);
   const baseline = candidate.rawBytes <= SEARCH_RAW_LIMIT && candidate.gzipBytes < original.gzipBytes ? candidate : original;
   if (baseline.rawBytes <= SEARCH_RAW_LIMIT && baseline.gzipBytes <= SEARCH_GZIP_LIMIT) return baseline;
-  const context = contextLayout(wires, baseline);
-  return context && context.rawBytes <= SEARCH_RAW_LIMIT && (baseline.rawBytes > SEARCH_RAW_LIMIT || context.gzipBytes < baseline.gzipBytes) ? context : baseline;
+  const endsFor = (width: number) => Array.from({length: Math.ceil(wires.length / width)}, (_, i) =>
+    Math.min((i + 1) * width, wires.length));
+  let selected = baseline;
+  const consider = (candidate: SearchLayout | undefined) => {
+    if (candidate && candidate.rawBytes <= SEARCH_RAW_LIMIT &&
+        (selected.rawBytes > SEARCH_RAW_LIMIT || candidate.gzipBytes < selected.gzipBytes)) selected = candidate;
+  };
+  consider(contextLayout(wires, baseline, endsFor(SEARCH_PACK_MEMBERS)));
+  if (selected.rawBytes <= SEARCH_RAW_LIMIT && selected.gzipBytes <= SEARCH_GZIP_LIMIT) return selected;
+  // Larger physical groups still charge each exact restored wire against the same byte limit.
+  // Try a bounded set of cuts to account for variation in logical shard sizes and vocabulary.
+  const compactCount = Math.ceil(wires.length / SEARCH_COMPACT_PACK_MEMBERS);
+  const cuts = [endsFor(48), endsFor(SEARCH_COMPACT_PACK_MEMBERS),
+    Array.from({length:compactCount}, (_, i) => Math.floor((i + 1) * wires.length / compactCount))];
+  const seen = new Set<string>();
+  for (const ends of cuts) {
+    const key = ends.join(",");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    consider(contextLayout(wires, baseline, ends, true));
+  }
+  return selected;
 }

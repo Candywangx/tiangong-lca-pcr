@@ -110,8 +110,9 @@ before removing any duplicate file from the new owned export; it publishes a
 source-bound `generated/static-route-aliases.json` with each original URL, retained
 target, byte count and SHA-256. Verification requires the complete current route
 inventory and exact target bytes. Missing, malformed, foreign-source or unequal
-pairs fail the build. Next tree payloads use the bounded transport below; all other
-Next navigation payloads remain physical and unchanged.
+pairs fail the build. The bounded transport below covers Next tree payloads and,
+when required by the file limit, a subset of primary-language document page
+prefetches. The remaining navigation payloads are physical.
 
 EdgeOne internal rewrites retain HTTP 200 access to `/__next._full.txt` and every
 nested `/*/__next._full.txt`, serving `/index.txt` and `/:splat/index.txt`
@@ -125,7 +126,7 @@ and requires exact decoded bytes, MIME, revalidation and nosniff behavior. Exist
 HTML, raw-download, search and browser-navigation checks remain required. Static
 configuration alone does not establish actual provider rewrite behavior.
 
-### Bounded Next tree transport
+### Bounded Next navigation transport
 
 The owner-authorized PR34 storage exception packs only `__next._tree.txt` files.
 It preserves every original URL and byte, without redirecting the request or changing
@@ -162,6 +163,27 @@ request per bucket and two decoded cached packs. The sealed local server execute
 this same source-owned handler and forwards its Response. Product probes bind the
 whole transport plus root/English/Chinese original URL responses; these checks do
 not replace the complete browser suite or establish live provider deployment.
+
+PR #38 extends the transport only when tree packing and full/index aliases would
+still exceed the file budget after reserving the sealed routing configuration.
+The additional eligible files have the exact Next page-prefetch basename
+`__next.$d$lang.docs.$oc$slug.__PAGE__.txt` under `/en/docs/` or `/zh/docs/`.
+The exporter chooses up to 600 of the smallest eligible responses that fit
+the existing 1,000,000-byte and 512-row pack limits, using 54 separately identified
+buckets selected by the first four hexadecimal SHA-256 digits modulo 54.
+Schema 2 keeps the 16,384-byte manifest and 4,096-byte binding bounds. The
+binding holds sorted 24-bit path-hash prefixes so physical prefetches normally
+bypass pack fetching. On a prefix collision, an exact canonical path lookup
+still decides whether to serve a packed or physical response. Schema 1 products
+retain the tree-only behavior.
+
+Preparation checks all original page prefetches against the physical route
+indexes before mutation and compares each packed response with its original
+bytes. Sealing and import require exactly one physical or packed prefetch per
+eligible route, verify all pack bytes and the binding's membership, and reject
+physical shadows. The original literal-dollar and percent-encoded URLs return
+the same bytes and revalidation headers. Sealed qualification exercises packed
+English and Chinese representative responses and the complete browser suite.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -682,6 +704,22 @@ The reader checks map ownership, channel counts and the exact expanded UTF-8
 length before arithmetic decoding. It authenticates the reconstructed v8 bytes
 and then every logical wire. The existing Worker Brotli decoder handles both
 envelopes. Full manifests and physical files count toward the same budgets.
+
+When v11 still exceeds either per-language budget, v12 measures a bounded
+set of wider physical groups. Their dictionaries use a space-delimited string
+when every term is nonempty and contains no space. The original dictionary order
+and values are restored exactly. A dictionary that contains a literal space uses
+the array representation. The reader charges the recovered array framing against
+the authenticated inner length before splitting the string.
+
+V12 uses at most 56 consecutive logical shards per physical group and retains
+the existing 20 MB bound on the physical file, decoded bytes and summed logical
+bytes of a group. Existing formats retain their 16-member cap. The 20 MB raw and
+4 MB gzip per-language budgets still include the manifest. The larger physical
+groups share a dictionary across more original shards. Logical boundaries,
+record fields, native exports, search cutoffs and ranking remain unchanged.
+The worker uses its existing Brotli decoder and verifies the restored v8 pack
+and each logical wire before importing the index.
 
 The generator retains the original sixteen-member greedy layout as a candidate
 and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.

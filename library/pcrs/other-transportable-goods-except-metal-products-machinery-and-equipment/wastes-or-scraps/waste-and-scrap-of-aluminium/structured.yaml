@@ -1,10 +1,2151 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39363"
-  title: "Waste and scrap of aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.waste-and-scrap-of-aluminium"
+  classification_refs: "CPC 3.0:39363, accepted narrower association for single-grade AA5754 sheet stamping clippings"
+  covered_products: "Baled new solid clippings from one identified AA5754-O sheet-fabrication source"
+  excluded_products: "Mixed or post-consumer scrap; foil laminates; cast scrap; ash/dross; melted products; purchased formed-scrap-only baling"
+  representative_product: "Net dry whole-alloy clippings at first quality release to receiver-specific conditions"
+  production_route: "Supplied prelubricated sheet → actual blanking and stamping/trimming/piercing → single-grade segregation → necessary dry preparation → baling → first quality release"
+  market_state: "Unmelted secondary-feed supply; Product function must be verified; later service stays with original cohort"
+functional_unit:
+  what: "Supply source-segregated AA5754 new sheet clippings for further processing at the named aluminium remelter"
+  how_much: "1 kg net dry whole-alloy clippings at first quality release excluding packaging and separately measured oil/water/foreign matter"
+  how_well: "Single-grade lot evidence and applicable Tooth plus operative receiver Tier 1 bale specification; no recovery guarantee"
+  how_long_or_cycle: "One manufacturing cohort; later service uses actual H and original Q_c"
+  reference_flow_link: "released_clips"
+system_boundary:
+  rules:
+    - rule_id: b_source
+      applies_to: "source_fabrication"
+      rule: "Begin with one supplied prelubricated AA5754-O sheet lot. Include actual blanking/stamping/trimming/piercing, source collection, necessary dry mechanical preparation, baling, quality acceptance and their utilities, maintenance and rejects. Match the upstream sheet state; do not start with purchased already-formed scrap."
+      source_ids:
+        - eaa-cutting-2002
+        - eaa-forming-2002
+        - tk-5754-sheet
+    - rule_id: b_grade
+      applies_to: "all processes"
+      rule: "Keep only one AA5754 grade and source state. Do not combine RC5754 case material, other 5xxx grades, 6xxx grades, old cans, foil laminates, cast scrap, dross, ash or remelt ingot. A family-separated historical case supports process existence but not single-grade batch identity."
+      source_ids:
+        - innoval-realcar-2016
+        - novelis-realcar-2020
+        - un-cpc3-2025
+    - rule_id: b_tooth
+      applies_to: "release"
+      rule: "For the selected Tooth-like new-clipping route require one specified alloy; clean uncoated/unpainted solids; original specification thickness .015 inch (.38 mm) minimum; no hair wire/wire screen/dirt/non-metal items; oil plus grease no more than 1%; no punchings below 1/2 inch (1.27 cm). Measure and segregate undersize slugs. These are acceptance limits rather than default actual thickness or oil content."
+      source_ids:
+        - rema-tooth-2026
+    - rule_id: b_receiver
+      applies_to: "release"
+      rule: "Representative receiver is Novelis Oswego under an operative buyer-approved Tier 1 bale arrangement. Revision 11 §§2–5 is the explicit evidence baseline, not a current order. Verify the current order, actual single-alloy approval and current contamination/moisture audit. Reject water-trapping forms, wet or broken bales, dross, fines, unknown powders, salts/oxidizers, closed containers, aluminium-lithium alloy, radioactive/PCB contamination and other listed foreign/unsafe materials. No painted/lacquered/coated scrap; process oil limited to 1% of scrap weight. Labels must agree with heat number, alloy and gross/tare/net weights."
+      source_ids:
+        - novelis-scrap-rev11
+    - rule_id: b_bale
+      applies_to: "segregation_baling; release"
+      rule: "For that Tier 1 route apply §5.2: bale dimensions 24×24×48 to 48×48×60 inch; bulk density greater than 20 lb/ft3; fiber or steel banding accepted for the actual alloy; no skids or visually obstructing wraps; individual bale maximum 6000 lb; roof clearance at least 6 inch; Oswego stack less than 11500 lb. Dump-truck delivery needs explicit purchase-order arrangements. Mark each bale weight and alloy. Confirm the original receiver document and buyer interpretation of dimension ranges. Do not substitute briquette §5.1 or non-Tier 1 §5.3 density/approval conditions; those are distinct routes and the document cross-reference wording needs receiver clarification."
+      source_ids:
+        - novelis-scrap-rev11
+    - rule_id: b_no_thermal
+      applies_to: "all processes"
+      rule: "No remelting, refining, decoating, chemical washing or wet scrap cleaning is included in this selected dry route. If contamination cannot pass as prepared, retain a rejected outlet; a materially different treatment route needs separate reviewed applicability and all actual inputs/outputs. Downstream recovery and substitution are outside the foreground supply gate."
+      source_ids:
+        - eaa-cutting-2002
+        - novelis-scrap-rev11
+    - rule_id: b_q
+      applies_to: "release; storage_dispatch"
+      rule: "Q is the sum of unique first released net dry whole-alloy clipping weights for the manufacturing cohort. Closing FG already contains newly released Q. Dispatch, reweighing, acceptance recheck and return/rework never create Q again. Keep a separate service account with original Q_c and actual H."
+      source_ids:
+        - novelis-scrap-rev11
+    - rule_id: b_all_events
+      applies_to: "all processes"
+      rule: "Include failed batches, zero-output attempts, start/stop, idle, cleanup, tests, rework and all opening/closing WIP. Carry each inherited exchange vector by lot and state. Missing history is unresolved, not zero burden. Track upstream stock already embodied in rework without rebuying it."
+      source_ids:
+        - ilcd-2010-allocation
+    - rule_id: b_atomic
+      applies_to: "all processes"
+      rule: "Each card is one actual exchange. Conditional means evidence-based applicability rather than presumed zero. Before dataset completion add every actual material/formulation, gas, fuel, coolant, sharpening consumable, label-printing consumable, waste and species not enumerated here as its own named row. One mixed physical outlet has one whole amount and one provider; source/composition subledgers do not add another outlet."
+      source_ids:
+        - eaa-forming-2002
+        - tower-aluminium-lubrication
+    - rule_id: b_pack
+      applies_to: "packaging; storage_dispatch"
+      rule: "For each packaging material j enforce O_empty,j + O_WIP,j + O_FG,j + O_reusable,j + P_j + N_ext,j + ER_j = C_empty,j + C_WIP,j + C_FG,j + C_reusable,j + S_j + EO_j + W_j. Categories are mutually exclusive stocks. S_j is packaging on gross physical shipments including redispatch, not net Q. P is actual purchase, N_ext is first non-purchase external physical receipt including supplier-with-goods and first entrusted/borrowed/rented articles, and ER is a true return with original outward history. These are mutually exclusive event classes. Measure every article using its named material/form/type/direction receipt interface; a missing actual interface blocks dataset completeness. Opening stock cannot replace current receipts; internal stock/WIP/FG issues cancel. EO is actual outward return. Track ownership, original cohort, each inherited exchange vector, supplier-included scope and incremental rental/return service independently and assign burden once. No packaging is added to Q, repurchased on reuse, or automatically treated as coproduct."
+      source_ids:
+        - novelis-scrap-rev11
+    - rule_id: b_native
+      applies_to: "all inventory rows"
+      rule: "Before binding any flow/provider verify actual Product/Waste/Elementary function, supplied state, grade, route, geography, voltage, compartment and exact property/unit chain. All flow UUIDs remain unresolved; a generic name or matching mass property cannot establish identity or provider compatibility."
+      source_ids:
+        - ilcd-2010-allocation
+boundary_abstraction:
+  declared_starting_condition: "Supplied AA5754-O sheet with actual pre-existing film and included upstream burdens"
+  starting_condition_role: "Feedstock for real foreground fabrication rather than already formed scrap"
+  product_classification_scope: "Single-grade new sheet-clipping subset of CPC 3.0:39363"
+  recursive_input_rule: "Do not purchase already formed same-category clips in this route. Internal clips/rework carry inherited vectors; cancel internal transfers on consolidation without repurchase."
+  upstream_dataset_requirement: "Match sheet/formulation/utility/packaging providers to actual grade, route, supplied state and geography; do not duplicate rolling or existing film."
+  disclosure: "Feedstock and mother-product gates; exchange attribution; Q versus V; WIP inheritance; FG/service; receiver version/approval; gaps"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Baled single-grade AA5754 sheet clippings"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "single AA5754 alloy identity and lot certificate"
+    - "O temper of supplied sheet"
+    - "actual sheet gauge and clip dimensions"
+    - "uncoated and unpainted state"
+    - "supplied lubricant identity and additional formulation"
+    - "whole alloy mass distinct from elemental assay"
+    - "oil and free-water measurements"
+    - "single-grade source segregation"
+    - "actual blanking stamping trimming and piercing sequence"
+    - "actual baling and bale dimensions"
+    - "receiver plant and operative specification revision"
+    - "Tier 1 certification and buyer approval"
+    - "contamination and moisture acceptance evidence"
+    - "first release cohort and Q gate"
+    - "whole physical V and source partitions"
+    - "WIP inherited exchange vectors"
+    - "FG stock and return history"
+    - "packaging material accounts"
+    - "actual service H and original Q_c"
+    - "site geography electricity voltage and period"
+    - "upstream provider states and attributional allocation evidence"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is unique first-release net dry whole-alloy mass excluding packaging and independently measured oil/free water/removable matter. Q is not pure-Al content. Keep physical gross V and burden numerator A_x distinct."
+  - id: raw_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "original physical property"
+      uuid: ""
+    required_unit: "original unit"
+    rule: "Integrate only a real rate over measured time; never multiply already integrated gas/liquid volume by time. Preserve gas temperature/pressure/humidity and independently measured substance-specific liquid density."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Electrical energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain raw kWh and convert once using 3.6 MJ/kWh before burden attribution and the sole normalization. Energy conversion does not authorize assigning a calorific value to lubricants."
+  - id: article_mass
+    applies_to: "packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Counts of pallets or labels require configuration-specific measured item mass or direct weighing; do not invent kg/item or infer density from native secondary coefficients."
+  - id: independent_species
+    applies_to: "metal and water ledgers"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Elements, chemical species and whole exchanges are distinct ledgers. Evidence must distinguish natural oxide, free water, phase change and any real reaction water. The cold mechanical route assumes no chemical reaction or reaction-water generation."
+process_map:
+  - id: source_fabrication
+    name: "Source sheet fabrication"
+    inclusion: "required"
+    inclusion_condition: "One identified AA5754-O sheet lot is actually blanked then stamped and trimmed or pierced."
+    role: "multifunctional foreground"
+    quantitative_reference: "Q"
+  - id: segregation_baling
+    name: "Segregation and baling"
+    inclusion: "required"
+    inclusion_condition: "Only same-grade new solid clips are prepared."
+    role: "foreground preparation"
+    quantitative_reference: "Q"
+  - id: utilities_residues
+    name: "Utilities and residual management"
+    inclusion: "required"
+    inclusion_condition: "All actual material and energy paths are collected including zero-output periods."
+    role: "supporting foreground"
+    quantitative_reference: "Q"
+  - id: packaging
+    name: "Individual packaging accounts"
+    inclusion: "required"
+    inclusion_condition: "Each actual material is separate; incoming sheet packaging and outgoing bale restraints have different paths."
+    role: "supporting foreground"
+    quantitative_reference: "Q"
+  - id: release
+    name: "First quality release"
+    inclusion: "required"
+    inclusion_condition: "Unique lot passes receiver-specific supply conditions."
+    role: "reference production"
+    quantitative_reference: "Q"
+  - id: storage_dispatch
+    name: "Cohort storage and dispatch service"
+    inclusion: "required"
+    inclusion_condition: "Actual service after first release is linked to original cohort Q_c."
+    role: "cohort service"
+    quantitative_reference: "Q_c"
+process_inventory:
+  - id: source_fabrication
+    label: "Source sheet fabrication"
+    inputs:
+      product:
+        - row_id: sheet_input
+          role: "Whole supplied sheet"
+          name: "AA5754-O aluminium sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One identified wrought AA5754-O sheet lot with actual gauge and supplied lubricant layer. Link an upstream sheet dataset matching the supplier, grade, temper, geography and supplied state, including rolling and mill-applied film once. Require unpainted sheet without a non-lubricant coating; the receiver must accept actual lubricant chemistry and amount. Weigh the delivery; keep alloy substrate, lubricant and free water as non-additive constituent ledgers. Do not purchase alloy elements again."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source
+              source_ids:
+                - tk-5754-sheet
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+        - row_id: extra_forming_lubricant
+          role: "Additional press lubricant"
+          name: "Mineral-oil-based aluminium stamping lubricant supplied formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual extra application beyond the purchased sheet film. One named supplier formulation is purchased once as a whole; collect its actual SDS, composition and lot. It is not PAO oil, cold-rolling oil or an assumed 40.5 MJ/kg petroleum fraction. If the actual route mixes a concentrate on site, replace this supplied-mixture representation with each purchased ingredient and measured mixing energy/loss; do not count both representations."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source
+              source_ids:
+                - eaa-forming-2002
+                - tower-aluminium-lubrication
+            ranges: []
+        - row_id: cutting_insert
+          role: "Trimming tool insert"
+          name: "D2 cold-work tool steel trimming insert"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional D2 tooling variant, not an established factory selection. Include only when the actual tool certificate confirms this grade; verify coating, tool-life and replacement records. A different tool requires its own specific exchange. An externally coated insert includes its coating and manufacturing burden as one supplied article. Do not purchase its alloy elements or coating chemicals separately. Outsourced sharpening and on-site sharpening have distinct providers and actual consumables."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mother_panel
+          role: "Mother product co-output"
+          name: "Unassembled AA5754 stamped automotive inner panel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the actual finished panel specification, weight, reject state and source cohort. This is the physical co-output at the separation gate; it is not assembled body-in-white, rolled sheet or a credit. Preserve its full physical quantity before assigning burden vectors under §7. A panel reprocessed into clips is a documented transfer with inherited burden rather than a second sheet purchase."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+                - ilcd-2010-allocation
+            ranges: []
+      waste:
+        - row_id: generated_clips
+          role: "Source-segregated new clips"
+          name: "Unreleased loose AA5754 sheet clippings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal whole-clipping transfer before supply acceptance; retain actual waste status, whole physical mass and independently measured substrate/contamination subledgers. Match outgoing and incoming tickets and cancel them on consolidation. Do not substitute external scrap procurement or use a generic loose-scrap bulk density for this lot."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clips
+              source_ids:
+                - eaa-cutting-2002
+                - innoval-realcar-2016
+                - rema-tooth-2026
+            ranges: []
+      elementary:
+        []
+  - id: segregation_baling
+    label: "Segregation and baling"
+    inputs:
+      product:
+        - row_id: baler_blade
+          role: "Baler shear blade"
+          name: "High-alloy tool steel baler shear blade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if an installed baler performs actual shear preparation; record one blade grade/article, installed mass, replacement and sharpening path. Do not infer a blade from the presence of a press or use generic carbon steel as its identity."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clips
+              source_ids:
+                - bronneberg-aluminium-baling
+            ranges: []
+      waste:
+        - row_id: clips_to_baler
+          role: "Source-segregated new clips"
+          name: "Unreleased loose AA5754 sheet clippings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal whole-clipping transfer before supply acceptance; retain actual waste status, whole physical mass and independently measured substrate/contamination subledgers. Match outgoing and incoming tickets and cancel them on consolidation. Do not substitute external scrap procurement or use a generic loose-scrap bulk density for this lot."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clips
+              source_ids:
+                - eaa-cutting-2002
+                - innoval-realcar-2016
+                - rema-tooth-2026
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: rejected_clips
+          role: "Rejected solid clips"
+          name: "Rejected AA5754 sheet clipping lot"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Keep whole rejected-lot mass and one actual recovery/treatment provider. Record reasons such as grade contamination, moisture, undersize pieces or oil excess. Source partitions and assay are analytical parts of this same whole outlet; they are not additional waste quantities. Reworked portions keep origin and incremental loads."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clips
+              source_ids:
+                - rema-tooth-2026
+                - novelis-scrap-rev11
+            ranges: []
+      elementary:
+        []
+  - id: utilities_residues
+    label: "Utilities and residual management"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Grid electricity"
+          name: "Grid alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Electrical energy / MJ"
+          description: "Meter actual alternating-current electricity delivered at the site voltage and geography for presses, conveyors, baler, extraction, cooling, compression, marking and service. Include start/stop, idle, failed work, cleanup and rework. Retain raw kWh; convert once with 3.6 MJ/kWh before attribution. Nameplate power and assumed hours do not establish consumption. Verify the compatible flow, energy property/unit chain and provider before binding."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eaa-forming-2002
+                - bronneberg-aluminium-baling
+            ranges: []
+        - row_id: hydraulic_fluid
+          role: "Hydraulic oil makeup"
+          name: "Mineral-oil-based hydraulic fluid"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "One mineral-oil-based hydraulic formulation supplied with additives for actual hydraulic equipment. Record its SDS, grade, makeup volume, temperature and opening/closing tank stocks. No density is assumed; weigh or independently measure substance-specific density if converting volume to mass. Whole formulation only; replacement, leakage and recovered oil are separate paths. A different base chemistry requires its own named exchange."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - bronneberg-aluminium-baling
+                - eaa-forming-2002
+            ranges: []
+        - row_id: tap_water
+          role: "Actual cooling makeup water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only where a real water-cooled auxiliary uses purchased treated potable piped water. Weigh water or convert metered volume using independently justified water density at measured conditions. No water addition to released scrap is implied; no unmeasured density or raw-river-water substitution is permitted."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eaa-forming-2002
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: purchased_air
+          role: "Purchased compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Only actual external compressed-air supply for automation or pneumatic tools. Record pressure, temperature, humidity, actual/normal-volume convention and supplier. On-site generation uses measured compressor electricity and each consumable instead; cancel internal air without purchasing its upstream burden twice."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eaa-forming-2002
+            ranges: []
+        - row_id: cotton_wiper
+          role: "Dry maintenance wiper"
+          name: "Cotton maintenance wiping cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional maintenance article with actual composition and dry mass. It is not used to manually redistribute press lubricant. A solvent-impregnated supplied wipe is a different complete formulation; do not silently add solvent or hide it here."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eaa-forming-2002
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: warm_water_return
+          role: "Supplier cooling-water return"
+          name: "Warm cooling water returned to utility supplier"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a real externally returned clean heat-transfer water Product accepted by its supplier. Measure mass and inlet/outlet temperature, pressure, thermal state and enthalpy and state the supplier agreement on water and heat burdens. It is not wastewater or a coproduct credit. If absent, document absence; no steam, boiler or condensate return is invented."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ilcd-2010-allocation
+            ranges: []
+      waste:
+        - row_id: metal_fines
+          role: "Captured cutting slivers"
+          name: "Captured AA5754 cutting slivers"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One weighed captured solid stream generated by cutting or tool cleanup. It is not remelting dross or saleable metal powder. Collect particle state, oil/moisture, composition and actual treatment provider. Do not count it as a direct air emission."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eaa-cutting-2002
+            ranges: []
+        - row_id: spent_tool
+          role: "Spent tool insert"
+          name: "Spent D2 tool steel trimming insert"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One specific worn tool article sent to its actual recovery provider. Keep its actual coating as a constituent of the whole; no avoided steel credit. Other baler-blade grades require separate rows."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eaa-forming-2002
+            ranges: []
+        - row_id: oily_wiper
+          role: "Used maintenance wiper"
+          name: "Oil-contaminated cotton maintenance wiping cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole weighed cotton/oil waste stream to one provider. Oil and cotton composition subledgers are not additional outlets. Do not call it a pure-oil flow."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eaa-forming-2002
+            ranges: []
+        - row_id: oily_cooling_water
+          role: "Contaminated cooling-water outlet"
+          name: "Hydraulic-oil-contaminated cooling water"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if an actual leak contaminates cooling water; one whole wastewater stream at the treatment-provider gate with measured composition. Do not duplicate its oil or dissolved elements as extra waste/emissions. This is distinct from clean supplier water return and is not scrap washing."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: used_oil
+          role: "Drained hydraulic lubricating oil"
+          name: "Spent mineral-oil-based hydraulic lubricating oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual drained mineral-oil-based hydraulic lubricating oil contaminated through use. Collect whole mass, composition, water content and actual treatment provider. Do not assume incineration or a fixed additive/water percentage. Oil remaining on clips or wipes is not also drained oil. Other spent formulations need their own atomic rows."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues
+              source_ids:
+                - eaa-forming-2002
+            ranges: []
+      elementary:
+        - row_id: al_air
+          role: "Metallic aluminium to air"
+          name: "aluminium"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an independently identified metallic-aluminium release to the documented air compartment. Use species-resolved monitoring; total AA5754 dust or total elemental assay is not this chemical-species mass. No default amount, zero-by-omission or balancing-residual estimate is permitted; add each other actual species individually."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+        - row_id: mg_air
+          role: "Metallic magnesium to air"
+          name: "magnesium"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an independently identified metallic-magnesium release to the documented air compartment. Dissolved magnesium and magnesium oxide are different identities. Use species-resolved monitoring without a default amount or balance-residual estimate."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+        - row_id: alumina_air
+          role: "Aluminium oxide to air"
+          name: "Aluminium oxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only independently measured aluminium oxide emitted to the documented air compartment. It is not metallic aluminium, total dust or total-Al assay. Retain chemical-species identity and measured amount, not a default oxide fraction."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+        - row_id: mgo_air
+          role: "Magnesium oxide to air"
+          name: "Magnesium oxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on an actual independently identified release. No compatible elementary UUID is established. A purchased Product MgO is not an emission identity. Actual chemical/particle identification is required before a positive amount. Use species-resolved monitoring and documented compartment. No positive default, zero-by-omission or balancing-residual estimate is permitted. Add every other actual species individually before declaring completeness."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+        - row_id: water_vapour
+          role: "Evaporated water to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only independently evidenced water vapour emitted to air from actual cooling or drying events. No drying unit is presumed. Distinguish evaporation, free moisture and any real reaction water; never use one residual to infer both water and oil."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - eaa-cutting-2002
+                - eaa-forming-2002
+            ranges: []
+  - id: packaging
+    label: "Individual packaging accounts"
+    inputs:
+      product:
+        - row_id: steel_band_input
+          role: "Purchased packaging article — steel_band"
+          name: "Flat steel bale strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual flat steel band accepted for this alloy by the receiver. Record actual steel grade, production route, coating and supplied form; no fixed composition is prescribed and round baling wire is a different article. P_j means an actual purchased first external receipt of this exact article. It is not non-purchase first receipt, an external return or internal reuse. Keep invoice and physical ticket; any supplier scope already including this article is reconciled before assigning burden once."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: steel_band_first_nonpurchase
+          role: "First non-purchase physical receipt — steel_band"
+          name: "Flat steel bale strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual flat steel band accepted for this alloy by the receiver. Record actual steel grade, production route, coating and supplied form; no fixed composition is prescribed and round baling wire is a different article. This is the specific material/form/type Product input interface for N_ext,j: actual first physical receipt supplied with goods without a separate article purchase or first entrusted/borrowed/rented receipt of this article. Measure its real mass and direction, including attached-on-sheet/WIP/FG components. Keep event id, owner, originating cohort and each inherited exchange vector, supplier-included scope and incremental rental/return service. Never relabel it as purchase or ER, copy a purchase UUID/provider, assume zero burden or create Q/credit. If the actual article is not this specified material/form, create its own interface before dataset completeness."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: steel_band_external_return
+          role: "True external return received — steel_band"
+          name: "Flat steel bale strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual flat steel band accepted for this alloy by the receiver. Record actual steel grade, production route, coating and supplied form; no fixed composition is prescribed and round baling wire is a different article. ER_j records this exact article only on a real external return with its original outward shipment history. Measure its physical mass, attachment state and direction; retain owner, original cohort, inherited exchange vector and actual incremental return service. No history means unresolved rather than an invented return; first entrusted/borrowed/rented or supplier-with-goods receipts belong in N_ext,j. Do not use opening stock or internal stock/WIP/FG issues as external receipts, repurchase the article or copy a new-Product procurement UUID."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: paper_label_input
+          role: "Purchased packaging article — paper_label"
+          name: "Self-adhesive paper identification label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole supplied identification label with its real adhesive and printing state. Record any separately purchased ink/ribbon as its own actual formulation rather than assuming it is included. P_j means an actual purchased first external receipt of this exact article. It is not non-purchase first receipt, an external return or internal reuse. Keep invoice and physical ticket; any supplier scope already including this article is reconciled before assigning burden once."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: paper_label_first_nonpurchase
+          role: "First non-purchase physical receipt — paper_label"
+          name: "Self-adhesive paper identification label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole supplied identification label with its real adhesive and printing state. Record any separately purchased ink/ribbon as its own actual formulation rather than assuming it is included. This is the specific material/form/type Product input interface for N_ext,j: actual first physical receipt supplied with goods without a separate article purchase or first entrusted/borrowed/rented receipt of this article. Measure its real mass and direction, including attached-on-sheet/WIP/FG components. Keep event id, owner, originating cohort and each inherited exchange vector, supplier-included scope and incremental rental/return service. Never relabel it as purchase or ER, copy a purchase UUID/provider, assume zero burden or create Q/credit. If the actual article is not this specified material/form, create its own interface before dataset completeness."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: paper_label_external_return
+          role: "True external return received — paper_label"
+          name: "Self-adhesive paper identification label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole supplied identification label with its real adhesive and printing state. Record any separately purchased ink/ribbon as its own actual formulation rather than assuming it is included. ER_j records this exact article only on a real external return with its original outward shipment history. Measure its physical mass, attachment state and direction; retain owner, original cohort, inherited exchange vector and actual incremental return service. No history means unresolved rather than an invented return; first entrusted/borrowed/rented or supplier-with-goods receipts belong in N_ext,j. Do not use opening stock or internal stock/WIP/FG issues as external receipts, repurchase the article or copy a new-Product procurement UUID."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pe_film_input
+          role: "Purchased packaging article — pe_film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet polyethylene wrapping. Verify actual polyethylene film supply and supplier; PET and multilayer film need separate identities. It is removed from the bale stream; opaque/wrapped Tier 1 bales are prohibited. P_j means an actual purchased first external receipt of this exact article. It is not non-purchase first receipt, an external return or internal reuse. Keep invoice and physical ticket; any supplier scope already including this article is reconciled before assigning burden once."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pe_film_first_nonpurchase
+          role: "First non-purchase physical receipt — pe_film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet polyethylene wrapping. Verify actual polyethylene film supply and supplier; PET and multilayer film need separate identities. It is removed from the bale stream; opaque/wrapped Tier 1 bales are prohibited. This is the specific material/form/type Product input interface for N_ext,j: actual first physical receipt supplied with goods without a separate article purchase or first entrusted/borrowed/rented receipt of this article. Measure its real mass and direction, including attached-on-sheet/WIP/FG components. Keep event id, owner, originating cohort and each inherited exchange vector, supplier-included scope and incremental rental/return service. Never relabel it as purchase or ER, copy a purchase UUID/provider, assume zero burden or create Q/credit. If the actual article is not this specified material/form, create its own interface before dataset completeness."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pe_film_external_return
+          role: "True external return received — pe_film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet polyethylene wrapping. Verify actual polyethylene film supply and supplier; PET and multilayer film need separate identities. It is removed from the bale stream; opaque/wrapped Tier 1 bales are prohibited. ER_j records this exact article only on a real external return with its original outward shipment history. Measure its physical mass, attachment state and direction; retain owner, original cohort, inherited exchange vector and actual incremental return service. No history means unresolved rather than an invented return; first entrusted/borrowed/rented or supplier-with-goods receipts belong in N_ext,j. Do not use opening stock or internal stock/WIP/FG issues as external receipts, repurchase the article or copy a new-Product procurement UUID."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: wood_pallet_input
+          role: "Purchased packaging article — wood_pallet"
+          name: "Wooden-board pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet wooden-board/slat pallets; identify their actual manufacturer and supplied state. No item mass is assumed. Weigh the actual pallet or use a traceable configuration-specific measured mass. Tier 1 outgoing bales are not shipped on skids. P_j means an actual purchased first external receipt of this exact article. It is not non-purchase first receipt, an external return or internal reuse. Keep invoice and physical ticket; any supplier scope already including this article is reconciled before assigning burden once."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: wood_pallet_first_nonpurchase
+          role: "First non-purchase physical receipt — wood_pallet"
+          name: "Wooden-board pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet wooden-board/slat pallets; identify their actual manufacturer and supplied state. No item mass is assumed. Weigh the actual pallet or use a traceable configuration-specific measured mass. Tier 1 outgoing bales are not shipped on skids. This is the specific material/form/type Product input interface for N_ext,j: actual first physical receipt supplied with goods without a separate article purchase or first entrusted/borrowed/rented receipt of this article. Measure its real mass and direction, including attached-on-sheet/WIP/FG components. Keep event id, owner, originating cohort and each inherited exchange vector, supplier-included scope and incremental rental/return service. Never relabel it as purchase or ER, copy a purchase UUID/provider, assume zero burden or create Q/credit. If the actual article is not this specified material/form, create its own interface before dataset completeness."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: wood_pallet_external_return
+          role: "True external return received — wood_pallet"
+          name: "Wooden-board pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet wooden-board/slat pallets; identify their actual manufacturer and supplied state. No item mass is assumed. Weigh the actual pallet or use a traceable configuration-specific measured mass. Tier 1 outgoing bales are not shipped on skids. ER_j records this exact article only on a real external return with its original outward shipment history. Measure its physical mass, attachment state and direction; retain owner, original cohort, inherited exchange vector and actual incremental return service. No history means unresolved rather than an invented return; first entrusted/borrowed/rented or supplier-with-goods receipts belong in N_ext,j. Do not use opening stock or internal stock/WIP/FG issues as external receipts, repurchase the article or copy a new-Product procurement UUID."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pet_band_input
+          role: "Purchased packaging article — pet_band"
+          name: "Polyester incoming-sheet strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet PET strapping; not PET granules, fibres or steel. Verify the supplied single article. It is removed before the Tier 1 bale and may return externally only when accepted for actual reuse. P_j means an actual purchased first external receipt of this exact article. It is not non-purchase first receipt, an external return or internal reuse. Keep invoice and physical ticket; any supplier scope already including this article is reconciled before assigning burden once."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pet_band_first_nonpurchase
+          role: "First non-purchase physical receipt — pet_band"
+          name: "Polyester incoming-sheet strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet PET strapping; not PET granules, fibres or steel. Verify the supplied single article. It is removed before the Tier 1 bale and may return externally only when accepted for actual reuse. This is the specific material/form/type Product input interface for N_ext,j: actual first physical receipt supplied with goods without a separate article purchase or first entrusted/borrowed/rented receipt of this article. Measure its real mass and direction, including attached-on-sheet/WIP/FG components. Keep event id, owner, originating cohort and each inherited exchange vector, supplier-included scope and incremental rental/return service. Never relabel it as purchase or ER, copy a purchase UUID/provider, assume zero burden or create Q/credit. If the actual article is not this specified material/form, create its own interface before dataset completeness."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pet_band_external_return
+          role: "True external return received — pet_band"
+          name: "Polyester incoming-sheet strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet PET strapping; not PET granules, fibres or steel. Verify the supplied single article. It is removed before the Tier 1 bale and may return externally only when accepted for actual reuse. ER_j records this exact article only on a real external return with its original outward shipment history. Measure its physical mass, attachment state and direction; retain owner, original cohort, inherited exchange vector and actual incremental return service. No history means unresolved rather than an invented return; first entrusted/borrowed/rented or supplier-with-goods receipts belong in N_ext,j. Do not use opening stock or internal stock/WIP/FG issues as external receipts, repurchase the article or copy a new-Product procurement UUID."
+          amount:
+            expression: "Record attributable raw quantity in this card unit; refer only to the single normalization result in §8."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: steel_band_outward
+          role: "Packaging article outward service — steel_band"
+          name: "Flat steel bale strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual flat steel band accepted for this alloy by the receiver. Record actual steel grade, production route, coating and supplied form; no fixed composition is prescribed and round baling wire is a different article. Record actual mass on gross physical shipments and external reusable-article returns; this is physical service bookkeeping and gives no automatic coproduct or negative upstream burden."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: paper_label_outward
+          role: "Packaging article outward service — paper_label"
+          name: "Self-adhesive paper identification label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole supplied identification label with its real adhesive and printing state. Record any separately purchased ink/ribbon as its own actual formulation rather than assuming it is included. Record actual mass on gross physical shipments and external reusable-article returns; this is physical service bookkeeping and gives no automatic coproduct or negative upstream burden."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pe_film_outward
+          role: "Packaging article outward service — pe_film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet polyethylene wrapping. Verify actual polyethylene film supply and supplier; PET and multilayer film need separate identities. It is removed from the bale stream; opaque/wrapped Tier 1 bales are prohibited. Record actual mass on gross physical shipments and external reusable-article returns; this is physical service bookkeeping and gives no automatic coproduct or negative upstream burden."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: wood_pallet_outward
+          role: "Packaging article outward service — wood_pallet"
+          name: "Wooden-board pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet wooden-board/slat pallets; identify their actual manufacturer and supplied state. No item mass is assumed. Weigh the actual pallet or use a traceable configuration-specific measured mass. Tier 1 outgoing bales are not shipped on skids. Record actual mass on gross physical shipments and external reusable-article returns; this is physical service bookkeeping and gives no automatic coproduct or negative upstream burden."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pet_band_outward
+          role: "Packaging article outward service — pet_band"
+          name: "Polyester incoming-sheet strapping"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet PET strapping; not PET granules, fibres or steel. Verify the supplied single article. It is removed before the Tier 1 bale and may return externally only when accepted for actual reuse. Record actual mass on gross physical shipments and external reusable-article returns; this is physical service bookkeeping and gives no automatic coproduct or negative upstream burden."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+      waste:
+        - row_id: steel_band_waste
+          role: "Discarded packaging article — steel_band"
+          name: "Discarded flat steel bale strapping"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual flat steel band accepted for this alloy by the receiver. Record actual steel grade, production route, coating and supplied form; no fixed composition is prescribed and round baling wire is a different article. Record the actual whole discarded article and one treatment provider; separate material composition subledgers are non-additive. Native new-Product UUID is not a Waste binding."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: paper_label_waste
+          role: "Discarded packaging article — paper_label"
+          name: "Discarded self-adhesive paper identification label"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One whole supplied identification label with its real adhesive and printing state. Record any separately purchased ink/ribbon as its own actual formulation rather than assuming it is included. Record the actual whole discarded article and one treatment provider; separate material composition subledgers are non-additive. Native new-Product UUID is not a Waste binding."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pe_film_waste
+          role: "Discarded packaging article — pe_film"
+          name: "Discarded polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet polyethylene wrapping. Verify actual polyethylene film supply and supplier; PET and multilayer film need separate identities. It is removed from the bale stream; opaque/wrapped Tier 1 bales are prohibited. Record the actual whole discarded article and one treatment provider; separate material composition subledgers are non-additive. Native new-Product UUID is not a Waste binding."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: wood_pallet_waste
+          role: "Discarded packaging article — wood_pallet"
+          name: "Discarded wooden-board pallet"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet wooden-board/slat pallets; identify their actual manufacturer and supplied state. No item mass is assumed. Weigh the actual pallet or use a traceable configuration-specific measured mass. Tier 1 outgoing bales are not shipped on skids. Record the actual whole discarded article and one treatment provider; separate material composition subledgers are non-additive. Native new-Product UUID is not a Waste binding."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+        - row_id: pet_band_waste
+          role: "Discarded packaging article — pet_band"
+          name: "Discarded polyester incoming-sheet strapping"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual incoming-sheet PET strapping; not PET granules, fibres or steel. Verify the supplied single article. It is removed before the Tier 1 bale and may return externally only when accepted for actual reuse. Record the actual whole discarded article and one treatment provider; separate material composition subledgers are non-additive. Native new-Product UUID is not a Waste binding."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - novelis-scrap-rev11
+            ranges: []
+      elementary:
+        []
+  - id: release
+    label: "First quality release"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_clips
+          role: "First released net aluminium clippings"
+          name: "Baled single-grade AA5754 sheet clippings"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Unmelted dry whole-alloy AA5754 sheet clippings at unique first release under the specified receiver supply conditions. Q excludes packaging, separately measured oil/free water and removable foreign matter; it is not pure-Al content or recovery yield. Verify source grade/lot, actual forming/preparation and Product supply/cofunction obligations and acceptance. Payment alone does not establish function or legal status. No generic alloy, ingot or Waste-treatment UUID is adopted. Bind a concrete compatible supply flow and provider only after verification; preserve inherited sheet and manufacturing burdens once. All §3 and §5 qualifiers remain mandatory."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - tk-5754-sheet
+                - rema-tooth-2026
+                - novelis-scrap-rev11
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: storage_dispatch
+    label: "Cohort storage and dispatch service"
+    inputs:
+      product:
+        - row_id: cohort_to_service
+          role: "Original-cohort clipping service"
+          name: "Baled single-grade AA5754 sheet clippings"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal cohort receipt or actual outward dispatch of the same released material. Preserve gross V, Q_c, opening/closing FG, returns and dispatch identity. This row neither purchases the clips nor creates a second production quantity. Measure incremental handling/storage/repacking/rework loads using actual H and events; divide service burden only by the original Q_c under §8. Reverse a returned shipment in its original cohort and retain actual additional service; consolidated internal release transfers cancel. The same released lot retains original acceptance, source and burden history. Its UUID remains unresolved; service creates neither new product identity nor Q."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_service
+              source_ids:
+                - novelis-scrap-rev11
+                - ilcd-2010-allocation
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cohort_dispatched
+          role: "Original-cohort clipping service"
+          name: "Baled single-grade AA5754 sheet clippings"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal cohort receipt or actual outward dispatch of the same released material. Preserve gross V, Q_c, opening/closing FG, returns and dispatch identity. This row neither purchases the clips nor creates a second production quantity. Measure incremental handling/storage/repacking/rework loads using actual H and events; divide service burden only by the original Q_c under §8. Reverse a returned shipment in its original cohort and retain actual additional service; consolidated internal release transfers cancel. The same released lot retains original acceptance, source and burden history. Its UUID remains unresolved; service creates neither new product identity nor Q."
+          amount:
+            expression: "Retain unallocated whole physical numerator N_x; refer only to the same normalization operation in §8 with physical and burden series separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_service
+              source_ids:
+                - novelis-scrap-rev11
+                - ilcd-2010-allocation
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_framework
+    applies_to: "all processes"
+    rule: "Use this hierarchy only for declared attributional multifunctional production. First establish whether scrap is a supplied secondary material co-function or a waste-treatment service using actual obligations, acceptance and economic context. Waste status alone does not establish zero upstream burden; marketability alone does not determine allocation. A Waste-treatment flow cannot silently replace the Product supply reference."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: a_subdivide
+    applies_to: "source_fabrication; segregation_baling"
+    rule: "First assign genuinely dedicated operations and exchanges to their own output; use real or justified virtual subdivision as far as feasible. Separate sheet fabrication shared by panel and clips from dedicated clip collection, preparation and baling. Keep measured physical mass partitions independent of burden assignment."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: a_causality
+    applies_to: "each remaining shared exchange"
+    rule: "For each residual exchange identify and quantify its determining physical causal relationship to each function, including upstream sheet and each utility. Demonstrate why a mass, duration or other driver actually determines that exchange. Do not assign one mass fraction to every exchange or equate metal content with causal allocation."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: a_residual_value
+    applies_to: "unresolved common-process exchanges"
+    rule: "Only the portion not resolved above may use co-function market values at the same physical separation gate, actual state and contemporary period. Derive a gate value from downstream quotations by removing actual further conditioning, baling, storage and transport differences. Do not compare a finished bale delivered to a remelter with an unfinished panel at the press. Document price basis, yields, sensitivity and unresolved cases; no fixed allocation percentage is prescribed."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: a_no_credit
+    applies_to: "all outputs"
+    rule: "Retain the upstream burden assigned by that analysis and actual dedicated preparation/treatment loads. Do not assume burden-free scrap, avoided primary aluminium, recovery yield, remelting credit or negative burden for packaging returns. Preserve the mother-product and scrap inventory-vector reconciliation."
+    source_ids:
+      - ilcd-2010-allocation
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_source
+      process_id: "source_fabrication"
+      flow_role: "sheet and parent output"
+      record_type: "Measured lot records"
+      raw_fields: "supplier; sheet lot; AA grade certificate; O temper; gauge; supplied film; gross/tare/substrate mass; parent panels; tool article and replacement; extra lubricant whole formulation; failures; opening/closing WIP; inherited vector"
+      collection_method: "Weigh and link actual sheet-to-panel/clip production tickets; retain supplier documents and all failed cycles."
+      unit: "kg"
+      frequency: "each receipt and production event"
+      temporal_coverage: "complete declared cohort and opening-stock history"
+      site_scope: "source press shop and identified upstream suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; certificates; tool-life records; event tickets"
+    - protocol_id: cp_clips
+      process_id: "segregation_baling"
+      flow_role: "clip transfers and preparation"
+      record_type: "Measured event records"
+      raw_fields: "source lot; outgoing/incoming internal ticket; gross V; oil; free water; foreign material; size; alloy; baler; rejects; tool blade; WIP states; inherited vector"
+      collection_method: "Weigh segregated pieces and transfers; independently sample contamination and composition; reconcile actual bales and rejection routes."
+      unit: "kg"
+      frequency: "each transfer and bale"
+      temporal_coverage: "complete cohort including all rejected/zero-output work"
+      site_scope: "source segregation and preparing facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "matched transfer tickets; sampling protocol; balance evidence"
+    - protocol_id: cp_utilities
+      process_id: "utilities_residues"
+      flow_role: "each utility and hydraulic formulation"
+      record_type: "Meter and stock records"
+      raw_fields: "exchange identity; equipment; meter readings; raw unit; pressure; temperature; humidity; interval; tank opening/closing; makeup; leaks; operator event; actual H"
+      collection_method: "Meter actual electricity and volumes; weigh water where mass is needed; measure density independently for any conversion; log startups and idle states."
+      unit: "original meter unit retained"
+      frequency: "each meter interval and change event"
+      temporal_coverage: "complete cohort and actual service intervals"
+      site_scope: "actual production and utility boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; conditions; provider agreement; density evidence"
+    - protocol_id: cp_residues
+      process_id: "utilities_residues"
+      flow_role: "each whole residue"
+      record_type: "Weighed outlet records"
+      raw_fields: "outlet lot; whole mass; source partitions; oil; water; measured species; provider; treatment; stocks; timestamps"
+      collection_method: "Weigh each separate residue at its actual provider gate; keep constituent subledgers and source partitions non-additive."
+      unit: "kg"
+      frequency: "each outlet and stock count"
+      temporal_coverage: "complete cohort including cleanup"
+      site_scope: "one actual provider per whole outlet"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh tickets; analysis; treatment receipts"
+    - protocol_id: cp_emissions
+      process_id: "utilities_residues"
+      flow_role: "each chemical species and compartment"
+      record_type: "Species-resolved monitoring"
+      raw_fields: "species; CAS; phase; size; compartment; concentration; actual flow rate or integrated volume; conditions; sample interval; moisture; blank; detection limit"
+      collection_method: "Use validated species-resolved measurements; integrate a genuine rate only over measured time; an already integrated volume is used once. Quantify moisture/phase independently and retain detection limits."
+      unit: "kg after documented conversion"
+      frequency: "each representative event and monitoring interval"
+      temporal_coverage: "production plus all abnormal and service periods"
+      site_scope: "actual release points"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "monitoring method; calibration; speciation and phase evidence"
+    - protocol_id: cp_packaging
+      process_id: "packaging"
+      flow_role: "each packaging article"
+      record_type: "Material and stock records"
+      raw_fields: "article j; specification; actual purchased receipt P; first non-purchase receipt N_ext; true return ER with original outward history; event id; ownership; original cohort; inherited exchange vector; supplier-included scope; incremental rental/return service; opening/closing empty; opening/closing attached WIP; opening/closing attached FG; opening/closing reusable; gross shipment S; outward return EO; waste W; internal reuse"
+      collection_method: "Weigh each material by mutually exclusive stock state; measure each named article receipt interface and keep P/N_ext/ER mutually exclusive; reconcile all first physical receipts including supplier-with-goods and attached components with gross shipment/return tickets; measure configuration-specific article mass for counts."
+      unit: "kg"
+      frequency: "each receipt dispatch return and stock closure"
+      temporal_coverage: "whole manufacturing cohort and original FG service history including every external first receipt and true return"
+      site_scope: "incoming sheet and outgoing article boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "material register; tare measurements; external return receipts"
+    - protocol_id: cp_release
+      process_id: "release"
+      flow_role: "unique first accepted clipping mass"
+      record_type: "Quality release records"
+      raw_fields: "unique lot; alloy; source; specification revision; buyer acceptance; current Tier 1 audit; dimensions; contamination; gross; tare; oil; free water; net Q; timestamp; rejected status"
+      collection_method: "Use calibrated weighing with independent contamination measurements and receiver-specific quality evidence; mark the unique first release once."
+      unit: "kg"
+      frequency: "each first release or rejection"
+      temporal_coverage: "complete manufacturing cohort"
+      site_scope: "one declared release gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "release register; buyer approval; calibration; duplicate-ticket check"
+    - protocol_id: cp_service
+      process_id: "storage_dispatch"
+      flow_role: "original-cohort service"
+      record_type: "Physical stock and event records"
+      raw_fields: "original Q_c; cohort; opening/closing FG; gross V received/dispatched; shipment id; external returns; original reversal; actual H; storage; repack; rework; incremental exchange vector"
+      collection_method: "Reconcile physical FG separately from first production; log actual service and return/rework loads to the original cohort; preserve original manufacturing burden."
+      unit: "original unit and kg"
+      frequency: "each service interval shipment and return"
+      temporal_coverage: "from original first release through declared service interval"
+      site_scope: "actual storage loading and dispatch boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "FG tickets; dispatch/return trail; event meters"
+    - protocol_id: cp_allocation
+      process_id: "source_fabrication"
+      flow_role: "shared exchange burden attribution"
+      record_type: "Causal and value records"
+      raw_fields: "exchange x; dedicated driver; subdivision evidence; physical causality; residual share; same separation gate; actual output state; contemporary price; downstream deductions; sensitivity"
+      collection_method: "Test dedicated and virtual subdivision then exchange-specific determining physical causality; collect same-gate values only for the genuinely unresolved remainder."
+      unit: "original exchange unit and value basis"
+      frequency: "each route and allocation-period change"
+      temporal_coverage: "same cohort and contemporary value period"
+      site_scope: "common source-process gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "causality evidence; matched values; independent reviewer decision"
+  calculation_rules:
+    - id: c_raw_units
+      applies_to: "all inventory rows"
+      rule: "U_x = measured original amount converted once to the declared numerator unit. Integrate an actual rate over its observed interval; do not multiply an integrated meter volume by time. Density belongs to the same substance and measured state."
+      inputs:
+        - raw_amount
+        - raw_unit
+        - observed_interval
+        - conversion_evidence
+      output: "U_x"
+      source_ids:
+        - novelis-scrap-rev11
+    - id: c_attributed_vector
+      applies_to: "all inventory rows"
+      rule: "For burden-bearing exchanges A_x = inherited opening-WIP burden realised in this cohort + actual dedicated current burden + causally assigned current shared burden + justified residual-value share + assigned incremental rework burden. Carry unrealised closing-WIP vectors forward; reconcile each exchange with mother-product and other actual destinations."
+      inputs:
+        - U_x
+        - opening_WIP_vector
+        - closing_WIP_vector
+        - subdivision_evidence
+        - causal_evidence
+        - residual_gate_values
+        - rework_vector
+      output: "A_x"
+      source_ids:
+        - ilcd-2010-allocation
+    - id: c_unique_q
+      applies_to: "released_clips"
+      rule: "Q = sum of unique first accepted net dry whole-AA5754-clipping release weights. No dispatch or repeated inspection is added. If Q = 0 retain every actual burden and issue no unit result."
+      inputs:
+        - first_release_tickets
+        - net_whole_alloy_mass
+        - unique_lot_ids
+      output: "Q"
+      source_ids:
+        - novelis-scrap-rev11
+    - id: c_normalize_once
+      applies_to: "all inventory rows"
+      rule: "For Q > 0 use I_x = A_x / Q once for 1 kg reference flow. For physical bookkeeping substitute the unallocated whole physical numerator N_x in this same operation and keep its results distinct from burden I_x. For later service substitute only A_service,x and original Q_c in this same operation. All card amount and protocol target-basis fields refer to this result; neither is an additional division. H is an observed service driver and never a production denominator."
+      inputs:
+        - A_x
+        - N_x
+        - Q
+        - A_service_x
+        - Q_c
+      output: "I_x"
+      source_ids:
+        - ilcd-2010-allocation
+    - id: c_physical_gates
+      applies_to: "all processes"
+      rule: "For each declared physical control volume: opening physical stock + actual external inputs + external returns = closing physical stock + every external Product/Waste outlet + real elementary releases. In the manufacturing gate newly released gross V and mother panels leave to FG/service; at the service gate the same V is an input. Cancel only matching internal transfers on consolidation. If another external exchange X exists add it on its true side; deduplicate an OTHER component only for that exact same-side physical entry."
+      inputs:
+        - physical_stocks
+        - whole_external_inputs
+        - whole_external_outputs
+        - gross_V
+        - matched_internal_tickets
+        - elementary_releases
+      output: "physical_balance"
+      source_ids:
+        - novelis-scrap-rev11
+    - id: c_gross_and_elements
+      applies_to: "all metal-bearing rows"
+      rule: "V = net dry whole-alloy substrate + separately measured free water + oil + removable foreign matter for the same physical lot. Element e = sum of measured constituent mass times its measured e fraction, including actual chemical species. Preserve natural oxide with its actual phase; do not convert all substrate into pure Al or equate assay with chemical mass. A single balance residual cannot estimate two unknown water/oil/species quantities."
+      inputs:
+        - whole_lot_mass
+        - independent_water
+        - independent_oil
+        - independent_foreign_matter
+        - independent_speciation
+        - element_assay
+      output: "gross_V_and_element_balances"
+      source_ids:
+        - novelis-scrap-rev11
+    - id: c_fg_service
+      applies_to: "storage_dispatch"
+      rule: "Opening FG gross V + newly released gross V + external return received = closing FG gross V + gross dispatched V + other actual external material outlets. Closing FG includes the newly produced Q cohort. Preserve original shipment reversal and inherited manufacturing vector on returns; apply only actual incremental service burden to original Q_c."
+      inputs:
+        - opening_FG
+        - newly_released_V
+        - returned_V
+        - closing_FG
+        - dispatched_V
+        - external_outlets
+        - original_shipment_id
+        - cohort_vector
+      output: "FG_service_balance"
+      source_ids:
+        - novelis-scrap-rev11
+    - id: c_pack_balance
+      applies_to: "packaging"
+      rule: "Apply b_pack independently to each article j in kg. Count S_j on every gross physical dispatch; reconcile all P, N_ext and true ER events at this same physical gate. Never classify a first non-purchase receipt as ER, use opening stock for a current receipt or omit attached components. Internal stock/WIP/FG issues cancel. Preserve ownership, original cohort and inherited exchange vectors, supplier-included scope and actual incremental rental/return service independently; no zero-burden, new-Q or credit inference. The whole article receipt includes its supplied components once."
+      inputs:
+        - opening_packaging_states
+        - P_j
+        - N_ext_j
+        - ER_j
+        - closing_packaging_states
+        - S_j
+        - EO_j
+        - W_j
+      output: "per_article_packaging_balance"
+      source_ids:
+        - novelis-scrap-rev11
+  data_quality_requirements:
+    - id: dq_scope
+      applies_to: "all processes"
+      requirement: "Trace one alloy/source/sheet state through real manufacture to first supply release; no purchased-scrap-only boundary."
+      evidence: "supplier lot certificate and linked process tickets"
+    - id: dq_native
+      applies_to: "all bound rows"
+      requirement: "Verify all native conditions and actual provider compatibility; unavailable identity is distinct from a measured zero."
+      evidence: "full native records and supplier compatibility evidence"
+    - id: dq_measurement
+      applies_to: "all rows"
+      requirement: "Retain calibration, uncertainty, detection limits, original units, actual time/conditions and independent oil/water/species measurements."
+      evidence: "meter and analytical records"
+    - id: dq_history
+      applies_to: "WIP and FG"
+      requirement: "Retain opening and closing material states plus every inherited exchange vector and original return/dispatch trail."
+      evidence: "lot ledger and vector reconciliation"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Retain abnormal/zero-output work; identify and add every actual exchange. Unknown applicability or history blocks a complete dataset rather than being silently zero."
+      evidence: "signed completeness register with unresolved cases"
+    - id: dq_evidence
+      applies_to: "method interpretation"
+      requirement: "This is a transparent technical synthesis across supplier sheet identity, generic aluminium forming, a historical closed-loop case and a receiver specification. It is not a same-SKU factory measurement or scientific approval."
+      evidence: "source-specific scope and independent review"
+validation_rules:
+  - rule_id: v_identity
+    applies_to: "reference product"
+    rule: "Require one complete reference object, explicit released_clips link and all ordered qualifiers. The verified Product supply identity must match unmelted baled single-grade clips; no Waste, ingot, hydrometallurgical product, rod/profile or post-consumer substitution."
+    source_ids:
+      - rema-tooth-2026
+      - novelis-scrap-rev11
+  - rule_id: v_gate
+    applies_to: "release"
+    rule: "Check actual alloy, dimensions, contamination, independent free water/oil, operative receiver approval and Tier 1 conditions. A search hit, source case or fixed specification range is not a released factory lot."
+    source_ids:
+      - novelis-scrap-rev11
+  - rule_id: v_balance
+    applies_to: "all processes"
+    rule: "Close manufacturing, FG/service and consolidated physical gates; independently close relevant elemental and species ledgers and every packaging account using opening + P + N_ext + ER = closing + gross S + EO + W for each exact article and physical gate. Check named atomic receipt interfaces and measured direction/amount for purchased, supplier-with-goods, first entrusted/borrowed/rented and true-return events; missing actual interfaces or receipt history block dataset completeness. Neither allocation nor Q can repair missing physical matter. Unknown mass/speciation relationships remain unresolved."
+    source_ids:
+      - eaa-cutting-2002
+      - ilcd-2010-allocation
+  - rule_id: v_normalization
+    applies_to: "all inventory rows"
+    rule: "Verify raw original-unit conversion and burden attribution before the single A_x/Q operation; Q and service Q_c stay identical across all fields and languages. Q = 0 has no unit result. Closing FG is not added to first-release Q."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: v_allocation
+    applies_to: "shared exchanges"
+    rule: "Require evidence for dedicated/subdivision and exchange-specific causality before residual same-gate economic allocation; retain sensitivity and mother-product vector reconciliation. No automatic zero scrap burden or recycling credit."
+    source_ids:
+      - ilcd-2010-allocation
+  - rule_id: v_inventory
+    applies_to: "all inventory rows"
+    rule: "Confirm one atomic exchange per row, whole supplied formulation once, one provider per whole mixed outlet, exact property/unit chain and full native restrictions in consumer context. Add actual unlisted materials/species; an auxiliary UUID gap remains explicit."
+    source_ids:
+      - eaa-forming-2002
+      - tower-aluminium-lubrication
+  - rule_id: v_history
+    applies_to: "WIP and FG"
+    rule: "Reject a complete inventory claim when inherited WIP vectors, FG history, return reversal, actual H or complete purchased/non-purchase/true-return physical receipt and gross-shipment packaging records are missing. Preserve P/N_ext/ER exclusivity, original outward history for ER, owner and original cohort, inherited per-exchange vectors, supplier-included scope and actual incremental rental/return service with one burden assignment. Reinspection and rework of released material do not create new production."
+    source_ids:
+      - novelis-scrap-rev11
+      - ilcd-2010-allocation
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Single-grade unmelted aluminium feed input to a real downstream recovery process subject to applicability review"
+  allowed_use: "Use only with fully verified boundary/native identity/grade/receiver gate/burden attribution"
+  excluded_use: "All-aluminium-scrap average; primary metal or ingot substitution; recovery/savings guarantee; replacement of Product supply by Waste treatment"
+  required_metadata: "All §3 qualifiers; original bases and providers; same-gate allocation; WIP/FG histories; Q and actual H; every packaging account"
+  required_quality_disclosure: "Measured/calculated/unknown distinctions; native restrictions; gaps; uncertainty; Q0; no scientific-approval claim"
+  update_trigger: "Grade/supplied-state change; process/receiver-specification change; native/provider change; allocation or measurement-basis change"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division CPC 3.0 explanatory notes 30 June 2025 pp203–205 https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification context only. The aluminium scrap leaf does not establish grade or a production method."
+  - id: "eaa-cutting-2002"
+    type: "handbook"
+    reference: "European Aluminium Association Aluminium Automotive Manual Manufacturing Cutting version 2002 §§2.3.1–2.3.5 pp26–35 https://european-aluminium.eu/wp-content/uploads/2022/11/aam-manufacturing-2-cutting.pdf"
+    used_for: "Cold sheet blanking/trimming/piercing and sliver formation. The 6016 trimming image and extrusion example are countercontexts rather than AA5754 measurements. No numeric settings adopted."
+  - id: "eaa-forming-2002"
+    type: "handbook"
+    reference: "European Aluminium Association Aluminium Automotive Manual Manufacturing Forming version 2002 §3.2 pp3 and 16–32 https://european-aluminium.eu/wp-content/uploads/2022/11/aam-manufacturing-3-forming.pdf"
+    used_for: "Aluminium sheet forming with suitable tooling and lubrication; actual handling and interruptions. Tool coating options and lubricant graphs do not specify this plant or an LCA allocation."
+  - id: "tk-5754-sheet"
+    type: "handbook"
+    reference: "thyssenkrupp Materials UK Information on Aluminium 5754 https://www.thyssenkrupp-materials.co.uk/aluminium-5754.html"
+    used_for: "EN AW-5754 sheet and O temper identity. Retain separate rod/tube tables and guidance-only physical properties; do not adopt density or composition as a measured lot recipe."
+  - id: "novelis-realcar-2020"
+    type: "extension_guidance"
+    reference: "Novelis Jaguar Land Rover case study 14 April 2020 https://novelis.com/case-studies/jaguar-land-rover/"
+    used_for: "Primary supplier evidence of 5754 RC automotive sheet and stamping scrap return. Recycled shares and savings remain case claims rather than foreground factors."
+  - id: "innoval-realcar-2016"
+    type: "extension_guidance"
+    reference: "Innoval Technology Geoff Scamans REALCAR 17 February 2016 https://www.innovaltec.com/realcar-blog/"
+    used_for: "Project-participant evidence of pressing and alloy-family segregation with return to Novelis Latchford. A family-separated case does not prove a particular single-AA5754 lot; no price or scrap percentage transferred."
+  - id: "rema-tooth-2026"
+    type: "standard"
+    reference: "ReMA ISRI Specifications January 2026 Nonferrous Scrap Tooth and adjacent entries printed p10 PDF p14 https://www.isrispecs.org/wp-content/uploads/2026/01/2026-January-ReMA_ISRI_Specifications.pdf"
+    used_for: "Tooth defines single specified alloy new clippings; distinguish mixed Tough and cast/extruded Tread and dross Thirl. Contractual specification gates only."
+  - id: "novelis-scrap-rev11"
+    type: "standard"
+    reference: "Novelis Scrap Quality Specification Revision 11 26 September 2019 §§2–5 including Tier 1 bale §5.2 and non-Tier 1 §5.3 https://b2b.mps.novelis.com/_assets/content/ScrapQualitySpecificationsRev11-092619.pdf"
+    used_for: "Receiver-specific contamination/identification and bale acceptance. Verify the operative purchase order and current Tier 1 audit; this edition is not universal contemporary acceptance."
+  - id: "bronneberg-aluminium-baling"
+    type: "extension_guidance"
+    reference: "Bronneberg Aluminium Recycling https://www.bronneberg-recycling.co.uk/solutions/aluminium-recycling/"
+    used_for: "Homogeneous aluminium scrap baling and electric equipment as technical route evidence. Installed power is not measured energy or proof of a particular factory installation."
+  - id: "tower-aluminium-lubrication"
+    type: "extension_guidance"
+    reference: "Tower Metalworking Fluids Lubrication Advice for Forming Aluminum https://www.towermwf.com/lubrication-advice/"
+    used_for: "Actual 5754 forming case and incompatible lubricant alternatives; collect the whole supplied formulation and actual constituents. No universal dilution or VOC species inferred."
+  - id: "ilcd-2010-allocation"
+    type: "official_guidance"
+    reference: "European Commission JRC ILCD Handbook General guide Detailed guidance first edition March 2010 §§7.9.2–7.9.3 printed pp255–272 PDF pp275–292 https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional multifunctional-process hierarchy with dedicated/virtual subdivision then exchange-specific determining physical causality then residual same-gate economic value. Industrial documents do not supply this allocation rule."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d4945e925e5fed43347b5d6a73e5afd48ff69b2707220e445e345d477c1199a7"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_6725"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 6725
+          line: 65
+          column: 1
+        end:
+          offset: 13555
+          line: 92
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Supplied AA5754-O sheet with actual pre-existing film and included upstream burdens |\n| starting_condition_role | Feedstock for real foreground fabrication rather than already formed scrap |\n| product_classification_scope | Single-grade new sheet-clipping subset of CPC 3.0:39363 |\n| recursive_input_rule | Do not purchase already formed same-category clips in this route. Internal clips/rework carry inherited vectors; cancel internal transfers on consolidation without repurchase. |\n| upstream_dataset_requirement | Match sheet/formulation/utility/packaging providers to actual grade, route, supplied state and geography; do not duplicate rolling or existing film. |\n| disclosure | Feedstock and mother-product gates; exchange attribution; Q versus V; WIP inheritance; FG/service; receiver version/approval; gaps |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `b_source` | source_fabrication | Begin with one supplied prelubricated AA5754-O sheet lot. Include actual blanking/stamping/trimming/piercing, source collection, necessary dry mechanical preparation, baling, quality acceptance and their utilities, maintenance and rejects. Match the upstream sheet state; do not start with purchased already-formed scrap. | `eaa-cutting-2002`; `eaa-forming-2002`; `tk-5754-sheet` |\n| `b_grade` | all processes | Keep only one AA5754 grade and source state. Do not combine RC5754 case material, other 5xxx grades, 6xxx grades, old cans, foil laminates, cast scrap, dross, ash or remelt ingot. A family-separated historical case supports process existence but not single-grade batch identity. | `innoval-realcar-2016`; `novelis-realcar-2020`; `un-cpc3-2025` |\n| `b_tooth` | release | For the selected Tooth-like new-clipping route require one specified alloy; clean uncoated/unpainted solids; original specification thickness .015 inch (.38 mm) minimum; no hair wire/wire screen/dirt/non-metal items; oil plus grease no more than 1%; no punchings below 1/2 inch (1.27 cm). Measure and segregate undersize slugs. These are acceptance limits rather than default actual thickness or oil content. | `rema-tooth-2026` |\n| `b_receiver` | release | Representative receiver is Novelis Oswego under an operative buyer-approved Tier 1 bale arrangement. Revision 11 §§2–5 is the explicit evidence baseline, not a current order. Verify the current order, actual single-alloy approval and current contamination/moisture audit. Reject water-trapping forms, wet or broken bales, dross, fines, unknown powders, salts/oxidizers, closed containers, aluminium-lithium alloy, radioactive/PCB contamination and other listed foreign/unsafe materials. No painted/lacquered/coated scrap; process oil limited to 1% of scrap weight. Labels must agree with heat number, alloy and gross/tare/net weights. | `novelis-scrap-rev11` |\n| `b_bale` | segregation_baling; release | For that Tier 1 route apply §5.2: bale dimensions 24×24×48 to 48×48×60 inch; bulk density greater than 20 lb/ft3; fiber or steel banding accepted for the actual alloy; no skids or visually obstructing wraps; individual bale maximum 6000 lb; roof clearance at least 6 inch; Oswego stack less than 11500 lb. Dump-truck delivery needs explicit purchase-order arrangements. Mark each bale weight and alloy. Confirm the original receiver document and buyer interpretation of dimension ranges. Do not substitute briquette §5.1 or non-Tier 1 §5.3 density/approval conditions; those are distinct routes and the document cross-reference wording needs receiver clarification. | `novelis-scrap-rev11` |\n| `b_no_thermal` | all processes | No remelting, refining, decoating, chemical washing or wet scrap cleaning is included in this selected dry route. If contamination cannot pass as prepared, retain a rejected outlet; a materially different treatment route needs separate reviewed applicability and all actual inputs/outputs. Downstream recovery and substitution are outside the foreground supply gate. | `eaa-cutting-2002`; `novelis-scrap-rev11` |\n| `b_q` | release; storage_dispatch | Q is the sum of unique first released net dry whole-alloy clipping weights for the manufacturing cohort. Closing FG already contains newly released Q. Dispatch, reweighing, acceptance recheck and return/rework never create Q again. Keep a separate service account with original Q_c and actual H. | `novelis-scrap-rev11` |\n| `b_all_events` | all processes | Include failed batches, zero-output attempts, start/stop, idle, cleanup, tests, rework and all opening/closing WIP. Carry each inherited exchange vector by lot and state. Missing history is unresolved, not zero burden. Track upstream stock already embodied in rework without rebuying it. | `ilcd-2010-allocation` |\n| `b_atomic` | all processes | Each card is one actual exchange. Conditional means evidence-based applicability rather than presumed zero. Before dataset completion add every actual material/formulation, gas, fuel, coolant, sharpening consumable, label-printing consumable, waste and species not enumerated here as its own named row. One mixed physical outlet has one whole amount and one provider; source/composition subledgers do not add another outlet. | `eaa-forming-2002`; `tower-aluminium-lubrication` |\n| `b_pack` | packaging; storage_dispatch | For each packaging material j enforce O_empty,j + O_WIP,j + O_FG,j + O_reusable,j + P_j + N_ext,j + ER_j = C_empty,j + C_WIP,j + C_FG,j + C_reusable,j + S_j + EO_j + W_j. Categories are mutually exclusive stocks. S_j is packaging on gross physical shipments including redispatch, not net Q. P is actual purchase, N_ext is first non-purchase external physical receipt including supplier-with-goods and first entrusted/borrowed/rented articles, and ER is a true return with original outward history. These are mutually exclusive event classes. Measure every article using its named material/form/type/direction receipt interface; a missing actual interface blocks dataset completeness. Opening stock cannot replace current receipts; internal stock/WIP/FG issues cancel. EO is actual outward return. Track ownership, original cohort, each inherited exchange vector, supplier-included scope and incremental rental/return service independently and assign burden once. No packaging is added to Q, repurchased on reuse, or automatically treated as coproduct. | `novelis-scrap-rev11` |\n| `b_native` | all inventory rows | Before binding any flow/provider verify actual Product/Waste/Elementary function, supplied state, grade, route, geography, voltage, compartment and exact property/unit chain. All flow UUIDs remain unresolved; a generic name or matching mass property cannot establish identity or provider compatibility. | `ilcd-2010-allocation` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 266
+              line: 10
+              column: 1
+            end:
+              offset: 343
+              line: 10
+              column: 78
+          text: "# Waste and scrap of aluminium — single-grade AA5754 sheet stamping clippings"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 6725
+              line: 65
+              column: 1
+            end:
+              offset: 6746
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_76646"
+      family: "allocation"
+      span:
+        start:
+          offset: 76646
+          line: 1039
+          column: 1
+        end:
+          offset: 79012
+          line: 1049
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `a_framework` | all processes | Use this hierarchy only for declared attributional multifunctional production. First establish whether scrap is a supplied secondary material co-function or a waste-treatment service using actual obligations, acceptance and economic context. Waste status alone does not establish zero upstream burden; marketability alone does not determine allocation. A Waste-treatment flow cannot silently replace the Product supply reference. | `ilcd-2010-allocation` |\n| `a_subdivide` | source_fabrication; segregation_baling | First assign genuinely dedicated operations and exchanges to their own output; use real or justified virtual subdivision as far as feasible. Separate sheet fabrication shared by panel and clips from dedicated clip collection, preparation and baling. Keep measured physical mass partitions independent of burden assignment. | `ilcd-2010-allocation` |\n| `a_causality` | each remaining shared exchange | For each residual exchange identify and quantify its determining physical causal relationship to each function, including upstream sheet and each utility. Demonstrate why a mass, duration or other driver actually determines that exchange. Do not assign one mass fraction to every exchange or equate metal content with causal allocation. | `ilcd-2010-allocation` |\n| `a_residual_value` | unresolved common-process exchanges | Only the portion not resolved above may use co-function market values at the same physical separation gate, actual state and contemporary period. Derive a gate value from downstream quotations by removing actual further conditioning, baling, storage and transport differences. Do not compare a finished bale delivered to a remelter with an unfinished panel at the press. Document price basis, yields, sensitivity and unresolved cases; no fixed allocation percentage is prescribed. | `ilcd-2010-allocation` |\n| `a_no_credit` | all outputs | Retain the upstream burden assigned by that analysis and actual dedicated preparation/treatment loads. Do not assume burden-free scrap, avoided primary aluminium, recovery yield, remelting credit or negative burden for packaging returns. Preserve the mother-product and scrap inventory-vector reconciliation. | `ilcd-2010-allocation` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 266
+              line: 10
+              column: 1
+            end:
+              offset: 343
+              line: 10
+              column: 78
+          text: "# Waste and scrap of aluminium — single-grade AA5754 sheet stamping clippings"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 76646
+              line: 1039
+              column: 1
+            end:
+              offset: 76686
+              line: 1039
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_92304"
+      family: "validation"
+      span:
+        start:
+          offset: 92304
+          line: 1091
+          column: 1
+        end:
+          offset: 95239
+          line: 1103
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| `v_identity` | reference product | Require one complete reference object, explicit released_clips link and all ordered qualifiers. The verified Product supply identity must match unmelted baled single-grade clips; no Waste, ingot, hydrometallurgical product, rod/profile or post-consumer substitution. | `rema-tooth-2026`; `novelis-scrap-rev11` |\n| `v_gate` | release | Check actual alloy, dimensions, contamination, independent free water/oil, operative receiver approval and Tier 1 conditions. A search hit, source case or fixed specification range is not a released factory lot. | `novelis-scrap-rev11` |\n| `v_balance` | all processes | Close manufacturing, FG/service and consolidated physical gates; independently close relevant elemental and species ledgers and every packaging account using opening + P + N_ext + ER = closing + gross S + EO + W for each exact article and physical gate. Check named atomic receipt interfaces and measured direction/amount for purchased, supplier-with-goods, first entrusted/borrowed/rented and true-return events; missing actual interfaces or receipt history block dataset completeness. Neither allocation nor Q can repair missing physical matter. Unknown mass/speciation relationships remain unresolved. | `eaa-cutting-2002`; `ilcd-2010-allocation` |\n| `v_normalization` | all inventory rows | Verify raw original-unit conversion and burden attribution before the single A_x/Q operation; Q and service Q_c stay identical across all fields and languages. Q = 0 has no unit result. Closing FG is not added to first-release Q. | `ilcd-2010-allocation` |\n| `v_allocation` | shared exchanges | Require evidence for dedicated/subdivision and exchange-specific causality before residual same-gate economic allocation; retain sensitivity and mother-product vector reconciliation. No automatic zero scrap burden or recycling credit. | `ilcd-2010-allocation` |\n| `v_inventory` | all inventory rows | Confirm one atomic exchange per row, whole supplied formulation once, one provider per whole mixed outlet, exact property/unit chain and full native restrictions in consumer context. Add actual unlisted materials/species; an auxiliary UUID gap remains explicit. | `eaa-forming-2002`; `tower-aluminium-lubrication` |\n| `v_history` | WIP and FG | Reject a complete inventory claim when inherited WIP vectors, FG history, return reversal, actual H or complete purchased/non-purchase/true-return physical receipt and gross-shipment packaging records are missing. Preserve P/N_ext/ER exclusivity, original outward history for ER, owner and original cohort, inherited per-exchange vectors, supplier-included scope and actual incremental rental/return service with one burden assignment. Reinspection and rework of released material do not create new production. | `novelis-scrap-rev11`; `ilcd-2010-allocation` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 266
+              line: 10
+              column: 1
+            end:
+              offset: 343
+              line: 10
+              column: 78
+          text: "# Waste and scrap of aluminium — single-grade AA5754 sheet stamping clippings"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 92304
+              line: 1091
+              column: 1
+            end:
+              offset: 92326
+              line: 1091
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_source"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 7727
+          line: 80
+          column: 1
+        end:
+          offset: 8144
+          line: 80
+          column: 418
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_grade"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 8145
+          line: 81
+          column: 1
+        end:
+          offset: 8520
+          line: 81
+          column: 376
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_tooth"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 8521
+          line: 82
+          column: 1
+        end:
+          offset: 8975
+          line: 82
+          column: 455
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_receiver"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 8976
+          line: 83
+          column: 1
+        end:
+          offset: 9663
+          line: 83
+          column: 688
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_bale"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 9664
+          line: 84
+          column: 1
+        end:
+          offset: 10398
+          line: 84
+          column: 735
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_no_thermal"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 10399
+          line: 85
+          column: 1
+        end:
+          offset: 10846
+          line: 85
+          column: 448
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_q"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 10847
+          line: 86
+          column: 1
+        end:
+          offset: 11206
+          line: 86
+          column: 360
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "b_all_events"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 11207
+          line: 87
+          column: 1
+        end:
+          offset: 11556
+          line: 87
+          column: 350
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "b_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 11557
+          line: 88
+          column: 1
+        end:
+          offset: 12066
+          line: 88
+          column: 510
+    - pointer: "/system_boundary/rules/9"
+      rule_id: "b_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 12067
+          line: 89
+          column: 1
+        end:
+          offset: 13187
+          line: 89
+          column: 1121
+    - pointer: "/system_boundary/rules/10"
+      rule_id: "b_native"
+      identity_kind: "explicit"
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 13188
+          line: 90
+          column: 1
+        end:
+          offset: 13553
+          line: 90
+          column: 366
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_framework"
+      identity_kind: "explicit"
+      unit_id: "normative_76646"
+      source_span:
+        start:
+          offset: 76759
+          line: 1043
+          column: 1
+        end:
+          offset: 77249
+          line: 1043
+          column: 491
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_76646"
+      source_span:
+        start:
+          offset: 77250
+          line: 1044
+          column: 1
+        end:
+          offset: 77658
+          line: 1044
+          column: 409
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_76646"
+      source_span:
+        start:
+          offset: 77659
+          line: 1045
+          column: 1
+        end:
+          offset: 78073
+          line: 1045
+          column: 415
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_residual_value"
+      identity_kind: "explicit"
+      unit_id: "normative_76646"
+      source_span:
+        start:
+          offset: 78074
+          line: 1046
+          column: 1
+        end:
+          offset: 78642
+          line: 1046
+          column: 569
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_76646"
+      source_span:
+        start:
+          offset: 78643
+          line: 1047
+          column: 1
+        end:
+          offset: 79010
+          line: 1047
+          column: 368
+    - pointer: "/validation_rules/0"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 92399
+          line: 1095
+          column: 1
+        end:
+          offset: 92747
+          line: 1095
+          column: 349
+    - pointer: "/validation_rules/1"
+      rule_id: "v_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 92748
+          line: 1096
+          column: 1
+        end:
+          offset: 93008
+          line: 1096
+          column: 261
+    - pointer: "/validation_rules/2"
+      rule_id: "v_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 93009
+          line: 1097
+          column: 1
+        end:
+          offset: 93692
+          line: 1097
+          column: 684
+    - pointer: "/validation_rules/3"
+      rule_id: "v_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 93693
+          line: 1098
+          column: 1
+        end:
+          offset: 93992
+          line: 1098
+          column: 300
+    - pointer: "/validation_rules/4"
+      rule_id: "v_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 93993
+          line: 1099
+          column: 1
+        end:
+          offset: 94292
+          line: 1099
+          column: 300
+    - pointer: "/validation_rules/5"
+      rule_id: "v_inventory"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 94293
+          line: 1100
+          column: 1
+        end:
+          offset: 94647
+          line: 1100
+          column: 355
+    - pointer: "/validation_rules/6"
+      rule_id: "v_history"
+      identity_kind: "explicit"
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 94648
+          line: 1101
+          column: 1
+        end:
+          offset: 95237
+          line: 1101
+          column: 590
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 6725
+          line: 65
+          column: 1
+        end:
+          offset: 6746
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_6725"
+      source_span:
+        start:
+          offset: 6774
+          line: 69
+          column: 1
+        end:
+          offset: 7654
+          line: 76
+          column: 148
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_76646"
+      source_span:
+        start:
+          offset: 76646
+          line: 1039
+          column: 1
+        end:
+          offset: 76686
+          line: 1039
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_92304"
+      source_span:
+        start:
+          offset: 92304
+          line: 1091
+          column: 1
+        end:
+          offset: 92326
+          line: 1091
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d4945e925e5fed43347b5d6a73e5afd48ff69b2707220e445e345d477c1199a7"
+  generated_content_sha256: "sha256:4cf357765223716a07ab8bc3c3e5fbdac2ac9c3181f59f6e23bc457c7e2e663d"
