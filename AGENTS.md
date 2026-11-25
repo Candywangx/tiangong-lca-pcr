@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-10
-lastReviewedCommit: 2002efdfc6d10f8dbf1db082c11662c817718c0b
-lastReviewedNote: "PR34: owner-authorized bounded Next tree storage with exact original URL/byte restoration, source-bound provider profile 2 and verified compilation binding. PCR/module identity, mapping, publication, scientific and study qualification contracts remain unchanged."
+lastReviewedAt: 2026-11-24
+lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

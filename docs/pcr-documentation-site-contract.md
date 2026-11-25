@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-19
-lastReviewedNote: "PR37 search capacity: bounded v11 context coding of v8 numeric channels with exact pack and logical-wire restoration."
-lastReviewedCommit: 05fb4462baeac303521fc6f7d38bd7cd080d9059
+lastReviewedAt: 2026-11-24
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -427,6 +427,15 @@ deadline, cleanup and atomic handoff remain enforced. The export uses two static
 with at most one static page render in flight per worker. Its 4 GB Node heap
 ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap ceiling is not proof of total resident memory.
 
+The hosted web build sets `PCR_SOURCE_VERIFY_WORKERS=2` for verification of
+independent source documents. Each admitted document still undergoes the complete
+Markdown inventory, rendered-block, link, source-marker and ordering checks.
+Two Node child processes inherit the build environment and its per-process heap
+limit. The existing process-tree RSS check includes the parent and both children.
+The verifier waits for all assigned documents and child shutdown before continuing
+with the global export checks. It reports document validation errors in source
+order. An unset value or `1` runs the serial verification path.
+
 Each attempted stage emits `build-stage` diagnostics with its command, duration,
 sampled peak process-tree RSS, measurement availability, child exit code and
 passed/failed status. A zero-exit child that exceeds the RSS guard is a failed
@@ -435,6 +444,20 @@ handoff fails after all stages. Failed runs write
 `.generated/build-failure-metrics.json` after cleanup returns, separately from
 the last successful `.generated/build-metrics.json`; neither failure receipt
 claims a successful export or relaxes the atomic output handoff.
+
+### Build machine selection
+
+The root `edgeone.json` selects `buildMachine: enhanced`, following the
+[provider configuration contract](https://pages.edgeone.ai/document/edgeone-json).
+The provider documents this machine as eight cores and 14 GB for the Pro plan.
+Deployment acceptance still measures the final output filesystem and requires
+the complete verified export plus the existing reserve to fit. The machine
+selection alone does not prove sufficient destination capacity. The provider's
+plan entitlement and the actual selected machine must be verified for the
+deployment. The sealed importer records its native process-available CPU estimate,
+constrained/available memory and both guard-measured destination-capacity snapshots.
+The records identify raw host values separately. A machine selection or raw host
+CPU count alone cannot establish the effective allocation or final output space.
 
 ### Build workspace storage
 

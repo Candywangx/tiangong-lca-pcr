@@ -27,6 +27,52 @@ function write(file: string, value: string | Uint8Array): void { fs.mkdirSync(pa
 const writeJson = (file: string, value: unknown) => write(file, JSON.stringify(value));
 const git = (root: string, ...args: string[]) => execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 
+test("runtime diagnostics retain constrained process resources before an import failure", async t => {
+  const hostCpu = os.cpus()[0]!;
+  t.mock.method(os, "cpus", () => Array.from({ length: 128 }, () => hostCpu));
+  t.mock.method(os, "availableParallelism", () => 8);
+  t.mock.method(os, "totalmem", () => 128 * 1024 ** 3);
+  t.mock.method(process, "constrainedMemory", () => 14 * 1024 ** 3);
+  t.mock.method(process, "availableMemory", () => 10 * 1024 ** 3);
+  const diagnostics: Record<string, unknown>[] = [];
+  await assert.rejects(materializeProductWeb({ root: os.tmpdir(),
+    readIdentity() { throw new Error("original identity failure"); },
+    log: value => diagnostics.push(JSON.parse(value)),
+  }), /original identity failure/u);
+  assert.deepEqual(diagnostics, [{ event: "product-web-runtime", node: process.versions.node,
+    uv: process.versions.uv, platform: process.platform, architecture: process.arch,
+    rawHostLogicalCpuCount: 128, availableCpuCount: 8,
+    rawHostMemoryBytes: 128 * 1024 ** 3, constrainedMemoryBytes: 14 * 1024 ** 3,
+    availableMemoryBytes: 10 * 1024 ** 3 }]);
+});
+
+test("runtime diagnostics preserve unknown memory constraints and original argument errors", async t => {
+  t.mock.method(process, "constrainedMemory", () => 0);
+  const diagnostics: Record<string, unknown>[] = [];
+  await assert.rejects(materializeProductWeb({ timeoutMs: 0,
+    log: value => diagnostics.push(JSON.parse(value)),
+  }), /finite transfer deadline/u);
+  assert.equal(diagnostics[0]!.constrainedMemoryBytes, null);
+  await assert.rejects(materializeProductWeb({ timeoutMs: 0,
+    log() { throw new Error("reporting failure"); },
+  }), /finite transfer deadline/u);
+});
+
+test("capacity reporting failures preserve successful and rejected atomic handoffs", async t => {
+  const f = await fixture(t);
+  const published = await materializeProductWeb({ ...f.options,
+    log() { throw new Error("reporting failure"); },
+  });
+  assert.deepEqual(published.identity, f.identity);
+  assert.equal(fs.readFileSync(path.join(f.root, "packages/pcr-docs/out/index.html"), "utf8"), "<h1>Sealed web</h1>");
+  const refused = await fixture(t);
+  await assert.rejects(materializeProductWeb({ ...refused.options,
+    log() { throw new Error("reporting failure"); },
+    publish: options => publishOutput({ ...options, freeBytes: 1 }),
+  }), /cannot stage the export/u);
+  previousIsIntact(refused);
+});
+
 async function fixture(t: TestContext, mutateWeb: (context: { webDir: string; identity: ProductIdentity }) => void = () => {},
   { producerNode = process.versions.node, producerNpm = "11.17.0", productVersion = "0.3.0", providerRuntime = false, navigationRuntime = false }: { producerNode?: string; producerNpm?: string; productVersion?: string; providerRuntime?: boolean; navigationRuntime?: boolean } = {}) {
   const owned = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), "pcr-materializer-test-"));

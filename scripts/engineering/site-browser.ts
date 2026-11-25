@@ -22,7 +22,8 @@ export class SiteBrowserError extends Error {
   readonly code:string;
   constructor(code:string,message:string,options?:ErrorOptions){super(message,options);this.name='SiteBrowserError';this.code=code;}
 }
-export interface SiteBrowserOptions {root:string;report:string}
+export const SITE_BROWSER_ENGINES = ['chromium','firefox','webkit'] as const;
+export interface SiteBrowserOptions {root:string;report:string;engines?:readonly SiteBrowserEngine[]}
 export interface ExportFile {path:string;bytes:number;sha256:string}
 export interface SiteRoute {kind:'home'|'catalog'|'pcr'|'module'|'history'|'guide';locale:'en'|'zh'|'default';path:string}
 export interface SiteExport {root:string;files:ExportFile[];treeSha256:string;bytes:number;source:Record<string,unknown>;routes:SiteRoute[];availability:{locale:string;kind:string;present:boolean}[];staticRouteAliases?:ReturnType<typeof verifyStaticRouteAliases>|undefined}
@@ -37,12 +38,17 @@ function readRegular(root:string,relative:string):Buffer {
 }
 function readIdentityJson(root:string,key:string):unknown {try{const value:unknown=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(readRegular(root,key)));const finite=(item:unknown):boolean=>typeof item==='number'?Number.isFinite(item):Array.isArray(item)?item.every(finite):object(item)?Object.values(item).every(finite):true;if(!finite(value))failure('SITE_EXPORT_IDENTITY','Identity contains a nonfinite number.');return value;}catch(error){if(error instanceof SiteBrowserError)throw error;throw new SiteBrowserError('SITE_EXPORT_IDENTITY','Invalid UTF-8/JSON identity: '+key,{cause:error});}}
 function hash(bytes:Buffer|string){return createHash('sha256').update(bytes).digest('hex');}
+export function parseSiteBrowserEngine(value:string):SiteBrowserEngine {
+ if(SITE_BROWSER_ENGINES.includes(value as SiteBrowserEngine))return value as SiteBrowserEngine;
+ failure('SITE_BROWSER_ARGUMENT','Expected --engine to be one of: '+SITE_BROWSER_ENGINES.join(', ')+'.');
+}
 export function parseSiteBrowserArguments(args:readonly string[]):SiteBrowserOptions|'help' {
  if(args.length===1&&args[0]==='--help')return 'help';
  const values:Record<string,string>={};
- for(let i=0;i<args.length;i+=2){const key=args[i],value=args[i+1];if((key!=='--root'&&key!=='--report')||!value||value.startsWith('--')||values[key]!==undefined)failure('SITE_BROWSER_ARGUMENT','Expected exactly --root <existing export> and --report <new evidence directory>.');values[key]=value;}
+ for(let i=0;i<args.length;i+=2){const key=args[i],value=args[i+1];if((key!=='--root'&&key!=='--report'&&key!=='--engine')||!value||value.startsWith('--')||values[key]!==undefined)failure('SITE_BROWSER_ARGUMENT','Expected --root <existing export>, --report <new evidence directory>, and optional --engine <chromium|firefox|webkit>.');values[key]=value;}
  if(!values['--root']||!values['--report'])failure('SITE_BROWSER_ARGUMENT','Both --root and --report are required.');
- return {root:path.resolve(values['--root']),report:path.resolve(values['--report'])};
+ const engines=values['--engine']?[parseSiteBrowserEngine(values['--engine'])]:undefined;
+ return {root:path.resolve(values['--root']),report:path.resolve(values['--report']),...(engines?{engines}:{})};
 }
 export function inspectSiteExport(input:string):SiteExport {
  const root=path.resolve(input);if(!existsSync(root)||lstatSync(root).isSymbolicLink()||!lstatSync(root).isDirectory())failure('SITE_EXPORT_INPUT','Root must be an existing export directory.');
@@ -482,7 +488,10 @@ async function checkPagePrefetchResponses(origin:string,samples:readonly Navigat
 }
 
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
- const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.64.1')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.64.1.');
+ const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.65.0')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.65.0.');
+ const selectedEngines=options.engines?options.engines.map(parseSiteBrowserEngine):[...SITE_BROWSER_ENGINES];
+ if(!selectedEngines.length||new Set(selectedEngines).size!==selectedEngines.length)failure('SITE_BROWSER_ARGUMENT','Selected engines must be non-empty and unique.');
+ const browserTypes:Record<SiteBrowserEngine,BrowserType>={chromium,firefox,webkit};
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
  const chapterCompatibility:ChapterCompatibilityEvidence[]=[];
  const publishedChapterHttp:{from:string;to:string;sha256:string}[]=[];
@@ -490,7 +499,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const languagePreferences:LanguagePreferenceEvidence[]=[];let nativeSamples:NativeDownload[]=[],inlineSamples:InlineDownload[]=[];
  const nativeDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[];
  const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.64.1',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),engines:selectedEngines,source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
   const boundSource=exported.source.sourceCommit;assert.ok(typeof boundSource==='string');const boundProvider=verifyProviderRuntimeExport(exported.root,boundSource);
   if(boundProvider?.schemaVersion===2){
@@ -499,7 +508,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
    await checkPagePrefetchResponses(origin,prefetch);pagePrefetchHttp.push(...prefetch);
   }
   if(boundProvider)for(const route of boundProvider.routes){const response=await fetch(origin+route.from+'?compat=a+b&compat=%2F');assert.equal(response.status,200);const body=Buffer.from(await response.arrayBuffer()),expected=readRegular(exported.root,decodeURIComponent(route.to.slice(1))+'index.html');assert.ok(body.equals(expected),'Rewritten published document differs from target: '+route.from);publishedChapterHttp.push({from:route.from,to:route.to,sha256:hash(body)});}
-  for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',webkit]] as const satisfies readonly (readonly [string,BrowserType])[]){const browser=await engine.launch({headless:true});
+  for(const name of selectedEngines){const browser=await browserTypes[name].launch({headless:true});
    try {const chapterSource=exported.source.sourceCommit;assert.ok(typeof chapterSource==='string');const chapterProof=verifyProviderRuntimeExport(exported.root,chapterSource);if(chapterProof)chapterCompatibility.push(...await checkPublishedChapters(browser,name,origin,chapterProof,report));
     for(const selected of [...nativeSamples,...inlineSamples.filter(item=>!nativeSamples.some(native=>native.name===item.name&&native.url===item.url&&native.route===item.route)).map(item=>({...item,transport:'inline' as const}))]){const evidence={engine:name,...await checkNativeDownload(browser,name,origin,selected,exported.root)};if(nativeSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route))nativeDownloads.push(evidence);if(inlineSamples.some(item=>item.name===selected.name&&item.url===selected.url&&item.route===selected.route)){inlineDownloads.push(evidence);if(selected.name==='manifest.yaml')inlineManifestDownloads.push(evidence);}}
     for(const [viewport,size] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){const context=await browser.newContext({viewport:size,locale:'zh-CN'});
@@ -518,7 +527,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
     await checkLanguagePreferences(browser,origin,size,documentPath,languageCodes,evidence);
    }}finally{await browser.close();}
   }
- });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;if(publishedChapterHttp.length)assert.equal(chapterCompatibility.length,18,'All engines must check bilingual chapter fragments/defaults and native access');assert.equal(nativeDownloads.length,9,'Three engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
+ });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;if(publishedChapterHttp.length)assert.equal(chapterCompatibility.length,selectedEngines.length*6,'Selected engines must check bilingual chapter fragments/defaults and native access');assert.equal(nativeDownloads.length,selectedEngines.length*3,'Selected engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
  }catch(error){receipt.status='failed';receipt.failure=message(error);throw error;}finally{receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'report.json'),JSON.stringify(receipt,null,2)+'\n');}
 }
 export async function siteBrowserMain(args:readonly string[]){const options=parseSiteBrowserArguments(args);if(options==='help'){process.stdout.write('Usage: node scripts/engineering/site-browser.ts --root <existing export> --report <new evidence directory>\n');return;}const receipt=await qualifySiteBrowser(options);process.stdout.write(JSON.stringify({status:receipt.status,sourceCommit:receipt.source.sourceCommit,report:path.join(options.report,'report.json'),cases:receipt.results.length})+'\n');}
