@@ -27,15 +27,16 @@ export interface SearchManifestV9 extends Omit<SearchManifestV5, "schemaVersion"
 export interface SearchManifestV10 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 10 }
 export interface SearchManifestV11 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 11 }
 export interface SearchManifestV12 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 12 }
-export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7 | SearchManifestV8 | SearchManifestV9 | SearchManifestV10 | SearchManifestV11 | SearchManifestV12;
+export interface SearchManifestV13 extends Omit<SearchManifestV5, "schemaVersion"> { schemaVersion: 13 }
+export type SearchManifest = SearchManifestV5 | SearchManifestV6 | SearchManifestV7 | SearchManifestV8 | SearchManifestV9 | SearchManifestV10 | SearchManifestV11 | SearchManifestV12 | SearchManifestV13;
 export type SearchDigest = (bytes: Uint8Array) => string | Promise<string>;
 export function searchUtf8(text: string): Uint8Array { return utf8.encode(text); }
 export function readSearchManifest(value: unknown, language: string): SearchManifest {
- if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7 && value.schemaVersion !== 8 && value.schemaVersion !== 9 && value.schemaVersion !== 10 && value.schemaVersion !== 11 && value.schemaVersion !== 12) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
+ if (!object(value) || Object.hasOwn(value, "shards") || Object.hasOwn(value, "termDictionary") || (value.schemaVersion !== 5 && value.schemaVersion !== 6 && value.schemaVersion !== 7 && value.schemaVersion !== 8 && value.schemaVersion !== 9 && value.schemaVersion !== 10 && value.schemaVersion !== 11 && value.schemaVersion !== 12 && value.schemaVersion !== 13) || value.language !== language || !commit(value.sourceCommit) || !natural(value.logicalShardCount) || !Array.isArray(value.files)) return fail();
  let next = 0, raw = 0, gzip = 0;
  const urls = new Set<string>();
  for (const file of value.files) {
-  if (!object(file) || typeof file.url !== "string" || !file.url.startsWith(`/generated/search/${encodeURIComponent(language)}/`) || !/^\/generated\/search\/[A-Za-z0-9-]+\/[A-Za-z0-9-]+\.json$/.test(file.url) || urls.has(file.url) || !natural(file.bytes) || file.bytes > SEARCH_RAW_LIMIT || !natural(file.gzipBytes) || !hash(file.sha256) || file.firstLogicalShard !== next || !natural(file.logicalShardCount) || file.logicalShardCount < 1 || file.logicalShardCount > (value.schemaVersion === 12 ? SEARCH_COMPACT_PACK_MEMBERS : SEARCH_PACK_MEMBERS) || !Array.isArray(file.logicalShards) || file.logicalShards.length !== file.logicalShardCount || !natural(file.records)) return fail();
+  if (!object(file) || typeof file.url !== "string" || !file.url.startsWith(`/generated/search/${encodeURIComponent(language)}/`) || !/^\/generated\/search\/[A-Za-z0-9-]+\/[A-Za-z0-9-]+\.json$/.test(file.url) || urls.has(file.url) || !natural(file.bytes) || file.bytes > SEARCH_RAW_LIMIT || !natural(file.gzipBytes) || !hash(file.sha256) || file.firstLogicalShard !== next || !natural(file.logicalShardCount) || file.logicalShardCount < 1 || file.logicalShardCount > (value.schemaVersion >= 12 ? SEARCH_COMPACT_PACK_MEMBERS : SEARCH_PACK_MEMBERS) || !Array.isArray(file.logicalShards) || file.logicalShards.length !== file.logicalShardCount || !natural(file.records)) return fail();
   let records = 0, restoredBytes = 0;
   for (const logical of file.logicalShards) {
    if (!object(logical) || !natural(logical.wireBytes) || logical.wireBytes > SEARCH_RAW_LIMIT || !hash(logical.wireSha256) || !natural(logical.records)) return fail();
@@ -336,18 +337,193 @@ function verifyChannelOwnership(shards: unknown[], count: number): void {
   }
   if (usedChannels.size !== count) return fail();
 }
+// With one known first document per score list, at most 56 remaining documents
+// are ranked. C(56,28) is exactly representable below Number.MAX_SAFE_INTEGER.
+const subsetChoices: number[][] = Array.from({length:57}, () => []);
+for (let n = 0; n <= 56; n++) {
+ subsetChoices[n]![0] = subsetChoices[n]![n] = 1;
+ for (let k = 1; k < n; k++) subsetChoices[n]![k] = subsetChoices[n-1]![k-1]! + subsetChoices[n-1]![k]!;
+}
+const subsetChoose = (n:number, k:number):number => k < 0 || k > n ? 0 : subsetChoices[n]![k]!;
+interface DisjointTail {length:number; bits:number; data:string}
+function disjointTail(value:unknown): value is DisjointTail {
+ return object(value) && Object.keys(value).length === 3 && natural(value.length) && value.length >= 1 && value.length <= SEARCH_RAW_LIMIT &&
+  natural(value.bits) && value.bits <= SEARCH_RAW_LIMIT * 8 && typeof value.data === 'string' && value.data.length <= Math.ceil(SEARCH_RAW_LIMIT/3)*4;
+}
+function tailOwners(shards:unknown[], count:number):unknown[][] {
+ verifyChannelOwnership(shards,count);
+ const owners:unknown[][] = [];
+ for (const shard of shards) {
+  if (!object(shard) || !object(shard.entries) || !Array.isArray(shard.records) || !Array.isArray(shard.columnarMaps ?? [])) return fail();
+  for (const key of (shard.columnarMaps ?? []) as unknown[]) {
+   if (typeof key !== 'string') return fail();
+   const reference:unknown = shard.entries[key];
+   if (Array.isArray(reference) && reference.length === 1 && natural(reference[0])) owners[reference[0]] = shard.records;
+  }
+ }
+ return owners;
+}
+function subsetRecordIds(records:unknown[]):number[] | undefined {
+ if (!records.length || records.length > 57) return;
+ const ids:number[] = [];
+ for (const record of records) {
+  if (!object(record) || typeof record.id !== 'string') return;
+  const id = Number(record.id);
+  if (!natural(id) || id > integerLimit || String(id) !== record.id || (ids.length && id <= ids[ids.length-1]!)) return;
+  ids.push(id);
+ }
+ return ids;
+}
+/** Encode/decode a bounded truncated-binary combinatorial rank without 32-bit shifts. */
+function subsetBits(encoded?:DisjointTail) {
+ let binary = '', offset = 0, bits = 0, byte = 0;
+ const output:number[] = [];
+ if (encoded) {
+  try { binary = atob(encoded.data); } catch { return fail(); }
+  if (binary.length !== Math.ceil(encoded.bits/8) || btoa(binary) !== encoded.data) return fail();
+  const padding = binary.length*8 - encoded.bits;
+  if (padding && binary.charCodeAt(binary.length-1) % 2**padding) return fail();
+ }
+ function read(width:number):number {
+  let value = 0;
+  for (let i=0; i<width; i++) {
+   if (!encoded || offset >= encoded.bits) return fail();
+   value = value*2 + Math.floor(binary.charCodeAt(Math.floor(offset/8)) / 2**(7-offset%8))%2; offset++;
+  }
+  return value;
+ }
+ function write(value:number,width:number) {
+  for (let i=width-1; i>=0; i--) {
+   if (bits >= SEARCH_RAW_LIMIT*8) return fail();
+   byte = byte*2 + Math.floor(value/2**i)%2;
+   if (++bits%8 === 0) { output.push(byte); byte = 0; }
+  }
+ }
+ return {
+  rank(total:number, value?:number):number {
+   if (!natural(total) || total < 1 || total > Number.MAX_SAFE_INTEGER) return fail();
+   const width = Math.floor(Math.log2(total)), short = 2**(width+1)-total;
+   if (encoded) {
+    const prefix = read(width), rank = prefix < short ? prefix : prefix*2 + read(1)-short;
+    if (!natural(rank) || rank >= total) return fail();
+    return rank;
+   }
+   if (!natural(value) || value >= total) return fail();
+   if (value < short) write(value,width); else write(value+short,width+1);
+   return value;
+  },
+  finish():{bits:number;data:string} {
+   if (encoded) { if (offset !== encoded.bits) return fail(); return {bits:encoded.bits,data:encoded.data}; }
+   if (bits%8) output.push(byte*2**(8-bits%8));
+   let text = '';
+   for (let i=0; i<output.length; i+=8192) text += String.fromCharCode(...output.slice(i,i+8192));
+   return {bits,data:btoa(text)};
+  }
+ };
+}
+function unrankSubset(rank:number, n:number, k:number):number[] {
+ const selected = Array<number>(k);
+ let maximum = n-1;
+ for (let j=k; j>0; j--) {
+  let index = maximum;
+  while (index >= j && subsetChoose(index,j) > rank) index--;
+  selected[j-1] = index; rank -= subsetChoose(index,j); maximum = index-1;
+ }
+ if (rank !== 0) return fail();
+ return selected;
+}
+/** The original score order, first predictors and VLQ spelling remain canonical. */
+function disjointRow(columns:readonly string[], ids:number[], budget:{remaining:number}, encoded?:DisjointTail):DisjointTail | string | undefined {
+ const parse = (text:string,signed=false) => { const reader=numericReader(text,budget), values=reader.values(signed); reader.end(); return values; };
+ const ranks=parse(columns[1]!), lengths=parse(columns[2]!), first=parse(columns[3]!,true);
+ const raw = encoded ? undefined : parse(columns[4]!);
+ const expected = encoded?.length ?? columns[4]!.length;
+ const count = lengths.reduce((sum,length)=>sum+Math.max(0,length-1),0);
+ if (!natural(count) || count > expected) return encoded ? fail() : undefined;
+ if (encoded) charge(budget,arraySyntax(count));
+ const positions=new Map(ids.map((id,index)=>[id,index])), tape=subsetBits(encoded), previous=Array<number>(9).fill(0), restored:number[]=[];
+ let li=0, fi=0, ri=0, restoredLength=unsigned(count).length;
+ for (const rank of ranks) {
+  const header=rankedHeaders[rank]; if (header === undefined) return fail();
+  const slots=postingSlots([header],9); if (!slots) return fail();
+  const lists:{head:number;length:number}[] = [];
+  const used=new Set<number>();
+  for (const slot of slots) {
+   const length=lengths[li++]; if (length === undefined || length > ids.length) return encoded ? fail() : undefined;
+   if (!length) { lists.push({head:0,length}); continue; }
+   const delta=first[fi++]; if (delta === undefined) return fail();
+   const value=previous[slot]!+delta, head=positions.get(value); previous[slot]=value;
+   if (head === undefined || used.has(head)) return encoded ? fail() : undefined;
+   used.add(head); lists.push({head,length});
+  }
+  for (const {head,length} of lists) {
+   if (!length) continue;
+   const available=ids.map((_,index)=>index).filter(index=>index>head&&!used.has(index)), k=length-1;
+   if (k > available.length) return encoded ? fail() : undefined;
+   let selected:number[];
+   if (encoded) selected=unrankSubset(tape.rank(subsetChoose(available.length,k)),available.length,k).map(index=>available[index]!);
+   else {
+    selected=[]; let value=ids[head]!, rankValue=0;
+    for (let j=0; j<k; j++) {
+     const gap=raw![ri++]; if (gap === undefined || gap <= 0) return;
+     value += gap; const position=positions.get(value), index=position === undefined ? -1 : available.indexOf(position);
+     if (position === undefined || index < 0 || (j && position <= selected[j-1]!)) return;
+     selected.push(position); rankValue += subsetChoose(index,j+1);
+    }
+    tape.rank(subsetChoose(available.length,k),rankValue);
+   }
+   let last=ids[head]!;
+   for (const index of selected) {
+    if (used.has(index)) return encoded ? fail() : undefined;
+    used.add(index);
+    if (encoded) {
+     const gap=ids[index]!-last; last=ids[index]!;
+     restoredLength += unsigned(gap).length;
+     if (restoredLength > expected) return fail();
+     charge(budget,String(gap).length); restored.push(gap);
+    }
+   }
+  }
+ }
+ if (li !== lengths.length || fi !== first.length || (raw && ri !== raw.length)) return fail();
+ const data=tape.finish();
+ if (!encoded) return {length:expected,...data};
+ if (restored.length !== count || restoredLength !== expected) return fail();
+ return sequence(restored,false);
+}
+/** Unsupported/non-disjoint postings retain literal v12 channel strings. */
+export function encodeSearchDisjointTails(packed:{shards:unknown[];numericColumns:string[][]}):(string | DisjointTail)[] {
+ const columns=packed.numericColumns, owners=tailOwners(packed.shards,columns[4]!.length), budget={remaining:SEARCH_RAW_LIMIT};
+ return columns[4]!.map((text,row)=>{
+  const ids=subsetRecordIds(owners[row]!); if (!ids) return text;
+  const encoded=disjointRow(columns.map(column=>column[row]!),ids,budget);
+  return encoded && typeof encoded !== 'string' && JSON.stringify(encoded).length < JSON.stringify(text).length ? encoded : text;
+ });
+}
+function restoreSearchDisjointTails(shards:unknown[], columns:string[][], tails:unknown[]):string[] {
+ const owners=tailOwners(shards,tails.length), budget={remaining:SEARCH_RAW_LIMIT};
+ return tails.map((value,row)=>{
+  if (typeof value === 'string') return value;
+  if (!disjointTail(value)) return fail();
+  const ids=subsetRecordIds(owners[row]!); if (!ids) return fail();
+  const restored=disjointRow(columns.map(column=>column[row]!),ids,budget,value);
+  if (typeof restored !== 'string') return fail();
+  return restored;
+ });
+}
+
 /** Restore a canonical v8 pack within its authenticated byte count before passing it to the v8 reader. */
-function restoreContextPack(bytes: Uint8Array, expected: number, compact: boolean): Uint8Array {
+function restoreContextPack(bytes: Uint8Array, expected: number, compact: boolean, disjoint = false): Uint8Array {
  const packed: unknown = JSON.parse(new TextDecoder("utf-8", {fatal:true}).decode(bytes));
  if (!object(packed) || packed.schemaVersion !== 4 || packed.encoding !== compactEncoding ||
      !Array.isArray(packed.shards) || packed.shards.length > (compact ? SEARCH_COMPACT_PACK_MEMBERS : SEARCH_PACK_MEMBERS) || !Array.isArray(packed.numericColumns) || packed.numericColumns.length !== 5) return fail();
  const columns = packed.numericColumns;
  const literal: unknown = columns[4];
- if (!Array.isArray(literal) || !literal.every(text => typeof text === "string" && /^[A-Za-z0-9+/]*$/u.test(text))) return fail();
+ if (!Array.isArray(literal) || !literal.every(text => typeof text === "string" ? /^[A-Za-z0-9+/]*$/u.test(text) : disjoint && disjointTail(text))) return fail();
  verifyChannelOwnership(packed.shards, literal.length);
  // JSON framing outside the channels and each unescaped ASCII string are counted before allocating.
  const channelBytes = utf8.encode(JSON.stringify(columns)).length;
- let restoredBytes = bytes.length - channelBytes + JSON.stringify(literal).length + arraySyntax(columns.length);
+ let restoredBytes = bytes.length - channelBytes + arraySyntax(literal.length) + literal.reduce<number>((sum,text)=>sum+2+(typeof text === "string" ? text.length : (text as DisjointTail).length),0) + arraySyntax(columns.length);
  if (compact && typeof packed.dictionary === "string") {
   const joined = packed.dictionary;
   let count = joined.length ? 1 : 0;
@@ -359,7 +535,7 @@ function restoreContextPack(bytes: Uint8Array, expected: number, compact: boolea
   if (terms.some(term => !term)) return fail();
   packed.dictionary = terms;
  }
- const budget = {remaining: SEARCH_RAW_LIMIT - literal.reduce((sum, text) => sum + text.length + 1, 0)};
+ const budget = {remaining: SEARCH_RAW_LIMIT - literal.reduce<number>((sum, text) => sum + (typeof text === "string" ? text.length : (text as DisjointTail).length) + 1, 0)};
  if (budget.remaining < 0) return fail();
  for (const channel of columns.slice(0, 4)) {
   if (!object(channel) || !Array.isArray(channel.lengths) || channel.lengths.length !== literal.length) return fail();
@@ -371,8 +547,8 @@ function restoreContextPack(bytes: Uint8Array, expected: number, compact: boolea
   if (restoredBytes > expected) return fail();
  }
  if (restoredBytes !== expected) return fail();
- packed.numericColumns = columns.map((channel, index) =>
-   index === 4 ? literal : decodeSearchChannel(channel, budget, index < 2 ? 2 : 1));
+ const restored = columns.slice(0,4).map((channel,index)=>decodeSearchChannel(channel,budget,index<2?2:1));
+ packed.numericColumns = [...restored, disjoint ? restoreSearchDisjointTails(packed.shards,restored,literal) : literal];
  return utf8.encode(JSON.stringify(packed));
 }
 /** Validates actual physical bytes and each restored logical wire before a caller imports indexes. */
@@ -383,12 +559,13 @@ async function unpackSearchPayload(manifest: SearchManifest, file: SearchPhysica
  if (bytes.byteLength !== file.bytes || bytes.byteLength > SEARCH_RAW_LIMIT || await digest(bytes) !== file.sha256) return fail();
  let value: unknown;
  try { value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); } catch { return fail(); }
- if(manifest.schemaVersion===10 || manifest.schemaVersion===11 || manifest.schemaVersion===12){
-  const compact = manifest.schemaVersion === 12;
+ if(manifest.schemaVersion===10 || manifest.schemaVersion===11 || manifest.schemaVersion===12 || manifest.schemaVersion===13){
+  const compact = manifest.schemaVersion >= 12;
+  const disjoint = manifest.schemaVersion === 13;
   const context = manifest.schemaVersion >= 11;
   if (!object(value) || Object.keys(value).length !== (context ? 10 : 9) ||
-      value.schemaVersion !== (compact ? 8 : context ? 7 : 6) ||
-      value.encoding !== (compact ? "v8-compact-brotli-base64" : context ? "v8-context-brotli-base64" : "v4-brotli-base64") ||
+      value.schemaVersion !== (disjoint ? 9 : compact ? 8 : context ? 7 : 6) ||
+      value.encoding !== (disjoint ? "v8-disjoint-brotli-base64" : compact ? "v8-compact-brotli-base64" : context ? "v8-context-brotli-base64" : "v4-brotli-base64") ||
       value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language ||
       value.firstLogicalShard !== file.firstLogicalShard ||
       (value.innerVersion !== 7 && value.innerVersion !== 8 && value.innerVersion !== 9) ||
@@ -402,7 +579,7 @@ async function unpackSearchPayload(manifest: SearchManifest, file: SearchPhysica
   if(!binary.length||binary.length>SEARCH_RAW_LIMIT||btoa(binary)!==value.data)return fail();
   const compressed=Uint8Array.from(binary,c=>c.charCodeAt(0)),coded=await decompress(compressed,codedBytes);
   if(coded.length!==codedBytes)return fail();
-  const inner=context?restoreContextPack(coded,value.innerBytes,compact):coded;
+  const inner=context?restoreContextPack(coded,value.innerBytes,compact,disjoint):coded;
   return unpackSearchPayload({...manifest,schemaVersion:value.innerVersion},{...file,bytes:value.innerBytes,sha256:value.innerSha256},inner,digest,undefined,compact);
  }
  if (!object(value) || value.schemaVersion !== (manifest.schemaVersion === 9 ? 5 : manifest.schemaVersion === 8 ? 4 : manifest.schemaVersion === 7 ? 3 : manifest.schemaVersion === 6 ? 2 : 1) || value.encoding !== (manifest.schemaVersion === 9 ? arithmeticEncoding : manifest.schemaVersion === 8 ? compactEncoding : manifest.schemaVersion === 7 ? channelEncoding : manifest.schemaVersion === 6 ? numericEncoding : encoding) || value.sourceCommit !== manifest.sourceCommit || value.language !== manifest.language || value.firstLogicalShard !== file.firstLogicalShard || !Array.isArray(value.dictionary) || value.dictionary.length > 1_000_000 || !value.dictionary.every((term: unknown): term is string => typeof term === "string") || new Set(value.dictionary).size !== value.dictionary.length || !Array.isArray(value.shards) || value.shards.length !== file.logicalShardCount || value.shards.length > (compactInner ? SEARCH_COMPACT_PACK_MEMBERS : SEARCH_PACK_MEMBERS)) return fail();

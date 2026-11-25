@@ -19,7 +19,7 @@ const reports=[];
 for(const language of ["en-US","zh-CN"]){
  const manifestBytes=fs.readFileSync(path.join(source,language,"manifest.json"));
  const raw:unknown=JSON.parse(new TextDecoder("utf-8",{fatal:true}).decode(manifestBytes));
- assert.ok(isUnknownRecord(raw)&&(raw.schemaVersion===5||raw.schemaVersion===6||raw.schemaVersion===7||raw.schemaVersion===8||raw.schemaVersion===9||raw.schemaVersion===10||raw.schemaVersion===11||raw.schemaVersion===12));
+ assert.ok(isUnknownRecord(raw)&&(raw.schemaVersion===5||raw.schemaVersion===6||raw.schemaVersion===7||raw.schemaVersion===8||raw.schemaVersion===9||raw.schemaVersion===10||raw.schemaVersion===11||raw.schemaVersion===12||raw.schemaVersion===13));
  assert.equal(raw.language,language);assert.ok(typeof raw.sourceCommit==="string"&&/^[0-9a-f]{40}$/.test(raw.sourceCommit));
  assert.ok(!Object.hasOwn(raw,"shards")&&!Object.hasOwn(raw,"termDictionary")&&Array.isArray(raw.files));
  // Baseline budgets intentionally may fail. Each actual physical/logical identity is still verified below.
@@ -28,7 +28,7 @@ for(const language of ["en-US","zh-CN"]){
  const files:SearchPhysicalFile[]=[],wires:string[]=[],nativeHashes:string[]=[],recordHashes:string[]=[],physical=[];
  const urls=new Set<string>();
  for(const file of manifest.files){
-  assert.equal(file.firstLogicalShard,next);assert.ok(file.logicalShardCount>0&&file.logicalShardCount<=(manifest.schemaVersion===12?SEARCH_COMPACT_PACK_MEMBERS:SEARCH_PACK_MEMBERS)&&file.logicalShards.length===file.logicalShardCount);
+  assert.equal(file.firstLogicalShard,next);assert.ok(file.logicalShardCount>0&&file.logicalShardCount<=(manifest.schemaVersion>=12?SEARCH_COMPACT_PACK_MEMBERS:SEARCH_PACK_MEMBERS)&&file.logicalShards.length===file.logicalShardCount);
   assert.ok(new RegExp(`^/generated/search/${language}/[A-Za-z0-9-]+\\.json$`).test(file.url)&&!urls.has(file.url));urls.add(file.url);
   const original=fs.readFileSync(path.join(source,language,path.basename(file.url)));
   assert.equal(file.gzipBytes,gzip(original));

@@ -37,7 +37,7 @@ for (const language of ['en-US', 'zh-CN']) {
   const manifestBytes = fs.readFileSync(path.join(exportRoot,'generated/search',language,'manifest.json'));
   const manifest: unknown = JSON.parse(manifestBytes.toString('utf8'));
   assert.ok(isUnknownRecord(manifest));
-  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9||manifest.schemaVersion===10||manifest.schemaVersion===11||manifest.schemaVersion===12);
+  assert.ok(manifest.schemaVersion===5||manifest.schemaVersion===6||manifest.schemaVersion===7||manifest.schemaVersion===8||manifest.schemaVersion===9||manifest.schemaVersion===10||manifest.schemaVersion===11||manifest.schemaVersion===12||manifest.schemaVersion===13);
   let baselineV5: {rawBytes:number;gzipBytes:number}|undefined, baselineV6: {rawBytes:number;gzipBytes:number}|undefined, baselineV7: {rawBytes:number;gzipBytes:number}|undefined;
   const dictionary = manifest.termDictionary === undefined ? undefined : readSearchTermDictionary(manifest.termDictionary);
   const physical = new Map<string, PhysicalPack>();
@@ -53,11 +53,12 @@ for (const language of ['en-US', 'zh-CN']) {
       let physicalPack=bytes.toString('utf8');
       const envelope:unknown=JSON.parse(physicalPack);
       let innerVersion=parsed.schemaVersion;
-      const compact = innerVersion === 12;
-      if(innerVersion===11 || innerVersion===12){
+      const compact = innerVersion >= 12;
+      const disjoint = innerVersion === 13;
+      if(innerVersion===11 || innerVersion===12 || innerVersion===13){
         innerVersion=8;
         physicalPack=packSearchShards(members.map(member=>JSON.stringify(member)),parsed.sourceCommit,language,file.firstLogicalShard,innerVersion,compact);
-        assert.equal(bytes.toString('utf8'),encodeBrotliSearchPack(physicalPack,8,true,compact));
+        assert.equal(bytes.toString('utf8'),encodeBrotliSearchPack(physicalPack,8,true,compact,disjoint));
       } else if(innerVersion===10){
         assert.ok(isUnknownRecord(envelope)&&(envelope.innerVersion===7||envelope.innerVersion===8||envelope.innerVersion===9)&&typeof envelope.data==='string'&&typeof envelope.innerBytes==='number');
         physicalPack=Buffer.from(decodeBrotliSearchPack(Buffer.from(envelope.data,'base64'),envelope.innerBytes)).toString('utf8');

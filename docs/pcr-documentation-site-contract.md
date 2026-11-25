@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-11-24
-lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedAt: 2026-11-25
+lastReviewedNote: "Local v13 disjoint-posting transport review preserves exact v8/logical identities, legacy encoders and all search budgets; no publication or methodology promotion."
 lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
 title: Generated PCR Documentation Site Contract
 docType: contract
@@ -743,6 +743,29 @@ groups share a dictionary across more original shards. Logical boundaries,
 record fields, native exports, search cutoffs and ranking remain unchanged.
 The worker uses its existing Brotli decoder and verifies the restored v8 pack
 and each logical wire before importing the index.
+
+When v12 still exceeds a language budget, v13 measures the same bounded group
+layouts. Its schema-9 `v8-disjoint-brotli-base64` envelope keeps the v12 dictionary
+and arithmetic channels. Supported posting-remainder rows use a combinatorial
+rank instead of literal VLQs. For each term, the original first document of every
+nonempty score list is reserved before ranking the remaining documents in score
+order; each earlier list also removes its selected documents from later choices.
+This applies only to canonical, ascending numeric record IDs, at most 57 records
+per logical shard, and disjoint, ascending score lists. Unsupported rows retain
+their complete literal v12 strings. This optimization does not assert that all
+engine exports have disjoint lists.
+
+Ranks use canonical truncated binary, with zero bits for a forced selection.
+At most 56 unreserved documents remain; all binomial coefficients fit exactly
+below `Number.MAX_SAFE_INTEGER`. Each encoded row binds its original VLQ character
+length, exact bit count and canonical base64 with zero padding. The reader checks
+ownership and the original expanded byte count before arithmetic decoding, then
+checks record identities, score masks, list counts, first predictors, subset
+bounds, full bit consumption and restored VLQ length. Numeric restoration retains
+the shared 20 MB expansion guard. The canonical v8 hash and every logical wire
+hash are verified before import. All earlier readers and encoders, the 56-logical-
+shard physical cap, 20 MB byte limits and 4 MB gzip language limit remain intact.
+No text, token, record, posting order or result behavior is removed or changed.
 
 The generator retains the original sixteen-member greedy layout as a candidate
 and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
