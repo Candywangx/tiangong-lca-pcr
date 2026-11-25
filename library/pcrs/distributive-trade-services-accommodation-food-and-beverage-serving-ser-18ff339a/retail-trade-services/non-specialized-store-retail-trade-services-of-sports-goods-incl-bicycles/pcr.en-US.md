@@ -1,8 +1,277 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-sports-goods-incl-bicycles
 language: en-US
-status: scaffold
+status: candidate
+content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail trade services, of sports goods (incl. bicycles)
+# Counter retail service for one XPRT 5 LB rubber hex dumbbell pair in a non-specialized store
+
+## 1. Scope and Applicability
+
+This candidate covers counter retail service of the single XPRT Rubber Hex Dumbbells 5 LB Pair configuration: two unused black rubber-coated cast-iron hex-head dumbbells with chrome-finished steel handles, supplied as one original pair. The nominal 5 LB is per dumbbell; neither nominal weight nor two components defines the service denominator. It is an ambient, walk-in, non-specialized non-food store route, with electronic receipts, no retail-added bag, no demonstrations, no assembly, no repair and no external sales delivery. Record original supplier packaging configuration and actual net masses; the product page is specification evidence, not an LCI. This is an explicitly partial incremental service model with mandatory completion rules below. It cannot support a complete retail-business footprint before completion. UN CPC 3.0 62155 includes sports goods, pleasure/sporting boats and non-motorized cycles; this pair is a narrower sports-goods subset, not coverage of the entire leaf.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-sports-goods-incl-bicycles |
+| classification_refs | CPC 3.0 62155; narrower |
+| covered_products | Counter retail service of one complete original unused XPRT 5 LB Pair; homogeneous configuration and source lot |
+| excluded_products | Other weights; single dumbbells; mixed pairs; boats; cycles; rental; used goods; demonstrations; repair; opened or incomplete component sets outside the explicit complete-pair states |
+| representative_product | XPRT Rubber Hex Dumbbells, 5 LB Pair; supplier lot/package/BOM and actual non-specialized store channel evidence required |
+| production_route | Receive; inspect; ambient hold; counter handover; acceptance correction; actual supplier return or waste dispatch |
+| market_state | Unused complete pair; two nominal 5 LB dumbbells; cast-iron heads/rubber coating/chrome-finished steel handles; actual original packaging documented |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Make the specified unused complete pair available and hand it over with qualified final acceptance at the counter |
+| How much | One distinct original pair with final_valid acceptance; two dumbbells together constitute one service |
+| How well | Both members match SKU and are complete; coating and handle condition checked; acceptance identity and physical handover linked |
+| How long or cycle | One prospective same-configuration store pool plus its correction window; retain all later corrections by original pool/version |
+| reference_flow_link | service_output |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Counter retail service for one XPRT 5 LB rubber hex dumbbell pair |
+| Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| Reference unit | Item(s) |
+| Required qualifiers | SKU and two-component configuration; supplier original_id and source_ids; original package BOM and measured mass; store/channel and pool dates; original acceptance event and correction dates; final_valid flag; gross custody event IDs; S/F/O/T ownership; actual coating/handle condition; meter hierarchy and all beneficiaries; completion module versions; uncertainty and unresolved identities |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| count_service | service_output; failed_original; customer_pair; supplier_pair; external_damaged | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | Item(s) | One count is the defined complete pair or one pair service according to the specific row, never its two dumbbells; keep goods and service ledgers distinct. |
+| electric_units | ac_input | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | MJ | Measured kWh*3.6=MJ; no efficiency or generation factor inferred. |
+| waste_mass | damaged_pair_waste | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Actual complete-pair consignment net kg excludes original packaging; nominal LB is identification only. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Original unused complete pairs cross the store receiving gate with original manufacturing, full original packaging and all transport to that gate identified |
+| starting_condition_role | retail_service_increment |
+| product_classification_scope | Narrower sports-goods counter service within CPC 62155; not merchandise manufacture |
+| recursive_input_rule | Never input this retail service recursively; same original_id returns/resales retain the initial background source and gate |
+| upstream_dataset_requirement | For every original_id require actual supplier vector covering one complete pair plus entire original package and inbound-to-gate transport exactly once; no nominal-weight proxy |
+| disclosure | Partial core: point-of-use AC, F original background input and observed complete-pair fates. Site support, packaging fates, cleaning, transport after gate and capital require fixed completion rules before any complete-service claim |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| scope_gate | retail; custody | Apply only to the single documented complete-pair configuration and counter route. Presence of retail-added bags/paper receipts, assembly, demonstration, repair, external sales delivery, incomplete pairs, component shedding or materially different SKU requires concrete atomic cards, aligned protocols and bilingual revision before completeness; unknown is blocking, not absent. | xprt-spec |
+| ownership | failed_original; customer_pair; supplier_pair; external_damaged; damaged_pair_waste | Assign each original_id exactly once to S finally valid sold responsibility, F irrecoverable retailer responsibility including loss, O original open stock, or T named transferred responsibility. Original vector includes manufacture+full original package+transport to receiving gate once. S leaves that vector with the sold-goods life cycle; O carries it; T transfers the same source to the identified supplier/recipient with written continuing responsibility; only F enters failed_original. Never recharge resale or count each failed descendant as another original. Unknown fate/owner blocks completeness. Financial refund alone does not change acceptance. | ghg-product |
+| satellites | customer_pair; supplier_pair; external_damaged | Only customer_pair, supplier_pair and external_damaged are physical custody satellite outputs without another manufacturing/background supplier. Their counts are gross movements, never service or background multipliers. This exclusion does not apply to failed_original, AC, service_output or waste treatment. Supplier physical handoff does not create a second T allocation. | ghg-product |
+| support_gate | retail | Complete-service qualification requires an equipment walkdown, landlord utility boundary diagram, bills and signed current absence evidence for every on-site/landlord combustion fuel, refrigerant-containing HVAC/refrigerator and purchased heat or purchased cooling route. This PCR admits only evidenced absent stationary combustion, refrigerants, purchased heat and purchased cooling. Unknown or present fails this route and requires a separate reviewed atomic-method revision; never assume zero from a tenant electricity bill. Lighting/fans/checkout operation and capital remain required even if electric only. | jrc-retail |
+| completion | retail; custody | Until support_gate and complete_packaging, complete_cleaning, complete_transport, complete_assets, complete_digital and merge_modules are fulfilled, label the result partial core; no complete-business or comparative claim. Every added real exchange must receive an atomic named state/direction/type/unit card with verified identity or explicit candidate gap, protocol and bilingual sync. Absence needs dated records; an unknown cannot be omitted. These methods fix quantities and responsibility; downstream choice of denominator or allocation is prohibited. | jrc-retail |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| retail | Counter service and source attribution | required | Exact route | service | 1 Item(s) per reference flow |
+| custody | Physical custody and actual dispatch | required | All observed original histories | satellite_and_waste | per reference flow |
+
+### Process: Counter retail service (`retail`)
+
+#### Inputs
+
+##### Product flows
+
+###### Point-of-use electricity (`ac_input`)
+
+Actual attributed store electric operation; provider/geography/voltage/supply mix must be supplied separately. The identity supplies no emission factor.
+
+- Selected flow: Electricity, alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: 3.6*E_target_kWh/Q MJ
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_energy`
+- Sources: jrc-retail
+
+###### F original receiving-gate background (`failed_original`)
+
+One item is one original pair plus its full original packaging and inbound gate responsibility, not one dumbbell. Bind actual supplier production/package/inbound sources once, even if the pair is lost with no waste dispatch. This is the characterized background input, not a physical satellite.
+
+- Selected flow: Original complete XPRT 5 LB dumbbell pair with full supplier packaging at store receiving gate
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: N_F/Q Item(s)
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_ownership`
+- Sources: ghg-product; xprt-spec
+
+#### Outputs
+
+##### Product flows
+
+###### Final accepted pair service (`service_output`)
+
+Count the final-valid distinct original pair service; never count the two constituent dumbbells as two services. Unknown acceptance does not qualify.
+
+- Selected flow: Counter retail service for one XPRT 5 LB rubber hex dumbbell pair
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_service`
+- Sources: ghg-product; xprt-spec
+
+### Process: Custody and dispatch (`custody`)
+
+#### Outputs
+
+##### Product flows
+
+###### Gross intact customer handover (`customer_pair`)
+
+Each actual intact pair handover event, including never-accepted and later-revoked events. Classify H_intact versus H_damaged exclusively by the observed complete-pair state at that actual gate-crossing event_id; each event is in exactly one set. Later external damage or no-movement revocation updates final external state/acceptance only, never another H_damaged crossing. Gross physical movement is independent of Q. Supplier packaging travels only when actually present, with its separately measured fate ledger; no package manufacturing is added here.
+
+- Selected flow: Complete unused XPRT 5 LB dumbbell pair handed to customer
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: H_intact/Q Item(s)
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+- Sources: xprt-spec
+
+###### Actual intact original supplier return (`supplier_pair`)
+
+Actual signed receiving party and physical original-package state required. This physical return does not itself prove T background responsibility. Opened or damaged supplier returns require a concrete separate-state extension.
+
+- Selected flow: Complete unused XPRT 5 LB dumbbell pair in intact original supplier package returned to supplier
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: H_supplier/Q Item(s)
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+- Sources: xprt-spec
+
+###### Nonaccepted complete damaged pair retained externally (`external_damaged`)
+
+Both dumbbells and handles remain complete; H_damaged counts only actual outward event_ids whose observed gate-crossing state already had cracked coating and is disjoint from H_intact. Later damage/acceptance revocation without movement is a final-state observation, never a second outward event. Identify actual recipient, state and F or written T owner; it is not retailer waste. Missing components or coating material detached are outside this exact state.
+
+- Selected flow: Complete XPRT 5 LB dumbbell pair with cracked rubber coating retained by external customer
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: H_damaged/Q Item(s)
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+- Sources: xprt-spec
+
+##### Waste flows
+
+###### Complete damaged pair dispatched to treatment (`damaged_pair_waste`)
+
+Direct actual consignment net mass of two complete damaged dumbbells, excluding all packaging/container; weigh actual full objects, not a sum of unrelated repair material. Bind receiving treatment and transport boundaries once, with no assumed credit. Loss is not a waste dispatch.
+
+- Selected flow: Complete XPRT 5 LB rubber-coated cast-iron and steel dumbbell pair waste
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: W_pair_kg/Q kg
+- Value mode: `calculated_value`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_waste`
+- Sources: jrc-retail
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| service_pool | service_output | Q = count of distinct original_id with final_valid=1 in the original pool as of version date. Rescinded acceptance, even without physical return, sets final_valid=0; count the set once, never subtract rescissions again. A pure refund/discount with valid acceptance stays in Q. Repeated attempts/resale of the same original never add another Q. Recompute the original numerator, ownership, fates and Q on late corrections using actual event dates and replacement versions; no duplicate charge in a new pool. Retain failures/idle/zero-sale days in a prospectively fixed same-configuration pool. Q=0 is unnormalizable and remains reported. | ghg-product |
+| electric_allocation | ac_input | Use disjoint direct circuit measurements first. For each complete active source pool allocate by measured task-active seconds across every actual beneficiary; each idle/fixed pool uses reserved floor-area*mapped hours for shared lighting/fans or reserved terminal-hours for checkout. First split measured active/idle/fixed source numerators and reconcile their sum to parent kWh; never add incompatible drivers. For each source subpool p, alpha_p = d_target_p/sum_all_beneficiaries(d_b_p); E_target_kWh = sum_p(E_p_kWh*alpha_p). Closed/failed/idle and unused capacity stay assigned to the operator, not discarded. Zero/unknown total driver blocks completion; do not spread it only among successful sales. Subtract a submeter only from a parent that includes it; disjoint meters are not subtracted. | ghg-product; jrc-retail |
+| background_once | failed_original | N_F counts unique F original pairs. Apply each actual source-equivalent complete original-pair vector once; if source unit differs, restore the supplier original denominator and match the entire original pair/package/inbound boundary. Use supplier component inventory vectors only when evidenced and source-conserving; never divide an environmental vector by steel/rubber mass fractions. S/F/O/T source fractions reconcile to 1 per original_id. An internally retained demonstrator is outside this route; never charge F plus new asset manufacture. No avoided-product or recycling credit is assumed. | ghg-product |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_service | retail | service_output | acceptance_ledger | original_id; SKU; pair_members; pool_id; event_id; actual_date; acceptance_date; rescission_date; final_valid; refund_only; version; correction_source_ids | Reconcile electronic sale, signed counter acceptance and returns daily; retain revoked/no-return events and distinguish financial adjustments. Prospective pool dates and later correction linkage are mandatory. Aggregation method: Q=count distinct final_valid original_id; raw ledger then per reference flow once under calc_core | Item(s) | Daily and each correction | All pool dates and all later corrections | Single store and exact pair | per reference flow | Auditable event IDs; two-member match; version supersession |
+| cp_energy | retail | ac_input | meter_allocation | source_id; parent_meter_id; included_submeters; disjoint_meter_ids; start_kWh; end_kWh; E_p_kWh; active_idle_fixed; all_beneficiary_ids; d_b_p; d_target_p; task_seconds; reserved_m2h; reserved_terminal_h; closure_hours; unused_operator; calibration; alpha_p; E_target_kWh | Read calibrated mapped meters over the complete pool; task loggers for active pools, mapped area-time or terminal-time reservations for fixed pools. Reconcile all beneficiaries and source subpool sums to bills; electric_allocation fixes driver by source type. Aggregation method: Attribute E_target_kWh, convert kWh*3.6 to MJ, divide Q once; per reference flow | kWh; s; m2*h; terminal*h | Interval and daily reconciliation | All pool active/idle/closed/failure dates | Whole mapped source and every beneficiary | per reference flow | Meter calibration; topology; bills; time records; residual investigation |
+| cp_ownership | retail | failed_original | original_source_ledger | original_id; supplier_lot; original_pair_BOM; actual_pair_net_kg; package_component_kg; source_id; source_version; original_source_denominator; source_unit; manufacture_boundary; inbound_segment_ids; S; F; O; T; N_F; continuing_owner; responsibility_evidence; correction_version | At receipt inspect both members and record actual calibrated net pair/package masses and supplier BOM. Read supplier actual inventory and inbound records to receiving gate; bind sources and responsibility per unique original; do not infer LCI from web specification. Aggregation method: Restore complete original source denominator; S/F/O/T conserve it; N_F/Q per reference flow | Item(s); kg | Each receipt and fate/correction | All original histories and later reversals | Original supplier-to-store receiving gate | per reference flow | Actual source model/BOM; package coverage; segment dedup; signed owner evidence |
+| cp_custody | custody | customer_pair; supplier_pair; external_damaged | gross_movement_ledger | original_id; event_id; actual_date; opening_goods; receipt_ids; physical_return_ids; H_intact; H_damaged; H_supplier; handover_state; recipient; original_package_present; held_waste_open; condemnation_ids; dispatch_ids; loss_ids; closing_goods; held_waste_close; original_acceptance_id; initial_handover_state; final_external_state; final_recipient; final_owner | Scan original pair and both members at every physical crossing; photograph complete-state condition, original package and recipient signatures. H_intact and H_damaged are disjoint gross customer handover events, including never-accepted cases. A no-movement revocation updates acceptance only; retain initial handover state and separately observed final external state/recipient/owner. Post-handover state observations do not add another gross crossing. If actual state is outside the explicit complete-pair states, a concrete extension is required before completeness. Aggregation method: calc_custody balances gross physical stock; each actual output/Q per reference flow; Q is separate | Item(s) | Every movement; daily close | Opening through final close and correction history | Store goods and separately held waste; every recipient | per reference flow | Scanner audit; state photos; recipient proof; investigated mismatch |
+| cp_waste | custody | damaged_pair_waste | dispatch_weighing | consignment_id; original_id; condemnation_id; gross_kg; tare_kg; W_pair_kg; complete_members; container_kg; package_kg; actual_dispatch_date; receiver; treatment_source_id; transport_source_ids; held_waste_open; held_waste_close | Weigh complete damaged pair net on calibrated scales at actual dispatch; exclude all container/package tare. Get treatment acceptance and transport coverage. Condemnation is an internal goods-to-held-waste transfer, not dispatch. Aggregation method: W_pair_kg=sum actual consignment net kg; do not correct direct dispatch by opening/closing again; W_pair_kg/Q per reference flow | kg | Every consignment | Complete pool and pending waste stock | Store gate to actual treatment recipient | per reference flow | Scale calibration; tare; photos; signed consignment; no transport overlap |
+| cp_completion | retail | support modules | completion_source_ledger | module_id; module_version; source_id; source_version; original_denominator; original_unit; source_unit; original_pool; boundary; exchange_id; property; unit; event_id; q_raw; q_normalized; attributed_raw; Q; equipment_register; landlord_map; absence_proof; package_origin_id; cleaner_source_id; destination_state; whole_carrier_kg; reserved_payload_kg; reserved_h; segment_id; all_beneficiaries; provider_already_allocated; e_history; L_version; prior_allocations; retirement; residual; E_target_kWh; N_F; H_intact; H_supplier; H_damaged; W_pair_kg; opening_goods; receipt_ids; physical_return_ids; condemnation_ids; dispatch_ids; loss_ids; held_waste_open; closing_goods; held_waste_close; component_BOM; actual_component_kg; opening_kg; receipt_kg; closing_kg; customer_kg; supplier_kg; dispatched_net_kg; loss_kg; treatment_source_id; transport_source_ids; origin_kg_c; w_c_s; component_content_kg_c_s; opening_unused_kg; closing_unused_kg; dispatched_liquid_origin_kg; dispatched_wipe_origin_kg; dispatched_container_origin_kg; exterior_origin_kg; retained_used_origin_kg; closing_container_origin_kg; loss_origin_kg; inlet_m3; inlet_density_kg_m3; effluent_m3; effluent_density_kg_m3; whole_wipe_kg; whole_container_kg; cleaned_area_m2; A_t; A_unit; reserved_payload_kg_b_t; actual_reserved_h_b_t; d_b_t; d_target_t; alpha_t; operator_unused_capacity; empty_route; idle_duration; provider_boundary; provider_stage_coverage; asset_id; e_a_b; L_a; driver_unit; all_history; lifetime_version; operator_unused_exposure; retirement_date; whole_net_kg; removed_part_ids; measurement_mode; maintenance_event_ids; species_id; mode; subinterval_id; R_out_abs_s_h; R_in_abs_s_h; R_diff_s_h; R_blank_s_h; R_bc_s_h; dt_h; calibration_id; g_ext_s; source_fraction_target_s; g_target_s; air_stock_kg; capture_export_kg; condensate_kg; storage_change_kg; provider_id; D_provider; active_source_numerator; idle_source_numerator; processing_seconds; reserved_bandwidth_Mbps_h; unused_operator; target_event_ids; stage_coverage; excluded_point_of_use_ids; D_module; initial_handover_state; final_external_state; final_recipient; final_owner; inlet_temperature_C; effluent_temperature_C; density_calibration_id; volume_calibration_id; actual_retry_event_ids | Use fixed calculation methods complete_packaging/complete_cleaning/complete_transport/complete_assets/complete_digital/merge_modules. Retain original raw source units, full beneficiaries/history and signed boundary coverage; add single-process protocol views if a new process is added. Never use multi-process process_id. Aggregation method: Restore raw source numerator; deduplicate by original source ID/boundary; divide Q once per reference flow | kg; MJ; m2*h; m3*h; terminal*h; kg*h | Every event and source version | Full pool plus all lifetime and correction history | All actual beneficiaries and support boundaries | per reference flow | Actual source/activity records; calibrated measures; signed absence/coverage; full lifetime ledger |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| calc_core | ac_input; failed_original; service_output; customer_pair; supplier_pair; external_damaged; damaged_pair_waste | For Q>0 final amounts are 3.6*E_target_kWh/Q MJ; N_F/Q Item(s); Q/Q=1 Item(s); H_intact/Q Item(s); H_supplier/Q Item(s); H_damaged/Q Item(s); W_pair_kg/Q kg, respectively. Raw quantities are unnormalized pool totals; apply attribution once before one Q division. | Q; E_target_kWh; N_F; H_intact; H_supplier; H_damaged; W_pair_kg; cp_service; cp_energy; cp_ownership; cp_custody; cp_waste | Per reference flow amounts in each row-specific unit | ghg-product |
+| calc_custody | customer_pair; supplier_pair; external_damaged; damaged_pair_waste | Goods closing = goods opening + receipts + physical customer returns - H_intact - H_damaged - H_supplier - condemnations - goods losses; held-waste closing = held-waste opening + condemnations - actual waste dispatches - held-waste losses. Both equations count complete pairs on original event IDs. Condemnation is subtracted only from goods; dispatch only from held waste. Acceptance revocation without movement never appears as another stock exit. Investigate all residuals; counts do not replace measured waste kg. | opening_goods; receipt_ids; physical_return_ids; H_intact; H_damaged; H_supplier; condemnation_ids; dispatch_ids; loss_ids; held_waste_open; closing_goods; held_waste_close; cp_custody; cp_waste | Separate gross goods/held-waste reconciliations; no Q adjustment | ghg-product |
+| complete_packaging | retail; custody | For each original package component retain original source/BOM ID and actual kg in opening+receipts=closing+customer handover+supplier return+dispatch+loss. Full body/closure/liner/label/adhesive and transit separators are covered when present, with actual material and state; unknown BOM blocks completion. Original package manufacture remains solely in original S/F/O/T vector, never another retail input. Actual removed packaging becomes named material/state waste cards at dispatch net kg, treatment and transport once. No retail-added bag, paper receipt or repacking is allowed under scope_gate. | package_origin_id; source_id; component_BOM; actual_component_kg; opening_kg; receipt_kg; closing_kg; customer_kg; supplier_kg; dispatched_net_kg; loss_kg; treatment_source_id; transport_source_ids; cp_completion | Disjoint package fate raw kg and attributable treatment numerators | jrc-retail |
+| complete_cleaning | retail | Measure imported mains water at inlet (m3*density_kg_m3); measure each actual liquid carrier density at its recorded metered/sample temperature with calibrated density and volume instruments, never substitute pure-water density for whole effluent; internal reuse is not subtracted from that import meter. For each actual identified cleaner formulation source c weigh opening+receipt-closing unused to obtain issued source kg; closing unused excludes the separately tracked unusable container residue. The admitted cleaning route requires source-composition-conserving cleaning with no unquantified reaction products; present or unknown reactions require a concrete reviewed species/mass-balance extension before completeness. Partition original formulation-origin kg disjointly into final dispatched liquid, final dispatched wipe, final dispatched container residue, traced original-formulation-origin external transfer, retained used liquid/wipe, and closing container residue, plus investigated loss. Used intermediate states are replaced by their final rinsed/retained state, not summed. Container residue is either closing stock or dispatched, never both. For formulation component s use component_content_kg_c_s=origin_kg_c*w_c_s from measured original formulation composition once: it is source-origin component content, not an actual exterior species emission. Original-source component accounting excludes atoms supplied by outside air/rinse water/dirt; use measured tracer/source fractions for its disjoint destinations, not external molecule kg. Rinse water/dirt/new cloth/container are excluded from formulation-origin kg. Direct drain effluent=measured whole effluent m3*density_kg_m3 with no storage/evaporation deductions; this direct mode is mandatory here. Weigh whole wet wipes and wet containers separately (whole kg includes actual carrier and residue), and record separate named waste cards with actual treatment. No species kg is added to a whole carrier already containing it. Use calc_exterior_flux for actual exterior molecular-species kg independently of component content. Internal generation is not an elementary emission; air/capture/storage closure is QA only and is not deducted again from measured exterior flux. Unknown chemistry/destination/flux blocks completion, no zero default. Allocate each raw cleaning source by actually cleaned area m2 over all beneficiaries including closed areas, then divide Q once. | cleaner_source_id; origin_kg_c; w_c_s; component_content_kg_c_s; opening_unused_kg; receipt_kg; closing_unused_kg; dispatched_liquid_origin_kg; dispatched_wipe_origin_kg; dispatched_container_origin_kg; exterior_origin_kg; retained_used_origin_kg; closing_container_origin_kg; loss_origin_kg; inlet_m3; inlet_density_kg_m3; effluent_m3; effluent_density_kg_m3; whole_wipe_kg; whole_container_kg; cleaned_area_m2; all_beneficiaries; source_id; cp_completion | Disjoint source kg, species kg, whole-carrier kg and attributed module numerators; per reference flow only after merge | jrc-retail |
+| complete_transport | custody | Inbound manufacture-to-receiving transport is already in the original S/F/O/T source; do not add it again. For every actual after-gate supplier return, waste pickup and source route segment t retain source/activity quantity A_t and the actual verified complete provider LCI boundary: vehicle manufacture/installation, operation including fuel and empty travel/stationary idle, event maintenance/replacements, and terminal treatment. Obtain a signed source-stage coverage matrix; missing stages block completeness. Deduplicate all provider-contained capital/maintenance/terminal carriers and the original receiving-gate source; the full provider vector is used once. For unallocated source pools use d_b_t=reserved_payload_kg_b_t*actual_reserved_h_b_t on each actual segment; alpha_t=d_target_t/sum_all_beneficiaries(d_b_t), and attributable numerator=sum_t(A_t*alpha_t) in each A unit. Include unused/empty capacity as operator beneficiary; on empty idle use actual reserved payload capacity and actual idle duration, not zero tonnes or zero distance. All segment beneficiaries reconcile to full provider capacity-time. If provider amounts are already consignment-allocated, retain them unchanged and use segment records as QA only, never multiply alpha again. Missing empty/idle coverage blocks completeness. Bind carrier transport and treatment scope to avoid duplicate pickup. | segment_id; source_id; A_t; A_unit; reserved_payload_kg_b_t; actual_reserved_h_b_t; d_b_t; d_target_t; alpha_t; all_beneficiaries; operator_unused_capacity; empty_route; idle_duration; provider_already_allocated; provider_boundary; cp_completion | Attributed original-unit transport source numerator with empty/idle covered | ghg-product; jrc-retail |
+| complete_assets | retail | Required capital modules are complete building/fit-out including fixed lighting and fans, load-bearing dumbbell shelf/rack, checkout terminal, actual network router/switch/communications cabinet, security camera/alarm package, and handling trolley. Verify the actual equipment register; dated absent-equipment evidence is required for a demonstrably absent item, unknown presence blocks completeness. If an evidenced complete building/terminal/provider package already contains one of these, locate the exact original source IDs and exclude a second module. Use verified complete supplier lifecycle vectors with exact installation/operation/maintenance/retirement exclusions. Building e/L uses reserved floor m2*h; rack uses reserved storage m3*h; terminal uses reserved terminal*h; network equipment uses reserved port*h, security uses covered m2*h, handling trolley uses reserved payload kg*h. Each has its own same-unit all-beneficiary e and L, including empty/unused reservations. For each asset a and every historical beneficiary/period b let f_a_b=e_a_b/L_a, where L_a is evidenced expected total lifetime exposure in the same driver unit including operator unused/closed exposure. Retain persistent original asset/source IDs and all history; sum f<=1. On lifetime revision replace ALL historical f allocations and post differences to their original pools, never restart manufacture. At retirement allocate residual 1-sum f across full actual historical e proportions, replace prior versions and close total=1. A terminal whole asset carrier net mass is multiplied by its final lifetime responsibility fraction once; no second manufacture fraction. Direct whole-asset net weighing already excludes removed parts; component reconstruction is an exclusive evidenced alternative. Event replacements/maintenance are separately weighed actual parts and dated source IDs unless the complete evidenced package includes them; never sum unrelated repair mass as one complete asset input or double-count provider-contained carriers. Allocate demo-free scope only; no merchandise conversion to assets allowed. | asset_id; source_id; original_denominator; e_a_b; L_a; driver_unit; all_history; all_beneficiaries; prior_allocations; lifetime_version; operator_unused_exposure; retirement_date; whole_net_kg; removed_part_ids; measurement_mode; maintenance_event_ids; residual; cp_completion | Persistent asset source fractions and attributed capital/terminal numerators | ghg-product; jrc-retail |
+| calc_exterior_flux | retail | Choose exactly one measured exterior control-volume mode per species and matched subinterval h: absolute mode g_ext_s=sum_h((R_out_abs_s_h-R_in_abs_s_h)*dt_h), where R_out_abs_s_h and R_in_abs_s_h are raw absolute species-molecule kg/h rates subject only to documented instrument zero calibration; neither rate is environmental-background-subtracted. The formula subtracts raw inlet from raw outlet to remove environmental background exactly once; absolute mode makes no additional environmental-background subtraction; differential mode g_ext_s=sum_h((R_diff_s_h-R_blank_s_h)*dt_h), where raw differential already removes inlet background and matched blank is removed once; already-blank-corrected mode g_ext_s=sum_h(R_bc_s_h*dt_h), with inlet/background and blank already removed and no further subtraction. Every rate is actual species-molecule kg/h and dt_h is the matching actual hours; never multiply a sublot rate by another stock kg or residence time. Keep the modes exclusive and evidence rate definitions and calibration. For source-resolved target cleaning rates g_target_s=g_ext_s; otherwise require measured source_fraction_target_s and g_target_s=g_ext_s*source_fraction_target_s once, that fraction includes target-beneficiary attribution. Do not apply cleaned-area attribution again to g_target_s. Never substitute original formulation component_content_kg for molecular external kg or include outside reactant atoms in source-origin component ledgers. Air, capture/export, condensation and storage stocks close independently as QA; no subtraction of capture/storage from measured exterior flux. Internal recovered gas is not both external flux and another subtraction; externally exported captured carrier receives one separate real waste/product card and treatment. Negative/uncertain observations require investigation; do not clamp to zero or claim credit; real uptake requires a reviewed matching input identity. Unknown mode, time match, source fraction or exterior boundary blocks completeness. Final actual molecular output is g_target_s/Q per reference flow. | species_id; mode; subinterval_id; R_out_abs_s_h; R_in_abs_s_h; R_diff_s_h; R_blank_s_h; R_bc_s_h; dt_h; calibration_id; boundary; g_ext_s; source_fraction_target_s; g_target_s; air_stock_kg; capture_export_kg; condensate_kg; storage_change_kg; Q; cp_completion | Actual exterior molecular kg and per-reference-flow amount | jrc-retail |
+| complete_digital | retail | Electronic-only transactions still require actual network and payment operation modules. Bind each actual provider to its exact service, source ID/version, original reference unit and denominator D_provider in its actual source pool. Restore provider normalized vectors by multiplying D_provider once. For unallocated active source subpools attribute by measured processing seconds across all actual beneficiaries; idle/fixed subpools use reserved bandwidth Mbps*h across all beneficiaries including operator unused capacity. Split source numerators first; never sum seconds with capacity-time. If the provider vector is already transaction-allocated, retain that allocation and use these records only for QA. Record actual target payment/network event IDs; deduplicate repeated records of the same event, while real retry attempts retain distinct IDs and all actual activity; their original observed activity, including failure, remains in the original pool. Exact source scope must state provider electricity, network/server capital, maintenance and terminal coverage. Missing source-stage coverage blocks completeness. Merchant terminal/router operating electricity already in ac_input is excluded from the provider module at the identical point-of-use boundary. Merchant network/security/handling capital follows complete_assets; verified provider/building/terminal-contained objects are excluded once by exact source-ID coverage. Restore and merge only through merge_modules and divide the common corrected Q once. | provider_id; source_id; source_version; D_provider; source_unit; original_pool; active_source_numerator; idle_source_numerator; processing_seconds; reserved_bandwidth_Mbps_h; all_beneficiaries; unused_operator; target_event_ids; provider_already_allocated; stage_coverage; excluded_point_of_use_ids; cp_completion | Attributed network/payment raw source numerators | ghg-product; jrc-retail |
+| merge_modules | retail; custody | For each module/exchange restore normalized amount q_normalized to its evidenced raw original denominator D_module in its original pool/version: q_raw=q_normalized*D_module; or use raw totals directly, never both. Attribute fixed drivers once where needed. Deduplicate by original source_id, exchange boundary, event and replacement version across core and all modules; S/F/O/T original backgrounds and point-use AC must not recur. Add only identical exchange identity/property/unit compatible attributed raw numerators, then divide the common corrected Q once. Do not add kg to MJ, lifetime fractions to material kg, or raw totals to normalized values. Transport provider-allocated values keep their original allocation. Record omitted, unsupported and absent modules distinctly; completeness requires all mandatory modules and receipts, not a list of intentions. | module_id; source_id; exchange_id; property; unit; boundary; event_id; source_version; original_pool; D_module; q_normalized; q_raw; attributed_raw; Q; cp_completion | One corrected normalized exchange vector per reference flow | ghg-product |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| identity_quality | all inventory rows | Unbound specific identities remain candidate only. Binding needs official original direct-read UUID, public state, exact bilingual names, product/waste type, complete pair/package/state and property/unit chain; no nominal-mass or generic steel proxy. Service reference identity is unresolved independently of count property. | Original responses and matching integrity receipts; supplier actual background and boundary evidence |
+| measurement_quality | all inventory rows | Record what/where/when and complete temporal coverage, calibration uncertainty, raw units, all source/beneficiary/event IDs and replacement versions. Unknown quantities or absent proof never become zero. Investigate residuals with measurement uncertainty; no invented pass tolerance. | Calibrations; invoices; custody/acceptance/owner reconciliations; complete raw ledgers |
+| completion_quality | retail; custody | Execute all fixed completion calculations with raw inputs, source IDs and original denominators. cp_completion is only a retail-process ledger view; each added custody/other process needs its own single-process view of same original records without remeasurement or second normalization. Unknown equipment/fuel/refrigerant presence fails support_gate. | Signed equipment/landlord survey; source coverage; complete package/cleaning/route/asset records; row-by-row merge audit |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| reference_check | service_output | Require exact original pair configuration, final-valid distinct Q>0 and one Item(s) service. Q=0 report unnormalizable. Check every final amount.basis.kind=reference_flow and per-reference-flow text; only row-specific units apply. | ghg-product |
+| reconciliation_check | all inventory rows | Check source S/F/O/T conservation, actual F input backgrounds, separate gross goods/held-waste balances, disjoint customer states, late corrections and complete source-ID deduplication. Physical external failure requires recipient/state/owner; never infer waste from failed acceptance. | ghg-product |
+| completeness_check | retail; custody | Core-only results stay partial. Block complete-service use on unbound required flow/background, missing original BOM/packaging/inbound evidence, unknown quantity, present/unknown forbidden support route, or unfinished module. Verify real source types/units/boundaries and mandatory atomic card/protocol additions in both languages. Passing mechanical candidate check is not scientific approval. | jrc-retail |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | partial_incremental_retail_service |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | Explicit partial-core screening with reported gaps; complete service only after mandatory source-bound completion and review |
+| excluded_use | Whole CPC leaf; merchandise manufacture; full business claim from core; mass-normalized product impact; comparative assertion without review |
+| required_metadata | SKU and two-component configuration; supplier original_id and source_ids; original package BOM and measured mass; store/channel and pool dates; original acceptance event and correction dates; final_valid flag; gross custody event IDs; S/F/O/T ownership; actual coating/handle condition; meter hierarchy and all beneficiaries; completion module versions; uncertainty and unresolved identities |
+| required_quality_disclosure | Candidate/unbound service and five physical/background identities; source dates; partial modules; uncertainty; zero-output pools; all correction versions |
+| update_trigger | SKU/BOM/package/state/channel change; new fuel/refrigerant; new asset/route; source lifetime revision; late acceptance or fate correction |
+
+## 11. Data Sources
+
+| source_id | type | title | reference | use |
+| --- | --- | --- | --- | --- |
+| un-cpc62155 | official_guidance | UNSD CPC 3.0 subclass62155 explanatory note | https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62155 | Category boundary:384 sports goods,494 boats,49921 non-motorized cycles; not product LCI |
+| xprt-spec | handbook | XPRT Rubber Hex Dumbbells manufacturer product specifications; dated webpage snapshot | https://xprtfitness.com/products/rubber-hex-dumbbells | 5 LB pair configuration; material and complete-object identity only; no LCI or package BOM |
+| ghg-product | standard | WRI/WBCSD Product Life Cycle Accounting and Reporting Standard2011; chapters6,7,9 | https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | Service/reference and physical allocation principles only; PCR equations are declared foreground methods, no standard-conformity claim |
+| jrc-retail | official_guidance | JRC Best Environmental Management Practice in the Retail Trade Sector2013; executive summary and retail lighting/waste sections | https://susproc.jrc.ec.europa.eu/activities/emas/documents/RetailTradeSector.pdf | Retail support/waste process screening, not numerical inventory defaults; actual route evidence required |

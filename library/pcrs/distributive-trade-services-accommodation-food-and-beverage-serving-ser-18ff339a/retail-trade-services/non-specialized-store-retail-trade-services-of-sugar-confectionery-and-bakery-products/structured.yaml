@@ -1,10 +1,931 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "62125"
-  title: "Non-specialized store retail trade services, of sugar confectionery and bakery products"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-sugar-confectionery-and-bakery-products"
+  classification_refs: "CPC 3.0 62125; narrower: only the specified sugar retail module; bakery, molasses and confectionery remain outside"
+  covered_products: "Retail service for one homogeneous factory-sealed nominal 1 kg consumer-bag SKU of additive-free white beet granulated sugar"
+  excluded_products: "Cane sugar; brown, caster, icing, jam or flavored sugar; sweeteners; syrups/molasses; bakery and confectionery; other pack sizes or constructions without separate datasets"
+  representative_product: "One intact bag of the declared SKU; the manufacturer specification lists a 1 kg format but does not establish the site bag construction"
+  production_route: "Supplier-packed receipt → manual ambient stock/display → in-store customer acceptance; dry quarantining/residual dispatch for failures"
+  market_state: "Factory-sealed dry free-flowing crystalline sugar; actual lot specification, seal, odor/contamination and damp/caking observations govern qualification"
+functional_unit:
+  what: "Provide the declared partial dry-stock retail service to a final-use customer"
+  how_much: "One finally accepted and retained intact bag of the single declared nominal 1 kg SKU; count is the service basis, not a conversion of actual sugar kg"
+  how_well: "Seal and current lot quality specification satisfied at handover; documented acceptance remains valid after the contractual physical-return window and recorded late corrections"
+  how_long_or_cycle: "From evidenced custody receipt to definitive acceptance, return/resale or terminal failure; declared prospective same-configuration pool includes all failed and zero-sale intervals"
+  reference_flow_link: "retail_service"
+system_boundary:
+  rules:
+    - rule_id: scope_gate
+      applies_to: "retail_service"
+      rule: "Apply only to the declared single intact factory-bag SKU and manual ambient route. Record actual receipt, stock, quarantine, handover, return and closure timestamps; do not equate sealed with vapor-impermeable. Current signed supplier/lot conditions govern acceptance; use cp_conditions to measure temperature and relative humidity throughout custody and inspect seal, caking, odor and contamination at receipt, daily holding review and every handover. No source numerical ranges or legal conformity are adopted as defaults."
+      source_ids:
+        - sugar-spec
+        - sugar-products
+    - rule_id: reference_ownership
+      applies_to: "retail_service"
+      rule: "N is the number of unique original parents finally qualified and retained for final use. Gross handovers H and physical returns C are separate events. Pure price refunds, credits and discounts without physical reversal do not reduce N only while final qualification and acceptance remain valid. An actual final acceptance revocation without return removes that parent from N and records the physically retained unqualified bag as U_keep. Return then resale of the same intact parent produces at most one final service. An externally retained unqualified intact bag is physically U_keep, not N or automatic waste; U_keep=F_keep+T_keep+O_keep partitions its original background responsibility, not additional physical handovers. Reopening an original period must revise its numerators, N and fate allocation together, never charge its complete burden again to a later pool."
+      source_ids:
+        - ghg-product
+    - rule_id: goods_background
+      applies_to: "failed_background"
+      rule: "Each original bag is assigned exactly once to successful S, irrevocable failed F, continuing supplier/other-system transfer T, or open responsibility O. One broken bag retains one full original background regardless of the number of waste/recovery descendants; no allocation credit to recovered sugar. F includes destroyed originals and externally retained unqualified originals whose background remains with this service. T carries original production, pack and receipt-transport responsibility to a named supplier or other receiving system under signed acknowledgment; absent acknowledgment it remains O, not zero. T is a mutually exclusive original-background partition, never a count of all supplier handoff events. Independently record actual physical supplier handoffs T_supplier and retained unqualified U_keep, with recipient/state/event IDs. T_keep belongs to U_keep already; moving an externally retained parent from F_keep/O_keep to T_keep changes background ownership only, without a second physical output. A genuinely new outward object/state needs its own specific card. S backgrounds are excluded here and must be coupled once downstream as S/N original bags using their actual receiving net fill/BOM. Never substitute the nominal 1 kg for measured original fill or assume receipt mass equals final mass."
+      source_ids:
+        - ghg-product
+    - rule_id: terminal_carriers
+      applies_to: "whole_bag_waste; sweep_waste; recovered_sugar"
+      rule: "Use actual whole-carrier net mass at each exclusive terminal handover. A complete failed bag includes its contained sugar and original packaging; do not add those constituents again as separate waste. After a real split, retain component/parent/fate IDs and weigh actual separated recovered sugar and actual whole sweep carrier, including any containment bag. Empty containment packaging is not also discarded separately. Record residual inventory at both ends and actual moisture/contamination changes; count balance is not a kg conservation assumption. Treatment and transport providers must declare included scope, destination, carrier composition and accepted unit; add named missing activities before completeness. Do not multiply an already destination-specific weighed amount by a destination fraction again."
+      source_ids:
+        - jrc-retail
+        - ghg-product
+    - rule_id: completion_modules
+      applies_to: "retail_service"
+      rule: "Before using this partial module in a total retail result, the integrator must assemble an exact gate/cohort/N responsibility matrix and separately measure: (1) premises manufacture/installation/maintenance/end-of-life and common HVAC, lighting and other utilities; (2) display shelf and dedicated luminaire manufacture/maintenance/end-of-life; (3) receiving/stock handling tools, pallets, trolleys and all loaded, empty return, repositioning and reserved/idle use; (4) checkout/POS, receipts and customer bags; (5) common sanitation, pest control, actual wet spill response, water/chemicals/whole effluent; (6) supplier-return, residual and other actual transport outside evidenced provider packages; (7) store-air/exterior transfers from sugar dust or moisture, with internal generation, retained/captured stocks and exclusive terminal carriers distinguished. These are excluded here, not assumed absent or zero. Complete these actual modules with named flows/protocols and the fixed methods in completion_method; an unresolved module blocks total-retail completeness."
+      source_ids:
+        - jrc-retail
+        - ghg-product
+    - rule_id: conditional_extension
+      applies_to: "retail_service"
+      rule: "Confirm occurrence/absence through floorplans, equipment and activity logs, invoices and incident records for every period. A different bag construction, carrier, chemical, on-site processing or unknown route cannot be hidden in an existing card. Add specific bilingual cards/protocols and regenerate before representing the affected activity as complete; preserve actual observations and uncertainty while unresolved."
+      source_ids:
+        - jrc-retail
+boundary_abstraction:
+  declared_starting_condition: "Physical custody of identified factory-packed bags at the store receipt gate, with original net fill, whole gross bag mass and supplier-packaging background recorded"
+  starting_condition_role: "Retail operating gate; not sugar manufacture or a free upstream input"
+  product_classification_scope: "A narrower sugar subset of CPC 3.0 62125; no equivalence to the whole leaf"
+  recursive_input_rule: "Do not recursively add this retail service to its own goods input. Match supplier goods production, original packaging and inbound transport at the same receipt gate"
+  upstream_dataset_requirement: "Loss-parent background uses the original complete bag at receipt, with measured original net fill and verified packaging BOM/provider scope; successful originals remain a separately required downstream coupling"
+  disclosure: "Partial incremental dry-stock service; all listed completion modules and unknowns remain explicit. It is neither total store retail nor the manufactured sugar product"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Incremental dry-stock retail service for one factory-sealed 1 kg bag of white beet granulated sugar"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "manufacturer and SKU"
+    - "nominal size and measured original fill"
+    - "original bag BOM and supplier background scope"
+    - "factory closure and lot specification"
+    - "actual receipt and final condition"
+    - "store and period"
+    - "dedicated-light meter boundary"
+    - "prospective pool and return closure"
+    - "original-parent fate IDs"
+    - "residual recipients and treatment"
+    - "completion-module matrix"
+    - "unverified identities and uncertainty"
+reference_flows:
+  []
+measurement_rules:
+  - id: count_service
+    applies_to: "retail_service; failed_background; supplier_transfer; failed_retained"
+    required_property_ref:
+      name: "Number of items"
+      uuid: ""
+    required_unit: "Item(s)"
+    rule: "Use the declared original whole-bag count and finally accepted service count with cp_goods; a nominal 1 kg label is not a measured conversion factor."
+  - id: energy_basis
+    applies_to: "electricity_input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Use cp_energy; 1 kWh = 3.6 MJ; preserve actual electricity provider boundary."
+  - id: mass_basis
+    applies_to: "containment_input; recovered_sugar; case_waste; film_waste; whole_bag_waste; sweep_waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated actual net carrier/input mass in its measured state with cp_containment or cp_residual. No count, volume, dry/wet or concentration conversion without measured applicable basis."
+process_map:
+  - id: retail
+    name: "Incremental dry-stock retail"
+    inclusion: "required"
+    inclusion_condition: "Declared homogeneous bag module only"
+    role: "foreground"
+    quantitative_reference: "retail_service"
+process_inventory:
+  - id: retail
+    label: "Incremental dry-stock retail"
+    inputs:
+      product:
+        - row_id: electricity_input
+          role: "Alternating current"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Purchased point-of-use electricity for the declared dedicated display lighting circuit. Supplier technology, grid factor and voltage are not established by the generic flow identity."
+          amount:
+            expression: "3.6*E_c/N MJ; cp_energy; no second allocation or normalization"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-retail
+                - ghg-product
+            ranges: []
+        - row_id: failed_background
+          role: "Factory-sealed nominal 1 kg bag of white beet granulated sugar at store receipt"
+          name: "Factory-sealed nominal 1 kg bag of white beet granulated sugar at store receipt"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "One actual complete original SKU bag at receipt is the goods-background unit; product includes sugar, original packaging and declared upstream transport. This is upstream background demand, not a second physical receipt or internal material flow. It charges only original parents assigned to F in the reported closed/revised background version, not all incoming bags or their descendants."
+          amount:
+            expression: "F/N Item(s); cp_goods; original net fill and packaging BOM remain required"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_goods
+              source_ids:
+                - sugar-spec
+                - ghg-product
+            ranges: []
+        - row_id: containment_input
+          role: "High-density polyethylene dry-residual containment bag"
+          name: "High-density polyethylene dry-residual containment bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual retailer-added HDPE containment packaging, separately weighed empty. Factory packaging is already included in original-goods backgrounds."
+          amount:
+            expression: "attributable actual empty-bag mass/N kg; cp_containment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_containment
+              source_ids:
+                - jrc-retail
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retail_service
+          role: "Incremental dry-stock retail service for one factory-sealed 1 kg bag of white beet granulated sugar"
+          name: "Incremental dry-stock retail service for one factory-sealed 1 kg bag of white beet granulated sugar"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "The one final count-based reference service; its bag remains intact and qualified. It is a partial service output, not sugar manufacture or a mass-output substitution."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_goods
+              source_ids:
+                - ghg-product
+            ranges: []
+        - row_id: supplier_transfer
+          role: "Intact factory-sealed 1 kg white beet granulated sugar bag physically returned to supplier"
+          name: "Intact factory-sealed 1 kg white beet granulated sugar bag physically returned to supplier"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Actual intact physical bag return to its named supplier, with actual event and original-parent history. Count actual T_supplier handoffs regardless of the separate background partition: signed continuing responsibility enters T, otherwise O pending acknowledgment. This is neither accepted retail service nor waste; other-system background transfers are not routed through this supplier-only card."
+          amount:
+            expression: "T_supplier/N Item(s); cp_goods; no burden credit"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_goods
+              source_ids:
+                - ghg-product
+            ranges: []
+        - row_id: failed_retained
+          role: "Unqualified intact factory-sealed 1 kg white beet granulated sugar bag retained externally"
+          name: "Unqualified intact factory-sealed 1 kg white beet granulated sugar bag retained externally"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Actual unqualified intact physical bag retained by an identified external recipient, including final acceptance revocation without physical return. Count U_keep once, irrespective of disjoint F_keep/T_keep/O_keep background ownership. Recipient/state and signed ownership are required; an ownership-only change creates no extra physical output, and O_keep blocks final closure."
+          amount:
+            expression: "U_keep/N Item(s); cp_goods"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_goods
+              source_ids:
+                - ghg-product
+            ranges: []
+        - row_id: recovered_sugar
+          role: "Separated recovered dry white beet granulated sugar for identified nonretail recipient"
+          name: "Separated recovered dry white beet granulated sugar for identified nonretail recipient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual separated sugar, weighed in the actual transfer state. Recipient, quality status and actual purpose must be established; do not imply food suitability or restore a failed retail bag."
+          amount:
+            expression: "actual separated transfer net mass/N kg; cp_residual"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - jrc-retail
+                - ghg-product
+            ranges: []
+      waste:
+        - row_id: case_waste
+          role: "Dry corrugated cardboard transport case waste"
+          name: "Dry corrugated cardboard transport case waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual removed outer corrugated case at the retail gate, excluding retained inventory and factory consumer bags. Original case manufacture is included only in the evidenced receiving background, not added again."
+          amount:
+            expression: "actual attributed whole-case net waste mass/N kg; cp_residual"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - jrc-retail
+            ranges: []
+        - row_id: film_waste
+          role: "Low-density polyethylene transport overwrap film waste"
+          name: "Low-density polyethylene transport overwrap film waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual identified LDPE transport overwrap removed and dispatched; material declaration is required and unlike polymers require separate cards."
+          amount:
+            expression: "actual attributed net LDPE film waste mass/N kg; cp_residual"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - jrc-retail
+            ranges: []
+        - row_id: whole_bag_waste
+          role: "Rejected complete factory bag of white beet granulated sugar for treatment"
+          name: "Rejected complete factory bag of white beet granulated sugar for treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A physically intact or contained complete original consumer bag with all its remaining sugar and packaging, weighed as one real carrier. Actual packaging composition and treatment acceptance define the unresolved identity."
+          amount:
+            expression: "actual whole-carrier net handover mass/N kg; cp_residual; no separate contained-sugar or factory-bag waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - jrc-retail
+            ranges: []
+        - row_id: sweep_waste
+          role: "Dry sugar-spill sweepings with torn original bag and actual HDPE containment for treatment"
+          name: "Dry sugar-spill sweepings with torn original bag and actual HDPE containment for treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One physically collected mixture at the actual waste handover, with measured sugar/packaging/contamination portions and exclusive carrier IDs. A different actual mixture or incompatible treatment requires a separate card, not a selector hidden here."
+          amount:
+            expression: "actual whole sweep-carrier net handover mass/N kg; cp_residual; containment is already included"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids:
+                - jrc-retail
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: pool_allocation
+    applies_to: "electricity_input"
+    rule: "Use a dedicated measured light circuit first. Where the declared meter also serves other displays, allocate each interval k by permanently assigned illuminated shelf area A_ck divided by all beneficiaries A_allk, including reserved empty sugar space. E_c=sum(E_k*A_ck/A_allk). Retain closed, idle and zero-sale intervals; no driver means pending assignment, not deletion. Reconcile all beneficiaries to the whole meter. Do not subtract this circuit from an independent disjoint parent meter; common-store completion removes it only where a traced parent includes it."
+    source_ids:
+      - ghg-product
+      - jrc-retail
+  - rule_id: completion_method
+    applies_to: "retail_service"
+    rule: "Completion modules use direct subdivision/meters, then declared causal drivers: premises/common light area-hours, HVAC conditioned-area-hours with actual zones, POS/receipt measured transaction events, sanitation event/area records, handling measured loaded plus empty active minutes and reserved/idle ledger. Allocate every full shared pool across all beneficiaries; unknown route/coverage is unresolved. Asset manufacture uses f_c=x_c/L: measured current beneficiary exposure x_c divided by evidenced expected total all-beneficiary lifetime exposure L in the same driver, including pre-period history and reserved/idle use. Keep one persistent asset ledger, replace old-version allocations on life revision, cumulative fractions <=1 and allocate final residual once. Actual maintenance is event-specific with exact homogeneous contract/work scope or separate materials/services; original complete asset components, replacements and provider-covered energy/transport/treatment are disjoint. At retirement R=1-sum(f_posted across all historical beneficiaries); w_c=x_lifetime_c/sum(x_lifetime_all); h_c=f_posted_c+R*w_c with signed corrections to original pools. L revisions replace old fractions through delta=f_new-f_posted, never reset the asset. Terminal full-carrier mass/count uses h_c once, not an extra manufacture fraction. Actual terminal direct weighing and component reconstruction are exclusive; direct net weighing does not subtract already removed parts again. For external transport record actual gross tonnes including packaging times actual loaded km; verify provider coverage of every actual empty trip. Where empty travel is not demonstrably included, add separately measured empty vehicle-km with exact overlapping burden removed from the loaded provider once; unknown coverage blocks completeness and zero tonnes cannot erase a trip. For air completion measure raw internal source, outside inlet/outlet flux at matching temperature/pressure/wet-dry basis, net room/capture stocks and actual terminal exports; unknown capture/outside paths are not zero. Whole sewer mass uses direct measured V*rho or an exclusive full-liquid mass reconstruction including solutes; no water-only reconstruction or duplicate reuse/evaporation correction."
+    source_ids:
+      - ghg-product
+      - jrc-retail
+  - rule_id: no_credit
+    applies_to: "failed_background; recovered_sugar; supplier_transfer"
+    rule: "No avoided-production or recycling credit is claimed. Actual recovered sugar is a physical transfer with measured recipient/state and subsequent responsibility; it does not undo the original bag failure. Supplier transfers retain acknowledged continuing backgrounds. Normalize attributable raw totals once by N only after all within-pool attribution and revisions. A wholly zero-output pool is unnormalizable and disclosed; prospectively declared same-configuration pooling retains its entire burdens and never selects only selling periods."
+    source_ids:
+      - ghg-product
+  - rule_id: raw_attribution
+    applies_to: "containment_input; recovered_sugar; case_waste; film_waste; whole_bag_waste; sweep_waste"
+    rule: "Assign direct sugar-parent events/carriers to their original pool. For a shared actual transport case/film, first weigh the exclusive whole discarded carrier, then allocate once by the declared SKU actual packed gross volume divided by the measured total packed gross volume of all original beneficiaries in that source case/consignment. Use actual dimensions and packed counts, not nominal sugar kg or sales value; retain failure/zero-sale parents. Reconcile fractions to one and carrier mass to measured totals. A dedicated sugar-containment bag/sweep carrier is direct; an actual mixture with other goods needs its own concrete flow/protocol and source-portion records before completion, not a hidden generic selector. Unknown source composition or zero/missing volume driver is unresolved."
+    source_ids:
+      - jrc-retail
+      - ghg-product
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_goods
+      process_id: "retail"
+      flow_role: "original parents and final service"
+      record_type: "receipt, custody, acceptance and fate ledger"
+      raw_fields: "parent_id; manufacturer; SKU; lot; nominal size; supplier current signed specification; exact closure and bag BOM; actual original net/gross mass; packaging tare; source/background gate and scope; stock_open; stock_close; receipts; terminal_parent_removals; supplier_return_back_entries; S; H; C; N; F; F_keep; T; T_supplier; U_keep; T_keep; O_keep; O; timestamps; reason; recipient; return-window close; late revisions"
+      collection_method: "Scan/count each original bag at every custody event. Weigh gross and determine original net fill with calibrated scales using traceable supplier lot records or prospectively stratified destructive matched-bag sampling by lot/pack line; weigh actual emptied packaging, record sample count, dispersion, representativeness and actual sampled-parent fate. Verify material layers, inks/adhesives and whole-pack scope from supplier BOM and test/document evidence; photographs do not prove composition. Never infer net fill from nominal label or gross mass alone. Preserve unique original history through returns/resale."
+      unit: "Item(s); kg"
+      frequency: "each receipt/event and every closure/revision"
+      temporal_coverage: "entire prospective pool plus physical-return window and later known corrections"
+      site_scope: "one actual SKU at store receipt/stock/customer/recipient gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrations; signed supplier/BOM/background; paired sample records; serial event history; acknowledgment and reconciliation"
+    - protocol_id: cp_energy
+      process_id: "retail"
+      flow_role: "dedicated display lighting"
+      record_type: "meter and beneficiary map"
+      raw_fields: "meter_id; circuit diagram; start/end/register rollover; kWh interval; A_ck; A_allk; reserved/idle area; driver version; tariffs/provider; parent-meter inclusion"
+      collection_method: "Read a calibrated meter continuously or at every declared interval boundary; verify actual circuit with isolation tests and floorplan. Log all hours including closed/no-sales periods. Allocate by pool_allocation only where needed; document provider and voltage separately from the generic flow."
+      unit: "kWh; m2"
+      frequency: "every meter interval; circuit/space change"
+      temporal_coverage: "full pool including idle/closed and failed cohorts"
+      site_scope: "declared dedicated lighting circuit and every beneficiary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration, circuit tests, readings and full-beneficiary balance"
+    - protocol_id: cp_containment
+      process_id: "retail"
+      flow_role: "retailer HDPE bags"
+      record_type: "purchase, empty-bag weighing and use ledger"
+      raw_fields: "bag_id; supplier; material specification; empty mass; opening/purchase/closing stock; used count; event/parent/carrier IDs; included provider scope"
+      collection_method: "Verify actual HDPE material and weigh representative empty bags of each homogeneous batch on calibrated scales; record sampling variability. Reconcile actual consumption to stock and carrier events, not purchases alone. A zero requires stock/incident evidence of no use; unknown material is unresolved."
+      unit: "kg; Item(s)"
+      frequency: "each batch and use/stock event"
+      temporal_coverage: "full pool including quarantine and residual storage"
+      site_scope: "retailer-added dry containment only"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "material declaration; calibrated weighing; stock and carrier reconciliation"
+    - protocol_id: cp_residual
+      process_id: "retail"
+      flow_role: "actual transfer and residual carriers"
+      record_type: "split, weighing, inventory and handover ledger"
+      raw_fields: "parent/component/carrier IDs; event/time; source type; whole gross/tare/net kg; composition including sugar, packaging, moisture and foreign material; opening/closing residual stock; split matrix; recovered recipient/state; treatment recipient/route; packaging manufacture ownership; provider transport/treatment scope; source consignment/case_id; actual packed gross-volume shares and all beneficiary quantities; attribution version; uncertainty"
+      collection_method: "Weigh actual exclusive carriers on calibrated scales at removal/storage and terminal handover, taking container tare once. Identify actual cardboard and LDPE by supplier specification; do not infer from appearance. Whole failed bags and split descendants are mutually exclusive. Quantify composition through traced original BOM and matched sample/separation measurements, retaining full physical carrier mass. Reconcile all residual stocks and descendants to each original event. Any wet cleanup, fugitive dust/moisture or unknown missing material triggers the named completion module; it is not a default zero or assumed emission."
+      unit: "kg"
+      frequency: "every split, storage movement and handover"
+      temporal_coverage: "full pool and retained residual stock through final disposition"
+      site_scope: "store removal/quarantine and actual recipient gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrated scale/tare; original IDs; photos plus material/BOM proof; manifests and recipient acceptance; treatment/transport contract"
+    - protocol_id: cp_conditions
+      process_id: "retail"
+      flow_role: "custody conditions and actual route"
+      record_type: "continuous conditions and occurrence/absence inspection"
+      raw_fields: "logger_id; temperature; RH; calibration; timestamp; shelf/stock location; seal/caking/odor/contamination; current signed acceptance condition; alarm/action; floorplan; actual equipment; process/incident/invoice evidence; missing intervals"
+      collection_method: "Use calibrated time-aligned temperature/RH loggers over the actual storage/display locations, retain continuous raw records and clock checks; inspect as scope_gate requires. Trace every incident to original bags and actual response. Verify excluded/conditional activity occurrence with logs/invoices; no-event assertion needs the same full period coverage. Missing intervals require documented reconstruction with independent records and uncertainty or unresolved status, never zero."
+      unit: "degC; %RH; time; status"
+      frequency: "continuous log; receipt/daily/every handover and incident"
+      temporal_coverage: "complete receipt-to-final-fate custody and pool"
+      site_scope: "actual stock/display/quarantine sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibrations; full logs; signed specifications; inspection and incident trail"
+  calculation_rules:
+    - id: calc_parent
+      applies_to: "retail_service; failed_background; supplier_transfer; failed_retained"
+      rule: "N=count(unique finally accepted retained parents); receipt/opening parent responsibility = S+F+T+O with mutually exclusive final original IDs; S=N for a closed single-service pool. F=terminal_failed_originals+F_keep, each original once; U_keep=F_keep+T_keep+O_keep with disjoint ownership and no second physical output; q_failed=F/N, q_supplier=T_supplier/N, q_unqualified_keep=U_keep/N. T_supplier counts only actual supplier handoff events, not T; other acknowledged continuing systems remain with their actual recipient/state and existing physical carrier. Gross count stock audit: stock_open+receipts+C=H+T_supplier+terminal_parent_removals+stock_close; internal movements cancel. H includes actual failed external handovers and repeated sales events; receipts and returns count physical entry events while the original-background partition counts unique original IDs only. U_keep is the finally retained subset of H after actual C, not another outward event. N is separately corrected, never substituted into the gross stock equation. O blocks final closure; no N=0 division."
+      inputs:
+        - N
+        - S
+        - F
+        - F_keep
+        - T
+        - T_supplier
+        - U_keep
+        - T_keep
+        - O_keep
+        - O
+        - H
+        - C
+        - stock_open
+        - stock_close
+        - receipts
+        - terminal_parent_removals
+        - cp_goods
+      output: "normalized_parent_counts"
+      source_ids:
+        - ghg-product
+    - id: calc_energy
+      applies_to: "electricity_input"
+      rule: "E_c=sum(E_k*A_ck/A_allk) only for an evidenced shared circuit; otherwise E_c=dedicated measured kWh. q_energy=3.6*E_c/N MJ. Meter rollovers and clock/circuit changes are corrected before attribution. A_allk includes reserved/idle beneficiaries; a missing driver or meter interval remains unresolved."
+      inputs:
+        - E_k
+        - A_ck
+        - A_allk
+        - N
+        - cp_energy
+      output: "q_energy"
+      source_ids:
+        - ghg-product
+        - jrc-retail
+    - id: calc_mass
+      applies_to: "containment_input; recovered_sugar; case_waste; film_waste; whole_bag_waste; sweep_waste"
+      rule: "q_mass=m_attributed/N kg. Obtain m_attributed from raw actually consumed HDPE or actual exclusive terminal carrier gross minus container tare, summed by original event and recipient after unique attribution; never set internal quantities to N or nominal 1 kg. Direct whole-carrier weighing and BOM reconstruction are exclusive methods; direct net mass already excludes removed portions. Packaging constituents remain inside their actual carrier. Retained residual stock is measured and carried to actual later fate in the original pool revision, not treated as dispatched. Missing fate/quantity blocks closure, never zero."
+      inputs:
+        - m_attributed
+        - N
+        - cp_containment
+        - cp_residual
+      output: "q_mass"
+      source_ids:
+        - jrc-retail
+        - ghg-product
+    - id: calc_background
+      applies_to: "failed_background; retail_service; supplier_transfer"
+      rule: "For each original bag i retain actual receiving net sugar mass n_i, original consumer-bag and attributable source transport-case/film packaging BOM p_ij and complete supplier background P_i at the same gate, including documented inbound transport. B_F=sum(P_i for i in F), B_S=sum(P_i for i in S), B_T=sum(P_i for i in T), B_O=sum(P_i for i in O); these are background responsibilities, not kg sums. The count flow F/N is valid only for this one homogeneous actual bag/provider configuration; if lots have different original fills/BOM/backgrounds, sum actual lot-specific B_F/N, never replace with nominal-fill factors. Downstream adds B_S/N once and the fixed completion modules. Supplier transfers carry B_T intact; B_O blocks closed results. A broken parent background is not multiplied by waste carrier fractions, destination fractions or actual final moisture a second time."
+      inputs:
+        - n_i
+        - p_ij
+        - P_i
+        - S
+        - F
+        - T
+        - O
+        - N
+        - cp_goods
+      output: "background_responsibility_and_coupling"
+      source_ids:
+        - ghg-product
+  data_quality_requirements:
+    - id: identity_completion
+      applies_to: "all inventory rows"
+      requirement: "All selected flows except electricity_input remain unverified specific candidates. Before any final dataset, verify actual manufacturer/SKU/state, flow type/direction, property/unit and receiving medium/recipient against original official flow/support responses and matching hashes; bind exact identity or retain unavailable status. A similar search hit is insufficient. Historical electricity evidence establishes only generic product-flow identity and MJ conversion, not a current supplier factor."
+      evidence: "original official record/status/hash chain; supplier/recipient identity and scope; row-specific completion"
+    - id: execution_quality
+      applies_to: "all inventory rows"
+      requirement: "Record all raw units, timestamp/ID, calibration, sample design and uncertainty; reconcile actual pool/stock/circuit/carriers. Missing values, unknown identity/material, unacknowledged transfer and unmeasured paths remain unresolved. Never import example values, source ranges, prices or estimates as defaults or compliance limits. Define and justify the measurement uncertainty and reconciliation tolerance from instrument/sampling evidence before judging residuals; do not force closure by assigning the residual to air or waste."
+      evidence: "raw files and signed corrections; calibration/sampling uncertainty; balance and exception log"
+    - id: completion_evidence
+      applies_to: "retail_service"
+      requirement: "Partial module completion and total-retail completion are distinct. The integrator documents every completion_modules item, actual occurrence/absence, named additional exchanges/protocols, fixed attribution method, source cohort/N and overlap removal. Unknown provider coverage blocks closure for its actual handover; missing common-store/capital/air modules block total-retail claims, not an honest explicitly partial report."
+      evidence: "gate/cohort/row/provider matrix; actual completion measurements; unresolved list"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "retail_service; failed_background"
+    rule: "Require one actual homogeneous bag configuration, original measured fill/BOM/background evidence, final qualification and return-closure records, N>0, no O or unresolved final residual fate. Check the count parent partition and separate gross handover/return stock equation; do not confuse nominal kg with measured content or count service."
+    source_ids:
+      - ghg-product
+      - sugar-spec
+  - rule_id: validate_exchange
+    applies_to: "all inventory rows"
+    rule: "Every used card has one actual identity, declared provider/recipient boundary, unit, linked real-process protocol, original raw quantity, one attribution and one division by N. Audit complete carriers/constituents, supplier transfers and background ownership for overlap. Unknown or incompatible material/route requires a specific new card and sync, never substitution into a similar flow."
+    source_ids:
+      - jrc-retail
+      - ghg-product
+  - rule_id: validate_disclosure
+    applies_to: "retail_service"
+    rule: "Label every output as this partial dry-stock module, state all exclusions and unverified rows, and require the fixed completion matrix plus B_S/N before any complete retail or goods-plus-retail use. Candidate markers and technical checks do not establish scientific approval, legal compliance, current supplier identity or publication readiness."
+    source_ids:
+      - ghg-product
+      - jrc-retail
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Only the declared partial dry-stock retail service for the exact single bag configuration, with source-period and responsibility context retained"
+  allowed_use: "Add B_S/N original successful-goods backgrounds and all measured completion_modules once with the gate/cohort/N overlap matrix; retain failed-parent backgrounds already here"
+  excluded_use: "Whole CPC leaf; cane sugar or other product/pack; total store retail without completion; sugar production flow; legal compliance or consumer waste forecast"
+  required_metadata: "manufacturer and SKU; nominal size and measured original fill; original bag BOM and supplier background scope; factory closure and lot specification; actual receipt and final condition; store and period; dedicated-light meter boundary; prospective pool and return closure; original-parent fate IDs; residual recipients and treatment; completion-module matrix; unverified identities and uncertainty"
+  required_quality_disclosure: "Partial boundary, original fill/BOM sampling, uncertainty, condition/return closure, provider scope, zero-output cohorts, late revisions, missing data and every unverified identity"
+  update_trigger: "SKU/pack/construction/closure/source/route change; actual extra process; provider boundary or instrument change; new returns; receipt/fate correction; reviewed identity evidence"
+data_sources:
+  - id: "un-cpc"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0, subclass 62125; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62125"
+    used_for: "Classification scope: groups234,235,236; narrower sugar subset only; not a retail method"
+  - id: "sugar-spec"
+    type: "standard"
+    reference: "The Silver Spoon Company, SSC - Granulated Sugar, RCS-SS-004 Revision11, review date30/07/2026, pages1 and4; https://media.supplychain.nhs.uk/media/documents/AES123/Marketing/90633_AES123%2030.07.23%20Silverspoon.pdf"
+    used_for: "Primary manufacturer specification: dry additive-free beet sugar, 1kg among formats and dry ambient custody concerns. Does not prove actual bag material/BOM, current lot compliance or universal numerical limits; actual supplier evidence required"
+  - id: "sugar-products"
+    type: "literature"
+    reference: "Silver Spoon, Our Products, Granulated Sugar; https://www.silverspoon.co.uk/our-products#product-granulatedsugar"
+    used_for: "Confirms named manufacturer granulated product only; same manufacturer is not an independent second product specification, and no pack-composition inference is made"
+  - id: "jrc-retail"
+    type: "official_guidance"
+    reference: "Schoenberger et al., Best Environmental Management Practice in the Retail Trade Sector, EUR25998EN (2013), DOI10.2791/1775, sections1.2,2.1.6.7,2.4; https://susproc.jrc.ec.europa.eu/activities/emas/documents/RetailTradeSector.pdf"
+    used_for: "Retail lighting, energy and waste scope context; no benchmark amounts, allocation fractions, compliance or full-retail completeness inferred"
+  - id: "ghg-product"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters6,7,9; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Functional unit/reference flow, transparent boundaries and subdivision/causal allocation context. Specific parent, pool, partial-module and completion equations are this PCR design, not quoted requirements or a full standard-conformity claim"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:74836b4604d0b3a01b87b6b0b55500d61998742bd55b6c0acb78ff8a660f6710"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4960"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4960
+          line: 53
+          column: 1
+        end:
+          offset: 11572
+          line: 75
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Physical custody of identified factory-packed bags at the store receipt gate, with original net fill, whole gross bag mass and supplier-packaging background recorded |\n| starting_condition_role | Retail operating gate; not sugar manufacture or a free upstream input |\n| product_classification_scope | A narrower sugar subset of CPC 3.0 62125; no equivalence to the whole leaf |\n| recursive_input_rule | Do not recursively add this retail service to its own goods input. Match supplier goods production, original packaging and inbound transport at the same receipt gate |\n| upstream_dataset_requirement | Loss-parent background uses the original complete bag at receipt, with measured original net fill and verified packaging BOM/provider scope; successful originals remain a separately required downstream coupling |\n| disclosure | Partial incremental dry-stock service; all listed completion modules and unknowns remain explicit. It is neither total store retail nor the manufactured sugar product |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| scope_gate | retail_service | Apply only to the declared single intact factory-bag SKU and manual ambient route. Record actual receipt, stock, quarantine, handover, return and closure timestamps; do not equate sealed with vapor-impermeable. Current signed supplier/lot conditions govern acceptance; use cp_conditions to measure temperature and relative humidity throughout custody and inspect seal, caking, odor and contamination at receipt, daily holding review and every handover. No source numerical ranges or legal conformity are adopted as defaults. | sugar-spec; sugar-products |\n| reference_ownership | retail_service | N is the number of unique original parents finally qualified and retained for final use. Gross handovers H and physical returns C are separate events. Pure price refunds, credits and discounts without physical reversal do not reduce N only while final qualification and acceptance remain valid. An actual final acceptance revocation without return removes that parent from N and records the physically retained unqualified bag as U_keep. Return then resale of the same intact parent produces at most one final service. An externally retained unqualified intact bag is physically U_keep, not N or automatic waste; U_keep=F_keep+T_keep+O_keep partitions its original background responsibility, not additional physical handovers. Reopening an original period must revise its numerators, N and fate allocation together, never charge its complete burden again to a later pool. | ghg-product |\n| goods_background | failed_background | Each original bag is assigned exactly once to successful S, irrevocable failed F, continuing supplier/other-system transfer T, or open responsibility O. One broken bag retains one full original background regardless of the number of waste/recovery descendants; no allocation credit to recovered sugar. F includes destroyed originals and externally retained unqualified originals whose background remains with this service. T carries original production, pack and receipt-transport responsibility to a named supplier or other receiving system under signed acknowledgment; absent acknowledgment it remains O, not zero. T is a mutually exclusive original-background partition, never a count of all supplier handoff events. Independently record actual physical supplier handoffs T_supplier and retained unqualified U_keep, with recipient/state/event IDs. T_keep belongs to U_keep already; moving an externally retained parent from F_keep/O_keep to T_keep changes background ownership only, without a second physical output. A genuinely new outward object/state needs its own specific card. S backgrounds are excluded here and must be coupled once downstream as S/N original bags using their actual receiving net fill/BOM. Never substitute the nominal 1 kg for measured original fill or assume receipt mass equals final mass. | ghg-product |\n| terminal_carriers | whole_bag_waste; sweep_waste; recovered_sugar | Use actual whole-carrier net mass at each exclusive terminal handover. A complete failed bag includes its contained sugar and original packaging; do not add those constituents again as separate waste. After a real split, retain component/parent/fate IDs and weigh actual separated recovered sugar and actual whole sweep carrier, including any containment bag. Empty containment packaging is not also discarded separately. Record residual inventory at both ends and actual moisture/contamination changes; count balance is not a kg conservation assumption. Treatment and transport providers must declare included scope, destination, carrier composition and accepted unit; add named missing activities before completeness. Do not multiply an already destination-specific weighed amount by a destination fraction again. | jrc-retail; ghg-product |\n| completion_modules | retail_service | Before using this partial module in a total retail result, the integrator must assemble an exact gate/cohort/N responsibility matrix and separately measure: (1) premises manufacture/installation/maintenance/end-of-life and common HVAC, lighting and other utilities; (2) display shelf and dedicated luminaire manufacture/maintenance/end-of-life; (3) receiving/stock handling tools, pallets, trolleys and all loaded, empty return, repositioning and reserved/idle use; (4) checkout/POS, receipts and customer bags; (5) common sanitation, pest control, actual wet spill response, water/chemicals/whole effluent; (6) supplier-return, residual and other actual transport outside evidenced provider packages; (7) store-air/exterior transfers from sugar dust or moisture, with internal generation, retained/captured stocks and exclusive terminal carriers distinguished. These are excluded here, not assumed absent or zero. Complete these actual modules with named flows/protocols and the fixed methods in completion_method; an unresolved module blocks total-retail completeness. | jrc-retail; ghg-product |\n| conditional_extension | retail_service | Confirm occurrence/absence through floorplans, equipment and activity logs, invoices and incident records for every period. A different bag construction, carrier, chemical, on-site processing or unknown route cannot be hidden in an existing card. Add specific bilingual cards/protocols and regenerate before representing the affected activity as complete; preserve actual observations and uncertainty while unresolved. | jrc-retail |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 8
+              column: 1
+            end:
+              offset: 367
+              line: 8
+              column: 99
+          text: "# Incremental dry-stock retail service for factory-sealed 1 kg bags of white beet granulated sugar"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4960
+              line: 53
+              column: 1
+            end:
+              offset: 4981
+              line: 53
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_21317"
+      family: "allocation"
+      span:
+        start:
+          offset: 21317
+          line: 266
+          column: 1
+        end:
+          offset: 25951
+          line: 275
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| pool_allocation | electricity_input | Use a dedicated measured light circuit first. Where the declared meter also serves other displays, allocate each interval k by permanently assigned illuminated shelf area A_ck divided by all beneficiaries A_allk, including reserved empty sugar space. E_c=sum(E_k*A_ck/A_allk). Retain closed, idle and zero-sale intervals; no driver means pending assignment, not deletion. Reconcile all beneficiaries to the whole meter. Do not subtract this circuit from an independent disjoint parent meter; common-store completion removes it only where a traced parent includes it. | ghg-product; jrc-retail |\n| completion_method | retail_service | Completion modules use direct subdivision/meters, then declared causal drivers: premises/common light area-hours, HVAC conditioned-area-hours with actual zones, POS/receipt measured transaction events, sanitation event/area records, handling measured loaded plus empty active minutes and reserved/idle ledger. Allocate every full shared pool across all beneficiaries; unknown route/coverage is unresolved. Asset manufacture uses f_c=x_c/L: measured current beneficiary exposure x_c divided by evidenced expected total all-beneficiary lifetime exposure L in the same driver, including pre-period history and reserved/idle use. Keep one persistent asset ledger, replace old-version allocations on life revision, cumulative fractions <=1 and allocate final residual once. Actual maintenance is event-specific with exact homogeneous contract/work scope or separate materials/services; original complete asset components, replacements and provider-covered energy/transport/treatment are disjoint. At retirement R=1-sum(f_posted across all historical beneficiaries); w_c=x_lifetime_c/sum(x_lifetime_all); h_c=f_posted_c+R*w_c with signed corrections to original pools. L revisions replace old fractions through delta=f_new-f_posted, never reset the asset. Terminal full-carrier mass/count uses h_c once, not an extra manufacture fraction. Actual terminal direct weighing and component reconstruction are exclusive; direct net weighing does not subtract already removed parts again. For external transport record actual gross tonnes including packaging times actual loaded km; verify provider coverage of every actual empty trip. Where empty travel is not demonstrably included, add separately measured empty vehicle-km with exact overlapping burden removed from the loaded provider once; unknown coverage blocks completeness and zero tonnes cannot erase a trip. For air completion measure raw internal source, outside inlet/outlet flux at matching temperature/pressure/wet-dry basis, net room/capture stocks and actual terminal exports; unknown capture/outside paths are not zero. Whole sewer mass uses direct measured V*rho or an exclusive full-liquid mass reconstruction including solutes; no water-only reconstruction or duplicate reuse/evaporation correction. | ghg-product; jrc-retail |\n| no_credit | failed_background; recovered_sugar; supplier_transfer | No avoided-production or recycling credit is claimed. Actual recovered sugar is a physical transfer with measured recipient/state and subsequent responsibility; it does not undo the original bag failure. Supplier transfers retain acknowledged continuing backgrounds. Normalize attributable raw totals once by N only after all within-pool attribution and revisions. A wholly zero-output pool is unnormalizable and disclosed; prospectively declared same-configuration pooling retains its entire burdens and never selects only selling periods. | ghg-product |\n| raw_attribution | containment_input; recovered_sugar; case_waste; film_waste; whole_bag_waste; sweep_waste | Assign direct sugar-parent events/carriers to their original pool. For a shared actual transport case/film, first weigh the exclusive whole discarded carrier, then allocate once by the declared SKU actual packed gross volume divided by the measured total packed gross volume of all original beneficiaries in that source case/consignment. Use actual dimensions and packed counts, not nominal sugar kg or sales value; retain failure/zero-sale parents. Reconcile fractions to one and carrier mass to measured totals. A dedicated sugar-containment bag/sweep carrier is direct; an actual mixture with other goods needs its own concrete flow/protocol and source-portion records before completion, not a hidden generic selector. Unknown source composition or zero/missing volume driver is unresolved. | jrc-retail; ghg-product |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 8
+              column: 1
+            end:
+              offset: 367
+              line: 8
+              column: 99
+          text: "# Incremental dry-stock retail service for factory-sealed 1 kg bags of white beet granulated sugar"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 21317
+              line: 266
+              column: 1
+            end:
+              offset: 21357
+              line: 266
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_37799"
+      family: "validation"
+      span:
+        start:
+          offset: 37799
+          line: 304
+          column: 1
+        end:
+          offset: 39199
+          line: 312
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | retail_service; failed_background | Require one actual homogeneous bag configuration, original measured fill/BOM/background evidence, final qualification and return-closure records, N>0, no O or unresolved final residual fate. Check the count parent partition and separate gross handover/return stock equation; do not confuse nominal kg with measured content or count service. | ghg-product; sugar-spec |\n| validate_exchange | all inventory rows | Every used card has one actual identity, declared provider/recipient boundary, unit, linked real-process protocol, original raw quantity, one attribution and one division by N. Audit complete carriers/constituents, supplier transfers and background ownership for overlap. Unknown or incompatible material/route requires a specific new card and sync, never substitution into a similar flow. | jrc-retail; ghg-product |\n| validate_disclosure | retail_service | Label every output as this partial dry-stock module, state all exclusions and unverified rows, and require the fixed completion matrix plus B_S/N before any complete retail or goods-plus-retail use. Candidate markers and technical checks do not establish scientific approval, legal compliance, current supplier identity or publication readiness. | ghg-product; jrc-retail |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 269
+              line: 8
+              column: 1
+            end:
+              offset: 367
+              line: 8
+              column: 99
+          text: "# Incremental dry-stock retail service for factory-sealed 1 kg bags of white beet granulated sugar"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 37799
+              line: 304
+              column: 1
+            end:
+              offset: 37821
+              line: 304
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "scope_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 6146
+          line: 68
+          column: 1
+        end:
+          offset: 6733
+          line: 68
+          column: 588
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "reference_ownership"
+      identity_kind: "explicit"
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 6734
+          line: 69
+          column: 1
+        end:
+          offset: 7662
+          line: 69
+          column: 929
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "goods_background"
+      identity_kind: "explicit"
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 7663
+          line: 70
+          column: 1
+        end:
+          offset: 9040
+          line: 70
+          column: 1378
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "terminal_carriers"
+      identity_kind: "explicit"
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 9041
+          line: 71
+          column: 1
+        end:
+          offset: 9954
+          line: 71
+          column: 914
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "completion_modules"
+      identity_kind: "explicit"
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 9955
+          line: 72
+          column: 1
+        end:
+          offset: 11093
+          line: 72
+          column: 1139
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "conditional_extension"
+      identity_kind: "explicit"
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 11094
+          line: 73
+          column: 1
+        end:
+          offset: 11570
+          line: 73
+          column: 477
+    - pointer: "/allocation_rules/0"
+      rule_id: "pool_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_21317"
+      source_span:
+        start:
+          offset: 21430
+          line: 270
+          column: 1
+        end:
+          offset: 22064
+          line: 270
+          column: 635
+    - pointer: "/allocation_rules/1"
+      rule_id: "completion_method"
+      identity_kind: "explicit"
+      unit_id: "normative_21317"
+      source_span:
+        start:
+          offset: 22065
+          line: 271
+          column: 1
+        end:
+          offset: 24389
+          line: 271
+          column: 2325
+    - pointer: "/allocation_rules/2"
+      rule_id: "no_credit"
+      identity_kind: "explicit"
+      unit_id: "normative_21317"
+      source_span:
+        start:
+          offset: 24390
+          line: 272
+          column: 1
+        end:
+          offset: 25016
+          line: 272
+          column: 627
+    - pointer: "/allocation_rules/3"
+      rule_id: "raw_attribution"
+      identity_kind: "explicit"
+      unit_id: "normative_21317"
+      source_span:
+        start:
+          offset: 25017
+          line: 273
+          column: 1
+        end:
+          offset: 25949
+          line: 273
+          column: 933
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_37799"
+      source_span:
+        start:
+          offset: 37894
+          line: 308
+          column: 1
+        end:
+          offset: 38321
+          line: 308
+          column: 428
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_exchange"
+      identity_kind: "explicit"
+      unit_id: "normative_37799"
+      source_span:
+        start:
+          offset: 38322
+          line: 309
+          column: 1
+        end:
+          offset: 38782
+          line: 309
+          column: 461
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_disclosure"
+      identity_kind: "explicit"
+      unit_id: "normative_37799"
+      source_span:
+        start:
+          offset: 38783
+          line: 310
+          column: 1
+        end:
+          offset: 39197
+          line: 310
+          column: 415
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 4960
+          line: 53
+          column: 1
+        end:
+          offset: 4981
+          line: 53
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4960"
+      source_span:
+        start:
+          offset: 5009
+          line: 57
+          column: 1
+        end:
+          offset: 6073
+          line: 64
+          column: 184
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_21317"
+      source_span:
+        start:
+          offset: 21317
+          line: 266
+          column: 1
+        end:
+          offset: 21357
+          line: 266
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_37799"
+      source_span:
+        start:
+          offset: 37799
+          line: 304
+          column: 1
+        end:
+          offset: 37821
+          line: 304
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:74836b4604d0b3a01b87b6b0b55500d61998742bd55b6c0acb78ff8a660f6710"
+  generated_content_sha256: "sha256:22b0d32cd510d13ec2ab1c99b8cae78f85356cf8a85bbdbbf70e4d6d814b1d5e"

@@ -1,10 +1,1747 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "62112"
-  title: "Non-specialized store retail trade services, of flowers and plants"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-flowers-and-plants"
+  classification_refs: "CPC 3.0 62112; narrower: nursery-potted ornamental plants only"
+  covered_products: "Retail handover service for one sale-ready living ornamental plant in its original nursery pot; no transformation"
+  excluded_products: "Cut flowers, seeds, medicinal plants, specialist-store sales, online/home-delivery services, cultivation, repotting, fertilizer/pesticide treatment, dedicated refrigerated display, combustion heating and refrigeration equipment within the allocated retail zone; sold plant production is coupled separately under boundary rules"
+  representative_product: "In-store retail handover service for one nursery-potted ornamental plant"
+  production_route: "Accepted stocked nursery pot → non-specialized store holding/manual watering → customer handover → return-window closure; electrically heated/ventilated or naturally conditioned zone only"
+  market_state: "Living, sale-ready plant in the same nursery pot; species, health grade, pot volume, substrate and actual holding duration declared"
+functional_unit:
+  what: "In-store retail handover service for one nursery-potted ornamental plant"
+  how_much: "One completed service for one plant of the declared homogeneous SKU; a multi-plant sale yields that many services"
+  how_well: "Contractually accepted species, grade, pot and health state; reversed sales are not qualified output"
+  how_long_or_cycle: "Receipt through handover, including the declared contractual return window; no consumer growing-life promise"
+  reference_flow_link: "retail_service"
+system_boundary:
+  rules:
+    - rule_id: b_goods
+      applies_to: "loss_plant"
+      rule: "Include receiving-gate production and inbound transport for B = L + F unique plants without final qualified sale, once via loss_plant. L is actual on-site loss; F is final unqualified outward custody, not automatic waste. Downstream adds sold-plant receiving-gate backgrounds only for unique plants finally sold with N; surviving F plants carry an explicit already-accounted production flag if used in another model, avoiding a second identical production claim. Supplier returns retain their production with returned stock; retailer-controlled handling and return transport remain in the service. An unresolved final fate prevents closure."
+      source_ids:
+        - unsd-cpc62112
+        - ghg-product-standard
+    - rule_id: b_closure
+      applies_to: "cp_cohort"
+      rule: "Close each original receipt cohort after physical fates and acceptance/return windows are resolved. Physical customer returns and financial POS reversals are separate events linked to original plant identity; neither is inferred from the other. A goodwill refund alone does not cancel a retained qualified acceptance. A cancelled unreturned or unaccepted outward plant is F, not L. Repeated return/resale events remain in the same identity history: only its final accepted retained sale contributes N, while all failed effort remains. Include every predeclared receipt-period cohort including zero-sale/all-loss cohorts. Late physical returns require correction/reopening of prior closure, never an unrelated new zero-burden receipt. When a late return reopens the original cohort, retain actual activity dates and add all subsequent transport back, care, checkout/resale and treatment to that original cohort numerator as well as correcting N/L/F/S. In each actual activity-period meter/service pool, the reopened original cohort remains an explicit beneficiary even if it has no new receipts that period. Revise the original cohort dataset with versioned adjustments, and reconcile the current-period totals; do not charge the same activities to a new receipt cohort."
+      source_ids:
+        - unsd-cpc62112
+        - ghg-product-standard
+    - rule_id: b_scope
+      applies_to: "holding; sale; residual"
+      rule: "Include unloading/handling, holding, watering, seasonal electric conditioning, checkout, wrapping, failed sales, floor cleaning, attributed premises/equipment lifecycle use and residual treatment. Exclude customer travel/use, cultivation, chemical treatment and other declared excluded routes. Where an excluded route occurs, this PCR is not sufficient: stop completion and select appropriate additional methodology; never silently omit it."
+      source_ids:
+        - unsd-cpc62112
+        - ghg-product-standard
+    - rule_id: b_split
+      applies_to: "all inventory rows"
+      rule: "Utilities supplied to the zone and physical consumables are separate exchanges. The defined premises service includes building fabric and fixed installation manufacture, maintenance and retirement only, excluding utilities, cleaning, checkout terminal and movable racks. Purchased checkout/cleaning services include only their explicitly contracted operations; subtract their included utility/material shares from other rows. Cleaning labour and physical quantities follow split_exchange_identity and cannot remain contained in checkout or premises backgrounds. Retain premises and checkout only as a genuine homogeneous use service with same-property service quantity, complete provider background and actual contract evidence; add cards for all actual uncovered resources."
+      source_ids:
+        - unsd-cpc62112
+        - ghg-product-standard
+    - rule_id: b_waste
+      applies_to: "residual"
+      rule: "Track the complete discarded plant/substrate/original-pot stream once when these remain physically combined. If separated, replace that stream by measured individual streams and preserve a mass reconciliation. Send wastewater and solid streams to actual recipient treatment datasets once; do not add the carrier and its included constituents twice. No default biogenic uptake, respiration credit, avoided disposal or recycling credit is allowed."
+      source_ids:
+        - ghg-product-standard
+    - rule_id: split_exchange_identity
+      applies_to: "all inventory rows"
+      rule: "Each card has exactly one concrete exchange identity and one reference measurement property/unit; a unit group is not a second property, and auxiliary measurements are conversion evidence only. Labour cards no longer carry bundled materials/energy/equipment/wastes. Retained complete homogeneous assets, original packaged goods and real mixed waste carriers require matching actual whole-scope background/receiver treatment and full composition; heterogeneous collections or selectors are prohibited. An original exchange enters one core card or one split source only; reverse all old package characterization when replacing it and combine only disjoint raw quantities with identical identity/property/unit. Every other actual substance, part, fuel, refrigerant, emission and treatment gap requires a named bilingual card and process protocol; unknown is never zero or complete."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Plants accepted at the store receiving gate in original nursery pots; purchased utilities and retail consumables at their delivery gates"
+  starting_condition_role: "Retail-service foreground starting condition; no implied zero-burden lost merchandise"
+  product_classification_scope: "Narrow subset of CPC 62112; all non-potted/cut-flower/seed and other routes excluded"
+  recursive_input_rule: "A purchased same-category retail service is a separate supplier input only for a distinct documented operation. Do not recursively count this own service output or reclassify internal stock transfers as purchased service."
+  upstream_dataset_requirement: "Use supply/production backgrounds for utilities, consumables, facility/equipment use, waste destinations and lost complete potted plants. Lost-plant background must reach the actual store receiving gate, including the corresponding inbound transport."
+  disclosure: "Partial retail-service dataset: qualifying sold plants and their pre-receipt production/transport must be added by the downstream goods-plus-service model; plants without qualified final sale (B=L+F) are already included in this service. Report closure, coverage and excluded routes."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "In-store retail handover service for one nursery-potted ornamental plant"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "species/cultivar"
+    - SKU
+    - "plant size/health grade"
+    - "pot material/volume"
+    - substrate
+    - "receipt gate"
+    - "store/channel"
+    - "cohort/season"
+    - "holding days"
+    - "watering method"
+    - "thermal regime"
+    - "accepted handover"
+    - "return window"
+    - "loss-background boundary"
+    - packaging
+    - "allocation drivers"
+reference_flows:
+  []
+measurement_rules:
+  - id: m_count
+    applies_to: "retail_service"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "N is the number of final non-reversed accepted one-plant handovers in closed receipt cohorts. A cancelled or reversed sale, refusal, internal transfer and disposal do not increase N. N must be positive."
+  - id: m_normalize
+    applies_to: "all inventory rows except retail_service"
+    required_property_ref:
+      name: "Preserve each row property"
+      uuid: ""
+    required_unit: "row unit"
+    rule: "Q_i is the attributed total exchange in the original row unit for the closed cohorts, before normalization. Report q_i = Q_i / N once. Internal handling and watering quantities are measured, never fixed to N."
+  - id: m_convert
+    applies_to: "electricity; water; waste"
+    required_property_ref:
+      name: "Energy; volume; mass"
+      uuid: ""
+    required_unit: "MJ; m3; kg"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh; convert L to m3 using 0.001. Do not convert plant counts to kg without measured same-configuration complete-pot masses, or infer wastewater volume from water input. Weigh residuals as received and record moisture/tare."
+  - id: split_labour_time
+    applies_to: "cleaning"
+    required_property_ref:
+      name: "Time"
+      uuid: ""
+    required_unit: "h"
+    rule: "Use signed actual purchased labour hours only; order counts, area and asset counts cannot replace h. Materials, energy, tools, travel and wastes are independent exchanges. In-house hours are QA only, with no invented purchased exchange; normalize attributed hours once by the original final reference denominator."
+  - id: selected_energy_identity
+    applies_to: "split_support_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "kWh"
+    rule: "The selected AC identity has one reference energy property. Keep actual attributed quantities in the row unit;1kWh=3.6MJ in its unit group. Convert once before combining with a source expressed in another energy unit or supplying the reference-MJ exchange; never convert the same numerator twice or infer a supplier mix."
+process_map:
+  - id: holding
+    name: "Receiving and holding"
+    inclusion: "required"
+    inclusion_condition: "All selected closed cohorts"
+    role: "retail foreground"
+    quantitative_reference: "retail_service"
+  - id: sale
+    name: "Checkout and handover"
+    inclusion: "required"
+    inclusion_condition: "All selected closed cohorts"
+    role: "retail foreground"
+    quantitative_reference: "retail_service"
+  - id: residual
+    name: "Residual management"
+    inclusion: "required"
+    inclusion_condition: "All selected closed cohorts"
+    role: "retail foreground"
+    quantitative_reference: "retail_service"
+  - id: split_support
+    name: "Separate physical exchanges of cleaning or maintenance"
+    inclusion: "conditional"
+    inclusion_condition: "Actual occurrence; prove presence or absence for each exchange"
+    role: "Disjoint resources, equipment and waste"
+    quantitative_reference: "retail_service"
+process_inventory:
+  - id: holding
+    label: "Receiving and holding"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Attributed retail-zone electricity"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "3.6 * E_kWh / N, where E_kWh is direct plus attributed holding/check-out electric use after removing utilities included in services. Record natural/electric heating, fans, humidity-control operation and seasonal coverage; dedicated refrigeration/combustion is outside this route."
+          amount:
+            expression: "3.6 * E_kWh / N, where E_kWh is direct plus attributed holding/check-out electric use after removing utilities included in services. Record natural/electric heating, fans, humidity-control operation and seasonal coverage; dedicated refrigeration/combustion is outside this route."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - isu-houseplant-care
+            ranges: []
+        - row_id: water
+          role: "Water supplied for manual plant care"
+          name: "Municipal tap water supplied to the retail holding zone"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "W_m3 / N; W_m3 is municipal fresh water crossing the retail boundary, determined by exactly one declared fresh-water calculation method. An external-supply meter already excludes internal reuse, so never subtract reuse again. Drainage D is measured independently."
+          amount:
+            expression: "W_m3 / N; W_m3 is municipal fresh water crossing the retail boundary, determined by exactly one declared fresh-water calculation method. An external-supply meter already excludes internal reuse, so never subtract reuse again. Drainage D is measured independently."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - isu-houseplant-care
+            ranges: []
+        - row_id: loss_plant
+          role: "Receiving-gate background of plants without qualified final sale"
+          name: "Living ornamental plant in original nursery pot of the declared SKU at store receipt"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "B / N; B = L + F. L is unique original pots irreversibly lost on site; F is unique original pots finally leaving custody without qualified accepted sale, including refunded-without-physical-return, unaccepted external handover and donation. Include their receiving-gate production and inbound transport once. F is not presumed waste or dead plant. Supplier returns S retain production with returned goods."
+          amount:
+            expression: "B / N; B = L + F. L is unique original pots irreversibly lost on site; F is unique original pots finally leaving custody without qualified accepted sale, including refunded-without-physical-return, unaccepted external handover and donation. Include their receiving-gate production and inbound transport once. F is not presumed waste or dead plant. Supplier returns S retain production with returned goods."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cohort
+              source_ids: []
+            ranges: []
+        - row_id: premises
+          role: "Attributed retail premises lifecycle service"
+          name: "Retail premises occupancy service"
+          flow_type: "product"
+          property_unit: "Area multiplied by time / m2*a"
+          description: "A_year / N; measured occupied area-time after shared-pool allocation, with building/fixed installation lifecycle coverage under b_split; 1 a is the declared accounting year duration."
+          amount:
+            expression: "A_year / N; measured occupied area-time after shared-pool allocation, with building/fixed installation lifecycle coverage under b_split; 1 a is the declared accounting year duration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-standard
+            ranges: []
+        - row_id: rack
+          role: "Allocated movable steel display rack"
+          name: "Steel retail display rack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R_kg / N; R_kg is the measured complete-rack mass at manufacturing gate times cohort attributed occupied area-hours divided by total actual rack service-life occupied area-hours. The background stops at manufacturing gate. Repairs and retirement are separate actual events under a_maintenance and cp_assets; never add repair mass to complete-rack manufacturing mass."
+          amount:
+            expression: "R_kg / N; R_kg is the measured complete-rack mass at manufacturing gate times cohort attributed occupied area-hours divided by total actual rack service-life occupied area-hours. The background stops at manufacturing gate. Repairs and retirement are separate actual events under a_maintenance and cp_assets; never add repair mass to complete-rack manufacturing mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-standard
+            ranges: []
+        - row_id: watering_can
+          role: "Allocated HDPE watering can"
+          name: "HDPE watering can"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "K_kg / N; K_kg is the measured complete HDPE can mass at manufacturing gate times cohort delivered watering volume divided by its documented lifetime delivered volume. The background excludes repair and retirement. Record each repair independently and retire the complete can once; no repair mass masquerades as new complete-can mass."
+          amount:
+            expression: "K_kg / N; K_kg is the measured complete HDPE can mass at manufacturing gate times cohort delivered watering volume divided by its documented lifetime delivered volume. The background excludes repair and retirement. Record each repair independently and retire the complete can once; no repair mass masquerades as new complete-can mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - ghg-product-standard
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: sale
+    label: "Checkout and handover"
+    inputs:
+      product:
+        - row_id: checkout
+          role: "Checkout terminal lifecycle use"
+          name: "Checkout terminal use service"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "T_h / N; logged terminal use including reversals. Background covers terminal manufacture, maintenance and retirement; electricity remains in electricity unless explicitly included and deducted."
+          amount:
+            expression: "T_h / N; logged terminal use including reversals. Background covers terminal manufacture, maintenance and retirement; electricity remains in electricity unless explicitly included and deducted."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_checkout
+              source_ids:
+                - ghg-product-standard
+            ranges: []
+        - row_id: kraft_wrap
+          role: "Kraft paper plant-pot wrapper"
+          name: "Kraft paper plant-pot wrapper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Q_kraft_wrap / N; actual consumed mass including failed wraps, net of unopened returns and stock change; record specification and fate. Only apply when used."
+          amount:
+            expression: "Q_kraft_wrap / N; actual consumed mass including failed wraps, net of unopened returns and stock change; record specification and fate. Only apply when used."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pp_sleeve
+          role: "Polypropylene plant sleeve"
+          name: "Polypropylene plant sleeve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Q_pp_sleeve / N; actual consumed mass including failed wraps, net of unopened returns and stock change; record specification and fate. Only apply when used."
+          amount:
+            expression: "Q_pp_sleeve / N; actual consumed mass including failed wraps, net of unopened returns and stock change; record specification and fate. Only apply when used."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: paper_tag
+          role: "Paper plant identification tag"
+          name: "Paper plant identification tag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Q_paper_tag / N; weigh actual retail-added identification tags issued to plants, including misprinted/replaced tags, net of unused stock and returns. Nursery-attached tags already in plant background are excluded from this new input."
+          amount:
+            expression: "Q_paper_tag / N; weigh actual retail-added identification tags issued to plants, including misprinted/replaced tags, net of unused stock and returns. Nursery-attached tags already in plant background are excluded from this new input."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retail_service
+          role: "In-store retail handover service for one nursery-potted ornamental plant"
+          name: "In-store retail handover service for one nursery-potted ornamental plant"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "1 Item(s)"
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cohort_sale
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: residual
+    label: "Residual management"
+    inputs:
+      product:
+        - row_id: cleaning
+          role: "Retail floor-cleaning labour only"
+          name: "Retail floor-cleaning labour only"
+          flow_type: "product"
+          property_unit: "Time / h"
+          description: "Actual purchased labour hours only; excludes materials, equipment lifecycle, electricity, travel, wastes and treatment. For in-house work retain hours as QA but do not invent a purchased service exchange. Record physical exchanges independently in split_support or named extensions, deduplicating existing cards."
+          amount:
+            expression: "Measured exclusive or once-attributed purchased labour h / N; cp_split_labour_residual."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_labour_residual
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: drainage
+          role: "Collected plant-care drainage"
+          name: "Pot-plant watering drainage sent to sewer"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "D_m3 / N; separately measure collected discharge and identify receiving sewer/treatment. Do not equate supplied water with discharge; retention, evaporation and return water are reconciled separately."
+          amount:
+            expression: "D_m3 / N; separately measure collected discharge and identify receiving sewer/treatment. Do not equate supplied water with discharge; retention, evaporation and return water are reconciled separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_residual
+              source_ids:
+                - isu-houseplant-care
+            ranges: []
+        - row_id: dead_pot
+          role: "Discarded complete nursery-potted ornamental plant"
+          name: "Discarded complete nursery-potted ornamental plant"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_dead_pot / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. Whole-pot mass includes plant, substrate and pot only when discarded together; never add those components again."
+          amount:
+            expression: "Q_dead_pot / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. Whole-pot mass includes plant, substrate and pot only when discarded together; never add those components again."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids: []
+            ranges: []
+        - row_id: plant_trim
+          role: "Removed ornamental-plant leaf trimming"
+          name: "Removed ornamental-plant leaf trimming"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_plant_trim / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. No quantity is inferred from final service count."
+          amount:
+            expression: "Q_plant_trim / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. No quantity is inferred from final service count."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids: []
+            ranges: []
+        - row_id: waste_paper
+          role: "Waste kraft paper wrapping"
+          name: "Waste kraft paper wrapping"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_waste_paper / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. No quantity is inferred from final service count."
+          amount:
+            expression: "Q_waste_paper / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. No quantity is inferred from final service count."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids: []
+            ranges: []
+        - row_id: waste_pp
+          role: "Waste polypropylene plant sleeve"
+          name: "Waste polypropylene plant sleeve"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_waste_pp / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. No quantity is inferred from final service count."
+          amount:
+            expression: "Q_waste_pp / N; weigh this actual stream separately with tare and as-discarded moisture/state, record recipient, transport and treatment. No quantity is inferred from final service count."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids: []
+            ranges: []
+        - row_id: waste_tag
+          role: "Waste retail-added paper identification tag"
+          name: "Waste paper plant identification tag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_waste_tag / N; separately weigh failed/removed retail-added paper tags at discard; nursery-supplied tags in whole-pot waste are already included there."
+          amount:
+            expression: "Q_waste_tag / N; separately weigh failed/removed retail-added paper tags at discard; nursery-supplied tags in whole-pot waste are already included there."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual
+              source_ids: []
+            ranges: []
+        - row_id: rack_retirement
+          role: "Discarded complete steel retail display rack"
+          name: "Discarded complete steel retail display rack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_rack_retirement / N; weigh the actual retired complete asset once, excluding components already removed in repairs. Attribute its retirement transport/treatment by the same documented lifetime beneficiary shares as its manufacturing input; manufacturing backgrounds must not already include this retirement."
+          amount:
+            expression: "Q_rack_retirement / N; weigh the actual retired complete asset once, excluding components already removed in repairs. Attribute its retirement transport/treatment by the same documented lifetime beneficiary shares as its manufacturing input; manufacturing backgrounds must not already include this retirement."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets_residual
+              source_ids: []
+            ranges: []
+        - row_id: can_retirement
+          role: "Discarded complete HDPE watering can"
+          name: "Discarded complete HDPE watering can"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Q_can_retirement / N; weigh the actual retired complete asset once, excluding components already removed in repairs. Attribute its retirement transport/treatment by the same documented lifetime beneficiary shares as its manufacturing input; manufacturing backgrounds must not already include this retirement."
+          amount:
+            expression: "Q_can_retirement / N; weigh the actual retired complete asset once, excluding components already removed in repairs. Attribute its retirement transport/treatment by the same documented lifetime beneficiary shares as its manufacturing input; manufacturing backgrounds must not already include this retirement."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets_residual
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: split_support
+    label: "Separate physical exchanges of cleaning or maintenance"
+    inputs:
+      product:
+        - row_id: split_cleaning_wipe
+          role: "Dry unimpregnated cellulose cleaning wipe"
+          name: "Dry unimpregnated cellulose cleaning wipe"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual first-used dry wipes of this composition; do not infer consumption from floor area or count wet used-wipe mass as supply. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaning_broom
+          role: "Complete manual polypropylene-bristle floor broom"
+          name: "Complete manual polypropylene-bristle floor broom"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "One homogeneous complete broom model, excluding replaceable consumables and operating energy; use its persistent lifetime beneficiary fraction once. Repairs are separate event exchanges. Manufacture/initial installation only; excludes maintenance and terminal treatment, which have independent actual exchanges. A packaging first-use quantity is not additionally multiplied by a tool exposure share. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured homogeneous complete-model count times its persistent lifetime beneficiary fraction once / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaning_water
+          role: "Potable mains water supplied to floor cleaning"
+          name: "Water, tap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c6fb2442-d527-4e3d-bf01-4c94ea2b71ec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Independent fresh-water import at the cleaning inlet; direct mass or measured volume times matching measured density. Exclude internal recirculation and water already in purchased formulation. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaning_sds
+          role: "Aqueous sodium dodecyl sulfate floor-cleaning formulation"
+          name: "Aqueous sodium dodecyl sulfate floor-cleaning formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional candidate only if the actual supplier/SDS confirms this single formulation. Measure as-supplied wet formulation mass, concentration and source lot; no prescribed chemical, default use or invented fraction. A different actual formulation requires its own named card before completeness. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaning_mop
+          role: "Complete reusable manual cotton-head floor mop"
+          name: "Complete reusable manual cotton-head floor mop"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "One fixed complete model and its original head/handle, using the persistent lifetime allocation once. Separately installed replacement heads need their own named event input/output cards. Manufacture/initial installation only; excludes maintenance and terminal treatment, which have independent actual exchanges. A packaging first-use quantity is not additionally multiplied by a tool exposure share. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured homogeneous complete-model count times its persistent lifetime beneficiary fraction once / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaner_bottle
+          role: "Complete empty HDPE-body cleaner bottle with polypropylene closure"
+          name: "Complete empty HDPE-body cleaner bottle with polypropylene closure"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional actual matching packaging configuration only. Manufacture/first use is separate from the formulation net wet mass; exclude this bottle manufacture from the formulation background or document source-level removal before adding it. Reuse uses an actual lifetime ledger. Other actual packaging needs a named card. Manufacture/initial installation only; excludes maintenance and terminal treatment, which have independent actual exchanges. A packaging first-use quantity is not additionally multiplied by a tool exposure share. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_support_electricity
+          role: "Alternating-current electricity for the identified support work"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Only measured support electricity not already characterized in any store/asset/provider row. Allocate a containing meter to disjoint intervals/sources; the same kWh cannot be added again. Record voltage/provider; no grid mix inferred. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label. The selected flow uses the single Net calorific value energy property. The inventory keeps its stated measured energy unit; Units of energy supports1kWh=3.6MJ. Apply this conversion once when expressing a kWh record in reference MJ, including compatible-source aggregation; retain the original kWh meter numerator and source attribution, without adding another electricity demand."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_support_travel
+          role: "Diesel light-commercial-vehicle operation for the identified support visit"
+          name: "Diesel light-commercial-vehicle operation for the identified support visit"
+          flow_type: "product"
+          property_unit: "Vehicle distance / vehicle*km"
+          description: "Conditional candidate for actual documented diesel light-commercial vehicle visits only, measured vehicle-km including actual empty repositioning. Match complete vehicle-operation background and all beneficiaries; other propulsion/vehicle modes require distinct cards. Do not also add included fuel or movement from an existing transport/asset provider. Stationary idle energy absent from this provider needs its own named exchange. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: split_used_wipe
+          role: "Used cellulose cleaning wipe with retained retail-floor soil"
+          name: "Used cellulose cleaning wipe with retained retail-floor soil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure the actual dispatched whole carrier, including retained liquid/soil; document state and recipient acceptance. Exclude free liquid dispatched separately. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_sweepings
+          role: "Dry retail-floor sweepings at the actual waste handoff"
+          name: "Dry retail-floor sweepings at the actual waste handoff"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One physically collected mixed solid carrier with recorded constituents and compatible treatment; not a sum of separate waste categories. Exclude independently dispatched wipes and retired tools. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_broom_waste
+          role: "Retired complete manual polypropylene-bristle floor broom"
+          name: "Retired complete manual polypropylene-bristle floor broom"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whole residual broom after prior removed parts; measured terminal net mass uses the same persistent lifetime beneficiary history as its acquisition. No duplicate constituent wastes. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaning_effluent
+          role: "Collected aqueous retail-floor cleaning effluent at treatment handoff"
+          name: "Collected aqueous retail-floor cleaning effluent at treatment handoff"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Directly measure actual whole-liquid dispatch net kg or V_discharge*rho_discharge at matched temperature/composition. Do not subtract evaporation, reuse or stock from a directly measured discharge. Dissolved detergent is composition of this carrier, not another waste exchange. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_mop_waste
+          role: "Retired complete manual cotton-head floor mop with retained soil"
+          name: "Retired complete manual cotton-head floor mop with retained soil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure the actual whole residual carrier after prior removals; retain moisture/state and complete recipient treatment scope. Attribute retirement over the same asset history, not only the retirement-period sales. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+        - row_id: split_cleaner_bottle_waste
+          role: "Used HDPE-body cleaner bottle with polypropylene closure and retained formulation residue"
+          name: "Used HDPE-body cleaner bottle with polypropylene closure and retained formulation residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual whole carrier dispatched with closure/residue only if the receiver accepts its measured composition/state; no duplicate residue or cap waste. Direct net kg is independent of original wet formulation kg. Reusable returns need a distinct custody route, not automatic waste. Only actual identified physical exchanges are active. A candidate here does not establish occurrence, chemical composition, supplier scope or UUID. Before completeness, inspect the actual work order, purchases, equipment and dispatch records; prove absence or bind this exact identity and add a separate bilingual card for every other actual substance, component, fuel, refrigerant, carrier or emission. Never replace an unknown exchange with an aggregate label."
+          amount:
+            expression: "Measured exclusive or once-attributed raw quantity of this exact exchange / N; cp_split_support."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_split_support
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_direct
+    applies_to: "all inventory rows"
+    rule: "First subdivide/submeter the SKU holding zone and checkout operation. Assign measured SKU-specific water, wrapping and loss directly. Retain burdens of spoiled stock and failed sales in the SKU cohort; do not allocate them to an imaginary saleable coproduct."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: a_shared
+    applies_to: "electricity; premises; rack; checkout; cleaning"
+    rule: "Subdivide/submeter first. For residual holding/premises/rack pools use actual occupied area-hours of every beneficiary in that same pool and period, so d_all is the sum of actual all-beneficiary drivers, not full-floor theoretical capacity. Retain idle, closed-store and empty-display burdens in the pool and allocate to the period beneficiaries by these shares. Checkout pools use all beneficiary transaction seconds including failed and reversal operations; cleaning uses actual beneficiary cleaned area-events. For a zero-driver interval, carry its unavoidable availability/standby burden into the same asset/zone documented operating-cycle pool and allocate over that complete cycle, including off-season and zero-sale cohorts. Predeclare cycle dates, retain every interval and reconcile all allocated shares to the complete measured pool. If the full cycle still has no beneficiary driver, or recorded drivers are not causally representative, do not invent a denominator or discard load: report the pool unresolved and block complete dataset status. This common-pool attribution does not multiply the complete rack/can manufacturing or retirement quantities: those use exactly one lifetime share under a_asset_ledger. The asset protocol aggregation and card equations describe that same single attribution, not a second multiplication."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: a_assets
+    applies_to: "rack; watering_can; premises; checkout"
+    rule: "For complete steel rack and HDPE can inputs use manufacturing-gate measured complete-asset mass only, with their documented actual lifetime beneficiary shares. Do not include repair mass or retirement in that manufacturing input/background. Whole-asset retirement is a distinct measured waste output attributed with the same lifetime shares. Missing asset mass/lifetime/service quantities prevent completion; no invented defaults. Premises and checkout service lifecycle boundaries remain explicit and must not include these movable assets."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: a_maintenance
+    applies_to: "rack; watering_can; rack_retirement; can_retirement"
+    rule: "Each actual repair is a separately dated event with actual replacement component/material, work, energy and removed-part waste identities, quantities and supplier gate. Before completing an affected dataset, add each concrete exchange independently and exclude amounts already inside a complete purchased repair service. Attribute that event once to all beneficiaries in the documented maintenance accounting cycle using the repaired asset driver and the idle/zero-driver rule; do not spread it over the original asset entire lifetime or merge it into complete-asset mass. Multiple repairs remain multiple traceable events."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: a_asset_ledger
+    applies_to: "rack; watering_can; rack_retirement; can_retirement"
+    rule: "Maintain one persistent ledger per physical asset id across all periods and all beneficiaries, including reopened cohorts. For rack use lifetime occupied area-hours; for can use lifetime delivered watering volume. Each cohort receives one fraction f_asset,cohort of complete manufacturing mass and one corresponding fraction of actual whole-asset retirement. Posting is by delta against previously posted quantities: never restart full manufacturing/retirement burden when period or service-life estimate changes. Cumulative fractions across all beneficiaries must remain within 0..1; a final retired asset reconciles to1. Keep numerator, lifetime denominator, prior/new lifetime version, cumulative posted fraction, correction delta and recipient cohort. A revised lifetime triggers explicit reversal/reposting of affected prior cohorts, with conserved full asset mass. Replacement uses a new physical asset id; retirement subtracts parts already removed and retains actual transport/treatment. Unknown future/lifetime support remains unresolved, not a fresh allocation baseline. The cp_assets aggregation and rack/can card formulas are views of this one ledger calculation; do not apply c_shared again."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: split_attribution
+    applies_to: "cleaning; split_cleaning_wipe; split_cleaning_broom; split_used_wipe; split_sweepings; split_broom_waste; split_cleaning_water; split_cleaning_sds; split_cleaning_mop; split_cleaning_effluent; split_mop_waste; split_cleaner_bottle; split_cleaner_bottle_waste; split_support_electricity; split_support_travel"
+    rule: "Prefer exclusive direct measurements. For shared cleaning events attribute each raw physical quantity by actual cleaned area-events across all beneficiaries; for maintenance use the repaired asset physical driver over all beneficiaries of the actual supported work-order cycle. Retain idle, failed, closed and zero-driver loads and their original carryover rules, never discard them using sales. New tool manufacture/retirement uses persistent lifetime ledgers and historical revision deltas; installed replacement parts are charged once to their actual maintenance event, not again as an original whole-asset acquisition. Do not reapply a share to an already-attributed source or charge terminal tools only to the retirement period. Remove any contained quantity from its old background or replace the entire package with this split; never characterize both."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_cohort
+      process_id: "holding"
+      flow_role: "loss_plant"
+      record_type: "Cohort ledger"
+      raw_fields: "original plant/lot id; receipt gate/cohort; SKU/species/pot; physical receipt/return/outward timestamps; gross physical handovers; POS sale/reversal/refund event ids and amounts; accepted final retained sale N; on-site irreversible loss L; unqualified final external fate F; supplier return S; stock/transfer counts; final receiver/fate; production-accounted flag; return-window dates; reopened original cohort; late-return actual activity dates; care/transport/resale/treatment adjustment ids; original and revised dataset version"
+      collection_method: "Trace the same original plant through every physical and financial event separately; match proof of custody, contractual acceptance, POS/refund and fate evidence. A refund is not evidence of physical return or death. Obtain receiving-gate backgrounds for L and F and record whether a recipient background has already been charged."
+      unit: "Item(s)"
+      frequency: "Each event and cohort closure"
+      temporal_coverage: "Receipt through final fate and return-window closure; representative full operating seasons"
+      site_scope: "One SKU, actual store gate and its retained cohorts"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Stocktakes, POS receipts, refunds, loss photos, supplier gates and delivered-plant background Shared underlying record family: cp_cohort. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_cohort_sale
+      process_id: "sale"
+      flow_role: "retail_service"
+      record_type: "Cohort ledger"
+      raw_fields: "original plant/lot id; receipt gate/cohort; SKU/species/pot; physical receipt/return/outward timestamps; gross physical handovers; POS sale/reversal/refund event ids and amounts; accepted final retained sale N; on-site irreversible loss L; unqualified final external fate F; supplier return S; stock/transfer counts; final receiver/fate; production-accounted flag; return-window dates; reopened original cohort; late-return actual activity dates; care/transport/resale/treatment adjustment ids; original and revised dataset version"
+      collection_method: "Trace the same original plant through every physical and financial event separately; match proof of custody, contractual acceptance, POS/refund and fate evidence. A refund is not evidence of physical return or death. Obtain receiving-gate backgrounds for L and F and record whether a recipient background has already been charged."
+      unit: "Item(s)"
+      frequency: "Each event and cohort closure"
+      temporal_coverage: "Receipt through final fate and return-window closure; representative full operating seasons"
+      site_scope: "One SKU, actual store gate and its retained cohorts"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Stocktakes, POS receipts, refunds, loss photos, supplier gates and delivered-plant background Shared underlying record family: cp_cohort. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_energy
+      process_id: "holding"
+      flow_role: "electricity"
+      record_type: "Meter and activity log"
+      raw_fields: "meter id; start/end kWh; circuit; heating/fan/humidity operation; area-hours by SKU and all users; season; service-included kWh; complete all-beneficiary driver; idle/closed intervals; zero-driver carryover pool/cycle id"
+      collection_method: "Read calibrated submeter; where shared, reconcile whole meter and allocation drivers; observe installed equipment and fuel/refrigerant absence"
+      unit: "kWh"
+      frequency: "Daily meter/activity logs; monthly reconciliation"
+      temporal_coverage: "All retained cohorts and full seasonal operation"
+      site_scope: "Declared retail zone; no excluded thermal route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration, bills, circuit diagrams, equipment inspection and complete-user shares Shared underlying record family: cp_energy. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_water
+      process_id: "holding"
+      flow_role: "water"
+      record_type: "Water and drain log"
+      raw_fields: "SKU; species; soil condition; watering time; calibrated container/meter volume; source; collected drain; retained water; reuse; seasonal conditions; receiver; selected method (external_meter or application_reconstruction); municipal external meter start/end; source-resolved total applications/internal reused applications; net fresh-water storage change; pre-application fresh-water spills; supply-versus-application meter boundary water_source_id; parent_meter_id; event_id; row_owner; plant_water_m3; other_nonclean_water_m3; cleaning_water_m3; actual_supply_density; final_dispatch_direct_or_pre_diversion_reconstruction; measurement_plane; pre_diversion_quantity; reuse_diversion; direct_final_discharge"
+      collection_method: "Select exactly one fresh-water method for the same measured boundary/period. external_meter: read attributed external municipal import and do not subtract internal reuse. application_reconstruction: measure all applications by source, remove recorded internal-reuse applications once, and reconcile net fresh-water storage change and pre-application spills; unsupported corrections block completion. Never combine the two supply totals. Inspect species/moisture and record actual watering; measure collected drainage independently. Apply c_fresh_water source-to-row partition once, retaining exact parent and child quantities and density. Final discharge measurements do not receive another reuse subtraction under c_waste; distinguish an upstream reconstruction explicitly."
+      unit: "L; m3"
+      frequency: "Each watering/draining event"
+      temporal_coverage: "All cohort holding days, including unsold and returned plants"
+      site_scope: "Holding area and actual sewer destination"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Container calibration, water bills, moisture observations, discharge destination Shared underlying record family: cp_water. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_water_residual
+      process_id: "residual"
+      flow_role: "drainage"
+      record_type: "Water and drain log"
+      raw_fields: "SKU; species; soil condition; watering time; calibrated container/meter volume; source; collected drain; retained water; reuse; seasonal conditions; receiver; selected method (external_meter or application_reconstruction); municipal external meter start/end; source-resolved total applications/internal reused applications; net fresh-water storage change; pre-application fresh-water spills; supply-versus-application meter boundary water_source_id; parent_meter_id; event_id; row_owner; plant_water_m3; other_nonclean_water_m3; cleaning_water_m3; actual_supply_density; final_dispatch_direct_or_pre_diversion_reconstruction; measurement_plane; pre_diversion_quantity; reuse_diversion; direct_final_discharge"
+      collection_method: "Select exactly one fresh-water method for the same measured boundary/period. external_meter: read attributed external municipal import and do not subtract internal reuse. application_reconstruction: measure all applications by source, remove recorded internal-reuse applications once, and reconcile net fresh-water storage change and pre-application spills; unsupported corrections block completion. Never combine the two supply totals. Inspect species/moisture and record actual watering; measure collected drainage independently. Apply c_fresh_water source-to-row partition once, retaining exact parent and child quantities and density. Final discharge measurements do not receive another reuse subtraction under c_waste; distinguish an upstream reconstruction explicitly."
+      unit: "L; m3"
+      frequency: "Each watering/draining event"
+      temporal_coverage: "All cohort holding days, including unsold and returned plants"
+      site_scope: "Holding area and actual sewer destination"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Container calibration, water bills, moisture observations, discharge destination Shared underlying record family: cp_water. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_assets
+      process_id: "holding"
+      flow_role: "premises; rack; watering_can"
+      record_type: "Asset lifecycle and occupancy log"
+      raw_fields: "asset id; manufacturing-gate complete-asset mass; all-beneficiary occupied area-hours; can lifetime/cohort watering volumes; actual service life; fixed-versus-movable coverage; each repair event/date/component/material/work/removed waste; repair-cycle beneficiaries; idle/closed intervals; retired mass/tare; recipient/transport/treatment; persistent asset id; all-period/all-beneficiary ledger; lifetime version; prior/new posted fraction; correction delta; replaced asset id; actual retirement"
+      collection_method: "Measure asset mass and actual service history; isolate manufacturing gate from maintenance and retirement. Log each repair independently, with actual component/material identities; weigh complete retired asset net of already removed parts. Retain idle intervals and all-beneficiary cycle evidence."
+      unit: "m2*a; kg"
+      frequency: "Asset change; occupancy daily"
+      temporal_coverage: "Full cohort and applicable asset life"
+      site_scope: "Complete facility user pool"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Plans, supplier lifecycle reports, scale certificates, repair and retirement records Shared underlying record family: cp_assets. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_assets_residual
+      process_id: "residual"
+      flow_role: "rack_retirement; can_retirement"
+      record_type: "Asset lifecycle and occupancy log"
+      raw_fields: "asset id; manufacturing-gate complete-asset mass; all-beneficiary occupied area-hours; can lifetime/cohort watering volumes; actual service life; fixed-versus-movable coverage; each repair event/date/component/material/work/removed waste; repair-cycle beneficiaries; idle/closed intervals; retired mass/tare; recipient/transport/treatment; persistent asset id; all-period/all-beneficiary ledger; lifetime version; prior/new posted fraction; correction delta; replaced asset id; actual retirement"
+      collection_method: "Measure asset mass and actual service history; isolate manufacturing gate from maintenance and retirement. Log each repair independently, with actual component/material identities; weigh complete retired asset net of already removed parts. Retain idle intervals and all-beneficiary cycle evidence."
+      unit: "m2*a; kg"
+      frequency: "Asset change; occupancy daily"
+      temporal_coverage: "Full cohort and applicable asset life"
+      site_scope: "Complete facility user pool"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Plans, supplier lifecycle reports, scale certificates, repair and retirement records Shared underlying record family: cp_assets. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_checkout
+      process_id: "sale"
+      flow_role: "checkout"
+      record_type: "Terminal event log"
+      raw_fields: "terminal; SKU transaction; start/end; cancellation/refund time; total all-user time; lifecycle contract; electricity inclusion; complete all-beneficiary driver; idle/closed intervals; zero-driver carryover pool/cycle id"
+      collection_method: "Timestamp checkout and reversal operations; obtain terminal lifecycle service scope"
+      unit: "s; h"
+      frequency: "Each transaction/reversal"
+      temporal_coverage: "All cohort sales and return window"
+      site_scope: "Terminal serving the declared SKU"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "POS timestamps, service contract and all-user reconciliation Shared underlying record family: cp_checkout. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_packaging
+      process_id: "sale"
+      flow_role: "kraft_wrap; pp_sleeve; paper_tag"
+      record_type: "Material stock and use log"
+      raw_fields: "each material specification; opening; purchases; unopened returns; closing; failed wrapping; product attachments; mass; recycling destination"
+      collection_method: "Weigh each concrete material separately; distinguish nursery-supplied tags/pots from additional retail inputs"
+      unit: "kg"
+      frequency: "Each SKU batch and monthly stocktake"
+      temporal_coverage: "Same closed cohorts"
+      site_scope: "Retail-added packaging only"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Scales, invoices, stocktake and nursery bill of materials Shared underlying record family: cp_packaging. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_cleaning
+      process_id: "residual"
+      flow_role: "cleaning"
+      record_type: "Cleaning original-source QA ledger"
+      raw_fields: "cleaned area; event; contract; utilities/materials/waste included; allocation area-events; in-house chemical identities if any; complete all-beneficiary driver; idle/closed intervals; zero-driver carryover pool/cycle id"
+      collection_method: "Reconcile original contract and actual events; labour h uses cp_split_labour_residual, physical quantities use cp_split_support. Cleaned area-events are all-beneficiary attribution drivers, not exchange quantities."
+      unit: "h; area-events as driver only"
+      frequency: "Each cleaning event and contract change"
+      temporal_coverage: "All cohort holding and closure operations"
+      site_scope: "Affected store area only"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Cleaning logs, provider boundary and utility deductions Shared underlying record family: cp_cleaning. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_residual
+      process_id: "residual"
+      flow_role: "dead_pot; plant_trim; waste_paper; waste_pp; waste_tag"
+      record_type: "Residual transfer record"
+      raw_fields: "stream; cohort; count; gross/tare mass; composition; moisture; separation; recipient; route/distance; treatment; sale/reuse status; unique consignment"
+      collection_method: "Weigh each stream at dispatch, photograph whole-pot/separated condition, obtain recipient technology and transport evidence"
+      unit: "kg"
+      frequency: "Every discard/transfer"
+      temporal_coverage: "All cohort fates including closure"
+      site_scope: "Retail boundary through actual residual treatment"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Weigh tickets, receiver permits/records, manifests and waste background boundaries Shared underlying record family: cp_residual. This process-scoped view is not an additional physical quantity or burden."
+    - protocol_id: cp_split_labour_residual
+      process_id: "residual"
+      flow_role: "cleaning"
+      record_type: "Separate raw-exchange ledger"
+      raw_fields: "event_id; source_id; occurrence/absence evidence; exact substance/model; actual composition/SDS; reference property; unit; raw quantity; original denominator; labour start/end; meter interval/containment; density/temperature; whole-carrier net mass; receiver/treatment scope; tool asset_ID; original/replacement part; lifetime/all historical beneficiaries; historical revision delta; all-beneficiary driver; direct/already-attributed status; old-package reversal; overlapping sources"
+      collection_method: "Verify actual supply and dispatch per event; use signed start/end labour records, measured material/waste weights, disjoint electricity meters and actual vehicle-route km. Resolve original denominator, composition, background, receiver/treatment and every beneficiary; apply split_attribution and c_split_quantity. A different actual formulation/model or additional emission requires an exact new card; never default to these candidates."
+      unit: "One property/unit per card"
+      frequency: "Every event and source revision"
+      temporal_coverage: "Original full source cycle and all beneficiary history"
+      site_scope: "Actual work order and disjoint site/provider gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Signed time, calibration, composition, deduplication and receipt evidence"
+    - protocol_id: cp_split_support
+      process_id: "split_support"
+      flow_role: "split_cleaning_wipe; split_cleaning_broom; split_used_wipe; split_sweepings; split_broom_waste; split_cleaning_water; split_cleaning_sds; split_cleaning_mop; split_cleaning_effluent; split_mop_waste; split_cleaner_bottle; split_cleaner_bottle_waste; split_support_electricity; split_support_travel"
+      record_type: "Separate raw-exchange ledger"
+      raw_fields: "event_id; source_id; occurrence/absence evidence; exact substance/model; actual composition/SDS; reference property; unit; raw quantity; original denominator; labour start/end; meter interval/containment; density/temperature; whole-carrier net mass; receiver/treatment scope; tool asset_ID; original/replacement part; lifetime/all historical beneficiaries; historical revision delta; all-beneficiary driver; direct/already-attributed status; old-package reversal; overlapping sources water_source_id; parent_meter_id; event_id; row_owner; plant_water_m3; other_nonclean_water_m3; cleaning_water_m3; actual_supply_density; final_dispatch_direct_or_pre_diversion_reconstruction; measurement_plane; pre_diversion_quantity; reuse_diversion; direct_final_discharge"
+      collection_method: "Verify actual supply and dispatch per event; use signed start/end labour records, measured material/waste weights, disjoint electricity meters and actual vehicle-route km. Resolve original denominator, composition, background, receiver/treatment and every beneficiary; apply split_attribution and c_split_quantity. A different actual formulation/model or additional emission requires an exact new card; never default to these candidates. Apply c_fresh_water source-to-row partition once, retaining exact parent and child quantities and density. Final discharge measurements do not receive another reuse subtraction under c_waste; distinguish an upstream reconstruction explicitly."
+      unit: "One property/unit per card"
+      frequency: "Every event and source revision"
+      temporal_coverage: "Original full source cycle and all beneficiary history"
+      site_scope: "Actual work order and disjoint site/provider gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Signed time, calibration, composition, deduplication and receipt evidence"
+  calculation_rules:
+    - id: c_can
+      applies_to: "watering_can"
+      rule: "K_kg = measured complete-can manufacturing-gate mass * cohort watering volume / documented lifetime watering volume. Repairs and retirement remain independent actual exchanges under a_maintenance and cp_assets."
+      inputs:
+        - cp_assets
+        - cp_water
+      output: "K_kg"
+      source_ids:
+        - ghg-product-standard
+    - id: c_normalize
+      applies_to: "all inventory rows except retail_service"
+      rule: "q_i = Q_i / N; Q_i is the final attributed cohort total in its row unit, N is qualified services from cp_cohort. Do not divide an already normalized background factor by N again."
+      inputs:
+        - Q_i
+        - N
+        - cp_cohort
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_energy
+      applies_to: "electricity"
+      rule: "Q_electricity = 3.6 * E_kWh; meter total equals direct plus all allocated users plus documented residual; residual is investigated, not erased."
+      inputs:
+        - E_kWh
+        - cp_energy
+      output: "Q_electricity"
+      source_ids:
+        - ghg-product-standard
+    - id: c_losses
+      applies_to: "loss_plant; retail_service"
+      rule: "B = L + F; Q_loss_plant = B; Q_retail_service = N; q_retail_service = 1 Item(s). N, L, F and S are mutually exclusive final states of unique original receipt identities under cp_cohort; no POS-only subtraction creates N or L."
+      inputs:
+        - B
+        - L
+        - F
+        - N
+        - S
+        - cp_cohort
+      output: "q_loss_plant; retail_service"
+      source_ids:
+        - ghg-product-standard
+    - id: c_shared
+      applies_to: "premises; checkout; cleaning; electricity"
+      rule: "Q_i = Q_direct_i + Q_complete_pool_i * d_SKU / sum(d_all_actual_beneficiaries). Include idle/off-season loads in the complete same-cycle pool under a_shared. Zero-driver intervals carry to that documented complete cycle; if its full denominator remains zero, status is unresolved and completion fails. All beneficiary allocations must sum to the full measured pool; then divide by N only once."
+      inputs:
+        - Q_direct_i
+        - Q_pool_i
+        - d_SKU
+        - d_all
+        - cp_assets
+        - cp_checkout
+        - cp_cleaning
+      output: "Q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_waste
+      applies_to: "drainage; dead_pot; plant_trim; waste_paper; waste_pp"
+      rule: "For each actual waste stream record measurement_mode, measurement plane and disjoint event IDs. final_dispatch_direct uses actual mass/volume at the final discharge gate; remove actual external collection-vessel tare once where applicable, NEVER subtract internal reuse, evaporation or storage again. pre_diversion_reconstruction applies only to an observed pre-diversion source total, subtracting evidenced actual internal-reuse diversion and other nonexport portions once in the same control volume; do not also enter the final outlet reading. Reconstruction is eligible only when final direct measurement is absent and diversion/stock evidence is complete. Modes are exclusive per source/period. Mass streams retain whole-carrier kg; volume streams retain the matching provider unit or convert with actual same-state whole-carrier density. Reconcile discharge, water-component and supply ledgers separately; unknown is not zero. Attribute and normalize once, matching treatment basis without another included composition/route fraction."
+      inputs:
+        - cp_water
+        - cp_residual
+        - measurement_mode
+        - measurement_plane
+        - pre_diversion_quantity
+        - reuse_diversion
+        - direct_final_discharge
+        - whole_carrier_density
+      output: "Q_stream"
+      source_ids:
+        - ghg-product-standard
+    - id: c_fresh_water
+      applies_to: "water"
+      rule: "Choose one mutually exclusive mode for the same boundary and period. external_meter: W_m3 = attributed external municipal meter imports; subtract no internal reuse. application_reconstruction: W_m3 = total recorded application volume - source-identified internal-reuse application volume + measured net fresh-water storage increase + measured fresh-water losses before application. Subtract reuse once only in this reconstruction; it is not a deduction from an external import meter. Include independently measured non-watering fresh-water uses once. Missing source/stock/spill reconciliation prevents completion rather than implying zero. Do not sum the two modes. D_m3 is independently measured actual discharge; W_m3 is not D_m3. The reconstructed or directly metered gross source total is BEFORE row ownership. Partition that total by original source/meter/event into disjoint plant-water, other non-cleaning fresh-water and cleaning-water portions, reconciling all portions to the parent. W_m3 on water is plant-water plus other non-cleaning portions ONLY; cleaning-water is represented only on split_cleaning_water in kg=its measured m3*actual supply-water density. A shared event receives one measured all-beneficiary attribution; already-attributed portions receive none again. Mixed-use unknown portions remain unresolved, never copied to both rows or deleted. Same source in m3 and kg is not disjoint."
+      inputs:
+        - cp_water
+        - method
+        - external_meter
+        - application_volumes
+        - internal_reuse
+        - storage_change
+        - spills
+        - water_source_id
+        - parent_meter_id
+        - row_owner
+        - plant_water_m3
+        - other_nonclean_water_m3
+        - cleaning_water_m3
+        - actual_supply_density
+      output: "W_m3"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_cohort
+      applies_to: "loss_plant"
+      rule: "Physical balance: opening+receipts+physical customer returns+transfers in = gross physical customer handovers+supplier returns+on-site losses+other physical outward transfers+transfers out+closing. POS reversals are not physical balance entries. After internal transfer elimination, a closed original-plant cohort must satisfy unique received plants = N+L+F+S, with closing=0 and each original identity in one final state. Derive N from final retained acceptance, not gross handovers minus financial reversals. B=L+F. Repeated physical return/resale does not create another original production. Late returns revise both fate counts and all subsequent actual numerator activities of the original cohort; preserve actual period and current-pool beneficiary reconciliation, without creating a duplicate new cohort. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_cohort
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_cohort_sale
+      applies_to: "retail_service"
+      rule: "Physical balance: opening+receipts+physical customer returns+transfers in = gross physical customer handovers+supplier returns+on-site losses+other physical outward transfers+transfers out+closing. POS reversals are not physical balance entries. After internal transfer elimination, a closed original-plant cohort must satisfy unique received plants = N+L+F+S, with closing=0 and each original identity in one final state. Derive N from final retained acceptance, not gross handovers minus financial reversals. B=L+F. Repeated physical return/resale does not create another original production. Late returns revise both fate counts and all subsequent actual numerator activities of the original cohort; preserve actual period and current-pool beneficiary reconciliation, without creating a duplicate new cohort. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_cohort_sale
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_energy
+      applies_to: "electricity"
+      rule: "Sum direct kWh plus shared pool times area-hour share; remove double-counted service energy; convert once Include idle and zero-driver intervals under a_shared and reconcile the complete pool, never theoretical empty-capacity shares. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_energy
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_water
+      applies_to: "water"
+      rule: "Determine W_m3 exclusively by c_fresh_water; external-meter totals receive no reuse subtraction. Separately sum D_m3 from actual discharge. Reconcile imports, reuse loops, storage, plant/substrate retention, evaporation, spills and discharge without equating W and D or treating unknown terms as zero. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_water
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_water_residual
+      applies_to: "drainage"
+      rule: "Determine W_m3 exclusively by c_fresh_water; external-meter totals receive no reuse subtraction. Separately sum D_m3 from actual discharge. Reconcile imports, reuse loops, storage, plant/substrate retention, evaporation, spills and discharge without equating W and D or treating unknown terms as zero. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_water_residual
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_assets
+      applies_to: "premises; rack; watering_can"
+      rule: "Premises is only the retained occupancy service in m2*a: attribute its measured area-time once using c_shared; do not apply rack/can manufacturing mass or lifetime mass fractions to premises. Rack and watering-can manufacturing mass, and their separately measured whole-asset retirement, use only the respective persistent lifetime beneficiary fraction under a_asset_ledger. Post differences against prior ledger postings; this protocol aggregation and the card formula describe one allocation, never a second multiplication. Repairs remain independent actual events in their documented maintenance cycle. Retain mass/treatment identities and all idle/zero-driver rules. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_assets
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_assets_residual
+      applies_to: "rack_retirement; can_retirement"
+      rule: "Premises is only the retained occupancy service in m2*a: attribute its measured area-time once using c_shared; do not apply rack/can manufacturing mass or lifetime mass fractions to premises. Rack and watering-can manufacturing mass, and their separately measured whole-asset retirement, use only the respective persistent lifetime beneficiary fraction under a_asset_ledger. Post differences against prior ledger postings; this protocol aggregation and the card formula describe one allocation, never a second multiplication. Repairs remain independent actual events in their documented maintenance cycle. Retain mass/treatment identities and all idle/zero-driver rules. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_assets_residual
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_checkout
+      applies_to: "checkout"
+      rule: "Sum attributable seconds including failures; divide by 3600; reconcile total users before N normalization Include idle and zero-driver intervals under a_shared and reconcile the complete pool, never theoretical empty-capacity shares. Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_checkout
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_packaging
+      applies_to: "kraft_wrap; pp_sleeve; paper_tag"
+      rule: "Opening+purchases-unopened returns-closing; allocate direct issue to SKU; product attachments already in plant background are not new purchases Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_packaging
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_cleaning
+      applies_to: "cleaning"
+      rule: "Cleaning card is purchased labour h only: attribute measured hours once per event using all-beneficiary cleaned area-events, then divide by N once. Physical exchanges are independently measured under cp_split_support and c_split_quantity; no complete cleaning package remains."
+      inputs:
+        - cp_cleaning
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_aggregate_cp_residual
+      applies_to: "dead_pot; plant_trim; waste_paper; waste_pp; waste_tag"
+      rule: "Sum each physical stream once; link treatment and transport once per consignment; material with continued sale/use is transferred stock, not automatic waste Normalize the resulting attributed quantity once per reference flow using c_normalize."
+      inputs:
+        - cp_residual
+        - N
+      output: "q_i"
+      source_ids:
+        - ghg-product-standard
+    - id: c_split_quantity
+      applies_to: "cleaning; split_cleaning_wipe; split_cleaning_broom; split_used_wipe; split_sweepings; split_broom_waste; split_cleaning_water; split_cleaning_sds; split_cleaning_mop; split_cleaning_effluent; split_mop_waste; split_cleaner_bottle; split_cleaner_bottle_waste; split_support_electricity; split_support_travel"
+      rule: "For each exact identity r in its single unit, restore normalized source q_source with its original denominator D_source as x_raw=q_source*D_source; already-raw quantities are not restored again. Apply only missing attribution once under split_attribution, deduplicate source/event/version and reverse old package and historical versions. Sum disjoint raw quantities as X_r; q_r=X_r/N, dividing by the final reference denominator once. Labour uses measured purchased h only, never old order counts/area; in-house hours are QA only. Calculate asset counts, material kg, electricity kWh, vehicle*km and waste-carrier kg separately; never add across properties or multiply already-measured physical quantities by labour hours. Unknown quantity/identity/background blocks completeness."
+      inputs:
+        - X_r
+        - D_source
+        - q_source
+        - N
+        - cp_split_labour_residual
+        - cp_split_support
+      output: "q_r"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Resolve specific supplier/recipient/flow identity, state, property and unit before declaring a usable completed dataset. Unbound identities remain explicit; no zero or invented UUID."
+      evidence: "Direct records, linked background boundaries and identity checks"
+    - id: dq_conditions
+      applies_to: "holding; residual"
+      requirement: "Inspect all conditional operations, including pests, trimming, humidification, electric heating, watering and wrapping. Absence requires logs/inspection; presence outside the selected route blocks completion until additional methodology is applied."
+      evidence: "Equipment/operation register and recorded non-occurrence"
+    - id: dq_missing
+      applies_to: "all inventory rows"
+      requirement: "Missing meters, lifetimes, stock closure, receiver identity or background coverage are unresolved data needs, not zero. Disclose uncertainty, representativeness and correction actions; do not publish a complete footprint from unresolved material exchanges."
+      evidence: "Gap register, completeness review and correction log"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "retail_service"
+    rule: "Require homogeneous declared SKU and all reference qualifiers, positive N, closed cohort balance and return-window closure; final service amount must equal 1 Item(s)."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: v_loss
+    applies_to: "loss_plant"
+    rule: "Reconcile unique original plants as N+L+F+S, physical movements separately from financial events, and L separately from actual waste. Require evidence of final F receiver/fate and receiving-gate background, including inbound transport; F is not automatic whole-pot waste. Check repeated returns/resales and downstream backgrounds for duplicate or omitted production."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: v_cards
+    applies_to: "all inventory rows"
+    rule: "Require each selected exchange to retain process, direction, type, state, unit, amount, protocol and actual conditional occurrence. Resolve actual additional materials/waste streams as individual exchanges before completing the dataset; do not hide them under a collection label."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: v_double
+    applies_to: "all inventory rows"
+    rule: "Check utilities inside service backgrounds, fixed versus movable assets, nursery attachments, complete-pot constituents, waste transport/treatment and normalization for double counting. No assumed carbon or recycling credits."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: v_quality
+    applies_to: "all inventory rows"
+    rule: "Require calibration, stock/utility reconciliation, seasonal coverage, complete allocation denominators, receiver evidence and supported background boundary. Report unknown identities, open cohorts and absent routes separately; unresolved material scope prevents a complete result."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: v_asset_ledger
+    applies_to: "rack; watering_can; rack_retirement; can_retirement"
+    rule: "Check persistent physical asset identity, all-period/all-beneficiary ledger, cumulative fraction<=1, final retirement closure=1, lifetime revision delta postings, replacement id and no second c_shared multiplier. Reopened-cohort activity adjustments must reconcile both old dataset versions and actual activity-period pools."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: split_completeness
+    applies_to: "all inventory rows"
+    rule: "Check every exact identity and single reference property, all actual work-order constituents, disjoint measurements, old-package reversal, no duplicated source/asset terminal scope, all-beneficiary historical attribution and one final normalization. Unverified sources, uncarded actual exchanges, unknown quantities or a mere claim of contract inclusion are incomplete."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "partial retail-service foreground dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Combine with same-SKU receiving-gate background of finally sold plants and downstream customer use, while preserving the loss accounting boundary"
+  excluded_use: "Standalone plant cradle-to-grave footprint, all-CPC62112 coverage, comparisons across different SKU/grade/cohorts or excluded routes, methodology approval"
+  required_metadata: "species/cultivar; SKU; plant size/health grade; pot material/volume; substrate; receipt gate; store/channel; cohort/season; holding days; watering method; thermal regime; accepted handover; return window; loss-background boundary; packaging; allocation drivers"
+  required_quality_disclosure: "Cohort closure, N/L/F/S/B, loss-background coupling, reference configuration, conditional route register, utilities/services overlap, allocation, uncertainties and unbound identities"
+  update_trigger: "SKU/species/pot, service gate/returns policy, thermal route, watering/packaging, supplier/receiver, assets, loss fate or material data-quality change"
+data_sources:
+  - id: "unsd-cpc62112"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 subclass 62112 — https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62112"
+    used_for: "Official broader trade-service scope; this PCR intentionally covers only potted ornamental living plants"
+  - id: "isu-houseplant-care"
+    type: "extension_guidance"
+    reference: "Iowa State University Extension and Outreach, How to Care for Houseplants — https://yardandgarden.extension.iastate.edu/how-to/how-care-houseplants"
+    used_for: "Qualitative care-process screening: water demand depends on conditions/species/season; drainage, light and temperature; no numeric dose or universal care limit adopted"
+  - id: "ghg-product-standard"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters 6–9 — https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Function/reference-flow definition, transparent partial boundary and process subdivision/allocation. The specific retail service boundary/drivers here are PCR operational choices supported by declared collection; no whole-standard conformance claim."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:34bf22d6999b08598b1dd5daf36d17420c66d313b55224539294b76d905b269f"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5196"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5196
+          line: 55
+          column: 1
+        end:
+          offset: 11429
+          line: 77
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Plants accepted at the store receiving gate in original nursery pots; purchased utilities and retail consumables at their delivery gates |\n| starting_condition_role | Retail-service foreground starting condition; no implied zero-burden lost merchandise |\n| product_classification_scope | Narrow subset of CPC 62112; all non-potted/cut-flower/seed and other routes excluded |\n| recursive_input_rule | A purchased same-category retail service is a separate supplier input only for a distinct documented operation. Do not recursively count this own service output or reclassify internal stock transfers as purchased service. |\n| upstream_dataset_requirement | Use supply/production backgrounds for utilities, consumables, facility/equipment use, waste destinations and lost complete potted plants. Lost-plant background must reach the actual store receiving gate, including the corresponding inbound transport. |\n| disclosure | Partial retail-service dataset: qualifying sold plants and their pre-receipt production/transport must be added by the downstream goods-plus-service model; plants without qualified final sale (B=L+F) are already included in this service. Report closure, coverage and excluded routes. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_goods | loss_plant | Include receiving-gate production and inbound transport for B = L + F unique plants without final qualified sale, once via loss_plant. L is actual on-site loss; F is final unqualified outward custody, not automatic waste. Downstream adds sold-plant receiving-gate backgrounds only for unique plants finally sold with N; surviving F plants carry an explicit already-accounted production flag if used in another model, avoiding a second identical production claim. Supplier returns retain their production with returned stock; retailer-controlled handling and return transport remain in the service. An unresolved final fate prevents closure. | unsd-cpc62112; ghg-product-standard |\n| b_closure | cp_cohort | Close each original receipt cohort after physical fates and acceptance/return windows are resolved. Physical customer returns and financial POS reversals are separate events linked to original plant identity; neither is inferred from the other. A goodwill refund alone does not cancel a retained qualified acceptance. A cancelled unreturned or unaccepted outward plant is F, not L. Repeated return/resale events remain in the same identity history: only its final accepted retained sale contributes N, while all failed effort remains. Include every predeclared receipt-period cohort including zero-sale/all-loss cohorts. Late physical returns require correction/reopening of prior closure, never an unrelated new zero-burden receipt. When a late return reopens the original cohort, retain actual activity dates and add all subsequent transport back, care, checkout/resale and treatment to that original cohort numerator as well as correcting N/L/F/S. In each actual activity-period meter/service pool, the reopened original cohort remains an explicit beneficiary even if it has no new receipts that period. Revise the original cohort dataset with versioned adjustments, and reconcile the current-period totals; do not charge the same activities to a new receipt cohort. | unsd-cpc62112; ghg-product-standard |\n| b_scope | holding; sale; residual | Include unloading/handling, holding, watering, seasonal electric conditioning, checkout, wrapping, failed sales, floor cleaning, attributed premises/equipment lifecycle use and residual treatment. Exclude customer travel/use, cultivation, chemical treatment and other declared excluded routes. Where an excluded route occurs, this PCR is not sufficient: stop completion and select appropriate additional methodology; never silently omit it. | unsd-cpc62112; ghg-product-standard |\n| b_split | all inventory rows | Utilities supplied to the zone and physical consumables are separate exchanges. The defined premises service includes building fabric and fixed installation manufacture, maintenance and retirement only, excluding utilities, cleaning, checkout terminal and movable racks. Purchased checkout/cleaning services include only their explicitly contracted operations; subtract their included utility/material shares from other rows. Cleaning labour and physical quantities follow split_exchange_identity and cannot remain contained in checkout or premises backgrounds. Retain premises and checkout only as a genuine homogeneous use service with same-property service quantity, complete provider background and actual contract evidence; add cards for all actual uncovered resources. | unsd-cpc62112; ghg-product-standard |\n| b_waste | residual | Track the complete discarded plant/substrate/original-pot stream once when these remain physically combined. If separated, replace that stream by measured individual streams and preserve a mass reconciliation. Send wastewater and solid streams to actual recipient treatment datasets once; do not add the carrier and its included constituents twice. No default biogenic uptake, respiration credit, avoided disposal or recycling credit is allowed. | ghg-product-standard |\n| split_exchange_identity | all inventory rows | Each card has exactly one concrete exchange identity and one reference measurement property/unit; a unit group is not a second property, and auxiliary measurements are conversion evidence only. Labour cards no longer carry bundled materials/energy/equipment/wastes. Retained complete homogeneous assets, original packaged goods and real mixed waste carriers require matching actual whole-scope background/receiver treatment and full composition; heterogeneous collections or selectors are prohibited. An original exchange enters one core card or one split source only; reverse all old package characterization when replacing it and combine only disjoint raw quantities with identical identity/property/unit. Every other actual substance, part, fuel, refrigerant, emission and treatment gap requires a named bilingual card and process protocol; unknown is never zero or complete. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 324
+              line: 8
+              column: 77
+          text: "# Non-specialized store retail services for nursery-potted ornamental plants"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5196
+              line: 55
+              column: 1
+            end:
+              offset: 5217
+              line: 55
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_51035"
+      family: "allocation"
+      span:
+        start:
+          offset: 51035
+          line: 638
+          column: 1
+        end:
+          offset: 56737
+          line: 649
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_direct | all inventory rows | First subdivide/submeter the SKU holding zone and checkout operation. Assign measured SKU-specific water, wrapping and loss directly. Retain burdens of spoiled stock and failed sales in the SKU cohort; do not allocate them to an imaginary saleable coproduct. | ghg-product-standard |\n| a_shared | electricity; premises; rack; checkout; cleaning | Subdivide/submeter first. For residual holding/premises/rack pools use actual occupied area-hours of every beneficiary in that same pool and period, so d_all is the sum of actual all-beneficiary drivers, not full-floor theoretical capacity. Retain idle, closed-store and empty-display burdens in the pool and allocate to the period beneficiaries by these shares. Checkout pools use all beneficiary transaction seconds including failed and reversal operations; cleaning uses actual beneficiary cleaned area-events. For a zero-driver interval, carry its unavoidable availability/standby burden into the same asset/zone documented operating-cycle pool and allocate over that complete cycle, including off-season and zero-sale cohorts. Predeclare cycle dates, retain every interval and reconcile all allocated shares to the complete measured pool. If the full cycle still has no beneficiary driver, or recorded drivers are not causally representative, do not invent a denominator or discard load: report the pool unresolved and block complete dataset status. This common-pool attribution does not multiply the complete rack/can manufacturing or retirement quantities: those use exactly one lifetime share under a_asset_ledger. The asset protocol aggregation and card equations describe that same single attribution, not a second multiplication. | ghg-product-standard |\n| a_assets | rack; watering_can; premises; checkout | For complete steel rack and HDPE can inputs use manufacturing-gate measured complete-asset mass only, with their documented actual lifetime beneficiary shares. Do not include repair mass or retirement in that manufacturing input/background. Whole-asset retirement is a distinct measured waste output attributed with the same lifetime shares. Missing asset mass/lifetime/service quantities prevent completion; no invented defaults. Premises and checkout service lifecycle boundaries remain explicit and must not include these movable assets. | ghg-product-standard |\n| a_maintenance | rack; watering_can; rack_retirement; can_retirement | Each actual repair is a separately dated event with actual replacement component/material, work, energy and removed-part waste identities, quantities and supplier gate. Before completing an affected dataset, add each concrete exchange independently and exclude amounts already inside a complete purchased repair service. Attribute that event once to all beneficiaries in the documented maintenance accounting cycle using the repaired asset driver and the idle/zero-driver rule; do not spread it over the original asset entire lifetime or merge it into complete-asset mass. Multiple repairs remain multiple traceable events. | ghg-product-standard |\n| a_asset_ledger | rack; watering_can; rack_retirement; can_retirement | Maintain one persistent ledger per physical asset id across all periods and all beneficiaries, including reopened cohorts. For rack use lifetime occupied area-hours; for can use lifetime delivered watering volume. Each cohort receives one fraction f_asset,cohort of complete manufacturing mass and one corresponding fraction of actual whole-asset retirement. Posting is by delta against previously posted quantities: never restart full manufacturing/retirement burden when period or service-life estimate changes. Cumulative fractions across all beneficiaries must remain within 0..1; a final retired asset reconciles to1. Keep numerator, lifetime denominator, prior/new lifetime version, cumulative posted fraction, correction delta and recipient cohort. A revised lifetime triggers explicit reversal/reposting of affected prior cohorts, with conserved full asset mass. Replacement uses a new physical asset id; retirement subtracts parts already removed and retains actual transport/treatment. Unknown future/lifetime support remains unresolved, not a fresh allocation baseline. The cp_assets aggregation and rack/can card formulas are views of this one ledger calculation; do not apply c_shared again. | ghg-product-standard |\n| split_attribution | cleaning; split_cleaning_wipe; split_cleaning_broom; split_used_wipe; split_sweepings; split_broom_waste; split_cleaning_water; split_cleaning_sds; split_cleaning_mop; split_cleaning_effluent; split_mop_waste; split_cleaner_bottle; split_cleaner_bottle_waste; split_support_electricity; split_support_travel | Prefer exclusive direct measurements. For shared cleaning events attribute each raw physical quantity by actual cleaned area-events across all beneficiaries; for maintenance use the repaired asset physical driver over all beneficiaries of the actual supported work-order cycle. Retain idle, failed, closed and zero-driver loads and their original carryover rules, never discard them using sales. New tool manufacture/retirement uses persistent lifetime ledgers and historical revision deltas; installed replacement parts are charged once to their actual maintenance event, not again as an original whole-asset acquisition. Do not reapply a share to an already-attributed source or charge terminal tools only to the retirement period. Remove any contained quantity from its old background or replace the entire package with this split; never characterize both. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 324
+              line: 8
+              column: 77
+          text: "# Non-specialized store retail services for nursery-potted ornamental plants"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 51035
+              line: 638
+              column: 1
+            end:
+              offset: 51075
+              line: 638
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_86896"
+      family: "validation"
+      span:
+        start:
+          offset: 86896
+          line: 701
+          column: 1
+        end:
+          offset: 89439
+          line: 713
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | retail_service | Require homogeneous declared SKU and all reference qualifiers, positive N, closed cohort balance and return-window closure; final service amount must equal 1 Item(s). | ghg-product-standard |\n| v_loss | loss_plant | Reconcile unique original plants as N+L+F+S, physical movements separately from financial events, and L separately from actual waste. Require evidence of final F receiver/fate and receiving-gate background, including inbound transport; F is not automatic whole-pot waste. Check repeated returns/resales and downstream backgrounds for duplicate or omitted production. | ghg-product-standard |\n| v_cards | all inventory rows | Require each selected exchange to retain process, direction, type, state, unit, amount, protocol and actual conditional occurrence. Resolve actual additional materials/waste streams as individual exchanges before completing the dataset; do not hide them under a collection label. | ghg-product-standard |\n| v_double | all inventory rows | Check utilities inside service backgrounds, fixed versus movable assets, nursery attachments, complete-pot constituents, waste transport/treatment and normalization for double counting. No assumed carbon or recycling credits. | ghg-product-standard |\n| v_quality | all inventory rows | Require calibration, stock/utility reconciliation, seasonal coverage, complete allocation denominators, receiver evidence and supported background boundary. Report unknown identities, open cohorts and absent routes separately; unresolved material scope prevents a complete result. | ghg-product-standard |\n| v_asset_ledger | rack; watering_can; rack_retirement; can_retirement | Check persistent physical asset identity, all-period/all-beneficiary ledger, cumulative fraction<=1, final retirement closure=1, lifetime revision delta postings, replacement id and no second c_shared multiplier. Reopened-cohort activity adjustments must reconcile both old dataset versions and actual activity-period pools. | ghg-product-standard |\n| split_completeness | all inventory rows | Check every exact identity and single reference property, all actual work-order constituents, disjoint measurements, old-package reversal, no duplicated source/asset terminal scope, all-beneficiary historical attribution and one final normalization. Unverified sources, uncarded actual exchanges, unknown quantities or a mere claim of contract inclusion are incomplete. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 248
+              line: 8
+              column: 1
+            end:
+              offset: 324
+              line: 8
+              column: 77
+          text: "# Non-specialized store retail services for nursery-potted ornamental plants"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 86896
+              line: 701
+              column: 1
+            end:
+              offset: 86918
+              line: 701
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_goods"
+      identity_kind: "explicit"
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 6592
+          line: 70
+          column: 1
+        end:
+          offset: 7297
+          line: 70
+          column: 706
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_closure"
+      identity_kind: "explicit"
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 7298
+          line: 71
+          column: 1
+        end:
+          offset: 8633
+          line: 71
+          column: 1336
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 8634
+          line: 72
+          column: 1
+        end:
+          offset: 9152
+          line: 72
+          column: 519
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_split"
+      identity_kind: "explicit"
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 9153
+          line: 73
+          column: 1
+        end:
+          offset: 10000
+          line: 73
+          column: 848
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 10001
+          line: 74
+          column: 1
+        end:
+          offset: 10494
+          line: 74
+          column: 494
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "split_exchange_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 10495
+          line: 75
+          column: 1
+        end:
+          offset: 11427
+          line: 75
+          column: 933
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 51148
+          line: 642
+          column: 1
+        end:
+          offset: 51465
+          line: 642
+          column: 318
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_shared"
+      identity_kind: "explicit"
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 51466
+          line: 643
+          column: 1
+        end:
+          offset: 52894
+          line: 643
+          column: 1429
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_assets"
+      identity_kind: "explicit"
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 52895
+          line: 644
+          column: 1
+        end:
+          offset: 53514
+          line: 644
+          column: 620
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_maintenance"
+      identity_kind: "explicit"
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 53515
+          line: 645
+          column: 1
+        end:
+          offset: 54235
+          line: 645
+          column: 721
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_asset_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 54236
+          line: 646
+          column: 1
+        end:
+          offset: 55538
+          line: 646
+          column: 1303
+    - pointer: "/allocation_rules/5"
+      rule_id: "split_attribution"
+      identity_kind: "explicit"
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 55539
+          line: 647
+          column: 1
+        end:
+          offset: 56735
+          line: 647
+          column: 1197
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 86991
+          line: 705
+          column: 1
+        end:
+          offset: 87215
+          line: 705
+          column: 225
+    - pointer: "/validation_rules/1"
+      rule_id: "v_loss"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 87216
+          line: 706
+          column: 1
+        end:
+          offset: 87631
+          line: 706
+          column: 416
+    - pointer: "/validation_rules/2"
+      rule_id: "v_cards"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 87632
+          line: 707
+          column: 1
+        end:
+          offset: 87969
+          line: 707
+          column: 338
+    - pointer: "/validation_rules/3"
+      rule_id: "v_double"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 87970
+          line: 708
+          column: 1
+        end:
+          offset: 88254
+          line: 708
+          column: 285
+    - pointer: "/validation_rules/4"
+      rule_id: "v_quality"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 88255
+          line: 709
+          column: 1
+        end:
+          offset: 88595
+          line: 709
+          column: 341
+    - pointer: "/validation_rules/5"
+      rule_id: "v_asset_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 88596
+          line: 710
+          column: 1
+        end:
+          offset: 89018
+          line: 710
+          column: 423
+    - pointer: "/validation_rules/6"
+      rule_id: "split_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 89019
+          line: 711
+          column: 1
+        end:
+          offset: 89437
+          line: 711
+          column: 419
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 5196
+          line: 55
+          column: 1
+        end:
+          offset: 5217
+          line: 55
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5196"
+      source_span:
+        start:
+          offset: 5245
+          line: 59
+          column: 1
+        end:
+          offset: 6519
+          line: 66
+          column: 301
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51035"
+      source_span:
+        start:
+          offset: 51035
+          line: 638
+          column: 1
+        end:
+          offset: 51075
+          line: 638
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_86896"
+      source_span:
+        start:
+          offset: 86896
+          line: 701
+          column: 1
+        end:
+          offset: 86918
+          line: 701
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:34bf22d6999b08598b1dd5daf36d17420c66d313b55224539294b76d905b269f"
+  generated_content_sha256: "sha256:d15beba38f615e6afe046d3b161620b8dc6fdf9f59c4fa4c0a3155e850b7ada2"

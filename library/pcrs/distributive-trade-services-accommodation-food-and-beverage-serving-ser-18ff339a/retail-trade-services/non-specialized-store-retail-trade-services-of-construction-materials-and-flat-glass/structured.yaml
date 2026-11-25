@@ -1,10 +1,948 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "62161"
-  title: "Non-specialized store retail trade services, of construction materials and flat glass"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-construction-materials-and-flat-glass"
+  classification_refs: "CPC 3.0 62161; narrower"
+  covered_products: "Same-SKU uncut clear uncoated annealed monolithic float-glass retail service"
+  excluded_products: "Other building materials; processed glass; retailer cutting/delivery/installation"
+  representative_product: "Actual documented supplier stock sheet; dimensions/thickness/net kg measured, no nominal mass"
+  production_route: "Receipt; manual dry rack holding; intact pickup; final acceptance and fate reconciliation"
+  market_state: "Solid glass sheet, ambient dry state, edge/packaging specification declared"
+functional_unit:
+  what: "Incremental retail custody and intact customer collection"
+  how_much: "1 kg"
+  how_well: "Exact homogeneous SKU, final valid acceptance against declared edge/surface/dimension specification"
+  how_long_or_cycle: "Declared receiving-to-final-acceptance cohort including late corrections"
+  reference_flow_link: "glass_service"
+system_boundary:
+  rules:
+    - rule_id: scope_gate
+      applies_to: "glass_service"
+      rule: "Admit one actual homogeneous SKU per pool: clear uncoated monolithic annealed float glass, supplier-cut rectangular stock sheets at original receiving dimensions, unchanged through sale. Record manufacturer/lot, composition declaration, measured net kg and length/width/thickness, edges, packaging and acceptance specification. Different thicknesses, sizes or treatments require separate pools. Non-specialized means evidenced mixed merchandise assortment; brand licensing is irrelevant. Other construction materials, mirrors, glass fibre, coated/toughened/laminated/insulating glass, cutting, grinding, installation and retailer delivery are outside this route."
+      source_ids:
+        - un-cpc30-62161
+        - guardian-clear-2021
+        - guardian-types-2019
+    - rule_id: service_gate
+      applies_to: "glass_service"
+      rule: "Start at physical retailer receiving gate; end at documented customer collection and final valid acceptance of intact specified sheets. This is incremental retail service per 1 kg finally accepted glass, not glass production. The customer owns use/installation and post-handover transport. Record defects, failed pickup and acceptance revocation even without physical return. Discount/refund alone does not revoke acceptance. Repeated handovers of the same original sheet cannot create duplicate final-valid service."
+      source_ids:
+        - jrc-retail-2013
+    - rule_id: goods_responsibility
+      applies_to: "failed_original_glass"
+      rule: "For each original source lot partition receiving-gate-equivalent glass kg B = B_S+B_F+B_T+B_O with unique source IDs. S finally accepted retains goods production plus inbound transport for downstream addition B_S/Q. F irrecoverably failed/lost and without continuing named owner is included as failed_original_glass B_F/Q with its original production and inbound transport vector. T transfers the SAME original vector to a signed supplier/external owner or internal use; O remains open inventory. A refund alone cannot move responsibility. Revise original pool on late returns; replace prior vectors, never add production again for resale. Only supplier_glass_transfer, external_damaged_glass and customer_kraft are non-characterized custody satellites. glass_cullet and waste_kraft are treatment-only waste outputs with actual collection/transport/treatment responsibility; never remove their treatment as satellites. None gives a new manufacture burden or avoided-production credit."
+      source_ids:
+        - jrc-retail-2013
+    - rule_id: route_presence
+      applies_to: "all inventory rows"
+      rule: "Require observation and invoices proving no retailer glass cutting, wet processing, on-site combustion, refrigeration or motorized handling in this manual rack/pickup core. Unknown is not zero. Breaking during storage is included, not a cutting yield. Actual additional materials/operations need state-specific atomic cards/protocols in both languages and sync before completion; powered handling or cutting requires a separately reviewed route."
+      source_ids:
+        - jrc-retail-2013
+    - rule_id: package_boundary
+      applies_to: "glass_rack_package"
+      rule: "The complete actual reusable glass A-frame rack package includes frame, pads, fasteners and initial finish, manufacturing/installation, evidenced maintenance and terminal treatment in one signed lifecycle model. Exclude operations electricity and merchandise/original shipping packaging. An evidenced complete rack is not steel kg. If package coverage cannot be demonstrated, completion is blocked until disjoint component/event modules replace it. No second rack acquisition or retirement waste exchange beside this package."
+      source_ids:
+        - jrc-retail-2013
+    - rule_id: support_completion
+      applies_to: "glass_service"
+      rule: "Mandatory support modules cover building/fixed lamps and signs, checkout/IT/network and payment processing, security, store administration, cleaning/sanitation, HVAC, original shipping packaging/crates/returnable stillages, retailer-added paper supply, and all actual asset/repair/waste/empty-return transport. Prove occurrence/nonoccurrence by dated site walkthrough, contracts, meters, invoices, equipment ledger and consignment records; missing evidence is not zero. Core lighting and rack package are specifically isolated; include remaining actual support under support_drivers, support_transport, cp_modules and complete_modules. Goods inward freight is already in original S/F/T/O vector; it is not a second support trip. Original supplier packaging production and terminal fates are kept outside the original glass-only vector and inside retail support; if supplier vector contains packaging, expose and remove that exact subvector once before its separate module. Complete supplier-pack package and constituent-BOM modes are mutually exclusive per original package; all body/interleaf/pads/straps/crate constituents and disposal/return coverage must match actual source. Store rack and shipping stillage are different assets. No full retail-service claim until actual module-specific atomic cards/protocols and bilingual projection are supplied for every present support exchange; these fixed methods do not make uncollected modules complete."
+      source_ids:
+        - jrc-retail-2013
+boundary_abstraction:
+  declared_starting_condition: "Supplier glass physically received, original background provenance retained"
+  starting_condition_role: "retail_service"
+  product_classification_scope: "CPC 3.0 62161 narrower"
+  recursive_input_rule: "Do not recursively input the same reference retail service or misidentify glass merchandise as that reference service. The failed_original_glass B_F/Q Product input remains mandatory and carries original production plus inbound transport."
+  upstream_dataset_requirement: "Original production/inbound vector partitioned S/F/T/O; F input explicit"
+  disclosure: "Partial core and mandatory support completion; all unresolved identities"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Retail service for customer-collected uncut clear annealed float glass"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - SKU
+    - "manufacturer/lot"
+    - composition
+    - "actual dimensions/thickness/net kg"
+    - "surface/edge acceptance"
+    - packaging
+    - "site mixed assortment"
+    - "manual route"
+    - "cohort and revision"
+    - "provider geography/year"
+    - "partial modules and completion"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_glass
+    applies_to: "glass_service; failed_original_glass; glass_cullet; supplier_glass_transfer; external_damaged_glass"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Actual glass net mass excludes interleaf, cradle and crate. Nominal thickness/area is not measured mass. Per reference flow equals per 1 kg service output."
+process_map:
+  - id: retail
+    name: "Glass retail custody and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Admitted manual dry route only"
+    role: "foreground"
+    quantitative_reference: "glass_service"
+process_inventory:
+  - id: retail
+    label: "Glass retail custody and acceptance"
+    inputs:
+      product:
+        - row_id: failed_original_glass
+          role: "Clear uncoated annealed float glass at retailer receiving gate, failed-original responsibility"
+          name: "Clear uncoated annealed float glass at retailer receiving gate, failed-original responsibility"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. B_F/Q; original source production plus inbound transport only; not all receipts"
+          amount:
+            expression: "B_F/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_glass
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: rack_electricity
+          role: "Alternating current 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. E_MJ/Q using energy_total"
+          amount:
+            expression: "E_MJ/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: kraft_interleaf
+          role: "Uncoated kraft paper interleaf newly introduced by retailer"
+          name: "Uncoated kraft paper interleaf newly introduced by retailer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. P_used/Q using paper_balance; original supplier paper excluded here"
+          amount:
+            expression: "P_used/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_paper
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: glass_rack_package
+          role: "Complete reusable glass A-frame rack lifecycle package for actual model"
+          name: "Complete reusable glass A-frame rack lifecycle package for actual model"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. R/Q using asset_fraction; manufacturing installation maintenance end-of-life included once"
+          amount:
+            expression: "R/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: glass_service
+          role: "Retail service for customer-collected uncut clear annealed float glass"
+          name: "Retail service for customer-collected uncut clear annealed float glass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. 1 kg; service through final-valid acceptance, goods vector S added downstream"
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_glass
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: supplier_glass_transfer
+          role: "Intact clear annealed float-glass original sheets physically returned to supplier"
+          name: "Intact clear annealed float-glass original sheets physically returned to supplier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. supplier_handoffs/Q; non-characterized custody satellite, T owner signature required"
+          amount:
+            expression: "supplier_handoffs/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_glass
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: external_damaged_glass
+          role: "Damaged clear annealed float-glass sheets physically retained by external recipient"
+          name: "Damaged clear annealed float-glass sheets physically retained by external recipient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. damaged_external_handoff/Q; non-characterized custody satellite; actual state and continuing owner or F required"
+          amount:
+            expression: "damaged_external_handoff/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_glass
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: customer_kraft
+          role: "Uncoated kraft interleaf handed to customer with glass"
+          name: "Uncoated kraft interleaf handed to customer with glass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. P_customer/Q; custody satellite; customer owns terminal treatment, paper manufacture already input"
+          amount:
+            expression: "P_customer/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_paper
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+      waste:
+        - row_id: glass_cullet
+          role: "Clear uncoated annealed float-glass cullet dispatched from retailer"
+          name: "Clear uncoated annealed float-glass cullet dispatched from retailer"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. dispatched_cullet/Q; actual net dispatched kg, not condemned kg; treatment only"
+          amount:
+            expression: "dispatched_cullet/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_glass
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+        - row_id: waste_kraft
+          role: "Uncoated kraft interleaf waste separately dispatched"
+          name: "Uncoated kraft interleaf waste separately dispatched"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The physical exchange is specific to this card and measured under the linked protocol; the supported rules fix its attribution and provider boundary. P_waste/Q; measured net consignment, treatment only"
+          amount:
+            expression: "P_waste/Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_paper
+              source_ids:
+                - jrc-retail-2013
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: direct_first
+    applies_to: "all inventory rows"
+    rule: "Core electricity is ONLY the glass-bay lighting circuit; checkout/IT and other support electricity belong to support modules. Take interval meter readings at every lighting on/off or beneficiary-reservation change. Partition measured kWh into mutually exclusive customer-active, lit-idle, and closed/standby interval pools k; their sum equals the circuit total. The fixed driver for EACH pool is reserved lit floor-area*time d_g_k = sum_i(A_reserved_g_i*duration_i) in m2*h, measured from marked bay/aisle plans and dated reservation logs for every merchandise beneficiary. Partition common aisle area into nonoverlapping reservations before collection; include empty-but-reserved floor area. Charge unused idle/closed capacity to the beneficiaries retaining that reservation, including zero-sale/failed cohorts. No unassigned common area or unowned idle is zero: require a prospective all-beneficiary reservation schedule, or block allocation. E_g = sum_k(E_k*d_g_k/sum_b d_b_k). Dedicated glass-only circuit has fraction one only with exclusive-reservation evidence. Reconcile all beneficiaries to measured total; never mix driver dimensions or allocate a provider-already-attributed quantity again."
+    source_ids:
+      - jrc-retail-2013
+  - rule_id: prospective_pool
+    applies_to: "glass_service"
+    rule: "Declare same-SKU/site/route cohort window prospectively; retain all failures and zero-sale subperiods. Q is distinct final-valid original-sheet net kg after revision, not gross sales revenue or repeated handovers. An entirely zero-Q pool is unnormalizable and carried visibly pending its declared follow-up; never merge configurations to hide it. Reopen original version for late events and replace all affected numerators/denominators with actual event dates."
+    source_ids:
+      - jrc-retail-2013
+  - rule_id: support_drivers
+    applies_to: "glass_service"
+    rule: "For every actual support source first use measured dedicated records, then separate active/idle/fixed source-numerator pools with exclusive event and meter boundaries. For each pool x_g_pool = x_pool*d_g_pool/sum_b d_b_pool using the fixed same-unit drivers below; reconcile sum_g x_g_pool=x_pool and retain every idle/failed beneficiary. Checkout/payment active source is allocated by measured processing seconds per beneficiary and all failed/reversed attempts; reserved idle terminal/network/security device electricity by reserved device-capacity*h across ALL beneficiaries including closed periods. Provider-attributed transaction processing is taken unchanged with transaction/event coverage; do not reallocate it by seconds. Network active source uses actual transferred bytes only when the provider source is byte-dependent; its idle/fixed source uses reserved bandwidth*h, never bytes plus hours. Store security and administration shared fixed sources use measured reserved store floor m2*h for every merchandise beneficiary; directly timed admin tasks use actual task seconds in a separate measured source pool. Cleaning consumable/water/effluent sources use measured cleaned floor m2 per event, with formulation-origin kg separate from added water/dirt; actual wet effluent discharge is measured carrier net kg or V_discharge*rho measured at discharge, with no supply-balance deduction. HVAC operational source uses metered conditioned-zone capacity*m2*h reservations separately by same thermal zone/setting; refrigerant/combustion presence requires specific species/fuel/leak/contained-transfer cards before completeness, not generic zero. Fixed building/lamps, checkout/network/security/HVAC assets use asset_fraction replacement/final-residual equations with separate actual model and exposure unit: m2*h for building/lighting/zone plant and reserved device-capacity*h for IT/security; never pool these different dimensions. Original reusable shipping stillage uses actual reserved load-capacity_kg*h per asset including empty return/idle reservation and the same lifetime equations. One-use original packaging uses actual complete package or exclusive full BOM vector once, allocated to its actual receiving source then S/F/T/O fate with signed owner; include retained/returned/customer/waste fates, never auto-dispose on receipt. Additional retailer paper manufacturing/supply remains core first-issue P_used; support transport is added only for a proven omitted transport stage."
+    source_ids:
+      - jrc-retail-2013
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_glass
+      process_id: "retail"
+      flow_role: "glass_service; failed_original_glass; glass_cullet; supplier_glass_transfer; external_damaged_glass"
+      record_type: "foreground_record"
+      raw_fields: "pool_id; original_id; supplier_lot; composition; dimensions; thickness; net_kg; packaging_tare; scale_id; acceptance; final_acceptance; event_date; receipts; customer_returns; gross_customer_handovers; supplier_handoffs; external_handoffs; damaged_external_handoff; condemned; dispatched_cullet; Goods_open; W_open; B_S; B_F; B_T; B_O; recipient; state; original_vector; inbound_transport; Goods_close; W_close; confirmed_missing_goods; confirmed_missing_waste; unresolved_goods_delta; unresolved_waste_delta; stocktake; investigation_signoff"
+      collection_method: "Tag each original sheet/fragment lineage at receipt; weigh glass net excluding measured packaging/rack tare on calibrated scale, document paired lot weights if individual safe weighing is unavailable. Log every custody movement and acceptance independently. Direct waste dispatch is consignment net mass, stock balance is QA only. Actual broken external handoffs remain separate from in-store waste. No nominal area*density conversion; unknown kg blocks service denominator. Match supplier original production/inbound vector to S/F/T/O receiving-gate equivalents. Stocktake both usable and held-waste glass at opening/closing. Confirm missing quantities only through signed lineage investigation; retain unknown signed residuals and block completeness under glass_stock."
+      unit: "kg"
+      frequency: "Each event; meters at interval boundaries"
+      temporal_coverage: "Whole prospective pool including closures and late corrections"
+      site_scope: "Named store glass bay and all actual beneficiaries"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Dated original records; calibrated instruments; calibration uncertainty and reconciliation signed by collector"
+    - protocol_id: cp_energy
+      process_id: "retail"
+      flow_role: "rack_electricity"
+      record_type: "foreground_record"
+      raw_fields: "meter_id; interval_start; interval_end; interval_state; E_k; A_reserved_g_i; duration_i; d_g_k; d_b_k; reservation_owner; floor_plan; all_beneficiaries; parent_boundary; voltage; supplier_year; geography; delivery_loss_boundary"
+      collection_method: "Read calibrated actual glass-bay lighting circuit meter at each state/reservation transition. Photograph marked floor/aisle areas and measure m2; record reserved beneficiary and start/end hours even if empty or store closed. Interval E_k belongs to exactly one active/lit-idle/closed-standby state. Use the same m2*h reservation driver in each measured pool under direct_first. Reconcile total to circuit and bill boundary; assign every idle reservation and include zero-sale cohorts. Checkout/payment/network/security/admin and shared-building electricity are excluded here and collected under cp_modules; no nameplate or assumed off-state consumption. Unknown scope or unassigned reservation blocks allocation."
+      unit: "kWh"
+      frequency: "Each event; meters at interval boundaries"
+      temporal_coverage: "Whole prospective pool including closures and late corrections"
+      site_scope: "Named store glass bay and all actual beneficiaries"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Dated original records; calibrated instruments; calibration uncertainty and reconciliation signed by collector"
+    - protocol_id: cp_paper
+      process_id: "retail"
+      flow_role: "kraft_interleaf; waste_kraft; customer_kraft"
+      record_type: "foreground_record"
+      raw_fields: "source_id; paper_grade; coating; net_kg; moisture_state; P_open; P_received; P_close; P_customer; P_waste; held_used_stock; dispatch_id; P_unused_transfer; P_first; U_open; U_received; U_close; U_transfer; confirmed_missing_paper; unresolved_paper_delta; first_issue_owner; first_charge_receipt; supply_transport_scope"
+      collection_method: "Only actual additional uncoated kraft interleaf introduced by retailer, not supplier-original interleaf. Weigh conditioned actual material net excluding cores/wrap. Track unused, reuse, customer transfer and waste independently; contaminated/mixed waste requires specific replacement card and provider before completeness. Separate never-issued P stock from already-used U stock on each count. Link first issue to original manufacturing/supply-transport charge receipt and continuing owner; no re-charge on reuse across periods. Follow paper_balance for unused transfers, used transfers and actual final fate; unknown residual blocks."
+      unit: "kg"
+      frequency: "Each event; meters at interval boundaries"
+      temporal_coverage: "Whole prospective pool including closures and late corrections"
+      site_scope: "Named store glass bay and all actual beneficiaries"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Dated original records; calibrated instruments; calibration uncertainty and reconciliation signed by collector"
+    - protocol_id: cp_assets
+      process_id: "retail"
+      flow_role: "glass_rack_package"
+      record_type: "foreground_record"
+      raw_fields: "asset_id; model; BOM; provider_vector_version; lifecycle_scope; original_vector; occupied_kg_a_g_i; reserved_unused_kg_a_g_i; duration_h_i; e_a_g; L_a_v; H_a; f_a_g_old; f_a_g_final; V_a_old; V_a_new; repair_event; replacement_event; retirement_dispatch; all_beneficiaries; previous_allocations; usable_rated_capacity_kg; reservation_owner"
+      collection_method: "Verify actual rack model/BOM, rated usable capacity and signed complete-package vector, including manufacturing/installation, actual maintenance and terminal treatment plus their transport boundaries. Each occupancy/reservation change logs time, occupied kg and disjoint unused reserved kg for every beneficiary; assign entire usable capacity including idle/closed reservation. Evidence expected lifetime exposure using dated usage history and documented retirement plan, not assumed calendar years. At repair/retirement retain old version, actual event invoices/carrier records and replacement-vector scope map; remove the superseded modeled event, update V, then execute asset_fraction across ALL previous beneficiaries. No acquisition, repair, transport or retirement may appear both inside the package and outside it. One model/identical-vector group per card; otherwise add separate bilingual cards and sync before completeness."
+      unit: "Item(s); kg*h"
+      frequency: "Each event; meters at interval boundaries"
+      temporal_coverage: "Whole prospective pool including closures and late corrections"
+      site_scope: "Named store glass bay and all actual beneficiaries"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Dated original records; calibrated instruments; calibration uncertainty and reconciliation signed by collector"
+    - protocol_id: cp_modules
+      process_id: "retail"
+      flow_role: "glass_service"
+      record_type: "foreground_record"
+      raw_fields: "module_id; module_version; normalized_j_m; original_denominator_m; source_id; core_numerator_j; B_F; B_S; original_goods_vector_S_j; Q; actual_source_event_asset; lifecycle_scope; coverage_overlap_map; active_source; idle_source; fixed_source; processing_seconds; task_seconds; transferred_bytes; reserved_bandwidth; reserved_device_capacity; floor_area_m2; conditioned_zone_capacity; reservation_duration_h; all_beneficiaries; cleaned_area_m2; cleaner_origin_kg; externally_supplied_water; V_discharge; discharge_density; actual_wet_effluent_kg; utility_meter; fuel_species; refrigerant_species; leak_record; contained_transfer; waste_consignment; packaging_mode; complete_pack_BOM; original_pack_id; S_F_T_O_owner; first_charge_receipt; stillage_asset; stillage_reserved_capacity_kg; stillage_empty_return; trip_id; segment_id; provider_mode; provider_scope; measured_load_tonnes; actual_km; reserved_payload_capacity; duration_h; empty_vehicle_km; stationary_idle_h; measured_fuel; measured_energy; source_stage_overlap; x_pool; d_g_pool; d_b_pool; asset_id; model; exposure_unit; e_a_g; L_a_v; H_a; f_a_g_old; f_a_g_final; V_a_old; V_a_new; repair_event; retirement_dispatch; previous_allocations; absence_evidence; x_transport_a_v; f_a_g_v; e_a_g_actual; x_transport_a_old; x_transport_a_new; f_a_g_new; original_pool_id; original_pool_version; Q_g; prior_transport_attribution; first_issue_owner; P_first loaded_attribution_mode; target_gross_kg; whole_vehicle_gross_kg; target_payload_kg; all_other_payload_kg; provider_reference_basis; source_attribution_level"
+      collection_method: "At opening and each configuration change perform signed site walkthrough and reconcile contracts/invoices to actual building/lighting/checkout/IT/network/payment/security/admin/cleaning/HVAC assets and services; record specific absence evidence for each nonpresent item, never infer zero from no invoice alone. Read dedicated meters and timestamped active/idle/fixed events. Measure floor/zone reservations in m2 and h, task/transaction seconds, bytes/bandwidth and device-capacity reservations separately; log every beneficiary and failed/zero-sale/closed interval. Apply fixed support_drivers, not a selectable driver menu. For each original packaging source verify actual full BOM/model or signed whole-package boundary exclusively, quantities, receiving/source/fate/first-charge records and actual empty stillage returns; no added-paper double charge. Collect trip-segment odometer/load/reservation/idle-fuel evidence and inspect provider coverage under support_transport for packaging/asset/repair/waste movements. Collect waste actual net consignment and treatment boundary, including transport coverage; subtract only proven overlap. Compare actual constituent/stage/time/event maps even if provider IDs differ. Any present unknown fuel/refrigerant/effluent or missing specific support exchange requires bilingual atomic cards/protocols and normal sync before full-service completion. For each asset/repair omitted transport trip, record asset_id, original transport-vector scope and prior attribution, and restore its historical asset exposure ledger. Apply support_transport to asset raw numerator, then asset_fraction exactly once; post replacements/deltas to original pool/version and revised Q_g. Check V-contained transport and prior historical allocation before any addition. Link paper supply to first-issue owner/P_first and packaging transport to original_pack_id/source ownership; reconcile receipt stock records to first-charge receipts without a second supply charge."
+      unit: "source-specific"
+      frequency: "Each event; meters at interval boundaries"
+      temporal_coverage: "Whole prospective pool including closures and late corrections"
+      site_scope: "Named store glass bay and all actual beneficiaries"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Dated original records; calibrated instruments; calibration uncertainty and reconciliation signed by collector"
+  calculation_rules:
+    - id: accepted_mass
+      applies_to: "glass_service"
+      rule: "Q = sum of measured net kg of distinct final-valid original sheets in pool; acceptance revocations reclassify original IDs, do not subtract twice. Gross handovers/returns are separate physical events."
+      inputs:
+        - original_id
+        - net_kg
+        - final_acceptance
+        - event_date
+        - pool_id
+      output: "Q"
+      source_ids:
+        - jrc-retail-2013
+    - id: glass_stock
+      applies_to: "glass_cullet"
+      rule: "Goods_close = Goods_open+receipts+customer_returns-gross_customer_handovers-supplier_handoffs-external_handoffs-condemned-confirmed_missing_goods+unresolved_goods_delta; W_close = W_open+condemned-dispatched_cullet-confirmed_missing_waste+unresolved_waste_delta. All terms kg with disjoint movement IDs. Confirmed missing kg needs dated stocktake, original lineage and investigation signoff; it receives F original-source responsibility absent a signed continuing T owner, but is never invented as dispatched waste. Missing held waste retains its already assigned original F responsibility and never creates a second original manufacturing input. Unknown signed residual deltas are disclosed, investigated and block completeness, never default zero or automatically classified F. gross_customer_handovers includes all customer exits including damaged/unaccepted; external_handoffs only noncustomer nonsupplier exits. damaged_external_handoff tags a subset, not another subtraction. Condemnation moves goods to held waste internally; dispatch removes held waste once."
+      inputs:
+        - Goods_open
+        - receipts
+        - customer_returns
+        - gross_customer_handovers
+        - supplier_handoffs
+        - external_handoffs
+        - damaged_external_handoff
+        - condemned
+        - W_open
+        - dispatched_cullet
+        - confirmed_missing_goods
+        - confirmed_missing_waste
+        - unresolved_goods_delta
+        - unresolved_waste_delta
+        - stocktake
+        - investigation_signoff
+        - original_id
+      output: "Goods_close; W_close; unresolved_goods_delta; unresolved_waste_delta"
+      source_ids:
+        - jrc-retail-2013
+    - id: energy_total
+      applies_to: "rack_electricity"
+      rule: "For interval source pools fixed by direct_first, E_g_k = E_k*d_g_k/sum_b d_b_k with E_k measured kWh and d_g_k measured m2*h reserved lighting exposure. E_MJ = 3.6*sum_k E_g_k. All state pools and beneficiaries reconcile to total meter kWh. Nested subtraction only with actual parent inclusion; disjoint meters are never subtracted. Then E_MJ/Q once."
+      inputs:
+        - meter_id
+        - interval_state
+        - E_k
+        - A_reserved_g_i
+        - duration_i
+        - d_g_k
+        - d_b_k
+        - parent_boundary
+        - all_beneficiaries
+        - Q
+      output: "E_MJ/Q"
+      source_ids:
+        - jrc-retail-2013
+    - id: asset_fraction
+      applies_to: "glass_rack_package"
+      rule: "Retain one actual rack a per card, or aggregate only identical model/BOM, complete lifecycle scope and identical provider-vector version; unequal rack models or vectors require separate atomic cards. For each asset ledger, interval e_a_g = sum_i((occupied_kg_a_g_i+reserved_unused_kg_a_g_i)*duration_h_i), with occupied and unused reservations disjoint and all rated usable capacity assigned to actual beneficiaries even idle/closed. L_a_v is evidenced expected total lifetime exposure in the same kg*h and must be at least accumulated all-beneficiary exposure; unknown/zero L blocks. f_a_g_v = e_a_g/L_a_v; R = sum_a f_a_g_v only within the identical group. At retirement H_a = sum_g e_a_g_actual, f_a_g_final = e_a_g_actual/H_a; residual r_a = 1-sum_g f_a_g_old; delta_a_g = f_a_g_final-f_a_g_old, with sum_g delta_a_g=r_a and sum_g f_a_g_final=1. Replace every prior beneficiary record by new numerator f_a_g_new*V_a_new, recording delta vector f_new*V_new-f_old*V_old, never adding a second whole asset. Actual dated repair/replacement and terminal dispatch update the complete package vector V_a_new and replace modeled events of the same scope; recalculate all history, including retired/zero-output beneficiaries. Different resulting provider vectors remain separate cards. End-of-life transport/carrier and maintenance already inside V are not separate foreground exchanges."
+      inputs:
+        - asset_id
+        - model
+        - BOM
+        - provider_vector_version
+        - occupied_kg_a_g_i
+        - reserved_unused_kg_a_g_i
+        - duration_h_i
+        - e_a_g
+        - L_a_v
+        - H_a
+        - f_a_g_old
+        - f_a_g_final
+        - V_a_old
+        - V_a_new
+        - repair_event
+        - retirement_dispatch
+        - all_beneficiaries
+        - previous_allocations
+      output: "R; delta_a_g; revised_asset_numerators"
+      source_ids:
+        - jrc-retail-2013
+    - id: complete_modules
+      applies_to: "glass_service"
+      rule: "For each identical exchange identity/property/unit j, restore support module raw numerator u_j_m = normalized_j_m*original_denominator_m and attribute once under support_drivers. Complete retail-service numerator T_j = core_numerator_j+sum_m u_j_m, including core F/AC/paper/rack and disjoint support; complete_retail_j = T_j/Q. B_S is excluded from BOTH partial and complete retail-service. Only a separately declared downstream GOODS system uses goods_system_j = (T_j+original_goods_vector_S_j)/Q. original_goods_vector_S_j is the original receiving-gate vector weighted by B_S; inbound goods freight is already in that vector. Never add S to retail or twice to a downstream system. Compare actual physical source/event/asset, process interval, constituents and lifecycle-stage coverage for every module pair even when IDs differ. Remove proven overlapping subvector once with signed coverage/quantity map; differing IDs do not establish disjointness. Unknown nonseparable overlap blocks assembly. Preserve original source IDs, raw denominator/pool/version; never sum unlike units or add F twice. Omitted asset/repair transport under support_transport enters the historical pool g already assigned by the SAME asset lifetime ledger, using that pool revised Q_g; correction deltas replace that original pool version, not the current pool. Already lifetime-attributed transport and V-contained transport receive no second lifetime multiplier or duplicate module."
+      inputs:
+        - normalized_j_m
+        - original_denominator_m
+        - source_id
+        - core_numerator_j
+        - B_F
+        - B_S
+        - original_goods_vector_S_j
+        - allocation_driver
+        - module_version
+        - coverage_overlap_map
+        - Q
+        - original_pool_id
+        - original_pool_version
+        - Q_g
+        - prior_transport_attribution
+      output: "complete_retail_j; goods_system_j"
+      source_ids:
+        - jrc-retail-2013
+    - id: paper_balance
+      applies_to: "kraft_interleaf"
+      rule: "P_open and P_close contain ONLY never-issued unused retailer-added paper source stock. P_first = P_open+P_received-P_close-P_unused_transfer, with independently measured unused returns/transfers P_unused_transfer; charge its manufacturing and supply transport once at first issue: P_used = P_first. Already-used opening stock U_open is not P_open. U_close = U_open+P_first+U_received-P_customer-P_waste-U_transfer-confirmed_missing_paper+unresolved_paper_delta; all destinations disjoint, reuse within custody is internal and cancels. Each used-paper source retains its signed first-issue manufacturing owner across pools; later reuse adds only actual new handling burden, never repeats manufacturing or avoided-production credit. Custody transfer includes source/first-charge receipt, and actual terminal treatment belongs to its dispatching pool or signed customer owner. Unused transfer keeps original background with the continuing owner, not first-use input. Unknown residual blocks completion. Divide final corresponding row numerators by Q once."
+      inputs:
+        - P_open
+        - P_received
+        - P_close
+        - P_unused_transfer
+        - P_first
+        - U_open
+        - U_received
+        - U_close
+        - P_customer
+        - P_waste
+        - U_transfer
+        - confirmed_missing_paper
+        - unresolved_paper_delta
+        - first_issue_owner
+        - first_charge_receipt
+        - source_id
+        - Q
+      output: "P_used/Q; P_customer/Q; P_waste/Q; U_close"
+      source_ids:
+        - jrc-retail-2013
+    - id: support_transport
+      applies_to: "glass_service"
+      rule: "Use one mutually exclusive provider mode per actual trip/segment: (A) take an already-attributed complete consignment transport amount with proof it covers actual loaded, empty-return and stationary idle portions; do not multiply another allocation fraction. (B) collect loaded activity under the exclusive target_consignment or unassigned_vehicle modes defined below; reserved payload-capacity*time applies only to a matching unassigned whole-vehicle source vector. For empty vehicle segments use actual vehicle*km, and for stationary engine/equipment idle use actual h and measured fuel/energy, each with its own matching provider, allocated by same-unit reserved payload-capacity*time over that segment; never zero tonne*km as empty-trip evidence. Include empty shipping-stillage return reservation. Do not sum unlike driver units or activity units. Verify payload, empty and idle provider boundaries are disjoint, or remove exact overlapping fuel/energy/source stage once; unknown provider coverage blocks completion. Goods inward freight is charged solely with original goods vectors; packaging/asset/repair and waste transports are charged once in their actual package/treatment or explicit omitted-stage module. Apply complete_modules after actual source attribution. For an omitted asset/repair transport stage, trip attribution first assigns the raw transport source numerator to actual asset_id, x_transport_a; then the SAME asset ledger assigns x_transport_a_g_v = x_transport_a_v*f_a_g_v using its existing e_a_g/L_a_v or final e_a_g_actual/H_a. Return each attributed raw numerator to its ORIGINAL beneficiary pool g and divide by that pool revised Q_g only in complete_modules; never charge an asset retirement/repair trip wholly to current Q. A transport-vector revision replaces every original-pool numerator with x_transport_a_new*f_a_g_new and books delta x_transport_a_new*f_a_g_new-x_transport_a_old*f_a_g_old back to that original pool and version, with historical denominator corrections. If transport is already inside V_a, it follows the V_a replacement and is NOT an omitted-stage addition. If a provider quantity already belongs to a historical beneficiary, retain that attribution and do not multiply f again. Retailer-added paper omitted supply transport follows its first-issue manufacturing owner and P_first quantities under paper_balance; receipt is stock evidence, not a second charge. Original packaging omitted transport follows the SAME original package/source and its signed S/F/T/O or returnable-asset lifetime ownership, with prior attributed stages preserved. No receiving-pool charge followed by a repeated consumption-pool charge. Loaded t*km has exclusive modes: target_consignment=measured target_gross_kg*segment_km/1000, with NO further shared fraction; unassigned_vehicle=whole_vehicle_gross_kg*segment_km/1000*(target_payload_kg/whole_vehicle_gross_kg), only for a compatible mass-based provider with complete same-segment actual payload reconciliation and positive denominator. A provider exact target quantity stays unchanged. Reserved payload-capacity*time allocates only an otherwise unallocated WHOLE-VEHICLE source vector or the separately measured empty/idle source, not target-consignment t*km. Different provider activity/property units need actual separate atomic cards; never rename a vehicle-km vector as target t*km. Record loaded_attribution_mode and provider_reference_basis; the loaded mode must match its actual source and provider basis."
+      inputs:
+        - trip_id
+        - segment_id
+        - provider_mode
+        - provider_scope
+        - measured_load_tonnes
+        - actual_km
+        - reserved_payload_capacity
+        - duration_h
+        - all_beneficiaries
+        - empty_vehicle_km
+        - stationary_idle_h
+        - measured_fuel
+        - measured_energy
+        - source_stage_overlap
+        - original_vector_scope
+        - Q
+        - asset_id
+        - x_transport_a_v
+        - f_a_g_v
+        - e_a_g_actual
+        - x_transport_a_old
+        - x_transport_a_new
+        - f_a_g_old
+        - f_a_g_new
+        - e_a_g
+        - L_a_v
+        - H_a
+        - original_pool_id
+        - original_pool_version
+        - Q_g
+        - prior_transport_attribution
+        - first_issue_owner
+        - P_first
+        - original_pack_id
+        - S_F_T_O_owner
+      output: "attributed_transport_raw_sources"
+      source_ids:
+        - jrc-retail-2013
+  data_quality_requirements:
+    - id: quality_mass
+      applies_to: "glass_service"
+      requirement: "No area/nominal thickness mass surrogate; calibrated net weights and exact same-SKU continuity mandatory."
+      evidence: "Traceable primary ledgers and signed boundary reconciliation"
+    - id: quality_fates
+      applies_to: "glass_cullet"
+      requirement: "Waste treatment provider must accept actual clear-glass cullet contamination/state; weigh dispatch net and separately track container. No assumed recycling credit."
+      evidence: "Traceable primary ledgers and signed boundary reconciliation"
+    - id: quality_module
+      applies_to: "glass_service"
+      requirement: "Partial core must be labelled partial until support_completion and complete_modules are evidenced, including original packaging and fixed lighting capital."
+      evidence: "Traceable primary ledgers and signed boundary reconciliation"
+validation_rules:
+  - rule_id: complete_identity
+    applies_to: "all inventory rows"
+    rule: "No completeness claim until each row has verified exact physical identity, property/unit chain, provider boundary and original quantity evidence. An absent UUID remains an identity gap. Electricity UUID specifies AC only: collect voltage, supplier/year/geography and delivery/loss boundary. No environmental factors, densities, lifetimes or loss rates are defaulted."
+    source_ids:
+      - jrc-retail-2013
+  - rule_id: reconcile
+    applies_to: "glass_service"
+    rule: "Close glass goods and held-waste balances separately; reconcile responsibility partition, packaging fate, all supplier/provider boundaries, meter pools and final-valid IDs. Include outside damaged retention with actual state/recipient, not assumed waste. Confirm no double source, no area-as-mass substitution, no cutting route leakage, and complete_modules before a full-service claim. Unknowns block completeness."
+    source_ids:
+      - jrc-retail-2013
+published_dataset_profile:
+  dataset_role: "partial_incremental_retail_service"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Matching SKU and route only; full-service use after completion"
+  excluded_use: "Cutting, manufacturing, full leaf equivalence, safe-glazing approval or uncompleted whole-store claim"
+  required_metadata: "All reference qualifiers, source ownership, support boundaries and original denominator/version"
+  required_quality_disclosure: "Calibration/uncertainty, missing identity/provider, zero-Q pools and partial status"
+  update_trigger: "SKU/pack/route/provider/lifetime/acceptance change or late return"
+data_sources:
+  - id: "un-cpc30-62161"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 explanatory note https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62161"
+    used_for: "Classification context only; narrower glass subset"
+  - id: "guardian-clear-2021"
+    type: "handbook"
+    reference: "Guardian Clear Float Glass, ©2021, https://www.guardianglass.com/content/dam/guardianindustriesholdings/collateral/apac/Clear%20Float_English%20version.pdf"
+    used_for: "Stock sheet and further fabrication distinction, not LCI quantities or generic density"
+  - id: "guardian-types-2019"
+    type: "handbook"
+    reference: "Guardian Residential Glass Technical Reference Guide, PDF page7 / printed5, https://www.guardianglass.com/content/dam/guardianindustriesholdings/collateral/usca/technical_climaguard_us_technical-reference-guide_0619.pdf"
+    used_for: "Annealed float glass versus heat-strengthened and tempered states; no strength factor adopted"
+  - id: "jrc-retail-2013"
+    type: "official_guidance"
+    reference: "JRC Best Environmental Management Practice in the Retail Trade Sector, 2013 EUR25998EN, https://susproc.jrc.ec.europa.eu/activities/emas/documents/RetailTradeSector.pdf"
+    used_for: "Retail supply chain, electricity, packaging/waste and logistics relevance; equations and partial boundary are explicit PCR design using foreground records, no benchmark or conformity claim"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:0696a1cf07bb21f7f470c87428d7cda10b48828f7610b3cdebc7cebd649165cf"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_3137"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 3137
+          line: 52
+          column: 1
+        end:
+          offset: 8952
+          line: 74
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Supplier glass physically received, original background provenance retained |\n| starting_condition_role | retail_service |\n| product_classification_scope | CPC 3.0 62161 narrower |\n| recursive_input_rule | Do not recursively input the same reference retail service or misidentify glass merchandise as that reference service. The failed_original_glass B_F/Q Product input remains mandatory and carries original production plus inbound transport. |\n| upstream_dataset_requirement | Original production/inbound vector partitioned S/F/T/O; F input explicit |\n| disclosure | Partial core and mandatory support completion; all unresolved identities |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| scope_gate | glass_service | Admit one actual homogeneous SKU per pool: clear uncoated monolithic annealed float glass, supplier-cut rectangular stock sheets at original receiving dimensions, unchanged through sale. Record manufacturer/lot, composition declaration, measured net kg and length/width/thickness, edges, packaging and acceptance specification. Different thicknesses, sizes or treatments require separate pools. Non-specialized means evidenced mixed merchandise assortment; brand licensing is irrelevant. Other construction materials, mirrors, glass fibre, coated/toughened/laminated/insulating glass, cutting, grinding, installation and retailer delivery are outside this route. | un-cpc30-62161; guardian-clear-2021; guardian-types-2019 |\n| service_gate | glass_service | Start at physical retailer receiving gate; end at documented customer collection and final valid acceptance of intact specified sheets. This is incremental retail service per 1 kg finally accepted glass, not glass production. The customer owns use/installation and post-handover transport. Record defects, failed pickup and acceptance revocation even without physical return. Discount/refund alone does not revoke acceptance. Repeated handovers of the same original sheet cannot create duplicate final-valid service. | jrc-retail-2013 |\n| goods_responsibility | failed_original_glass | For each original source lot partition receiving-gate-equivalent glass kg B = B_S+B_F+B_T+B_O with unique source IDs. S finally accepted retains goods production plus inbound transport for downstream addition B_S/Q. F irrecoverably failed/lost and without continuing named owner is included as failed_original_glass B_F/Q with its original production and inbound transport vector. T transfers the SAME original vector to a signed supplier/external owner or internal use; O remains open inventory. A refund alone cannot move responsibility. Revise original pool on late returns; replace prior vectors, never add production again for resale. Only supplier_glass_transfer, external_damaged_glass and customer_kraft are non-characterized custody satellites. glass_cullet and waste_kraft are treatment-only waste outputs with actual collection/transport/treatment responsibility; never remove their treatment as satellites. None gives a new manufacture burden or avoided-production credit. | jrc-retail-2013 |\n| route_presence | all inventory rows | Require observation and invoices proving no retailer glass cutting, wet processing, on-site combustion, refrigeration or motorized handling in this manual rack/pickup core. Unknown is not zero. Breaking during storage is included, not a cutting yield. Actual additional materials/operations need state-specific atomic cards/protocols in both languages and sync before completion; powered handling or cutting requires a separately reviewed route. | jrc-retail-2013 |\n| package_boundary | glass_rack_package | The complete actual reusable glass A-frame rack package includes frame, pads, fasteners and initial finish, manufacturing/installation, evidenced maintenance and terminal treatment in one signed lifecycle model. Exclude operations electricity and merchandise/original shipping packaging. An evidenced complete rack is not steel kg. If package coverage cannot be demonstrated, completion is blocked until disjoint component/event modules replace it. No second rack acquisition or retirement waste exchange beside this package. | jrc-retail-2013 |\n| support_completion | glass_service | Mandatory support modules cover building/fixed lamps and signs, checkout/IT/network and payment processing, security, store administration, cleaning/sanitation, HVAC, original shipping packaging/crates/returnable stillages, retailer-added paper supply, and all actual asset/repair/waste/empty-return transport. Prove occurrence/nonoccurrence by dated site walkthrough, contracts, meters, invoices, equipment ledger and consignment records; missing evidence is not zero. Core lighting and rack package are specifically isolated; include remaining actual support under support_drivers, support_transport, cp_modules and complete_modules. Goods inward freight is already in original S/F/T/O vector; it is not a second support trip. Original supplier packaging production and terminal fates are kept outside the original glass-only vector and inside retail support; if supplier vector contains packaging, expose and remove that exact subvector once before its separate module. Complete supplier-pack package and constituent-BOM modes are mutually exclusive per original package; all body/interleaf/pads/straps/crate constituents and disposal/return coverage must match actual source. Store rack and shipping stillage are different assets. No full retail-service claim until actual module-specific atomic cards/protocols and bilingual projection are supplied for every present support exchange; these fixed methods do not make uncollected modules complete. | jrc-retail-2013 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 306
+              line: 9
+              column: 1
+            end:
+              offset: 409
+              line: 9
+              column: 104
+          text: "# Non-specialized store retail service for uncut clear annealed float-glass sheets: customer collection"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 3137
+              line: 52
+              column: 1
+            end:
+              offset: 3158
+              line: 52
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_16668"
+      family: "allocation"
+      span:
+        start:
+          offset: 16668
+          line: 264
+          column: 1
+        end:
+          offset: 21112
+          line: 272
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| direct_first | all inventory rows | Core electricity is ONLY the glass-bay lighting circuit; checkout/IT and other support electricity belong to support modules. Take interval meter readings at every lighting on/off or beneficiary-reservation change. Partition measured kWh into mutually exclusive customer-active, lit-idle, and closed/standby interval pools k; their sum equals the circuit total. The fixed driver for EACH pool is reserved lit floor-area*time d_g_k = sum_i(A_reserved_g_i*duration_i) in m2*h, measured from marked bay/aisle plans and dated reservation logs for every merchandise beneficiary. Partition common aisle area into nonoverlapping reservations before collection; include empty-but-reserved floor area. Charge unused idle/closed capacity to the beneficiaries retaining that reservation, including zero-sale/failed cohorts. No unassigned common area or unowned idle is zero: require a prospective all-beneficiary reservation schedule, or block allocation. E_g = sum_k(E_k*d_g_k/sum_b d_b_k). Dedicated glass-only circuit has fraction one only with exclusive-reservation evidence. Reconcile all beneficiaries to measured total; never mix driver dimensions or allocate a provider-already-attributed quantity again. | jrc-retail-2013 |\n| prospective_pool | glass_service | Declare same-SKU/site/route cohort window prospectively; retain all failures and zero-sale subperiods. Q is distinct final-valid original-sheet net kg after revision, not gross sales revenue or repeated handovers. An entirely zero-Q pool is unnormalizable and carried visibly pending its declared follow-up; never merge configurations to hide it. Reopen original version for late events and replace all affected numerators/denominators with actual event dates. | jrc-retail-2013 |\n| support_drivers | glass_service | For every actual support source first use measured dedicated records, then separate active/idle/fixed source-numerator pools with exclusive event and meter boundaries. For each pool x_g_pool = x_pool*d_g_pool/sum_b d_b_pool using the fixed same-unit drivers below; reconcile sum_g x_g_pool=x_pool and retain every idle/failed beneficiary. Checkout/payment active source is allocated by measured processing seconds per beneficiary and all failed/reversed attempts; reserved idle terminal/network/security device electricity by reserved device-capacity*h across ALL beneficiaries including closed periods. Provider-attributed transaction processing is taken unchanged with transaction/event coverage; do not reallocate it by seconds. Network active source uses actual transferred bytes only when the provider source is byte-dependent; its idle/fixed source uses reserved bandwidth*h, never bytes plus hours. Store security and administration shared fixed sources use measured reserved store floor m2*h for every merchandise beneficiary; directly timed admin tasks use actual task seconds in a separate measured source pool. Cleaning consumable/water/effluent sources use measured cleaned floor m2 per event, with formulation-origin kg separate from added water/dirt; actual wet effluent discharge is measured carrier net kg or V_discharge*rho measured at discharge, with no supply-balance deduction. HVAC operational source uses metered conditioned-zone capacity*m2*h reservations separately by same thermal zone/setting; refrigerant/combustion presence requires specific species/fuel/leak/contained-transfer cards before completeness, not generic zero. Fixed building/lamps, checkout/network/security/HVAC assets use asset_fraction replacement/final-residual equations with separate actual model and exposure unit: m2*h for building/lighting/zone plant and reserved device-capacity*h for IT/security; never pool these different dimensions. Original reusable shipping stillage uses actual reserved load-capacity_kg*h per asset including empty return/idle reservation and the same lifetime equations. One-use original packaging uses actual complete package or exclusive full BOM vector once, allocated to its actual receiving source then S/F/T/O fate with signed owner; include retained/returned/customer/waste fates, never auto-dispose on receipt. Additional retailer paper manufacturing/supply remains core first-issue P_used; support transport is added only for a proven omitted transport stage. | jrc-retail-2013 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 306
+              line: 9
+              column: 1
+            end:
+              offset: 409
+              line: 9
+              column: 104
+          text: "# Non-specialized store retail service for uncut clear annealed float-glass sheets: customer collection"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 16668
+              line: 264
+              column: 1
+            end:
+              offset: 16708
+              line: 264
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_43823"
+      family: "validation"
+      span:
+        start:
+          offset: 43823
+          line: 304
+          column: 1
+        end:
+          offset: 44815
+          line: 311
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| complete_identity | all inventory rows | No completeness claim until each row has verified exact physical identity, property/unit chain, provider boundary and original quantity evidence. An absent UUID remains an identity gap. Electricity UUID specifies AC only: collect voltage, supplier/year/geography and delivery/loss boundary. No environmental factors, densities, lifetimes or loss rates are defaulted. | jrc-retail-2013 |\n| reconcile | glass_service | Close glass goods and held-waste balances separately; reconcile responsibility partition, packaging fate, all supplier/provider boundaries, meter pools and final-valid IDs. Include outside damaged retention with actual state/recipient, not assumed waste. Confirm no double source, no area-as-mass substitution, no cutting route leakage, and complete_modules before a full-service claim. Unknowns block completeness. | jrc-retail-2013 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 306
+              line: 9
+              column: 1
+            end:
+              offset: 409
+              line: 9
+              column: 104
+          text: "# Non-specialized store retail service for uncut clear annealed float-glass sheets: customer collection"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 43823
+              line: 304
+              column: 1
+            end:
+              offset: 43845
+              line: 304
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "scope_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 3967
+          line: 67
+          column: 1
+        end:
+          offset: 4721
+          line: 67
+          column: 755
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "service_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 4722
+          line: 68
+          column: 1
+        end:
+          offset: 5291
+          line: 68
+          column: 570
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "goods_responsibility"
+      identity_kind: "explicit"
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 5292
+          line: 69
+          column: 1
+        end:
+          offset: 6345
+          line: 69
+          column: 1054
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "route_presence"
+      identity_kind: "explicit"
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 6346
+          line: 70
+          column: 1
+        end:
+          offset: 6851
+          line: 70
+          column: 506
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "package_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 6852
+          line: 71
+          column: 1
+        end:
+          offset: 7439
+          line: 71
+          column: 588
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "support_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 7440
+          line: 72
+          column: 1
+        end:
+          offset: 8950
+          line: 72
+          column: 1511
+    - pointer: "/allocation_rules/0"
+      rule_id: "direct_first"
+      identity_kind: "explicit"
+      unit_id: "normative_16668"
+      source_span:
+        start:
+          offset: 16781
+          line: 268
+          column: 1
+        end:
+          offset: 18040
+          line: 268
+          column: 1260
+    - pointer: "/allocation_rules/1"
+      rule_id: "prospective_pool"
+      identity_kind: "explicit"
+      unit_id: "normative_16668"
+      source_span:
+        start:
+          offset: 18041
+          line: 269
+          column: 1
+        end:
+          offset: 18558
+          line: 269
+          column: 518
+    - pointer: "/allocation_rules/2"
+      rule_id: "support_drivers"
+      identity_kind: "explicit"
+      unit_id: "normative_16668"
+      source_span:
+        start:
+          offset: 18559
+          line: 270
+          column: 1
+        end:
+          offset: 21110
+          line: 270
+          column: 2552
+    - pointer: "/validation_rules/0"
+      rule_id: "complete_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_43823"
+      source_span:
+        start:
+          offset: 43918
+          line: 308
+          column: 1
+        end:
+          offset: 44347
+          line: 308
+          column: 430
+    - pointer: "/validation_rules/1"
+      rule_id: "reconcile"
+      identity_kind: "explicit"
+      unit_id: "normative_43823"
+      source_span:
+        start:
+          offset: 44348
+          line: 309
+          column: 1
+        end:
+          offset: 44813
+          line: 309
+          column: 466
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 3137
+          line: 52
+          column: 1
+        end:
+          offset: 3158
+          line: 52
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_3137"
+      source_span:
+        start:
+          offset: 3186
+          line: 56
+          column: 1
+        end:
+          offset: 3894
+          line: 63
+          column: 90
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_16668"
+      source_span:
+        start:
+          offset: 16668
+          line: 264
+          column: 1
+        end:
+          offset: 16708
+          line: 264
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_43823"
+      source_span:
+        start:
+          offset: 43823
+          line: 304
+          column: 1
+        end:
+          offset: 43845
+          line: 304
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0696a1cf07bb21f7f470c87428d7cda10b48828f7610b3cdebc7cebd649165cf"
+  generated_content_sha256: "sha256:36a01b6d94e15e9359243644aa065fa65703cb0753c9a17152223d3ac6d33c49"

@@ -1,8 +1,298 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-other-transport-equipment-except-bicycles
 language: en-US
-status: scaffold
+status: candidate
+content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail trade services, of other transport equipment, except bicycles
+# Non-specialized store pickup of unopened GOR4PS hand-pulled cart kits
+
+## 1. Scope and Applicability
+
+This methodology concerns counter pickup of one specified complete hand-pulled goods cart kit in a real mixed-assortment non-specialized store. GOR4PS is a nonmotorized, nontowable transport vehicle; its garden use does not turn it into powered agricultural machinery. UN62182 includes goods493/495/496/499 except49921; this narrow goods49930 route excludes pleasure boats494 as well as bicycles. Only actual site/lot evidence admits a dataset. The core is deliberately partial pending the executable completion duties; it must not be advertised as a complete retailer footprint.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-other-transport-equipment-except-bicycles |
+| classification_refs | CPC3.0 62182; proposed narrower applicability through goods group499, subclass49930. External accepted mappings and their decision references control selection. |
+| covered_products | One homogeneous actual GOR4PS complete factory-boxed kit variant and lot: nonmotorized, nontowable straight-pull four-wheel goods cart with poly tub, coated steel frame and pneumatic wheels; unopened and unassembled at store handover. |
+| excluded_products | Bicycles49921; pleasure/sport boats494; toys; passenger carriage; motorized/towable carts; other models; assembled, demonstrated, repaired, incomplete or opened kits; store/pre-sale tyre inflation or alteration of the evidenced factory tyre state; delivery, installation, customer travel and subsequent use/maintenance. |
+| representative_product | Gorilla GOR4PS, actual supplier version matching manual182228A; retain lot-specific wheel/hardware revisions and complete retail pack inventory. Web specifications and spare-parts list do not establish a complete quantitative BOM. |
+| production_route | Actual mixed-assortment non-specialized physical store: receiving unopened original carton, dry ambient storage and manual handling, electronic checkout, customer counter pickup. Confirm assortment/site/channel, not merely brand authorization. |
+| market_state | Unused original complete unassembled kit with all original tub/frame, axles/steering, dump latch, handle, four matching wheel assemblies, fixings, instructions and complete packaging. No loose-part sale or nominal payload-based unit. |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Provide retail availability, custody and counter handover of the specified complete boxed goods cart kit. |
+| How much | One final-valid accepted original kit service, counted once by original kit ID; Q is the pool total. |
+| How well | Buyer acceptance of the correct unopened complete supplier configuration and carton condition, with actual handover/acceptance evidence; no claim of tested load capacity, road legality, fitness or safe use. |
+| How long or cycle | One prospective site/configuration/calendar-year pool, including zero-sale attempts and later return corrections to the original pool; actual custody duration is measured. |
+| reference_flow_link | service_pickup |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Retail pickup service for one unopened complete GOR4PS cart kit |
+| Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| Reference unit | Item(s) |
+| Required qualifiers | actual store and mixed assortment; GOR4PS regional variant and original lot ID; complete kit and full packaging BOM; original four-wheel BOM/revision and carton packing declaration; unopened unassembled unused state; receiving and pickup gates; pool dates and acceptance audit cutoff/version; final original-ID acceptance ledger; no store assembly or pre-sale tyre inflation; all-equipment fuel/refrigerant absence evidence; partial-core status and completed module register; background source gate/owner/version; measured denominator Q |
+
+Required qualifiers must accompany the actual dataset metadata and source records. The unbound service identity is a candidate identity gap, not permission to substitute goods manufacture.
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| measure_count | service_pickup; failed_kit; customer_return; customer_handover; supplier_handover | Number of items | Item(s) | Count complete original kits/events as defined by count_service and stock_goods; service and gross custody counts are different. All inventory rows are per reference flow. |
+| measure_ac | retail_ac | Net calorific value | MJ | Record kWh by cp_power; 1kWh=3.6MJ; source_drivers gives final E_AC/Q per reference flow. |
+| measure_waste | waste_kit | Mass | kg | Use actual whole same-state net carrier weighing by cp_waste; Item(s) condemnation is independently linked by actual IDs, never a default kg/item. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Complete unopened factory-boxed GOR4PS kit physically received by retailer; source manufacture is defined separately at supplier dispatch. |
+| starting_condition_role | Retail custody gate with disjoint original-source responsibilities. |
+| product_classification_scope | Narrow goods49930 component of CPC3.0 62182; external accepted mapping required for automatic classification selection. |
+| recursive_input_rule | Exclude successful S manufacture from retail service. Include actual failed_kit Product input for F; custody satellites alone have no added manufacture. |
+| upstream_dataset_requirement | Verified actual complete supplier-dispatch kit vector/BOM, separate inbound source and final owner history; primary product webpages are not LCI datasets. |
+| disclosure | Partial incremental core; complete-service use requires boundary_completion and completion_restore, Q audit/version and all unresolved identities/scopes. |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| boundary_scope | all inventory rows | The starting gate is physical retailer receipt of the complete unopened kit. Core inventory covers attributed point-of-use AC for receiving, holding, checkout and residual handling, failed original kit manufacture at supplier dispatch, and actual whole-kit waste dispatch. It is a PARTIAL incremental retail-service core until boundary_completion is satisfied. Successful-goods S manufacture is excluded from this service and may enter a separately declared downstream GOODS system exactly once. | ghgp-product-2011; jrc-retail-2013 |
+| boundary_model | all inventory rows | Freeze the actual GOR4PS regional variant separately: GOR4PS, -C and AU are not interchangeable; TW0345-3 for lot<335623 and TW0377 wheels must be verified from actual lot and all four wheel assemblies, not treated as one source vector. Actual carton packing records and signed supplier declarations must establish the unassembled kit contents; assembled webpage images cannot establish sealed contents. Admit only real GOR4PS kit lots whose supplier signed inventory covers all cart components, coatings, wheel/tyre/tube/valve variants, fixings, instructions, and carton/liners/ties/labels/adhesives. Choose one complete supplier-dispatch manufacturing vector per original kit or a verified disjoint original component-vector reconstruction, never both. Manufacturer specifications establish object and intended hand-pulled goods-vehicle use, not field quantities, complete BOM/LCI, compliance or approval. No payload, website weight or assembled dimensions substitute for received kit count, net carrier mass or carton volume. | gorilla-gor4ps; gorilla-gor4ps-manual; un-cpc49930 |
+| boundary_state | all inventory rows | Admission requires lot packing confirmation and intact original closure at receipt and each customer/supplier handover. A visibly damaged but still unopened complete rejected kit may use waste_kit only if the entire original configuration remains together. Opened, missing-component, assembled, demo, changed tyres, store/pre-sale tyre inflation, repaired or wet/contaminated goods require state-specific atomic cards, original-vector conservation and bilingual sync before completeness; they cannot disappear or be relabelled as unopened. Factory tyres may already contain air: collect actual lot-specific factory tyre condition and pressure/closure evidence; do not infer a deflated factory state or exclude original factory inflation. No actual transaction is asserted by this PCR. | gorilla-gor4ps; gorilla-gor4ps-manual |
+| boundary_route | all inventory rows | This narrow route has manual handling, electronic receipts, grid AC and non-refrigerated ambient holding. Site manager must inventory every actual facility/leased/service-controlled device over the whole period: lighting, fans, heating/HVAC, material handling, checkout, ICT, security, cleaning, backup power and fire equipment. Complete dated equipment/service logs must establish no on-site combustion, fuel, refrigerant-containing operation or release, store assembly/pre-sale tyre inflation or paper/bag issue within scope. Present or unknown facts block this route as complete; add actual species/state/medium methods and cards through reviewed bilingual revision or use an applicable PCR. Upstream contracted transport can contain fuel/emissions only inside its verified complete provider boundary. | jrc-retail-2013 |
+| boundary_satellites | customer_return; customer_handover; supplier_handover; failed_kit; waste_kit | Only customer_return, customer_handover and supplier_handover are physical custody Product satellites without additional manufacturing characterization. Raw receipts remain QA. failed_kit is an actual characterized Product INPUT carrying original F manufacture, never a satellite exclusion. waste_kit is a characterized Waste OUTPUT requiring complete matching treatment. Background ownership T does not manufacture a physical movement; use actual recipient/state/event, whether or not acceptance survives. | ghgp-product-2011 |
+| boundary_completion | all inventory rows | Before complete-service use, inventory every necessary omitted source using cp_completion and calculations completion_restore, source_drivers, asset_history and transport_chain. Required completion objects are inbound/return/waste/asset transport; building and fixtures including lighting/fans; racks/pallets/manual handling devices; checkout/ICT/router/network/cameras and storage; payment and administration backends; cleaning water, actual detergent and reusable cleaning tool lifecycle; ancillary packaging and actual associated wastes. For each actual homogeneous object create its own named atomic card (building_model_life, lamp_model_life, fan_model_life, rack_model_life, handling_model_life, checkout_model_life, ict_model_life, router_model_life, camera_model_life, storage_service, network_access, payment_processing, admin_processing, water_in, detergent_formula, cloth_model_life, cleaning_effluent, plus actual source-specific packaging/wastes/transport). These are completion role names, not fictitious exchanges already supplied by this core. Record actual model/composition/state, flow/type/direction/property/unit, raw numerator and provider boundary, relevant protocol and frozen owner. Split heterogeneous models, formulations and destinations; a real documented complete lifecycle/service package may stay intact with exact constituents/exclusions. Retain a signed present/absent/unknown matrix; absence needs evidence, unknown blocks completeness. Author required actual cards in both languages, bind identities and verify treatment/background scopes before sync and check. Do not merely append an unquantified module list. | jrc-retail-2013; ghgp-product-2011 |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| retail | Unopened kit retail custody and pickup | required | Actual admitted mixed-store route and prospective pool | Incremental retail core | service_pickup |
+| residual | Whole rejected kit residual dispatch | conditional | Actual unopened complete kit condemned and accepted for whole-carrier treatment; absent needs cp_waste zero-event evidence, unknown blocks completeness | Waste custody and dispatch | service_pickup |
+
+### Process: Retail custody and pickup (`retail`)
+
+#### Inputs
+
+##### Product flows
+
+###### Failed original complete factory-boxed GOR4PS kit (`failed_kit`)
+
+The supplier-dispatch manufacture of original kits finally assigned F crosses the incremental service boundary here. The original whole cart, wheel assemblies, hardware and packaging remain one matched complete vector; failed physical custody and waste carrier kg remain separate.
+
+- Selected flow: Complete factory-boxed unassembled GOR4PS cart kit at supplier dispatch
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Unit group: Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159`
+- Amount rule: N_F/Q
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_original`
+- Sources: `gorilla-gor4ps`; `gorilla-gor4ps-manual`
+
+###### Actual unopened complete kit return from customer (`customer_return`)
+
+An actual complete unopened kit returns across the store custody gate. Count physical return events independently of money and final acceptance; manufacturing is carried by its original source and not added here.
+
+- Selected flow: Unopened complete GOR4PS cart kit returned from customer
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Unit group: Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159`
+- Amount rule: U_customer/Q
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_events`
+- Sources: `gorilla-gor4ps`
+
+###### Retailer point-of-use AC (`retail_ac`)
+
+Metered AC supplies manual-custody support, lighting/fans, checkout/ICT and residual handling within the documented store circuit boundary. Disjoint actual source attribution is fixed by allocation_utilities; provider packages must show their electricity scope to prevent overlap.
+
+- Selected flow: Electricity, alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Unit group: Units of energy `93a60a57-a3c8-11da-a746-0800200c9a66`
+- Amount rule: E_AC/Q
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_power`
+- Sources: `jrc-retail-2013`
+
+#### Outputs
+
+##### Product flows
+
+###### Final-valid accepted retail pickup service (`service_pickup`)
+
+The output is the bounded retail service for one original kit, not a cart manufacturing flow, payload or travel service. Count distinct final-valid original kit IDs at the declared audit cutoff; reverse original service when acceptance is later revoked even without a physical return.
+
+- Selected flow: Retail pickup service for one unopened complete GOR4PS cart kit
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Unit group: Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159`
+- Amount rule: 1 Item(s)
+- Value mode: Fixed value (`fixed_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Method formula (`method_formula`)
+- Collection protocol: `cp_events`
+- Sources: `ghgp-product-2011`
+
+###### Gross complete unopened kit customer handover (`customer_handover`)
+
+All actual complete unopened kit customer exits are recorded once, including never-accepted handovers and later externally retained failures. This physical satellite cannot be reduced to the final-valid service Q, and it adds no successful-goods manufacturing background.
+
+- Selected flow: Unopened complete GOR4PS cart kit handed to customer
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Unit group: Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159`
+- Amount rule: H_all/Q
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_events`
+- Sources: `gorilla-gor4ps`
+
+###### Actual complete unopened kit supplier handback (`supplier_handover`)
+
+Count actual complete unopened kits crossing to the named supplier. Keep recipient, state and custody evidence; source responsibility moves to T only under the separately signed original-vector agreement, never merely because a physical return or refund exists.
+
+- Selected flow: Unopened complete GOR4PS cart kit returned to supplier
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Unit group: Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159`
+- Amount rule: R_supplier/Q
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_events`
+- Sources: `gorilla-gor4ps`
+
+### Process: Whole rejected kit residual dispatch (`residual`)
+
+#### Inputs
+
+#### Outputs
+
+##### Waste flows
+
+###### Whole rejected unopened kit and original pack carrier (`waste_kit`)
+
+The actual unchanged complete rejected cart kit and original carton/liners/fixings are dispatched as one whole mixed carrier only with signed receiver acceptance of its real constituents/state and matching full treatment. Direct consignment net kg establishes quantity; catalogue kit weight, component sums and stock adjustments do not.
+
+- Selected flow: Discarded unopened complete GOR4PS cart kit with original packaging
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Unit group: Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
+- Amount rule: W_dispatch/Q
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste`
+- Sources: `jrc-retail-2013`
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| ownership_original | failed_kit; customer_return; customer_handover; supplier_handover; waste_kit | For each original homogeneous kit source s at supplier dispatch, conserve original manufacturing vector V_s and source ID/version across exclusive S/F/T/O responsibilities summing1. S is finally valid customer goods, F is destroyed/confirmed missing/non-service failed original responsibility retained by retailer, T is specifically acknowledged supplier/internal/other system responsibility, O is outstanding stock or unresolved responsibility carried forward. Whole original kits have 0/1 source ownership. Do not split V_s by component mass/count. A genuine split requires supplier original component quantities and environmental vectors, per-component S/F/T/O, separate real Product input cards for F and exclusion of those vectors from failed_kit. F includes originally lost/failed externally retained goods, not only retailer waste; never duplicate eventual resale manufacture. Inbound transport has a separate source at receiving gate and follows the same final original owner; manufacture dispatch excludes inbound. A supplier return moves custody but moves background to T only with signed responsibility; otherwise retain O/F as evidenced. | ghgp-product-2011 |
+| allocation_pools | all inventory rows | Prospectively freeze one actual site/GOR4PS-version/year pool, beneficiary map and update versions. Include receiving failures, refused attempts, repeat handling, closed/idle and zero-sales periods; do not retain only successful transactions. A zero-Q pool remains unnormalizable with all raw burdens and cannot be silently dropped. Reopening and late revocation replace original Q, source fates and every original attributed numerator; do not charge correction again to a new cohort. Prefer directly measured subdivision; all shares for each full source pool sum1 across actual beneficiaries including failed/empty reservations. No price or sales-count default driver. | ghgp-product-2011 |
+| allocation_utilities | retail_ac | Apply source_drivers to disjoint measured AC source pools, not to mixed driver dimensions. Direct cart-handling/checkout active circuits use measured cart-task device-seconds over all actual task device-seconds in that source; idle/fixed checkout/ICT equipment use measured reserved device-seconds over all actual reserved device-seconds including failures and empty reservations. Facility lighting/fans use served beneficiary footprint m2 multiplied by covered duration h over all beneficiaries and explicitly reserved empty areas. Separate equipment and facility pools before allocation. Reconcile each kWh pool and all attributed kWh to the actual parent meters; subtract a child only if that parent physically contains it, never from an independent disjoint meter. Electricity in external packages is excluded from retail_ac only by documented constituent/time/circuit boundaries. | jrc-retail-2013; ghgp-product-2011 |
+| allocation_asset | all inventory rows | Apply asset_history to omitted capital and complete lifecycle packages. Keep each actual homogeneous model/BOM/scope vector independent. Measured original-pool exposure e_recorded divided by evidenced expected total lifetime exposure L_expected gives provisional f; cumulative f cannot exceed1 and unknown/insufficient L needs review. Use building fabric/structural package served m2*h (exclude separately modelled lamps/fans and other equipment); rack/pallet occupied m2*h; handling equipment measured device-use seconds; lighting/fan/checkout/ICT/router/camera equipment measured reserved device-seconds; reusable cleaning cloth measured cleaned m2. Manufacture, installation, operation, maintenance and EOL scopes must be disjoint. At retirement final E=sum actual exposure across ALL historical beneficiaries and f_final_h=e_actual_h/E. For EVERY historical owner/pool/version replace f_old_h*V_old with f_new_h*V_new and record delta; residual1-sum_old_f is QA only. Asset transport, repairs and EOL first belong to that asset and follow the SAME historical fractions/version replacements unless already attributed to exact final owner/pool/version. No current-retirement-Q shortcut, duplicated complete-package EOL carrier, new acquisition input besides lifetime fraction or sum of unrelated repair masses masquerading as a whole device. | ghgp-product-2011 |
+| allocation_services | all inventory rows | Offsite network/payment/admin/security sources use service_ownership. Internet access never proves backend payment/admin/storage inclusion. Network source-hours have one real interval/provider denominator and allocate by each beneficiary measured reserved endpoint-connection seconds divided by all beneficiaries endpoint-seconds including failed/empty reservations; original sourceh and unique intervals are retained. One shared basket payment attempt or admin batch is one event allocated by measured within-event line processing seconds whose shares sum1; source labels alone do not assign the whole event. Camera captures freeze actual timestamped field-of-view beneficiary footprints*coverage duration, disjoint zone/time and all beneficiaries/empty reservations; storage byte*h follows the ORIGINAL frozen capture map, never later sales. 1GB=10^9 bytes, 1GiB=2^30 bytes. Preserve active/idle/fixed source subpools with one causal same-unit driver each. Only proven exact final owner/pool/version attribution skips repeat owner fraction. | ghgp-product-2011 |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_events | retail | service_pickup; customer_return; customer_handover; supplier_handover | Original kit custody and acceptance ledger | original_kit_id; GOR4PS_variant; regional_variant; lot_id; four_wheel_BOM; carton_packing_declaration; wheel_revision; full_supplier_BOM; original_closure_state; factory_tyre_state; factory_tyre_pressure_evidence; no_presale_inflation_log; site_assortment; pool_dates; original_pool_id; audit_cutoff; acceptance_event_id; final_valid_acceptance; revocation_event_id; physical_event_id; recipient_id; physical_state; financial_only; G_open; R_new; U_customer; I_in; G_close; H_all; R_supplier; I_out; C_condemn; M_goods; epsilon_goods | Custodian scans unique carton/lot IDs at receipt, every physical handover/return and count at period boundaries; buyer records actual acceptance and reasons; finance separately flags pure financial changes. Reconcile carton seals and supplier packing declaration without claiming an unopened-kit inspection proves every internal part. | Item(s) | Every event and daily reconciliation; audit cutoff and any late-return update | Complete prospective pool plus linked earlier/later corrections | Actual mixed-assortment store receiving, holding and pickup counter | per reference flow | Custodian/acceptance signatures; dated stock takes; missing-ID investigations; measurement supervisor checks count completeness |
+| cp_original | retail | failed_kit | Original source responsibility register | original_kit_id; source_id; source_version; source_gate; original_owner; original_pool_id; n_original_s; V_s; full_supplier_BOM; f_S_s; f_F_s; f_T_s; f_O_s; signed_T_receipt; physical_event_id; physical_state; recipient_id | Supplier identifies whole original kit manufacturing vector at dispatch and complete lot BOM including packaging; analyst traces each original ID through acceptance, missing/discard and signed transfer. Validate all components and pack scopes; no web-weight-based background. | Item(s) | Every source receipt/fate change and pool reconciliation | Whole original-source life across all pools and corrections | Supplier-dispatch evidence linked to retailer gate and final recipient | per reference flow | Signed supplier vectors/BOM; S/F/T/O sums1; responsibility and historical replacement audit |
+| cp_power | retail | retail_ac | Actual electricity source/circuit records | meter_id; parent_meter_id; child_contains; source_subpool_id; source_mode; start_time; end_time; kWh_j; task_device_seconds; reserved_device_seconds; served_m2_h; d_pool_j; sum_all_d_j; empty_reservation; beneficiary_id; included_external_scope; E_AC | Energy manager reads calibrated revenue/submeters for all sites/circuits through complete period including closure. Record active equipment task timers, fixed/idle reserved device time separately from facility surveyed served area*time. Circuit diagrams prove containment; never use rated cart payload or nominal device power as measured consumption. | kWh; s; m2*h | Meter interval and each task/reservation; monthly bill reconciliation | All operation, idle, closed and failed intervals in pool | Retailer actual grid import and named disjoint circuits | per reference flow | Calibration certificate/zero/time checks; bill/circuit reconciliation; all shares1; missing intervals block completeness |
+| cp_waste | residual | waste_kit | Unopened complete rejected kit carrier consignments | waste_event_id; original_kit_id; physical_state; actual_constituents; original_pack_present; dispatch_consignment_net_kg; tare_kg; W_open; W_condemned; W_other_in; W_close; W_transfer; M_waste; epsilon_waste; C_condemn; carrier_net_kg_same_ID; receiver_id; signed_acceptance; treatment_scope; transport_scope | Waste manager weighs each real entire unopened kit-plus-original-pack carrier on a calibrated scale at dispatch, with actual tare and receiver weighing where available. Measure same-ID condemnation net kg and held stocks independently. Receiver signs actual steel/polymer/rubber/pack constituents and state with matching full treatment boundary; a photo/license alone is insufficient. | kg; Item(s) | Each condemnation/dispatch and boundary stock take | All generated, held, transferred and dispatched carriers, even zero-Q | Actual retailer waste holding point to signed receiver gate | per reference flow | Weigh tickets/calibration, chain of custody, receiver acceptance/treatment contract, missing-waste investigation |
+| cp_completion | retail | all inventory rows | Actual omitted-source and scope matrix | object_id; actual_model; composition_state; object_presence; absence_evidence; site; event_time; period; provider_id; actual_constituents; lifecycle_stage; exchange_identity; flow_type; direction; property; unit; raw_numerator; module_mode; z; D; source_id; original_owner; original_pool_id; source_version; attribution_level; included_electricity; included_transport; included_maintenance; included_treatment; unknown_scope | Site lead walks every facility/device/service with supplier invoices/contracts and utility plans; analyst traces every boundary_completion object, records each actual atomic exchange or evidenced absence and maps it to its exact own process/card before dataset completeness. Inspect provider constituents/events/times and lifecycle exclusions rather than trusting provider labels. | Each actual exchange unit separately | Before collection; each change; period-end audit | Whole source period and retrospective versions | All actual necessary site and contracted support scopes | per reference flow | Signed presence/absence/unknown matrix; overlap map; qualified identities; actual card/protocol and unit reconciliation |
+| cp_assets | retail | all inventory rows | Actual lifetime exposures and revision history | asset_id; actual_model; full_BOM; scope; lifecycle_stage; V_new_a; V_old_a; e_recorded_a_h; exposure_unit; L_expected_a; expected_life_evidence; e_actual_a_h; E_a; f_new_a_h; f_old_a_h; original_owner; original_pool_id; source_version; installation_event; maintenance_event; terminal_carrier_kg; acquisition_stock; retirement_stock; attribution_level | Asset custodian measures served/occupied m2*h, device-use/reserved seconds or cleaned m2 according to allocation_asset at each original period, from geometry/time/task logs. Retain complete model-specific supplier vectors and exclusions, expected life evidence and all prior allocations; actual retirement reopens every historic record. Lighting/fan capital uses measured reserved-device seconds, independently of the facility operating-electricity m2*h pool. Calibrate area/time/scales and keep replacement approvals. | m2*h; s; m2; kg; each vector unit separately | Each exposure period, acquisition, repair, life revision and retirement | All historical beneficiaries through final actual life | Building/fixed lighting/fans, racks, handling, checkout, ICT/router/cameras and cleaning tools | per reference flow | Asset ledger, measured exposures, same-unit lifetime support, all-history replacement and source-scope audit |
+| cp_services | retail | all inventory rows | Network, basket/admin and original capture records | provider_id; actual_constituents; unique_interval_id; interval_start; interval_end; sourceh_interval; endpoint_id; endpoint_seconds_pool; sum_all_endpoint_seconds; empty_reservation; event_id; raw_event_quantity; line_processing_seconds_pool; sum_event_line_seconds; footprint_duration_pool; sum_all_footprint_duration; capture_timestamp; disjoint_zone_time; capture_map_version; captured_source_bytes; retention_h; byte_unit; original_owner; original_pool_id; source_version; attribution_level | IT/payment/security owners export actual connection endpoint reservations and each unique payment attempt/admin batch processing log. Survey timestamped camera field of view and disjoint beneficiary footprints including empty reservations, freeze original capture map and retention bytes/time. Reconcile to complete provider denominator/billed source intervals; benchmark bandwidth or later sales does not establish shares. | h; s; byte*h; actual event unit separately | Each unique interval/event/capture and retention update | Full provider period including unsuccessful and empty intervals | Network, offsite payment/admin processing and camera storage providers | per reference flow | Clock synchronization, retained original map, event-share sums1 and complete denominator verification |
+| cp_transport | retail | all inventory rows | Real trip sources and layered owners | trip_id; segment_id; raw_trip_source_j; actual_load_kg_c_j; sum_all_load_kg_j; actual_occupied_m3_c_j; sum_all_occupied_m3_j; capacity_evidence; binding_constraint; vehicle_km; vehicle_h; reserved_capacity_distance; reserved_capacity_h; all_beneficiary_driver; provider_coverage; actual_fuel; owner_fraction_c_h; attribution_level; original_owner; original_pool_id; source_version; loaded_empty_idle_scope | Logistics owner obtains segment manifests, actual consignment dimensions/scale tickets, capacity constraints, empty GPS-distance and stationary-idle timer plus complete fuel/provider scope. Trace trips to actual goods/material/asset and then the final original F/first-use/historical asset owner; provider attribution evidence specifies exactly which layer is already applied. | kg; m3; vehicle-km; vehicle-h; actual provider unit separately | Every loaded/empty/idle segment and source invoice | All transport stages not included in original dispatch vector or existing package | Supplier to store, returns, cleaning/pack supplies, asset events and waste receiver transport | per reference flow | Actual capacity eligibility, manifests, scale/volume/timer calibration, full driver and overlap reconciliation |
+| cp_materials | retail | all inventory rows | Actual cleaning and ancillary material ledgers | source_original_kg; source_original_count; source_quantity_unit; D_c; u_first_c_h; f_preuse_c_h; a_use_c_h; a_preuse_c_h; V_manufacture_c; V_inbound_c; first_use_event; unused_sealed_kg; unused_opened_kg; unused_damaged_retained_kg; first_used_cumulative_kg; preuse_dispatched_source_kg; preuse_confirmed_missing_source_kg; neverused_transfer_source_kg; signed_unused_residual_kg; consumed_no_recoverable_source_kg; used_retained_working_source_kg; used_retained_container_source_kg; used_damaged_retained_source_kg; dispatched_container_residue_source_kg; rinsate_origin_source_kg; used_transfer_source_kg; postuse_confirmed_loss_source_kg; signed_used_residual_kg; V_discharge; rho_measured; supply_meter_m3; cleaned_m2; source_id; source_version; original_owner; original_pool_id; attribution_level; Q; actual_formula; actual_package_BOM; actual_carrier_state; receiver_treatment_scope; historical_state_version; original_record_replaced | Cleaning/material manager measures actual each formulation/package receipt, first use and final destination on calibrated scales; keep unopened/opened/damaged never-used stock and all used final-source destinations exclusive; update the complete original history at every use/state change, including old source owner/pool/version. Read supply/discharge meters and contemporaneous same-carrier density measurement; collect actual wet carrier and receiver acceptance. Link reusable tool measured cleaned area to cp_assets. | kg; Item(s); m3; kg/m3; m2 | Every source/use/dispatch; each meter interval and stock boundary | Complete actual material source history through final fate | Store cleaning, ancillary packaging and actual receiver | per reference flow | Calibration and density state records; source-origin and physical-carrier independent reconciliations; signed receiver scope |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| count_service | service_pickup | Q=count distinct original_kit_id with final_valid_acceptance=true at audit cutoff in original pool. A later revocation reclassifies the original ID even without physical movement. A refund/discount with acceptance still valid does not change Q. A return/resale contributes at most one final-valid original ID; never subtract revocations from an already final-valid count. service_pickup=Q/Q for Q>0. | original_kit_id; final_valid_acceptance; audit_cutoff; original_pool_id; acceptance_event_id; revocation_event_id; physical_event_id; financial_only; Q | service_pickup | ghgp-product-2011 |
+| stock_goods | customer_return; customer_handover; supplier_handover; failed_kit | Goods-only count balance: G_open+R_new+U_customer+I_in=G_close+H_all+R_supplier+I_out+C_condemn+M_goods+epsilon_goods. H_all contains ALL gross customer handovers (initially accepted AND never accepted) with disjoint physical event IDs; do not add another failed-handover exit. U_customer records actual complete return entries. Revocation without movement is not another exit. C_condemn moves goods into held waste internally; physical waste dispatch is not a second goods exit. M_goods is confirmed missing count, epsilon_goods is signed unresolved count residual. Both remain explicit; internal transfers never create service. | G_open; R_new; U_customer; I_in; G_close; H_all; R_supplier; I_out; C_condemn; M_goods; epsilon_goods; physical_event_id; original_kit_id | goods_balance | ghgp-product-2011 |
+| background_f | failed_kit | For original kit source s, N_F=sum_s n_original_s*f_F_s; failed_kit=N_F/Q. Each n_original_s is actual whole original kit count and f_F_s follows ownership_original. Link the supplier-dispatch V_s once; distinct source vectors remain separate model/lot cohorts. Source-equivalent original count is not waste kg or a new physical receipt. S/F/T/O and F revisions replace old source records. | n_original_s; f_F_s; f_S_s; f_T_s; f_O_s; V_s; source_id; source_gate; original_owner; original_pool_id; source_version; Q | failed_kit | ghgp-product-2011 |
+| custody_amounts | customer_return; customer_handover; supplier_handover | customer_return=U_customer/Q; customer_handover=H_all/Q; supplier_handover=R_supplier/Q. Use actual complete unopened original-kit physical event totals from stock_goods, with recipient and state per event. Failed external retention remains within H_all and changes acceptance/background, not another physical exit or retailer waste. | U_customer; H_all; R_supplier; physical_event_id; recipient_id; physical_state; Q | custody_quantities | ghgp-product-2011 |
+| source_drivers | retail_ac | For each disjoint metered source subpool j, A_j=kWh_j*d_pool_j/sum_all_d_j; retain direct-source ownership as share1 only with measured scope evidence. d is actual task-device seconds for active equipment, reserved-device seconds for idle/fixed equipment, or served m2*h for facility pools as allocation_utilities fixes. Sum_all_d_j must be known positive and include all failed/empty beneficiaries. E_AC=3.6*sum_j A_j; retail_ac=E_AC/Q. Keep raw kWh_j and attributed A_j separately; no dimensionally mixed driver. | kWh_j; d_pool_j; sum_all_d_j; source_subpool_id; source_mode; parent_meter_id; child_contains; task_device_seconds; reserved_device_seconds; served_m2_h; E_AC; Q | retail_ac | ghgp-product-2011 |
+| waste_dispatch | waste_kit | W_dispatch=sum actual dispatch_consignment_net_kg for the unchanged complete unopened kit-plus-original-pack carrier; waste_kit=W_dispatch/Q. Direct weighed dispatch kg is never reduced again by closing stock, reused stock or source composition. Independent held-wastekg QA: W_open+W_condemned+W_other_in=W_close+W_dispatch+W_transfer+M_waste+epsilon_waste. Link C_condemn Item(s) to W_condemned kg by actual same-ID net carrier weighings, never nominal cart mass. M_waste is confirmed missing held-waste kg; epsilon_waste is a separate signed unresolved residual. Neither becomes fictitious treatment. | dispatch_consignment_net_kg; W_open; W_condemned; W_other_in; W_close; W_dispatch; W_transfer; M_waste; epsilon_waste; C_condemn; original_kit_id; waste_event_id; Q | waste_kit | jrc-retail-2013 |
+| asset_history | all inventory rows | For each asset/source vector a and original historical beneficiary h, provisional f_a_h=e_recorded_a_h/L_expected_a. Record actual measured exposure unit from allocation_asset and supporting expected lifetime evidence. At retirement E_a=sum_h e_actual_a_h across the entire history, f_final_a_h=e_actual_a_h/E_a. Recompute every historical numerator as f_new_a_h*V_new_a and record delta_a_h=f_new_a_h*V_new_a-f_old_a_h*V_old_a. Apply the same owner fraction once to separate attributable asset transport/repair/retirement sources; actual terminal carrier kg is independently measured, then its lifecycle responsibility fraction once. Entire-package contained EOL is not emitted again. Each affected original pool is renormalized once by its own revised Q. | asset_id; V_new_a; V_old_a; e_recorded_a_h; L_expected_a; exposure_unit; e_actual_a_h; E_a; f_new_a_h; f_old_a_h; original_owner; original_pool_id; source_version; terminal_carrier_kg; attribution_level; Q | historical_asset_numerators | ghgp-product-2011 |
+| service_ownership | all inventory rows | Network A_network=sourceh_interval*endpoint_seconds_pool/sum_all_endpoint_seconds for each unique interval, with original interval and all-beneficiary reservations retained. Provider interval-hours do not equal each SKU hours. Shared event A_event=raw_event_quantity*line_processing_seconds_pool/sum_event_line_seconds for each unique payment attempt/admin batch. Camera f_capture=footprint_duration_pool/sum_all_footprint_duration in frozen disjoint zone/time map; A_storage=sum captured_source_bytes*retention_h*f_capture. Preserve byte conversion, capture/map versions and all empty reservations. Keep each provider source amount/property/unit separate; a bundle stays intact only with actual common denominator, constituent lifecycle/electricity/backend exclusions and ownership. Exact final owner/pool/version attribution alone permits omitting an already applied owner share. | sourceh_interval; unique_interval_id; endpoint_seconds_pool; sum_all_endpoint_seconds; raw_event_quantity; event_id; line_processing_seconds_pool; sum_event_line_seconds; footprint_duration_pool; sum_all_footprint_duration; capture_map_version; captured_source_bytes; retention_h; byte_unit; attribution_level; original_owner; original_pool_id; source_version | service_raw_numerators | ghgp-product-2011 |
+| transport_chain | all inventory rows | Use trip/segment j -> actual consignment or asset c -> final original owner/pool h. For documented mass-limited loaded service, w_c_j=actual_load_kg_c_j/sum_all_load_kg_j; for documented volume-limited loaded service, w_c_j=actual_occupied_m3_c_j/sum_all_occupied_m3_j. Retain actual capacity eligibility, segment manifests and binding constraint proof; unknown/another constraint blocks this choice. Empty travel has positive vehicle-km with measured reserved capacity*distance shares; stationary idle is a separate positive source measured in vehicle-h and reserved capacity*h shares, including all empty/failed reservations and actual fuel/provider coverage. Never make t*km0 cover empty/idle activity. A_c_j=raw_trip_source_j*w_c_j; final A_c_j_h=A_c_j*owner_fraction_c_h. Provider consignment attribution skips w only, not still-missing F/first-use/asset-history owner fraction. Only exact original final owner/pool/version skips that fraction. Provider source boundaries must exclude any duplicate loaded/empty/idle fuel, fleet capital, return/asset repair/waste transport already included elsewhere. | trip_id; segment_id; raw_trip_source_j; actual_load_kg_c_j; sum_all_load_kg_j; actual_occupied_m3_c_j; sum_all_occupied_m3_j; capacity_evidence; binding_constraint; vehicle_km; vehicle_h; reserved_capacity_distance; reserved_capacity_h; all_beneficiary_driver; owner_fraction_c_h; attribution_level; original_owner; original_pool_id; source_version; provider_coverage | transport_raw_numerators | ghgp-product-2011 |
+| completion_materials | all inventory rows | For each actual homogeneous original formulation source c, D_c=source_original_kg is the measured original formulation kg, excluding its separately modelled container. At each audit cutoff conserve the entire source history: D_c=unused_sealed_kg+unused_opened_kg+unused_damaged_retained_kg+first_used_cumulative_kg+preuse_dispatched_source_kg+preuse_confirmed_missing_source_kg+neverused_transfer_source_kg+signed_unused_residual_kg. Unopened never-used undamaged stock, opened never-used usable stock and damaged never-used retained stock are exclusive real states and never default zero. Starting at first actual use, retain a cumulative original-source ledger: first_used_cumulative_kg=consumed_no_recoverable_source_kg+used_retained_working_source_kg+used_retained_container_source_kg+used_damaged_retained_source_kg+dispatched_container_residue_source_kg+rinsate_origin_source_kg+used_transfer_source_kg+postuse_confirmed_loss_source_kg+signed_used_residual_kg. Consumed_no_recoverable excludes all other recoverable/dispatched destinations. Every use, spill, rinse, retention, dispatch and correction replaces the source's prior state/destination records through the entire history, never appending the same used quantity again on rinsing or forgetting prior periods. Added water/dirt/container mass is excluded from formulation-origin kg; directly measured entire wet carrier kg is a different physical quantity. For manufacturing/inbound responsibility, u_first_c_h is the actual original quantity crossing first-use gate for original owner/pool h; f_preuse_c_h is disjoint actual original quantity finally assigned F before first use, including evidenced condemned retained quantity or confirmed missing/dispatch, not unresolved damaged stock. Require sum_h u_first_c_h=first_used_cumulative_kg; the f_preuse owner records are an exclusive responsibility classification of the actual before-use failed portions, not another physical destination. Across all historical owners sum_h(a_use_c_h+a_preuse_c_h)<=1, with unassigned/acknowledged transferred remainder explicit. Set a_use_c_h=u_first_c_h/D_c and a_preuse_c_h=f_preuse_c_h/D_c; manufacturing numerator=(a_use_c_h+a_preuse_c_h)*V_manufacture_c and inbound numerator=(a_use_c_h+a_preuse_c_h)*V_inbound_c, each once, unless already assigned to exact final owner/pool/version. V_manufacture_c is formulation-only at dispatch and V_inbound_c is its disjoint original receiving source. Keep unassigned never-used stock/transfer/return sources carried forward. Reuse adds no manufacture/inbound; correct original historical a*V records and original pools if evidence changes. For a real homogeneous ancillary package source apply the same first-use/failure equation using D_c=source_original_count in Item(s), its source_quantity_unit and matching whole-package vectors, separately from formulation kg; never partition a full heterogeneous bottle/cart/kit environmental vector by mass. Original GOR4PS kit packaging already in V_s is excluded from ancillary inputs. Direct actual whole effluent carrier uses V_discharge*rho_measured, without composition multiplication or evaporation/storage deductions; supply-meter m3 already excludes internal reuse. Require matching water/chemical/package/tool cards and treatment; no water-only reconstruction of whole liquid. Reusable cloth uses measured cleaned m2 and asset_history. | source_original_kg; source_original_count; source_quantity_unit; D_c; u_first_c_h; f_preuse_c_h; a_use_c_h; a_preuse_c_h; V_manufacture_c; V_inbound_c; first_use_event; unused_sealed_kg; unused_opened_kg; unused_damaged_retained_kg; first_used_cumulative_kg; preuse_dispatched_source_kg; preuse_confirmed_missing_source_kg; neverused_transfer_source_kg; signed_unused_residual_kg; consumed_no_recoverable_source_kg; used_retained_working_source_kg; used_retained_container_source_kg; used_damaged_retained_source_kg; dispatched_container_residue_source_kg; rinsate_origin_source_kg; used_transfer_source_kg; postuse_confirmed_loss_source_kg; signed_used_residual_kg; V_discharge; rho_measured; supply_meter_m3; cleaned_m2; source_id; source_version; original_owner; original_pool_id; attribution_level; Q | material_raw_numerators | jrc-retail-2013 |
+| completion_restore | all inventory rows | For each SAME exchange identity/property/unit and original source/owner/pool/version, retain raw external numerator X directly; if and only if a module supplies normalized z per its original evidenced denominator D, first recover X=z*D. Restore only missing trip/owner/asset attribution layers using recorded attribution_level, never an already-applied layer. Check actual event/time/constituent/lifecycle scope overlaps even if provider IDs differ. Freeze compatible raw core numerators N_core (N_F, E_AC, W_dispatch and custody totals) before their displayed /Q. Final compatible amount_i=(N_core_i+sum disjoint correctly attributed X_external_i)/Q once. Do not add normalized cards to raw modules, add unlike properties/units, drop raw F/AC, duplicate F or count physical satellites as new production. Completion remains partial until all boundary_completion objects have actual atomic cards, protocols, identities and verified raw numerator reconciliation. | N_core_i; N_F; E_AC; W_dispatch; U_customer; H_all; R_supplier; X_external_i; z; D; module_mode; exchange_identity; property; unit; source_id; original_owner; original_pool_id; source_version; attribution_level; Q | completed_inventory | ghgp-product-2011 |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| quality_identity | all inventory rows | Every unbound row remains unverified until official direct-read identity, public state, exact bilingual name/type/property/unit and qualifiers/compartment agree with its actual state. Bind service_pickup as this retail service, failed_kit as the complete original manufacturing product, custody satellites as actual boxed goods, and waste_kit as the accepted full mixed carrier with matching treatment. AC identity does not establish supplier grid mix/voltage or life-cycle performance; collect actual supply. | Official original responses and integrity receipts; actual supplier/treatment gate records |
+| quality_methods | all inventory rows | Collector, instrument, site, timestamps/timezone, raw IDs/units/frequency/period, calibration and uncertainty are required for every real field. Responsible source owner and independent reviewer reconcile raw -> fixed causal attribution -> compatible numerator -> one /Q. Unknown values/driver denominators, unresolved signed residuals, source omissions or treatment gaps block complete status; no invented defaults or zero clamp. | Signed source ledgers, calibration, reconciliation and open-issue register |
+| quality_boundary | all inventory rows | Declare partial core until every boundary_completion object is evidenced absent or present with actual method-complete atomic cards, scope-safe provider vector, required property/unit and identities. Whole mixed waste needs receiver signed actual constituent/state acceptance and complete treatment. Unknown refrigerant/fuel/store assembly/pre-sale tyre inflation/changed product state fails the narrow route. No overall environmental comparison or whole-business claim from this partial core. | Signed completeness matrix and full-period equipment/service survey; completed bilingual inventory |
+| quality_history | all inventory rows | Retain original and replacement versions for Q, S/F/T/O, all raw source IDs and all historical fV allocations, including zero-output pools. Final asset actual E replaces every historical allocation; late acceptance changes replace original source responsibilities and numerators. Do not append corrections without cancelling superseded amounts. | Version graph, all-beneficiary history, reconciled replacement deltas and original-pool reissue |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| validation_scope | all inventory rows | Reject a missing mixed-store channel, original lot/configuration/BOM, unopened-state evidence, Q qualification or full-period route absence proof. A manufacturer advertised load/speed/tyre pressure is product information only, not a PCR legal/safe-use acceptance limit or reference denominator. | un-cpc62182; un-cpc49930; gorilla-gor4ps-manual |
+| validation_balance | all inventory rows | Require separate Item(s) goods-only, kg held-waste and final-valid service ledgers; reconcile original event partitions and actual same-ID count/mass links. Signed residuals remain independent of confirmed missing. Direct dispatch cannot be stock-corrected again; background T cannot create a physical transfer. | ghgp-product-2011 |
+| validation_normalize | all inventory rows | Q>0 is required for normalization. All displayed inventory amounts use reference_flow and one final common/Q; calculated numerators use calculated_value and calculated_from_collection, while service_pickup is fixed1 Item(s) with method_formula after count_service establishes Q>0. Verify raw core restoration, source/driver units, all-beneficiary shares1, source deduplication and every original-pool replacement. Zero-output and unknown remain explicit. | ghgp-product-2011 |
+| validation_complete | all inventory rows | Do not mark a dataset complete while any actual necessary completion object, exchange binding, accepted waste treatment or quantity/background scope is unverified. Every added card must enter its actual one-process collection view, calculation Inputs and row scope; sync the aligned bilingual contract. Classification mapping decisions remain external; passing a finite check does not approve methodology or safe operation. | ghgp-product-2011 |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | Partial incremental retail-service core until required actual completion is verified |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | Use only the specified original kit/state/site/channel pool with explicit partial boundary; after verified completion use as incremental retail-service input, keeping successful goods manufacture separate. |
+| excluded_use | Whole-business footprint, merchandise manufacture, payload/travel service, assembly/inflation/use/maintenance, generic transport equipment comparison or other kit variants. |
+| required_metadata | actual store and mixed assortment; GOR4PS regional variant and original lot ID; complete kit and full packaging BOM; original four-wheel BOM/revision and carton packing declaration; unopened unassembled unused state; receiving and pickup gates; pool dates and acceptance audit cutoff/version; final original-ID acceptance ledger; no store assembly or pre-sale tyre inflation; all-equipment fuel/refrigerant absence evidence; partial-core status and completed module register; background source gate/owner/version; measured denominator Q |
+| required_quality_disclosure | Raw and normalized ledgers; original source vector S/F/T/O; measured source attribution; Q audit/reissues; all historical asset revisions; omitted-source matrix; identity/treatment/background gaps and uncertainty. |
+| update_trigger | Any late acceptance/return, source-owner or expected-life/retirement revision, actual kit/BOM/wheel change, route/assortment/equipment/source scope change or corrected meter/stock record. |
+
+## 11. Data Sources
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| un-cpc62182 | official_guidance | https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62182 | Official inclusions493/495/496/499 and bicycle exclusion; narrower route classification context only |
+| un-cpc49930 | official_guidance | https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/49930 | Non-mechanically-propelled vehicle goods identity; combined with real straight-pull nontowable manufacturer specifications |
+| gorilla-gor4ps | handbook | https://gorillamade.com/product/gor4ps-gor4ps-c/ | Real model/poly tub/coated steel frame/pneumatic wheels/straight handle/nontowable specification and variant caution; no complete BOM, LCI or field-transaction evidence |
+| gorilla-gor4ps-manual | handbook | https://gorillamade.com/wp-content/uploads/2024/10/GOR4PS-Manual_GORILLA.pdf ; modelGOR4PS manual182228A | Complete cart assembly/hardware context, goods-carrying rather than passenger/toy/highway function; assembly and use remain outside pickup scope; no compliance approval |
+| ghgp-product-2011 | standard | https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf ; chapters6,7,9 | Service unit, transparent boundary/completeness and physical subdivision/allocation principles. Specific ownership/drivers/history equations are this PCR design supported by actual collection, not source-prescribed coefficients or a complete conformity claim. |
+| jrc-retail-2013 | official_guidance | https://susproc.jrc.ec.europa.eu/activities/emas/documents/RetailTradeSector.pdf ; EUR25998EN, 2013, executive summary and sections2.1,2.4,2.5 | Real retail energy/lighting, materials/water/cleaning and waste/logistics source-screening context; no retail average, legal threshold or numerical inventory default adopted. |
