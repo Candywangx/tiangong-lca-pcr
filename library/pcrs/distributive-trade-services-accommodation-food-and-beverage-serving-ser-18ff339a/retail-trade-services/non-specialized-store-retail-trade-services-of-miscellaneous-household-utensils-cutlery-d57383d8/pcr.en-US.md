@@ -5,11 +5,11 @@ language: en-US
 sync_with: pcr.zh-CN.md
 ---
 
-# Partial incremental non-specialized store retail service for individual OFTAST tempered opal glass plates
+# In-store retail services for individual tempered opal-glass dinner plates
 
 ## 1. Scope and Applicability
 
-This PCR covers a deliberately partial incremental retail service in a non-specialized walk-in store for one homogeneous SKU: IKEA OFTAST white plate, article 302.589.13, diameter 25 cm, tempered opal glass. The manufacturer describes a porcelain-like appearance, not a ceramic composition. Single plates are counted individually, never a set, box or kilogram. Other sizes, ceramic/glazed ware, coated polymer ware, metal cutlery and mixed sets are excluded. The narrow material identity determines breakage handling and source continuity. Eligibility is restricted to a documented non-conditioned store/building route and electric nonthermal road logistics, with no combustion, refrigerant equipment or purchased heating/cooling; unknown eligibility blocks use.
+Partial incremental in-store retail service for individual tempered opal-glass dinner plates. Treat each actual diameter, finish, supplier and original BOM as a separate homogeneous configuration; count single plates, never a set, box or kilogram. Appearance does not establish ceramic composition. Retain the evidenced non-conditioned store/building and electric nonthermal road-logistics route, with no combustion, refrigerant equipment or purchased heating/cooling; unknown conditions block use.
 
 ## 2. Product Category Identity
 
@@ -17,9 +17,9 @@ This PCR covers a deliberately partial incremental retail service in a non-speci
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-miscellaneous-household-utensils-cutlery-d57383d8 |
 | classification_refs | CPC 3.0:62145; narrower |
-| covered_products | This PCR covers a deliberately partial incremental retail service in a non-specialized walk-in store for one homogeneous SKU: IKEA OFTAST white plate, article 302.589.13, diameter 25 cm, tempered opal glass. The manufacturer describes a porcelain-like appearance, not a ceramic composition. Single plates are counted individually, never a set, box or kilogram. Other sizes, ceramic/glazed ware, coated polymer ware, metal cutlery and mixed sets are excluded. The narrow material identity determines breakage handling and source continuity. Eligibility is restricted to a documented non-conditioned store/building route and electric nonthermal road logistics, with no combustion, refrigerant equipment or purchased heating/cooling; unknown eligibility blocks use. |
-| excluded_products | Other materials/SKUs/sets; online/delivery/specialized shops; full plate manufacture/use/disposal |
-| representative_product | IKEA OFTAST 302.589.13 white25cm individual tempered opal glass plate |
+| covered_products | Partial incremental in-store retail service for individual tempered opal-glass dinner plates. Treat each actual diameter, finish, supplier and original BOM as a separate homogeneous configuration; count single plates, never a set, box or kilogram. Appearance does not establish ceramic composition. Retain the evidenced non-conditioned store/building and electric nonthermal road-logistics route, with no combustion, refrigerant equipment or purchased heating/cooling; unknown conditions block use. |
+| excluded_products | Ceramic/glazed, polymer or metal ware; mixed sets; online/delivery/specialized shops; full plate manufacture/use/disposal. |
+| representative_product | In-store retail services for individual tempered opal-glass dinner plates; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Unheated ambient manual display and staffed checkout; customer collection; partial support boundary |
 | market_state | New intact individual plate; actual supplier packaging and attached components documented |
 
@@ -27,7 +27,7 @@ This PCR covers a deliberately partial incremental retail service in a non-speci
 
 | Field | Value |
 | --- | --- |
-| What | Partial incremental physical-store retail service for one individual OFTAST white 25 cm tempered opal glass plate |
+| What | Partial incremental physical-store retail service for one individual individual tempered opal-glass dinner plate |
 | How much | One distinct original plate with final-valid acceptance |
 | How well | Specified SKU intact without scratches/chips; no implied food-safety certification |
 | How long or cycle | Prospective pool interval and final cutoff with lifetime/source late corrections disclosed |
@@ -36,7 +36,7 @@ This PCR covers a deliberately partial incremental retail service in a non-speci
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Partial incremental physical-store retail service for one individual OFTAST white 25 cm tempered opal glass plate |
+| Reference product flow | Partial incremental physical-store retail service for one individual individual tempered opal-glass dinner plate |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -65,6 +65,7 @@ This PCR covers a deliberately partial incremental retail service in a non-speci
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | route | retail | Apply only to a prospectively fixed store/SKU/supplier configuration and pool interval: receiving, unheated ambient display and manual handling, staffed checkout, customer collection and actual waste handover. No store plate washing, food demonstration, repair, retailer-added packaging, paper receipts or delivery is allowed in this route. Establish presence/absence with receiving observation, POS configuration, work instructions and meter map. A changed or unknown route blocks use until named atomic cards, protocols and aligned rules are added; supplier transport packaging remains in scope. Eligibility also requires documented absence of thermal conditioning, combustion, refrigerant equipment and purchased heating/cooling in the store/building service, and evidenced electric nonthermal road logistics. Unknown or present excluded systems make this fixed PCR route inapplicable, not zero. |  |
 | partial | retail | Included subtotal: stock/acceptance records, attributable point-of-use display/checkout electricity, failed-original-goods receiving-gate supply responsibility and actual specified waste handovers. It excludes building and fit-out manufacture/installation/end-of-life, shelves, carts, checkout device, lighting and fan capital, cleaning operation/tools, off-site logistics, staff/customer travel and accepted-goods production. These necessary supports are not zero. Dataset must retain PARTIAL status until completion_calc and support_calc are executed for every actual support; never market this subtotal as complete retail or complete plate life cycle. |  |
 | acceptance | accepted_service | Assign a persistent original plate ID (supplier lot plus per-piece ledger ID), custody event IDs and acceptance versions. Q is the count of distinct original plate IDs with final-valid agreed acceptance at the disclosed cutoff, once per original plate, after checking intact specified SKU, no scratches/chips and recorded customer handover. Repeated checkout/resale never creates a second service for that original. Revocation removes validity even without physical return; pure refunds/discounts with valid acceptance do not. Retention without acceptance is excluded. Cutoff and late-event policy are prospective foreground choices, never a default manufacturer return period. | ikea-oftast-30258913 |
@@ -104,11 +105,11 @@ Point-of-use electricity for mapped display/checkout circuits, provider and volt
 - Collection protocol: `cp_power`
 - Sources:
 
-###### Cradle-to-receiving-gate supply service for one complete OFTAST 302.589.13 plate (`failed_supply`)
+###### Cradle-to-receiving-gate supply service for one complete tempered opal-glass dinner plate (`failed_supply`)
 
 One exact supplier contract service comprising the original complete plate, attached label/coating, actual original transport packaging and inbound transport, with provider/BOM/reference denominator fixed by cp_supply. F only: not all incoming goods and not a generic material basket. Unverified contract blocks background use.
 
-- Selected flow: Cradle-to-receiving-gate supply service for one complete OFTAST 302.589.13 plate
+- Selected flow: Cradle-to-receiving-gate supply service for one complete tempered opal-glass dinner plate
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: sum_s F_s/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -123,11 +124,11 @@ One exact supplier contract service comprising the original complete plate, atta
 
 ##### Product flows
 
-###### Partial incremental physical-store retail service for one individual OFTAST white 25 cm tempered opal glass plate (`accepted_service`)
+###### Partial incremental physical-store retail service for one individual individual tempered opal-glass dinner plate (`accepted_service`)
 
 One finally valid retail acceptance service for one original specified intact plate. This service flow is distinct from glass-plate manufacturing; its UUID remains unbound.
 
-- Selected flow: Partial incremental physical-store retail service for one individual OFTAST white 25 cm tempered opal glass plate
+- Selected flow: Partial incremental physical-store retail service for one individual individual tempered opal-glass dinner plate
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Calculated value (`calculated_value`)
@@ -138,11 +139,11 @@ One finally valid retail acceptance service for one original specified intact pl
 - Collection protocol: `cp_goods`
 - Sources: `ikea-oftast-30258913`
 
-###### Intact OFTAST 302.589.13 plate physically returned to supplier (`supplier_return`)
+###### Intact tempered opal-glass dinner plate physically returned to supplier (`supplier_return`)
 
 Actual whole original plate in intact state with original attached components. Named recipient accepts the state; ongoing source responsibility is independent of this physical event count.
 
-- Selected flow: Intact OFTAST 302.589.13 plate physically returned to supplier
+- Selected flow: Intact tempered opal-glass dinner plate physically returned to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Actual intact supplier physical handover events/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -153,11 +154,11 @@ Actual whole original plate in intact state with original attached components. N
 - Collection protocol: `cp_goods`
 - Sources:
 
-###### Intact OFTAST 302.589.13 plate handed over and retained without final-valid acceptance (`external_unaccepted`)
+###### Intact tempered opal-glass dinner plate handed over and retained without final-valid acceptance (`external_unaccepted`)
 
 Actual intact plate crossing to the named customer without qualified final service. Later revoked acceptance with no return remains an external state record, not an extra crossing or automatic store waste.
 
-- Selected flow: Intact OFTAST 302.589.13 plate handed over and retained without final-valid acceptance
+- Selected flow: Intact tempered opal-glass dinner plate handed over and retained without final-valid acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Actual matching physical handover events/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -174,11 +175,11 @@ Actual intact plate crossing to the named customer without qualified final servi
 
 ##### Waste flows
 
-###### Intact condemned OFTAST opal glass plate carrier (`intact_plate_waste`)
+###### Intact condemned tempered opal-glass opal glass plate carrier (`intact_plate_waste`)
 
 Whole unfragmented condemned plates, with actual attached label/coating and admitted contamination, separately held and handed to the named waste provider. Never count goods condemnation as this dispatch before physical handover.
 
-- Selected flow: Intact condemned OFTAST opal glass plate carrier
+- Selected flow: Intact condemned tempered opal-glass opal glass plate carrier
 - Flow property / unit: Mass / kg
 - Amount rule: Actual net intact carrier dispatch kg/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -189,11 +190,11 @@ Whole unfragmented condemned plates, with actual attached label/coating and admi
 - Collection protocol: `cp_waste`
 - Sources:
 
-###### Fragmented OFTAST opal glass plate carrier (`plate_fragment_waste`)
+###### Fragmented tempered opal-glass opal glass plate carrier (`plate_fragment_waste`)
 
 Actual shards/fines of the specified plates including their measured adhered original label/coating and admitted contamination, one real provider-admitted carrier. Distinct from intact plate carrier; no pure silica substitution or second manufacturing source for fragments.
 
-- Selected flow: Fragmented OFTAST opal glass plate carrier
+- Selected flow: Fragmented tempered opal-glass opal glass plate carrier
 - Flow property / unit: Mass / kg
 - Amount rule: Actual whole fragment carrier dispatch net kg/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -300,6 +301,8 @@ Only supplier wrapping confirmed as polyethylene, with actual admitted attached 
 | update_trigger | SKU/material/BOM/source/route/meter/provider changes, returns, acceptance revocation, asset lifetime revision or completion scope change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

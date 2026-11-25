@@ -6,11 +6,11 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Counter retail service for Longchamp L1500987001 black cowhide handbags
+# Counter retail services for cowhide handbags
 
 ## 1. Scope and Applicability
 
-This candidate specifies a partial incremental, cashless, walk-in counter retail service in a non-specialized store for one homogeneous original Longchamp Le Pliage Xtra XS black handbag, reference L1500987001. The original product page specifies cowhide, 17 x 14 x 10 cm, dark-silver-colour hardware, a polyamide/polyester recycled jacquard lining, zip/snap closure and a removable adjustable strap. It is specification evidence, not an LCI or a complete material bill. Supplier lot records must verify species, tanning/finish/coating, lining proportions, thread, adhesive, hardware alloy/plating, strap, labels/trademarks and the complete original presentation/transport packaging BOM; unknown quantities never become pure-leather mass. One prospectively fixed signed packaging configuration is required per pool. No substitution of reference10291987001 or another colour/model is allowed. Actual store assortment and transaction records must prove the non-specialized channel; the manufacturer brand site does not prove that channel. Dark silver describes colour, not silver composition; dimensions never establish net mass.
+This candidate covers partial incremental cashless walk-in counter retail services for cowhide handbags in unchanged complete original supplier packs in non-specialized stores. Any manufacturer, colour, dimensions and design within this material/function family may qualify in separate homogeneous actual supplier/configuration/BOM pools. Verify animal species, tanning/finish/coating, lining composition, thread, adhesive, hardware alloy/plating, strap, labels and every original display/transport-package component; do not adopt the retained branded handbag example as a generic BOM or turn unknown quantities into pure leather. Keep actual signed packaging configurations and matching source vectors separate rather than substituting another model. Actual site assortment and transaction evidence must establish the mixed-store channel. A colour name, dimensions or manufacturer webpage establishes neither metal composition, net mass nor site qualification.
 
 The service starts with documented custody at the store receiving gate and ends at a final-valid customer acceptance, with later acceptance history corrected. No store delivery, gift wrapping, printed receipt, repair, conditioning cream, waterproofing, re-packing, detached component sale or permanent demonstrator is included. Sampling uses photographs; no actual display asset is silently taken from stock. The allowed facility has documented absence of all stationary fuel combustion and refrigerants, including landlord systems, and uses electric resistance heating/natural ventilation. Unknown absence blocks completeness. Goods of CPC2831 and291, other292 goods and leather wholesale are excluded; this is a narrower candidate under62156, not whole-leaf coverage.
 
@@ -20,9 +20,9 @@ The service starts with documented custody at the store receiving gate and ends 
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-leather-goods-and-travel-accessories |
 | classification_refs | CPC3.0:62156; narrower; Non-specialized store retail trade services, of leather goods and travel accessories |
-| covered_products | Counter retail service for Longchamp L1500987001 black cowhide handbags |
+| covered_products | Counter retail services for complete cowhide handbags in unchanged original supplier packs; actual finish, colour, hardware, lining and BOM fixed per homogeneous pool. |
 | excluded_products | The service starts with documented custody at the store receiving gate and ends at a final-valid customer acceptance, with later acceptance history corrected. No store delivery, gift wrapping, printed receipt, repair, conditioning cream, waterproofing, re-packing, detached component sale or permanent demonstrator is included. Sampling uses photographs; no actual display asset is silently taken from stock. The allowed facility has documented absence of all stationary fuel combustion and refrigerants, including landlord systems, and uses electric resistance heating/natural ventilation. Unknown absence blocks completeness. Goods of CPC2831 and291, other292 goods and leather wholesale are excluded; this is a narrower candidate under62156, not whole-leaf coverage. |
-| representative_product | Longchamp L1500987001; black; cowhide; complete original lot-defined pack |
+| representative_product | Counter retail services for cowhide handbags; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | ambient counter receipt, cashless sale, documented returns; partial incremental service |
 | market_state | complete new functional pack; complete damaged returns separate |
 
@@ -30,7 +30,7 @@ The service starts with documented custody at the store receiving gate and ends 
 
 | Field | Value |
 | --- | --- |
-| What | Counter retail service for Longchamp L1500987001 black cowhide handbags |
+| What | Counter retail service for cowhide handbags |
 | How much | 1 Item(s); Q distinct final-valid original IDs |
 | How well | exact SKU/BOM, completeness, customer acceptance and event traceability |
 | How long or cycle | one fixed12-month pool plus replacement late-return history; a_reference |
@@ -39,7 +39,7 @@ The service starts with documented custody at the store receiving gate and ends 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter retail service for Longchamp L1500987001 black cowhide handbags |
+| Reference product flow | Counter retail service for cowhide handbags |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -70,6 +70,7 @@ Declare every qualifier in data-package metadata; a missing qualifier means inco
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_gate | all inventory rows | Record original pack ID, receipt lot, full configuration, supplier vector ID/version and declared gate. Vector B_u covers original goods manufacturing plus every original package and actual supplier-to-store transport segment once. Customer use and end-of-life of successful merchandise are outside this incremental service. No assumed zero burden for unsold goods. | longchamp-l1500987001; ghg-product-2011 |
 | b_custody | returned_intact; returned_damaged; handover_intact; handover_damaged; supplier_intact; supplier_damaged; discarded_pack | Only these seven named physical custody/waste rows are satellite physical accounting without another goods-production vector. They retain real recipient/state and count or actual whole-carrier mass. This exception does not cover failed_original, counter_ac, retail_service or any support/treatment input. Incoming original packs are raw receipt QA, not another characterized input. Repeated custody does not create another original B_u. | ghg-product-2011 |
 | b_partial | all inventory rows | This projection covers counter-meter operation, failed-original responsibility and custody/dispatch only. Mandatory completion modules are site electrical services and network/payment, complete building/fixtures/counter-device capital, water-only microfiber cleaning and whole waste-carrier transport/treatment. Rules a_support, a_assets, a_clean and a_transport fix their quantities and assembly; they remain absent from this partial projection until explicit atomic cards and bilingual sync are supplied. No full retail-service result may be claimed from this projection alone. | jrc-retail-2013 |
@@ -89,11 +90,11 @@ Declare every qualifier in data-package metadata; a missing qualifier means inco
 
 ##### Product flows
 
-###### Complete original L1500987001 retail pack at store receiving gate (`failed_original`)
+###### Complete original cowhide handbag retail pack at store receiving gate (`failed_original`)
 
 Characterized original source-equivalent input linking only F-owned B_u once; physical receipts remain raw QA.
 
-- Selected flow: Complete original L1500987001 retail pack at store receiving gate
+- Selected flow: Complete original cowhide handbag retail pack at store receiving gate
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -119,11 +120,11 @@ Dedicated counter circuit; supplier background and actual voltage/geography rema
 - Collection protocol: `cp_power`
 - Sources: `jrc-retail-2013`
 
-###### Complete functional L1500987001 retail pack returned by customer (`returned_intact`)
+###### Complete functional cowhide handbag retail pack returned by customer (`returned_intact`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete functional L1500987001 retail pack returned by customer
+- Selected flow: Complete functional cowhide handbag retail pack returned by customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: R_i / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -134,11 +135,11 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 - Collection protocol: `cp_goods`
 - Sources: `longchamp-l1500987001`; `ghg-product-2011`
 
-###### Complete damaged L1500987001 retail pack returned by customer (`returned_damaged`)
+###### Complete damaged cowhide handbag retail pack returned by customer (`returned_damaged`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete damaged L1500987001 retail pack returned by customer
+- Selected flow: Complete damaged cowhide handbag retail pack returned by customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: R_d / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -153,11 +154,11 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 
 ##### Product flows
 
-###### Counter retail service for Longchamp L1500987001 black cowhide handbags (`retail_service`)
+###### Counter retail service for cowhide handbags (`retail_service`)
 
 Reference service output governed by final validity, not gross handovers.
 
-- Selected flow: Counter retail service for Longchamp L1500987001 black cowhide handbags
+- Selected flow: Counter retail service for cowhide handbags
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Foreground record (`foreground_record`)
@@ -168,11 +169,11 @@ Reference service output governed by final validity, not gross handovers.
 - Collection protocol: `cp_goods`
 - Sources: `longchamp-l1500987001`; `ghg-product-2011`
 
-###### Complete functional L1500987001 retail pack handed to customer (`handover_intact`)
+###### Complete functional cowhide handbag retail pack handed to customer (`handover_intact`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete functional L1500987001 retail pack handed to customer
+- Selected flow: Complete functional cowhide handbag retail pack handed to customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_i / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -183,11 +184,11 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 - Collection protocol: `cp_goods`
 - Sources: `longchamp-l1500987001`; `ghg-product-2011`
 
-###### Complete damaged L1500987001 retail pack held by external customer (`handover_damaged`)
+###### Complete damaged cowhide handbag retail pack held by external customer (`handover_damaged`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete damaged L1500987001 retail pack held by external customer
+- Selected flow: Complete damaged cowhide handbag retail pack held by external customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_d / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -198,11 +199,11 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 - Collection protocol: `cp_goods`
 - Sources: `longchamp-l1500987001`; `ghg-product-2011`
 
-###### Complete functional L1500987001 retail pack returned to supplier (`supplier_intact`)
+###### Complete functional cowhide handbag retail pack returned to supplier (`supplier_intact`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete functional L1500987001 retail pack returned to supplier
+- Selected flow: Complete functional cowhide handbag retail pack returned to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: T_i / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -213,11 +214,11 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 - Collection protocol: `cp_goods`
 - Sources: `longchamp-l1500987001`; `ghg-product-2011`
 
-###### Complete damaged L1500987001 retail pack returned to supplier (`supplier_damaged`)
+###### Complete damaged cowhide handbag retail pack returned to supplier (`supplier_damaged`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete damaged L1500987001 retail pack returned to supplier
+- Selected flow: Complete damaged cowhide handbag retail pack returned to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: T_d / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -230,11 +231,11 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 
 ##### Waste flows
 
-###### Complete condemned L1500987001 retail pack consigned as waste (`discarded_pack`)
+###### Complete condemned cowhide handbag retail pack consigned as waste (`discarded_pack`)
 
 Measured physical satellite under b_custody; recipient/state mandatory; no duplicate original vector.
 
-- Selected flow: Complete condemned L1500987001 retail pack consigned as waste
+- Selected flow: Complete condemned cowhide handbag retail pack consigned as waste
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_dispatch / Q
 - Value mode: Foreground record (`foreground_record`)
@@ -304,6 +305,8 @@ Measured physical satellite under b_custody; recipient/state mandatory; no dupli
 | update_trigger | late acceptance change; original/pack/BOM/provider change; asset lifetime/retirement; revised measured records |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

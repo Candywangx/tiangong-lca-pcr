@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized mixed-store counter retail service for unopened RTL10400 adult aluminium crutch pairs
+# Counter retail services for original-pack pairs of adult aluminium axillary crutches
 
 ## 1. Scope and Applicability
 
@@ -17,9 +17,9 @@ This method addresses the identity and ownership problem of complete paired orth
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-medical-and-orthopaedic-goods |
 | classification_refs | CPC3.0:62174, narrower proposed scope; no accepted mapping is created by this candidate. |
-| covered_products | Unopened original adult RTL10400 complete pair retail packs in one actually documented mixed non-specialized store channel; homogeneous lot/configuration pools only. |
-| excluded_products | Single crutches, tall/youth models, separate replacement accessories, left/right-specific variants, opened/adjusted/used/custom products, specialized medical retail, clinical/fitting/rental services and other medical goods. |
-| representative_product | Drive RTL10400 adult aluminium crutches, one pair with original accessories and retail enclosure; actual supplier specification/BOM takes precedence over inferred composition. |
+| covered_products | Unopened original complete pairs of adult aluminium axillary crutches in an evidenced mixed non-specialized store channel; actual size range, supplier and complete kit BOM fixed per homogeneous pool. |
+| excluded_products | Single crutches, youth models, separate replacement accessories, left/right-specific variants, opened/adjusted/used/custom products, specialized medical retail, clinical/fitting/rental services and other medical goods. |
+| representative_product | Counter retail services for original-pack pairs of adult aluminium axillary crutches; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Retailer receipt -> unopened ambient storage/display -> paperless counter handover -> final-valid acceptance/fate reconciliation; supporting sources completed by complete_support. |
 | market_state | Original unopened non-sterile adult pair; external package/lot evidence required; no trial or adjustment by retailer. |
 
@@ -36,11 +36,11 @@ This method addresses the identity and ownership problem of complete paired orth
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter retail service for one unopened RTL10400 adult crutch pair pack |
+| Reference product flow | Counter retail service for one unopened adult aluminium axillary crutch adult crutch pair pack |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | actual mixed-store assortment/channel; RTL10400 adult model; original lot/ID; two complete crutches per retail pack; actual accessories/enclosure BOM; dimensions and left/right configuration; actual non-sterile declaration; unopened/no-trial/no-adjustment; receiving gate; Q/cut-off/version; S/F/T/O; wholepack/component mode; provider scopes; partial core/completion status; geography/time |
+| Required qualifiers | actual mixed-store assortment/channel; adult aluminium axillary crutch adult model; original lot/ID; two complete crutches per retail pack; actual accessories/enclosure BOM; dimensions and left/right configuration; actual non-sterile declaration; unopened/no-trial/no-adjustment; receiving gate; Q/cut-off/version; S/F/T/O; wholepack/component mode; provider scopes; partial core/completion status; geography/time |
 
 All required qualifiers must be declared in dataset metadata, process notes or reference comments. Missing qualifiers make the definition incomplete.
 
@@ -67,7 +67,8 @@ All required qualifiers must be declared in dataset metadata, process notes or r
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | retail; reverse; support | Apply only to an actual walk-in, mixed-assortment non-specialized store selling the same RTL10400 adult model, one original complete pair per retail pack, at ambient conditions. Verify actual non-sterile supply and unopened factory condition from lot label and supplier declaration; the manufacturer sheet alone does not establish sterility. No opening, trial, handgrip/height adjustment, assembly, installation, prescription, fitting, rental, repair, disinfection, clinical use or home delivery is included. A tall/youth model, single crutch, left/right-specific part, customized device, opened return or partly missing kit is a different configuration requiring a state-specific method/card and review before completeness. Do not infer clinical suitability, safety, legal approval or complete BOM/LCI from the sheet. | un-cpc-62174; drive-rtl10400 |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | retail; reverse; support | Apply only to an actual walk-in, mixed-assortment non-specialized store selling the declared adult aluminium axillary crutch configuration, one original complete pair per retail pack, at ambient conditions. Verify actual non-sterile supply and unopened factory condition from lot label and supplier declaration; the manufacturer sheet alone does not establish sterility. No opening, trial, handgrip/height adjustment, assembly, installation, prescription, fitting, rental, repair, disinfection, clinical use or home delivery is included. A youth model, single crutch, left/right-specific part, customized device, opened return or partly missing kit is a different configuration requiring a state-specific method/card and review before completeness. Do not infer clinical suitability, safety, legal approval or complete BOM/LCI from the sheet. | un-cpc-62174; drive-rtl10400 |
 | goods_ownership | retail; failed_original; goods_inbound | At the actual retailer receiving gate assign each original supplier vector once to mutually exclusive S (eventually final-valid sold), F (retailer-responsible failed/lost original), T (named continuing recipient/internal asset owner) or O (still open stock or unresolved). Fractions sum1 per original vector, not per descendant waste carrier. S manufacture and original inbound transport are excluded from this incremental service and may be added once only by a separately declared downstream GOODS system; failed_original and goods_inbound explicitly include F manufacture/packaging and F original inbound. T carries the same original sources to the named owner, including supplier return; a movement or refund alone does not transfer responsibility. O is retained, never zero or silently F/S. Close/revise original cohorts when fate becomes known. An original whole-pack scalar is permitted only if both crutches, all factory attachments and the entire retail package have the same responsibility. If they differ, obtain supplier component inventory vectors with conserved source IDs and actual component amounts, create matching atomic input cards and remove those portions from whole-pack input; material mass fractions cannot split an environmental vector. | ghg-product-standard; drive-rtl10400 |
 | physical_states | retail; reverse | Keep goods-only custody and held-waste ledgers separate. Use all gross customer handovers once, including never-accepted ones. Subsequent revocation with no movement reclassifies the original event, not a new physical exit. Condemnation moves goods to held waste internally and is not dispatch. Record unopened supplier returns, externally retained unaccepted packs, confirmed missing goods and signed unresolved residuals individually. None is automatically waste. Physically opened, damaged, broken or partial carriers require their own state-specific rows, recipient and matching treatment/background before completion; retain their actual measurements even if the narrow service denominator is unchanged. Only supplier_pack and external_retained_pack are non-characterized physical custody satellites; do not recursively add their original manufacture. rejected_pack and carton_waste are actual waste outputs requiring complete matched treatment and disjoint transport, never excluded as satellites. failed_original remains a characterized Product input for original F manufacture. | ghg-product-standard |
 | route_evidence | retail; reverse; support | Prospectively fix the store/configuration/reporting pool and observation cut-off. Include quiet, closed, refused, reversed, repeated and zero-sale intervals and associated resource use in the same pool; do not select only successful days. Q=distinct original pair-pack IDs with final-valid counter acceptance at cut-off. A revoked acceptance removes that ID even without return; do not subtract revocations again from this final-valid count. Financial-only discounts/refunds with valid acceptance do not remove it. One returned/resold original ID has one final service, while all repeated handling resources remain. Late evidence replaces original numerator and denominator versions with actual event dates; never shifts burdens to a new cohort merely because the adjustment is late. Q=0 leaves a retained unnormalizable pool, not a zero inventory. | ghg-product-standard |
@@ -91,11 +92,11 @@ All required qualifiers must be declared in dataset metadata, process notes or r
 
 ##### Product flows
 
-###### Unopened original RTL10400 adult aluminium crutch pair retail pack (`failed_original`)
+###### Unopened original adult aluminium axillary crutch pair retail pack (`failed_original`)
 
 One original whole pair-pack equivalent supplies the F manufacture/retail-package background; this is the source-equivalent burden input, not an additional physical receipt. Preserve actual complete supplier vector and source-gate boundary.
 
-- Selected flow: Unopened original RTL10400 adult aluminium crutch pair retail pack
+- Selected flow: Unopened original adult aluminium axillary crutch pair retail pack
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q Item(s)
 - Value mode: `calculated_value`
@@ -121,11 +122,11 @@ At-point-of-use AC identity leaves provider/voltage/mix unspecified. Bind actual
 - Collection protocol: `cp_ac`
 - Sources: jrc-retail-bemp; ghg-product-standard
 
-###### Road-lorry complete-operation transport of RTL10400 pair packs (`goods_inbound`)
+###### Road-lorry complete-operation transport of adult aluminium axillary crutch pair packs (`goods_inbound`)
 
 Only F responsibility of original supplier-to-retailer transport at the same receiving gate as failed_original. Already embodied supplier transport is excluded here event by event; actual inbound originals for S/T/O remain on their owner ledger.
 
-- Selected flow: Road-lorry complete-operation transport of RTL10400 pair packs
+- Selected flow: Road-lorry complete-operation transport of adult aluminium axillary crutch pair packs
 - Flow property / unit: Vehicle distance / vehicle*km
 - Amount rule: sum_j(T_original_j*f_F_j)/Q vehicle*km
 - Value mode: `calculated_value`
@@ -155,11 +156,11 @@ Conditional only for actually separately removed corrugated case; exclude retail
 
 ##### Product flows
 
-###### Counter retail service for one unopened RTL10400 adult crutch pair pack (`retail_service`)
+###### Counter retail service for one unopened adult aluminium axillary crutch adult crutch pair pack (`retail_service`)
 
 One service concerns the unopened adult pair pack, not one crutch or one case of eight pairs. Match exact model, actual package BOM and two complete crutches with original accessories; no clinical outcome or use-duration equivalence is claimed.
 
-- Selected flow: Counter retail service for one unopened RTL10400 adult crutch pair pack
+- Selected flow: Counter retail service for one unopened adult aluminium axillary crutch adult crutch pair pack
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `fixed_value`
@@ -176,11 +177,11 @@ One service concerns the unopened adult pair pack, not one crutch or one case of
 
 ##### Product flows
 
-###### Road-lorry complete-operation transport of RTL10400 pair packs (`service_transport`)
+###### Road-lorry complete-operation transport of adult aluminium axillary crutch pair packs (`service_transport`)
 
 Actual retailer-arranged supplier-return/failed-handover recovery transport, including no-sale/repeated events. No customer travel or duplicated original F inbound; waste transport included in matched treatment is excluded here.
 
-- Selected flow: Road-lorry complete-operation transport of RTL10400 pair packs
+- Selected flow: Road-lorry complete-operation transport of adult aluminium axillary crutch pair packs
 - Flow property / unit: Vehicle distance / vehicle*km
 - Amount rule: T_service_original_pool/Q vehicle*km
 - Value mode: `calculated_value`
@@ -195,11 +196,11 @@ Actual retailer-arranged supplier-return/failed-handover recovery transport, inc
 
 ##### Product flows
 
-###### Unopened original RTL10400 adult aluminium crutch pair retail pack (`supplier_pack`)
+###### Unopened original adult aluminium axillary crutch pair retail pack (`supplier_pack`)
 
 Actual intact unopened supplier return physical output. Signed receiver/condition and continuing S/F/T/O source owner required; a T assignment alone is not a new physical movement or a manufacture credit.
 
-- Selected flow: Unopened original RTL10400 adult aluminium crutch pair retail pack
+- Selected flow: Unopened original adult aluminium axillary crutch pair retail pack
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: actual_unopened_supplier_handoff_count/Q Item(s)
 - Value mode: `calculated_value`
@@ -210,11 +211,11 @@ Actual intact unopened supplier return physical output. Signed receiver/conditio
 - Collection protocol: `cp_reverse`
 - Sources: ghg-product-standard
 
-###### Unopened original RTL10400 adult aluminium crutch pair retail pack (`external_retained_pack`)
+###### Unopened original adult aluminium axillary crutch pair retail pack (`external_retained_pack`)
 
 Unopened whole pack physically retained by a named external customer without final-valid acceptance, including revocation without physical return. Record original gross event once, actual recipient/state and continued source owner; not a service output or automatic waste.
 
-- Selected flow: Unopened original RTL10400 adult aluminium crutch pair retail pack
+- Selected flow: Unopened original adult aluminium axillary crutch pair retail pack
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: actual_unaccepted_unopened_external_retention_count/Q Item(s)
 - Value mode: `calculated_value`
@@ -227,11 +228,11 @@ Unopened whole pack physically retained by a named external customer without fin
 
 ##### Waste flows
 
-###### Rejected unopened RTL10400 adult crutch pair pack waste (`rejected_pack`)
+###### Rejected unopened adult aluminium axillary crutch adult crutch pair pack waste (`rejected_pack`)
 
 Actual whole mixed original product carrier crosses to a verified receiver. Not disassembled into duplicate aluminium, vinyl and packaging flows; intact_waste sets composition/state/treatment admissibility.
 
-- Selected flow: Rejected unopened RTL10400 adult crutch pair pack waste
+- Selected flow: Rejected unopened adult aluminium axillary crutch adult crutch pair pack waste
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: direct_dispatched_net_kg/Q kg
 - Value mode: `calculated_value`
@@ -329,6 +330,8 @@ Execute complete_support with cp_support; actual atomic extension rows and proce
 | update_trigger | Model/package/state/channel change; actual returns/fate/source revision; asset life/retirement; provider scope or support-source change; new primary evidence. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

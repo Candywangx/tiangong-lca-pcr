@@ -5,11 +5,11 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# In-store retail of sealed LILLABO three-piece toy train sets: custody and checkout module
+# Custody and checkout retail services for sealed wooden toy-train sets
 
 ## 1. Scope and Applicability
 
-This PCR covers the partial incremental custody/checkout module for one homogeneous original manufacturer configuration of IKEA LILLABO article603.200.94, a magnet-coupled three-piece toy train set, sold in its complete unopened original retail package at a non-specialized physical store. It starts at actual store receiving and ends at documented customer handover, supplier/internal transfer or waste dispatch, with subsequent acceptance corrections. The reference is a retail service, not toy manufacturing or play time. Different articles, loose pieces, mixed sets, battery trains, online delivery, repair, assembly, functional demonstration and repacking are excluded routes. A configuration inspection and signed activity absence record are mandatory; absence is never inferred from a web page. The partial module cannot represent complete retail until boundary_completion and completion_sum have been executed.
+This PCR defines partial incremental custody and checkout services for complete factory-sealed wooden toy-train sets in non-specialized physical stores. Any brand and set design within this family may qualify; separately verify each actual set piece count, materials, couplings, supplier version and complete original packaging/BOM, without adopting the three-piece manufacturer example as a default. The boundary runs from actual store receiving to evidenced customer handover, supplier/internal transfer or waste dispatch, with later acceptance corrections retained. The reference is retail service, not toy manufacture or play time. Exclude separately sold parts, mixed/recombined sets, battery-powered trains, online/delivery, repair, assembly, functional demonstration and repacking. Inspect actual configurations and sign occurrence/absence records; a webpage is insufficient. The partial core cannot represent complete retail before boundary_completion and completion_sum.
 
 The manufacturer’s damp-cloth care instruction is not evidence of actual store cleaning. The premises route is naturally ventilated, with no combustion, refrigerant-containing equipment, HVAC or purchased heat/cold in any store or landlord service supporting this pool. Require full store/landlord equipment and utility registers, contracts and inspection evidence. Unknown or present excluded equipment makes this route inapplicable; no default zero or deferred fuel/refrigerant method is permitted. No numerical mass, composition, efficiency or emission factor is prescribed. These records must be collected for the actual pool.
 
@@ -19,9 +19,9 @@ The manufacturer’s damp-cloth care instruction is not evidence of actual store
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-games-and-toys |
 | classification_refs | CPC3.0 62153; Non-specialized store retail trade services, of games and toys; narrower subset of group385 goods |
-| covered_products | Only the sealed complete article603.200.94 service defined here |
+| covered_products | Factory-sealed complete wooden toy-train sets, with actual set contents, couplings and original packaging verified separately per supplier configuration. |
 | excluded_products | Toy production; tracks or accessories not in this original set; other toys; used/opened retail offers; demonstration and delivery routes |
-| representative_product | One original set: modern locomotive, steam locomotive and cargo car, with detachable upper parts and actual magnetic couplings; manufacturer product details identify beech, ABS with printed acrylic paint, polyethylene wheels and galvanized steel axle/nail; this is not a complete mass BOM |
+| representative_product | Custody and checkout retail services for sealed wooden toy-train sets; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Store receipt; ambient sealed holding; visual package/label check; digital checkout; customer collection; reconciliation of returns and failures |
 | market_state | Complete original sealed set, actual country/lot/age label; no operating cells, motor or electrical demo allowed without inspected evidence and route revision |
 
@@ -38,7 +38,7 @@ The manufacturer’s damp-cloth care instruction is not evidence of actual store
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | In-store retail custody and checkout of one finally accepted sealed LILLABO60320094 set |
+| Reference product flow | In-store retail custody and checkout of one finally accepted sealed wooden toy-train set |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -67,6 +67,7 @@ The manufacturer’s damp-cloth care instruction is not evidence of actual store
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | route_gate | all inventory rows | Require a complete real set including all three vehicles, detachable parts, magnets, coatings/adhesives/fasteners and original package body, closure, insert, label and printing. Supplier records plus inspection/weighing must resolve each material/state and net mass; website package shipping weight is not toy or package tare. Never use pure beech kg for the complete toy. Manufacturer age3+ and CE statements are descriptive statements only: retain actual labels and jurisdiction evidence, do not claim verified compliance or prescribe a safety limit. Any opening, missing piece, battery, assembly, testing, demo or added bag/receipt/pallet requires a concrete state-specific atomic card/protocol in both languages before dataset completeness. | ikea-lillabo-spec |
 | custody_boundary | receipt; customer_return; customer_handover; supplier_transfer; internal_transfer; external_retention; toy_waste | Use goods-only stock G separately from held waste W. Gross event balance: G_open+N_receipt+N_return=G_close+N_handover+N_supplier+N_internal+N_external+C_condemned+L_missing. N_handover is an initially qualified customer handover; N_external is an initially never-accepted external handover. Their eventID sets are disjoint and each physical exit appears once. A later acceptance revocation without return changes no physical count. Count every physical return/handover event even for the same originalID. Condemnation moves goods to held waste once; W_open+kg_condemned+kg_other_admitted=W_close+kg_dispatch. Actual dispatch is weighed net carrier kg, never subtracted from goods again. L_missing is a discrepancy requiring investigation, not an environmental emission or waste exchange; unresolved recipient/state blocks completeness. External retention without qualified acceptance remains a failed event and uses its actual recipient/state transfer, not retailer waste. |  |
 | source_responsibility | all inventory rows | At first store receiving bind each originalID to its full supplier source vector G_i, in original complete-set units, containing toy, original package and supplier-to-store transport exactly once with separate component/source locators. Partition original source responsibility into disjoint S (final accepted), F (retailer failed/lost responsibility), O (open inventory), T (named supplier/internal/external continuing owner); G_total=G_S+G_F+G_O+G_T, component by component. These are environmental source ownership ledgers, not extra physical exchanges. The partial service includes G_F exactly once through failed_supply; it excludes G_S, G_O and G_T. Each originalID has one whole final responsibility; partial component ownership requires a supplier-inventory-vector extension before completeness. Downstream sold product couples G_S/Q separately; O and T carry their sources forward by signed ownership. Supplier return never deletes burden. A retained failed item, stolen/lost item or acceptance revoked without return keeps its same original source; F unless evidenced continuing T owner accepts it. No new production on resale; demo conversion transfers the same source to an asset T and is outside this route. |  |
@@ -86,11 +87,11 @@ The manufacturer’s damp-cloth care instruction is not evidence of actual store
 
 ##### Product flows
 
-###### Complete sealed LILLABO60320094 original retail pack (`receipt`)
+###### Complete sealed wooden toy-train original retail pack (`receipt`)
 
 First store receiving of complete original packs counted by originalID; retain actual toy/package masses and source ownership separately.
 
-- Selected flow: Complete sealed LILLABO60320094 original retail pack
+- Selected flow: Complete sealed wooden toy-train original retail pack
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_receipt / Q; physical throughput only; no G_i background attached in this module
 - Value mode: `foreground_record`
@@ -100,11 +101,11 @@ First store receiving of complete original packs counted by originalID; retain a
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_custody`
 
-###### Complete sealed LILLABO60320094 pack physically returned by customer (`customer_return`)
+###### Complete sealed wooden toy-train pack physically returned by customer (`customer_return`)
 
 Returning the same pack does not create new manufacture. An opened/incomplete return needs its own state card before completeness.
 
-- Selected flow: Complete sealed LILLABO60320094 pack physically returned by customer
+- Selected flow: Complete sealed wooden toy-train pack physically returned by customer
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_return / Q; every actual intact sealed return event
 - Value mode: `foreground_record`
@@ -128,11 +129,11 @@ Actual local checkout, scanner and local receipt-processing AC within the measur
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_power`
 
-###### Cradle-to-store supply of one complete sealed LILLABO60320094 original pack (`failed_supply`)
+###### Cradle-to-store supply of one complete sealed wooden toy-train original pack (`failed_supply`)
 
 Background-coupled input for retailer-responsible failed originalIDs, expressed as original complete-pack equivalents. Bind each actual provider inventory G_i including full toy, original package and supplier-to-store transport. It is separate from satellite gross receipt: never attach production to receipt as well. No arbitrary mass/count splitting of G_i.
 
-- Selected flow: Cradle-to-store supply of one complete sealed LILLABO60320094 original pack
+- Selected flow: Cradle-to-store supply of one complete sealed wooden toy-train original pack
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F / Q; each original source G_i once
 - Value mode: `foreground_record`
@@ -146,11 +147,11 @@ Background-coupled input for retailer-responsible failed originalIDs, expressed 
 
 ##### Product flows
 
-###### In-store retail custody and checkout of one finally accepted sealed LILLABO60320094 set (`accepted_service`)
+###### In-store retail custody and checkout of one finally accepted sealed wooden toy-train set (`accepted_service`)
 
 One final-valid unique originalID service after all cutoff corrections, distinct from gross product handover.
 
-- Selected flow: In-store retail custody and checkout of one finally accepted sealed LILLABO60320094 set
+- Selected flow: In-store retail custody and checkout of one finally accepted sealed wooden toy-train set
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `foreground_record`
@@ -160,11 +161,11 @@ One final-valid unique originalID service after all cutoff corrections, distinct
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_acceptance`
 
-###### Complete sealed LILLABO60320094 pack handed to customer (`customer_handover`)
+###### Complete sealed wooden toy-train pack handed to customer (`customer_handover`)
 
 Count every initially qualified gross customer handover including a later-reversed sale; eventIDs are disjoint from initially unaccepted external_retention; acceptance ledger determines final service.
 
-- Selected flow: Complete sealed LILLABO60320094 pack handed to customer
+- Selected flow: Complete sealed wooden toy-train pack handed to customer
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_handover / Q
 - Value mode: `foreground_record`
@@ -174,11 +175,11 @@ Count every initially qualified gross customer handover including a later-revers
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_custody`
 
-###### Complete sealed LILLABO60320094 pack handed back to supplier (`supplier_transfer`)
+###### Complete sealed wooden toy-train pack handed back to supplier (`supplier_transfer`)
 
 A signed supplier handover is a physical product transfer; preserve named T or F original background responsibility independently.
 
-- Selected flow: Complete sealed LILLABO60320094 pack handed back to supplier
+- Selected flow: Complete sealed wooden toy-train pack handed back to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_supplier / Q
 - Value mode: `foreground_record`
@@ -188,11 +189,11 @@ A signed supplier handover is a physical product transfer; preserve named T or F
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_custody`
 
-###### Complete sealed LILLABO60320094 pack transferred to another store (`internal_transfer`)
+###### Complete sealed wooden toy-train pack transferred to another store (`internal_transfer`)
 
 Transfer to a named store keeps the same originalID and T source ownership; not a retail service or new production.
 
-- Selected flow: Complete sealed LILLABO60320094 pack transferred to another store
+- Selected flow: Complete sealed wooden toy-train pack transferred to another store
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_internal / Q
 - Value mode: `foreground_record`
@@ -202,11 +203,11 @@ Transfer to a named store keeps the same originalID and T source ownership; not 
 - Evidence kind: `calculated_from_collection`
 - Collection protocol: `cp_custody`
 
-###### Complete sealed LILLABO60320094 pack retained by external recipient without acceptance (`external_retention`)
+###### Complete sealed wooden toy-train pack retained by external recipient without acceptance (`external_retention`)
 
 Use only actual documented gross external transfer events distinct from customer_handover. A revocation without return is an ownership/acceptance correction, never a second physical transfer. Retained failed pack has actual recipient/state and F or evidenced continuing T responsibility.
 
-- Selected flow: Complete sealed LILLABO60320094 pack retained by external recipient without acceptance
+- Selected flow: Complete sealed wooden toy-train pack retained by external recipient without acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_external / Q
 - Value mode: `foreground_record`
@@ -218,11 +219,11 @@ Use only actual documented gross external transfer events distinct from customer
 
 ##### Waste flows
 
-###### Damaged complete LILLABO60320094 toy-and-original-package waste carrier (`toy_waste`)
+###### Damaged complete wooden toy-train toy-and-original-package waste carrier (`toy_waste`)
 
 Actual dispatched dry composite of the complete original set and its own damaged retail package, without cells or added disposal container. Measure whole consignment net kg with actual carrier composition and receiver acceptance. Separately removed components, opened/incomplete sets, wet contamination and outside containers need separate specific cards; never also report constituents of this same carrier. Waste treatment is outside this dispatch gate and completed separately.
 
-- Selected flow: Damaged complete LILLABO60320094 toy-and-original-package waste carrier
+- Selected flow: Damaged complete wooden toy-train toy-and-original-package waste carrier
 - Flow property / unit: Mass / kg
 - Amount rule: kg_dispatch / Q
 - Value mode: `foreground_record`
@@ -291,12 +292,14 @@ Actual dispatched dry composite of the complete original set and its own damaged
 | dataset_role | partial_incremental_retail_module |
 | downstream_use | secondary_dataset; background_dataset |
 | allowed_use | Custody/checkout and G_F contribution for this exact sealed-set route; complete-retail use only after fixed module completion and acceptance |
-| excluded_use | Whole toy environmental claim; safety/legal compliance; whole leaf or other SKU; online delivery; uncompleted total retail |
+| excluded_use | Whole toy environmental claim; safety/legal compliance; whole leaf or products outside the declared toy-train family; online delivery; uncompleted total retail |
 | required_metadata | All reference qualifiers; source and provider boundaries; original denominators; pool/Q versions; S/F/O/T; full module coverage |
 | required_quality_disclosure | Partial coverage; unbound identities; BOM/quantity/provider gaps; measurement uncertainty; source age and historical identity observation; all skipped work |
 | update_trigger | BOM/package/label/channel/gate change; new actual exchange; acceptance revision; asset life/provider/source change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

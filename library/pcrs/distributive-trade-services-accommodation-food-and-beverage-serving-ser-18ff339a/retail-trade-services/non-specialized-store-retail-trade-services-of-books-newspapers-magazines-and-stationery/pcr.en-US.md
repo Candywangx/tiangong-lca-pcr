@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Counter retail service for a homogeneous edition of new mass-market paperback books
+# Counter retail services for new mass-market paperback books of a declared edition
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ A narrow methodology for the incremental counter retail service of a homogeneous
 | classification_refs | CPC 3.0 62151; narrower |
 | covered_products | Counter retail service for a homogeneous edition of new mass-market paperback books |
 | excluded_products | Other book formats/editions within a pool; all nonbook goods; online delivery; print production; component-separated returns |
-| representative_product | Signet 1984 ISBN 9780451524935, mass-market paperback, 352 pages; actual imprint/printing/condition must match the source and received copy |
+| representative_product | Counter retail services for new mass-market paperback books of a declared edition; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | First receiving → shelf/counter handling → customer acceptance; explicit return/residual history |
 | market_state | Complete new unwrapped bound printed book; one physical copy is uniquely tracked, not one ISBN transaction |
 
@@ -67,7 +67,8 @@ A narrow methodology for the incremental counter retail service of a homogeneous
 
 | rule_id | Rule | source_ids |
 | --- | --- | --- |
-| boundary_scope | Apply only to physical non-specialized stores selling complete new mass-market paperbacks: one ISBN-13, publisher imprint, edition/printing, binding, page specification and receiving condition per homogeneous pool. Use the Signet 352-page ISBN 9780451524935 as an evidenced representative, not as evidence for all editions. Record actual edition changes even under the same ISBN. Exclude used books, hardbacks, newspapers, magazines, maps, stationery, e-books, subscriptions, printing, cover-stripping and page separation. | un-cpc-paperback-retail; prh-paperback-specification |
+| b_product_family | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| boundary_scope | Apply only to physical non-specialized stores selling complete new mass-market paperbacks: one ISBN-13, publisher imprint, edition/printing, binding, page specification and receiving condition per homogeneous pool. Use the Signet 352-page ISBN actual edition ISBN as an evidenced representative, not as evidence for all editions. Record actual edition changes even under the same ISBN. Exclude used books, hardbacks, newspapers, magazines, maps, stationery, e-books, subscriptions, printing, cover-stripping and page separation. | un-cpc-paperback-retail; prh-paperback-specification |
 | boundary_service | Start with complete books at the first retailer receiving gate and end with valid customer acceptance at the counter, including inspection, shelving, browsing-related handling, checkout, refusal, rework, stockholding and reverse handling through the declared closure date. Require actual unwrapped complete books with no separate unit wrap/bellyband. No home delivery, gift wrap, retail bag or printed receipt is permitted in this route: issue an electronic receipt without assuming its network burden is zero. Screen actual practice; any such activity requires an explicit bilingual atomic extension before route completeness. |  |
 | boundary_partial | This is a partial incremental counter-service inventory: cards contain satellite physical custody bookkeeping, measured counter AC and actual complete-book waste dispatch. All custody product cards are satellite observations, never technosphere upstream manufacturing inputs or additional service products; they must be flagged/excluded from impact-linking. This partial boundary excludes original book production and first inbound transport for both S and F books; completion of incremental service must add original F backgrounds, shared store operation, inbound/return/internal transport, facility and checkout/shelf capital, upstream AC supply, receipt/payment digital services, incoming packaging and waste treatment. Those are necessary completion responsibilities, not zero burdens. Apply complete_modules and the fixed methods in allocate_support, allocate_transport, allocate_asset and validate_completion; no complete store, cradle-to-gate or cradle-to-grave claim from these cards alone. |  |
 | boundary_background | At each original first receiving ID retain the actual complete-book supplier production inventory vector G_i and first inbound transport vector H_i, with original quantities, denominator, boundaries, source IDs and versions. Match actual paper, printed ink, binding adhesive and cover/finish inventory or a verified whole-book supplier package; page count or retail price is not a manufacturing quantity. Supplier package and component construction are mutually exclusive. Never apply a new G_i or H_i to returned/resold custody cards. |  |
@@ -305,6 +306,8 @@ Calculation rules: waste_normalize; stock_balance。
 | update_trigger | Actual edition/route/provider change, late acceptance/return, corrected meter/source data, changed asset life or final fate |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

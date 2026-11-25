@@ -5,7 +5,7 @@ language: en-US
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental in-store retail service for original-wrapped Dr. Bronner unscented 5 oz soap bars
+# In-store retail services for original paper-wrapped unscented soap bars
 
 ## 1. Scope and Applicability
 
@@ -17,9 +17,9 @@ This candidate fixes one actual manufacturer solid-bar configuration and a non-s
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-perfumery-articles-cosmetic-articles-and-56ec67e2 |
 | classification_refs | CPC 3.0 62175; non-specialized store retail trade services of perfumery articles, cosmetic articles and toilet soaps; UN explanatory note refers to goods class3532; proposed narrower applicability, subject to separate mapping acceptance. |
-| covered_products | Incremental attended checkout and stock handling for one homogeneous manufacturer lot/configuration of Dr. Bronner Baby Unscented Pure-Castile Magic Bar Soap OBBA05, UPC018787782057, one nominal5oz/140g bar in its original paper wrapper, in a physical non-specialized mixed-assortment store. |
+| covered_products | Incremental attended checkout and stock handling for intact original paper-wrapped unscented soap bars in physical mixed-assortment non-specialized stores; actual supplier formulation, fill mass and wrapper BOM fixed per homogeneous pool. |
 | excluded_products | Liquid soap, detergents sold by refill, perfumes, aerosols, testers, decanting, opened or damaged soap, customer use, online fulfilment, home delivery and specialist-only channels; no claim to cover the full3532 goods class. |
-| representative_product | Manufacturer current OBBA05 product specification and historical BSBA05US7-02 label establish an actual soap product, not a supplier LCI or a measured retail observation. A first dataset needs physical lot label and supplier BOM/version reconciliation. |
+| representative_product | In-store retail services for original paper-wrapped unscented soap bars; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Store receiving gate -> ambient original-wrapped shelf stock -> attended electronic checkout -> physical customer handover -> confirmed final acceptance, with original-event return and rejection tracking. |
 | market_state | Solid saponified formulation plus complete printed paper wrapper; original-wrapped does not mean hermetically sealed or zero water/volatile loss. No opening, sampling or washing in the admitted route. |
 
@@ -40,7 +40,7 @@ This candidate fixes one actual manufacturer solid-bar configuration and a non-s
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | store_id; physical_non_specialized_channel; OBBA05; UPC018787782057; manufacturer_lot; formulation_version; wrapper_BOM_version; receiving_gate; pool_id; pool_version; observation_period; acceptance_closure; support_completion_status |
+| Required qualifiers | store_id; physical_non_specialized_channel; unscented paper-wrapped soap; actual recorded UPC; manufacturer_lot; formulation_version; wrapper_BOM_version; receiving_gate; pool_id; pool_version; observation_period; acceptance_closure; support_completion_status |
 
 ## 4. Measurement and Unit Rules
 
@@ -65,7 +65,8 @@ This candidate fixes one actual manufacturer solid-bar configuration and a non-s
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | all inventory rows | Admit only physically verified OBBA05/UPC018787782057 original-wrapped intact bars in the defined non-specialized store route. Record lot label, actual net soap and whole-pack mass, wrapper composition/printing/adhesive and supplier full finished formulation/BOM. Current page lists feed ingredients and explains sodium hydroxide is consumed; do not model a finished bar as pure oil or sodium hydroxide. Historical label and current page are different editions; reconcile actual lot (including Jojoba Oil/Wax naming) before background use. No ingredient mass fractions or package tare are inferred from ingredient order, nominal5oz/140g or online shipping weight. | bronner-product; bronner-label; un-cpc62175 |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | all inventory rows | Admit only physically verified unscented paper-wrapped soap original-wrapped intact bars in the defined non-specialized store route. Record lot label, actual net soap and whole-pack mass, wrapper composition/printing/adhesive and supplier full finished formulation/BOM. Current page lists feed ingredients and explains sodium hydroxide is consumed; do not model a finished bar as pure oil or sodium hydroxide. Historical label and current page are different editions; reconcile actual lot (including Jojoba Oil/Wax naming) before background use. No ingredient mass fractions or package tare are inferred from ingredient order, nominal5oz/140g or online shipping weight. | bronner-product; bronner-label; un-cpc62175 |
 | state_gate | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock records actual intactness, moisture change, contamination, missing units and incident history at each gate. Original paper wrap is not a zero-emission assumption. Any opening, wrapper damage, breakage, spill, measurable loss, suspected leakage/volatilization, testing or water contact suspends this route completeness. Before inclusion add real state-specific atomic carrier and species cards, single-process protocols, mass/state reconciliation, final recipient and complete treatment/background responsibility in BOTH languages; unresolved species, external pathway or state blocks a complete result. Internal store-air transfer is not automatically an elementary outdoor emission. Do not force an opened bar into an intact carrier or infer zero from no incident log. | bronner-product |
 | goods_responsibility | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock preserves original source IDs from receiving through all resale/return events. Partition each original whole-source vector into final S (accepted goods), F (service failure/loss), T (named internal asset or supplier/other recipient responsibility) and O (open responsibility), fractions summing1 with no overlap. For this intact homogeneous route each individual original bar has one final owner; no mass split of its environmental vector. Charge failed_original_bar only actual N_F source-equivalent whole bars with supplier V and inbound source once. S is added once only in a separately declared downstream GOODS system. T keeps named receiving owner/source/version; transfer does not create a new manufacture. O remains unresolved and blocks complete characterization. A real supplier return physical movement and T responsibility are independent. If components acquire different owners, require verified supplier component inventory vectors, separate real component input cards and conserved original boundary/source IDs; exclude those portions from whole-pack F. |  |
 | carrier_boundary | customer_pack; supplier_return; condemned_pack | Only customer_pack and supplier_return are non-characterized physical custody satellites, retaining actual intact states/recipient. condemned_pack is a real Waste output: direct consignment net kg of intact soap with original printed wrapper, only when receiver signs acceptance of exact soap/wrapper constituents/state and the verified treatment dataset covers this complete carrier. A license/photo alone is insufficient. Do not split the accepted complete carrier into soap and paper again or add treatment utilities/transport already included by provider. Missing treatment or rejection needs real disposition and blocks completion; a financial refund or externally retained unaccepted bar is never automatically retailer waste. |  |
@@ -131,7 +132,7 @@ One final-valid accepted original-bar ID service; service_denominator defines Q 
 
 The receiving-gate complete formulation and original-wrapper source vector finally assigned F enters the service once as N_F/Q; it is not a custody satellite.
 
-- Selected flow: Dr. Bronner OBBA05 unscented whole soap bar with original printed paper wrapper at receiving gate
+- Selected flow: unscented whole soap bar with original printed paper wrapper at receiving gate
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -150,7 +151,7 @@ The receiving-gate complete formulation and original-wrapper source vector final
 
 Gross physical intact original-wrapped handovers to the customer, including subsequently refused or reversed events, are counted as a non-characterized custody satellite; they do not define Q.
 
-- Selected flow: Intact original-wrapped Dr. Bronner OBBA05 bar handed to customer
+- Selected flow: Intact original-wrapped unscented soap bar handed to customer
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: H_customer/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -165,7 +166,7 @@ Gross physical intact original-wrapped handovers to the customer, including subs
 
 Actual physical intact original-wrapped handovers to the named supplier are a non-characterized custody satellite; quantity does not assign T responsibility automatically.
 
-- Selected flow: Intact original-wrapped Dr. Bronner OBBA05 bar returned to supplier
+- Selected flow: Intact original-wrapped unscented soap bar returned to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: H_supplier/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -182,7 +183,7 @@ Actual physical intact original-wrapped handovers to the named supplier are a no
 
 Direct net kg of the dispatched intact whole soap with original printed paper wrapper, excluding dispatch overpack; carrier_boundary requires signed receiver acceptance and matching complete treatment, without repeated stock deductions.
 
-- Selected flow: Condemned intact Dr. Bronner OBBA05 soap bar with original printed paper wrapper for accepted complete treatment
+- Selected flow: Condemned intact the soap manufacturer unscented paper-wrapped soap soap bar with original printed paper wrapper for accepted complete treatment
 - Flow property / unit: Mass / kg
 - Amount rule: W_dispatch/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -244,13 +245,15 @@ Direct net kg of the dispatched intact whole soap with original printed paper wr
 | --- | --- |
 | dataset_role | partial_incremental_retail_foreground |
 | downstream_use | secondary_dataset; background_dataset only after all completion and identity gates |
-| allowed_use | Same physical-store original-wrapped OBBA05 configuration and gates, with pool/version-specific completion disclosure. |
+| allowed_use | Same physical-store original-wrapped unscented paper-wrapped soap configuration and gates, with pool/version-specific completion disclosure. |
 | excluded_use | No complete-business, full3532, perfume/refill/tester, safety/compliance, supplier LCI or customer-use claim from this candidate. |
 | required_metadata | All required qualifiers, Q, original supplier/source versions, S/F/T/O, actual site/channel, complete support scope, calibration and ownership corrections. |
 | required_quality_disclosure | Candidate unverified row identities; missing foreground/BOM/provider/treatment evidence; partial scope, uncertainty, zero-output pools and historical replacements. |
 | update_trigger | Lot/formula/wrapper, route/state, store/provider, source ownership, acceptance outcome, asset lifetime/retirement or new actual exchange changes. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

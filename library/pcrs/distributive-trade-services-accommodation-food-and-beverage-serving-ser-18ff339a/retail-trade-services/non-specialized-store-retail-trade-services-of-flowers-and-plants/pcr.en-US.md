@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail services for nursery-potted ornamental plants
+# Retail handover services for ornamental plants in their original nursery pots
 
 ## 1. Scope and Applicability
 
@@ -19,7 +19,7 @@ This candidate covers receipt-cohort-based retail services for nursery-potted li
 | classification_refs | CPC 3.0 62112; narrower: nursery-potted ornamental plants only |
 | covered_products | Retail handover service for one sale-ready living ornamental plant in its original nursery pot; no transformation |
 | excluded_products | Cut flowers, seeds, medicinal plants, specialist-store sales, online/home-delivery services, cultivation, repotting, fertilizer/pesticide treatment, dedicated refrigerated display, combustion heating and refrigeration equipment within the allocated retail zone; sold plant production is coupled separately under boundary rules |
-| representative_product | In-store retail handover service for one nursery-potted ornamental plant |
+| representative_product | Retail handover services for ornamental plants in their original nursery pots; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Accepted stocked nursery pot → non-specialized store holding/manual watering → customer handover → return-window closure; electrically heated/ventilated or naturally conditioned zone only |
 | market_state | Living, sale-ready plant in the same nursery pot; species, health grade, pot volume, substrate and actual holding duration declared |
 
@@ -67,6 +67,7 @@ This candidate covers receipt-cohort-based retail services for nursery-potted li
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_goods | loss_plant | Include receiving-gate production and inbound transport for B = L + F unique plants without final qualified sale, once via loss_plant. L is actual on-site loss; F is final unqualified outward custody, not automatic waste. Downstream adds sold-plant receiving-gate backgrounds only for unique plants finally sold with N; surviving F plants carry an explicit already-accounted production flag if used in another model, avoiding a second identical production claim. Supplier returns retain their production with returned stock; retailer-controlled handling and return transport remain in the service. An unresolved final fate prevents closure. | unsd-cpc62112; ghg-product-standard |
 | b_closure | cp_cohort | Close each original receipt cohort after physical fates and acceptance/return windows are resolved. Physical customer returns and financial POS reversals are separate events linked to original plant identity; neither is inferred from the other. A goodwill refund alone does not cancel a retained qualified acceptance. A cancelled unreturned or unaccepted outward plant is F, not L. Repeated return/resale events remain in the same identity history: only its final accepted retained sale contributes N, while all failed effort remains. Include every predeclared receipt-period cohort including zero-sale/all-loss cohorts. Late physical returns require correction/reopening of prior closure, never an unrelated new zero-burden receipt. When a late return reopens the original cohort, retain actual activity dates and add all subsequent transport back, care, checkout/resale and treatment to that original cohort numerator as well as correcting N/L/F/S. In each actual activity-period meter/service pool, the reopened original cohort remains an explicit beneficiary even if it has no new receipts that period. Revise the original cohort dataset with versioned adjustments, and reconcile the current-period totals; do not charge the same activities to a new receipt cohort. | unsd-cpc62112; ghg-product-standard |
 | b_scope | holding; sale; residual | Include unloading/handling, holding, watering, seasonal electric conditioning, checkout, wrapping, failed sales, floor cleaning, attributed premises/equipment lifecycle use and residual treatment. Exclude customer travel/use, cultivation, chemical treatment and other declared excluded routes. Where an excluded route occurs, this PCR is not sufficient: stop completion and select appropriate additional methodology; never silently omit it. | unsd-cpc62112; ghg-product-standard |
@@ -723,6 +724,8 @@ Actual whole carrier dispatched with closure/residue only if the receiver accept
 | update_trigger | SKU/species/pot, service gate/returns policy, thermal route, watering/packaging, supplier/receiver, assets, loss fate or material data-quality change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

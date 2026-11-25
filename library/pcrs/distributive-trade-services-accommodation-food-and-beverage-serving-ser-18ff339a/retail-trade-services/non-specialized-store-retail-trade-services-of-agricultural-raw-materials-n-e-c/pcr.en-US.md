@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized physical-store retail service for natural honey in sealed glass jars
+# Retail services for natural honey in sealed glass jars
 
 ## 1. Scope and Applicability
 
@@ -19,7 +19,7 @@ This PCR covers incremental non-specialized physical-store retail service for on
 | classification_refs | CPC 3.0 62119; narrower |
 | covered_products | Retail service for one sealed glass jar of natural honey |
 | excluded_products | Raw milk; shell eggs; rubber; reproductive materials; raw textile materials; waxes; other forest products; comb honey; infused honey; loose refill; online delivery; wholesale; specialized stores; honey production |
-| representative_product | One declared natural extracted honey SKU in sealed glass jar with matched lid and label |
+| representative_product | Retail services for natural honey in sealed glass jars; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Store receipt; manual handling; ambient display; checkout; final handover and documented fates |
 | market_state | Sealed finished jars; liquid or naturally crystallized state recorded; no in-store heating or repacking |
 
@@ -67,6 +67,7 @@ All required qualifiers must be declared in the foreground dataset; absence make
 
 | rule_id | Rule | source_ids |
 | --- | --- | --- |
+| b_product_family | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | retail_gate | The foreground begins at recorded receipt of sealed honey jars at the store receiving gate, includes inspection, manual internal transfer, ambient storage/display, checkout, spill cleaning and final acceptance or documented non-sale fate. Beekeeping, extraction, filtration, filling and primary packing are upstream. No opening, heating, dilution, blending or repacking is permitted in this route. | unsd-cpc62119; fao-honey-1996 |
 | goods_responsibility | Successful-jar production, primary/supplier packaging and inbound transport to the receiving gate are excluded from the incremental service and must be coupled once by the downstream merchandise user at that exact gate. Keep an upstream responsibility ledger for every jar. Failed/lost/discarded/donated jars receive that same complete background once through failed_goods_background; never multiply all receipts by a loss rate or charge an eventually resold jar twice. Supplier returns and failed external handovers retain receipt ID, recipient, actual state, return/delivery transport, final fate and continuing background owner. A transfer of responsibility requires a named coupled dataset and proof, otherwise carry the unresolved upstream burden and block completeness. | ghg-product-2011 |
 | provider_dedup | Bind each waste output to transport and treatment of its exact carrier at the actual receiver; no assumed recycling credit. Purchased complete packages must expose scope by component and event. Exclude overlapping electricity, transport, packaging production, maintenance or end-of-life from one side only, with a scope matrix and retained amount. Unknown package scope blocks completion. Exclude customer travel/use and disposal of successfully sold jars with explicit downstream responsibility. | jrc-retail-2013 |
@@ -630,6 +631,8 @@ This exchange crosses the stated process boundary; its applicable raw total and 
 | update_trigger | Physical return/final fate, SKU/package/gate/equipment change, corrected measurements, revised asset lifetime or supplier scope |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | source_id | type | reference | used_for |
 | --- | --- | --- | --- |

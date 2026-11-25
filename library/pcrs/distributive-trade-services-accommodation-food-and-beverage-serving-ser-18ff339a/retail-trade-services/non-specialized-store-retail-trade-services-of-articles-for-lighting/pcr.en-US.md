@@ -5,11 +5,11 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Walk-in retail service for a complete white TERTIAL703.554.55 E27 work lamp without bulb
+# In-store retail services for complete articulated E27 desk work lamps supplied without a bulb
 
 ## 1. Scope and Applicability
 
-This candidate method covers one homogeneous SKU: a new complete IKEA TERTIAL white work lamp703.554.55, supplied in its original intact retail pack without a light bulb, through a naturally ventilated ambient non-specialized walk-in store with no mechanical HVAC, refrigerant circuit or on-site combustion, subject to complete site absence evidence. Receipt, stock custody, visual package checks, an independently owned demonstration bench, checkout handover and return reconciliation are included. The service reference is successful retail provision, not lamp manufacture, illumination or lumen-hours. Manufacturer specifications establish a real object, not a measured shop inventory. The declared partial incremental module below must be completed by boundary rule b_completion before a whole retail-service result is claimed.
+This candidate method covers one homogeneous SKU: a new complete articulated E27 clamp work lamp, supplied in its original intact retail pack without a light bulb, through a naturally ventilated ambient non-specialized walk-in store with no mechanical HVAC, refrigerant circuit or on-site combustion, subject to complete site absence evidence. Receipt, stock custody, visual package checks, an independently owned demonstration bench, checkout handover and return reconciliation are included. The service reference is successful retail provision, not lamp manufacture, illumination or lumen-hours. Manufacturer specifications establish a real object, not a measured shop inventory. The declared partial incremental module below must be completed by boundary rule b_completion before a whole retail-service result is claimed.
 
 ## 2. Product Category Identity
 
@@ -17,10 +17,10 @@ This candidate method covers one homogeneous SKU: a new complete IKEA TERTIAL wh
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-articles-for-lighting |
 | classification_refs | CPC3.0 62143; narrower semantic subset of trade services for goods of group465; classification title remains in the manifest. No accepted mapping is established here. |
-| covered_products | Complete white TERTIAL703.554.55 luminaire including actual arm, shade, clamp, springs, socket, switch, cable and plug; no bulb. Intact sealed original packs only qualify for final service acceptance. |
-| excluded_products | Other colours, SKUs, loose lamps/bulbs, detached replacement parts, refurbished/open-box sales, installation, home delivery and consumer operation. Old-product takeback is a separate service requiring the completion extension, never retailer lamp-stock waste by default. |
-| representative_product | IKEA TERTIAL703.554.55 white E27 work lamp; manufacturer lists max13W bulb,17cm shade and1.5m cord. Package weight is not net lamp mass. |
-| production_route | Ambient receiving and shelving; visual sealed-pack check; separate bench TERTIAL lamp with SOLHETTA805.914.47 clear E27 LED470lm2700K2.2W demonstrator; walk-in payment and handover; final return-status reconciliation. This clear bulb is not the page recommended opal bulb. Actual socket/rating compatibility must be verified. |
+| covered_products | Complete articulated E27 desk clamp work lamps without bulbs, in intact original retail packs. Verify the actual arm, shade, clamp, springs, socket, switch, cable and plug BOM per configuration. |
+| excluded_products | Products outside the declared lamp family, loose lamps/bulbs, detached replacement parts, refurbished/open-box sales, installation, home delivery and consumer operation. Old-product takeback requires a separate completion extension. |
+| representative_product | In-store retail services for complete articulated E27 desk work lamps supplied without a bulb; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
+| production_route | Ambient receiving and shelving; visual sealed-pack check; separate bench E27 clamp work lamp lamp with SOLHETTA805.914.47 clear E27 LED470lm2700K2.2W demonstrator; walk-in payment and handover; final return-status reconciliation. This clear bulb is not the page recommended opal bulb. Actual socket/rating compatibility must be verified. |
 | market_state | New complete original SKU with documented original receiving configuration and packaging BOM; ambient dry storage. Stock later opened/damaged is tracked as a failure/return state and cannot silently become sealed accepted service. |
 
 ## 3. Reference Flow
@@ -36,11 +36,11 @@ This candidate method covers one homogeneous SKU: a new complete IKEA TERTIAL wh
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Retail service for one complete white TERTIAL703.554.55 lamp without bulb |
+| Reference product flow | Retail service for one complete white articulated E27 clamp work lamp without bulb |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | store and country; SKU703.554.55 white and supplier revision; complete lamp and original packaging BOM; original item IDs and receiving-gate background IDs; ambient walk-in route; pool horizon and acceptance cutoff; final-valid Q and correction version; bench lamp and clear bulb805.914.47 identity and compatibility; meter containment and all-beneficiary allocation; partial boundary and completion module versions; failed retained goods recipient and background responsibility; provider and terminal-treatment boundaries |
+| Required qualifiers | store and country; SKU white and supplier revision; complete lamp and original packaging BOM; original item IDs and receiving-gate background IDs; ambient walk-in route; pool horizon and acceptance cutoff; final-valid Q and correction version; bench lamp and clear bulb805.914.47 identity and compatibility; meter containment and all-beneficiary allocation; partial boundary and completion module versions; failed retained goods recipient and background responsibility; provider and terminal-treatment boundaries |
 
 All required qualifiers must be present in dataset metadata or equivalent data fields. Missing qualifiers block completeness.
 
@@ -67,6 +67,7 @@ All required qualifiers must be present in dataset metadata or equivalent data f
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_gates | all inventory rows | Fix the receiving gate at store unloading acceptance: original complete lamp plus actual original packaging and pre-gate inbound transport. The incremental module covers bench operation/assets, failed-goods receiving-gate background and actual dispatched residuals. Successful merchandise manufacture/packaging/inbound transport remain in downstream goods background B_s; consumer use and consumer disposal remain outside retail. Include no bulb in merchandise background. | ikea-tertial-70355455; ghg-product-standard-2011 |
 | b_background | failed_background | For each original item source j, partition its receiving-gate background exactly once into S final-valid successful customer responsibility, F irrevocable failure assigned to this retail pool, O still-open responsibility and T named transferred responsibility. B_j=B_sj+B_fj+B_oj+B_tj in original receiving-item equivalents. Resale retains the same original source ID. Demonstration conversion binds T to the same original receiving background in the asset ledger and charges that demo supply background once; it cannot also enter F or create another whole lamp. Charge only B_f/Q here; downstream product aggregation adds B_s/Q once. Supplier return and external retention do not erase background: signed continuing responsibility or F is required. No new physical exchange is created by responsibility transfer. | ghg-product-standard-2011 |
 | b_state | retail_service; supplier_sealed; supplier_opened; retained_sealed; retained_opened; stock_lamp_waste | Keep gross physical receipts, handovers, returns, supplier dispatch, external retained failures, local waste dispatch, internal stock transfers, demonstration conversions and opening/closing stock as separate dated events. Final acceptance revocation removes the service even without physical return; financial-only refund with valid acceptance leaves it. External retention without qualified acceptance is not output service or local waste. Sealed complete and opened nonfunctional complete return states have separate cards; missing parts/fragments or different states need a named state-specific atomic extension before completeness. | ikea-tertial-70355455; ghg-product-standard-2011 |
@@ -81,7 +82,7 @@ All required qualifiers must be present in dataset metadata or equivalent data f
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
 | sale | Custody and accepted retail handover | required | Specified sealed-pack route; all stock and acceptance events retained. | foreground retail service | per reference flow |
-| bench | Demonstration bench | required | Separate owned TERTIAL lamp and clear SOLHETTA805.914.47 bulb; includes actual tests and standby. | foreground retail service | per reference flow |
+| bench | Demonstration bench | required | Separate owned E27 clamp work lamp lamp and clear SOLHETTA805.914.47 bulb; includes actual tests and standby. | foreground retail service | per reference flow |
 | failure | Failed merchandise and residual dispatch | conditional | True if irrevocable failures, supplier/external transfers or discarded original cartons occur; false needs complete custody and dispatch evidence; unknown blocks completeness. | foreground retail service | per reference flow |
 | retirement | Demonstration asset retirement | conditional | True upon actual asset retirement; false requires asset-stock ledger; unknown blocks completeness. | foreground retail service | per reference flow |
 
@@ -99,11 +100,11 @@ All required qualifiers must be present in dataset metadata or equivalent data f
 
 ##### Product flows
 
-###### Retail service for one complete white TERTIAL703.554.55 lamp without bulb (`retail_service`)
+###### Retail service for one complete white articulated E27 clamp work lamp without bulb (`retail_service`)
 
 Only final-valid sealed-pack acceptance qualifies; physical goods handover is a different ledger.
 
-- Selected flow: Retail service for one complete white TERTIAL703.554.55 lamp without bulb
+- Selected flow: Retail service for one complete white articulated E27 clamp work lamp without bulb
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -139,11 +140,11 @@ Actual point-of-use AC supply to demo/test bench including standby. Provider, vo
 - Collection protocol: `cp_bench`
 - Sources: `ikea-tertial-70355455`; `ikea-solhetta-80591447`; `jrc-retail-bemp-2013`
 
-###### Complete white TERTIAL703.554.55 E27 work lamp without bulb (`demo_lamp_input`)
+###### Complete white articulated E27 clamp work lamp without bulb (`demo_lamp_input`)
 
 Lifetime-attributed acquisition of the actual demonstrator, including full actual lamp and integral components; excludes bulb, bench support and downstream operation/maintenance/treatment.
 
-- Selected flow: Complete white TERTIAL703.554.55 E27 work lamp without bulb
+- Selected flow: Complete white articulated E27 clamp work lamp without bulb
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Sum_a f_ap/Q for actual lamp assets; cp_assets. Acquisition stock is evidence, not an extra consumed-unit row.
 - Value mode: `calculated_value`
@@ -187,11 +188,11 @@ Whole actual demo bulb includes driver, base, envelope and actual full BOM, not 
 
 ##### Product flows
 
-###### Complete original TERTIAL703.554.55 retail pack without bulb at store receiving gate (`failed_background`)
+###### Complete original E27 articulated clamp work lamp retail pack without bulb at store receiving gate (`failed_background`)
 
 Attribution of original received merchandise background irrevocably consumed by this retail service. Whole package provider must cover actual lamp, complete original packaging and inbound delivery; never charge one part background as another whole pack. This responsibility row is not a second physical purchase.
 
-- Selected flow: Complete original TERTIAL703.554.55 retail pack without bulb at store receiving gate
+- Selected flow: Complete original E27 articulated clamp work lamp retail pack without bulb at store receiving gate
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Sum_j B_fj/Q original receiving-item equivalents; cp_failure. Unresolved provider/BOM blocks complete results.
 - Value mode: `calculated_value`
@@ -210,11 +211,11 @@ Attribution of original received merchandise background irrevocably consumed by 
 
 ##### Product flows
 
-###### Supplier handoff of sealed original TERTIAL703.554.55 retail pack without bulb (`supplier_sealed`)
+###### Supplier handoff of sealed original E27 articulated clamp work lamp retail pack without bulb (`supplier_sealed`)
 
 Actual sealed complete original pack physically handed to supplier; no waste or service acceptance is implied.
 
-- Selected flow: Supplier handoff of sealed original TERTIAL703.554.55 retail pack without bulb
+- Selected flow: Supplier handoff of sealed original E27 articulated clamp work lamp retail pack without bulb
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_supplier_sealed/Q actual physical units; cp_failure. Responsibility S/F/O/T is reconciled separately and cannot create another physical output.
 - Value mode: `calculated_value`
@@ -225,11 +226,11 @@ Actual sealed complete original pack physically handed to supplier; no waste or 
 - Collection protocol: `cp_failure`
 - Sources: `ikea-tertial-70355455`; `ghg-product-standard-2011`
 
-###### Supplier handoff of opened nonfunctional complete TERTIAL703.554.55 lamp without bulb (`supplier_opened`)
+###### Supplier handoff of opened nonfunctional complete articulated E27 clamp work lamp without bulb (`supplier_opened`)
 
 Actual opened nonfunctional complete lamp physically handed to supplier; record packaging separately; no missing parts permitted.
 
-- Selected flow: Supplier handoff of opened nonfunctional complete TERTIAL703.554.55 lamp without bulb
+- Selected flow: Supplier handoff of opened nonfunctional complete articulated E27 clamp work lamp without bulb
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_supplier_opened/Q actual physical units; cp_failure. Responsibility S/F/O/T is reconciled separately and cannot create another physical output.
 - Value mode: `calculated_value`
@@ -240,11 +241,11 @@ Actual opened nonfunctional complete lamp physically handed to supplier; record 
 - Collection protocol: `cp_failure`
 - Sources: `ikea-tertial-70355455`; `ghg-product-standard-2011`
 
-###### Externally retained unaccepted sealed TERTIAL703.554.55 retail pack without bulb (`retained_sealed`)
+###### Externally retained unaccepted sealed E27 articulated clamp work lamp retail pack without bulb (`retained_sealed`)
 
 Complete sealed pack actually retained by a named external recipient after failed/revoked acceptance; record physical handover only once.
 
-- Selected flow: Externally retained unaccepted sealed TERTIAL703.554.55 retail pack without bulb
+- Selected flow: Externally retained unaccepted sealed E27 articulated clamp work lamp retail pack without bulb
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_retained_sealed/Q actual physical units; cp_failure. Responsibility S/F/O/T is reconciled separately and cannot create another physical output.
 - Value mode: `calculated_value`
@@ -255,11 +256,11 @@ Complete sealed pack actually retained by a named external recipient after faile
 - Collection protocol: `cp_failure`
 - Sources: `ikea-tertial-70355455`; `ghg-product-standard-2011`
 
-###### Externally retained unaccepted opened nonfunctional complete TERTIAL703.554.55 lamp without bulb (`retained_opened`)
+###### Externally retained unaccepted opened nonfunctional complete articulated E27 clamp work lamp without bulb (`retained_opened`)
 
 Opened nonfunctional complete lamp retained by a named external recipient; no local waste dispatch exists for this same carrier.
 
-- Selected flow: Externally retained unaccepted opened nonfunctional complete TERTIAL703.554.55 lamp without bulb
+- Selected flow: Externally retained unaccepted opened nonfunctional complete articulated E27 clamp work lamp without bulb
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_retained_opened/Q actual physical units; cp_failure. Responsibility S/F/O/T is reconciled separately and cannot create another physical output.
 - Value mode: `calculated_value`
@@ -272,11 +273,11 @@ Opened nonfunctional complete lamp retained by a named external recipient; no lo
 
 ##### Waste flows
 
-###### Discarded complete TERTIAL703.554.55 luminaire without bulb (`stock_lamp_waste`)
+###### Discarded complete articulated E27 clamp work lamp without bulb (`stock_lamp_waste`)
 
 Actual local dispatched failed complete lamp net carrier including integral cable, clamp and electronics; excludes cartons and separately removed bulb. Fragments/missing components require a state-specific extension, not this complete-device card.
 
-- Selected flow: Discarded complete TERTIAL703.554.55 luminaire without bulb
+- Selected flow: Discarded complete articulated E27 clamp work lamp without bulb
 - Flow property / unit: Mass / kg
 - Amount rule: W_stock/Q measured net dispatched kg; cp_failure. No second generation-stock correction of dispatched mass.
 - Value mode: `calculated_value`
@@ -287,11 +288,11 @@ Actual local dispatched failed complete lamp net carrier including integral cabl
 - Collection protocol: `cp_failure`
 - Sources: `ikea-tertial-70355455`
 
-###### Discarded original TERTIAL paperboard retail carton with integral adhesive (`carton_waste`)
+###### Discarded original E27 clamp work lamp paperboard retail carton with integral adhesive (`carton_waste`)
 
 Actual dry complete carton carrier verified from original packaging BOM, including integral printing/adhesive; no separate duplicated adhesive row. Other inserts, wrapping or damaged mixed packaging need their own actual atomic cards.
 
-- Selected flow: Discarded original TERTIAL paperboard retail carton with integral adhesive
+- Selected flow: Discarded original E27 clamp work lamp paperboard retail carton with integral adhesive
 - Flow property / unit: Mass / kg
 - Amount rule: (W_stock_carton+Sum_a W_demo_carton,a*f_ap(version))/Q; cp_failure. Original carton supply background is already in merchandise/demo provider; no second manufacturing input.
 - Value mode: `calculated_value`
@@ -320,11 +321,11 @@ Actual dry complete carton carrier verified from original packaging BOM, includi
 
 ##### Waste flows
 
-###### Retired complete TERTIAL703.554.55 demonstrator luminaire without bulb (`demo_lamp_waste`)
+###### Retired complete E27 articulated clamp work lamp demonstrator luminaire without bulb (`demo_lamp_waste`)
 
 Whole actual retired demo device excluding removed bulb. Except for the separate bulb, the actual full integral BOM must remain. Any other removed integral component makes this complete-device card inapplicable and requires a specific remaining-carrier extension. Direct net weighing does not subtract the bulb again. Provider starts at this measured waste handoff.
 
-- Selected flow: Retired complete TERTIAL703.554.55 demonstrator luminaire without bulb
+- Selected flow: Retired complete E27 articulated clamp work lamp demonstrator luminaire without bulb
 - Flow property / unit: Mass / kg
 - Amount rule: Sum_a W_lamp,a*f_ap(final)/Q; cp_retirement. No extra manufacture fraction.
 - Value mode: `calculated_value`
@@ -409,12 +410,14 @@ One actual whole removed bulb including base and driver, not glass-only waste; n
 | dataset_role | Partial incremental retail-service foreground module; completed only after b_completion. |
 | downstream_use | secondary_dataset; background_dataset |
 | allowed_use | Same SKU/configuration and declared route with actual data and compatible completed modules. |
-| excluded_use | Whole CPC leaf, bulb manufacture, illumination service, consumer operation, another SKU, or uncompleted comparative total. |
-| required_metadata | store and country; SKU703.554.55 white and supplier revision; complete lamp and original packaging BOM; original item IDs and receiving-gate background IDs; ambient walk-in route; pool horizon and acceptance cutoff; final-valid Q and correction version; bench lamp and clear bulb805.914.47 identity and compatibility; meter containment and all-beneficiary allocation; partial boundary and completion module versions; failed retained goods recipient and background responsibility; provider and terminal-treatment boundaries |
+| excluded_use | Whole CPC leaf, bulb manufacture, illumination service, consumer operation, products outside the declared family, or uncompleted comparative total. |
+| required_metadata | store and country; SKU white and supplier revision; complete lamp and original packaging BOM; original item IDs and receiving-gate background IDs; ambient walk-in route; pool horizon and acceptance cutoff; final-valid Q and correction version; bench lamp and clear bulb805.914.47 identity and compatibility; meter containment and all-beneficiary allocation; partial boundary and completion module versions; failed retained goods recipient and background responsibility; provider and terminal-treatment boundaries |
 | required_quality_disclosure | Candidate method, partial boundary, identity/BOM/provider/range gaps, uncertainty, late-return/lifetime replacements and all module versions. |
 | update_trigger | Changed SKU, supplier revision/BOM, route/bench bulb, meters, providers, acceptance status, asset life or completion scope. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

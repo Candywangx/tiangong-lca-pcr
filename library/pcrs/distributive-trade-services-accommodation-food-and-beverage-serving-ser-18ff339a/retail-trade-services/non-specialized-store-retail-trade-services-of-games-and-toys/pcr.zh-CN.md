@@ -5,11 +5,11 @@ status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 原封 LILLABO 三件玩具火车套装的店内零售：保管与结账模块
+# 原厂封装木制玩具火车套装保管与结账零售服务
 
 ## 1. 范围与适用性
 
-本 PCR 规定非专卖实体店对宜家 LILLABO 货号603.200.94 磁性连接三件玩具火车套装的一种同质原厂配置进行保管与结账的部分增量模块。商品必须是完整未开封原零售包件。边界从门店实际收货开始，到有据可查的顾客实物交付、供应商/内部转交或废物出运，并追溯后续验收修正。参考对象是零售服务，不是玩具制造或游玩时间。其他货号、散件、混装套件、电池火车、线上配送、维修、装配、功能展示及重新包装均为排除路线。必须检查实际配置并签署活动不存在记录；不得从网页推断活动不存在。未执行 boundary_completion 与 completion_sum，本部分模块不得代表完整零售。
+本PCR定义非专门实体店内完整原厂封装木制玩具火车套装的保管及结账部分增量服务。类别内任何品牌及套装设计均可适用；须分别核验实际件数、材质、连接件、供应商版本及完整原包装/BOM，不将厂家三件套案例当作默认。边界从实际门店收货到有证据的顾客交付、退供/内部转交或废物出运，并保留后续验收更正。参考为零售服务，不是玩具制造或游玩时间。排除单售零件、混配套件、电池火车、线上/配送、维修、组装、功能展示及重包装。须检查实际配置并签署发生/未发生记录，网页不能证明；执行boundary_completion及completion_sum之前，部分核心不能代表完整零售。
 
 厂家湿布保养说明不能证明门店实际清洁。场所路线固定为自然通风，支持本池的任何门店或房东服务均无燃烧、含制冷剂设备、暖通系统或外购冷热。须有完整门店/房东设备与公用工程登记、合同及检查证据。排除设备未知或存在即不适用本路线; 不允许默认零或延后决定燃料/制冷剂方法。 不规定数值质量、组成、效率或排放因子，须从实际池采集。
 
@@ -19,9 +19,9 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-games-and-toys |
 | classification_refs | CPC3.0 62153; 非专卖店游戏和玩具零售服务; 第385组商品的较窄子集 |
-| covered_products | 仅限本规则所定义的完整原封货号603.200.94 零售服务 |
+| covered_products | 原厂封装完整木制玩具火车套装；按供应商配置分别核验实际套内组成、连接件及原包装。 |
 | excluded_products | 玩具生产; 不属于本原套装的轨道及配件; 其他玩具; 旧货/开封商品销售; 展示及配送路线 |
-| representative_product | 一套原厂商品：现代机车、蒸汽机车及货车，含可拆上部和实际磁性连接件; 厂家资料列有山毛榉木、带印刷丙烯酸漆的ABS、聚乙烯车轮及镀锌钢轴/钉; 该资料不构成完整质量BOM |
+| representative_product | 原厂封装木制玩具火车套装保管与结账零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 门店收货; 常温原封存放; 包装/标签目视检查; 数字结账; 顾客自提; 退回及失败事件核对 |
 | market_state | 完整原封套装，实际国家/批次/年龄标签; 未经实物证据及路线修订，不允许含运行电池、电机或电动展示 |
 
@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | 一套最终验收原封LILLABO60320094套装的店内保管与结账零售服务 |
+| 参考产品流 | 一套最终验收原封木制玩具火车套装套装的店内保管与结账零售服务 |
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
@@ -67,6 +67,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
 | route_gate | all inventory rows | 必须确认包含三辆车、可拆件、磁铁、涂层/胶黏剂/紧固件及原包装本体、封口、内托、标签和印刷的真实完整套装。供应商记录与检查/称重必须解决每种材料、状态和净质量; 网页所列包裹运输重量不等于玩具净重或包装皮重。不得以纯山毛榉木kg表示完整玩具。厂家3岁以上及CE说法仅为描述性声明：保留实物标签及适用辖区证据，不得声称已经核实合规，也不设安全限值。任何开封、缺件、电池、装配、测试、展示或新增袋/纸票/托盘，均须先在两语中增加具体状态的原子卡与协议，才可宣布数据集完整。 | ikea-lillabo-spec |
 | custody_boundary | receipt; customer_return; customer_handover; supplier_transfer; internal_transfer; external_retention; toy_waste | 货品库存G与暂存废物W分账。实物毛事件平衡：G_open+N_receipt+N_return=G_close+N_handover+N_supplier+N_internal+N_external+C_condemned+L_missing。N_handover为交付时初始合格的顾客交付，N_external为交付时从未验收的外部交付; 两者eventID集合互斥，每次实物离店仅记一次。后来无退回验收撤销不改变实物件数。同一originalID的每次实物退回/交付均记录。报废仅将货品转入暂存废物一次; W_open+kg_condemned+kg_other_admitted=W_close+kg_dispatch。实际出运采用称得的完整载体净kg，不得再从货品扣一次。L_missing是待调查差异，不是环境排放或废物交换; 接收人/状态未解决则阻止完整性。外部留存但无合格验收仍是失败事件，按真实接收人/状态转交处理，不是零售商废物。 |  |
 | source_responsibility | all inventory rows | 首次门店收货时，将每个originalID绑定到以原完整套装为单位的完整供应商来源向量G_i，分别定位玩具、原包装及供应商至门店运输，且每项只计一次。原来源责任分为互斥S（最终验收）、F（零售商失败/丢失责任）、O（未结库存）、T（具名供应商/内部/外部后续责任人）; 按组件有G_total=G_S+G_F+G_O+G_T。这是环境来源所有权台账，不是新增实物交换。部分服务通过failed_supply仅纳入G_F一次，排除G_S、G_O及G_T。每个originalID仅有一个完整最终责任; 组件分责须先以供应商清单向量扩展，才可完整。下游售出商品另耦合G_S/Q; O及T凭签收责任延续来源。退供不能删除负荷。失败外部留存、盗失及无实物退回的验收撤销保留同一原来源; 除非有证据由T后续责任人承接，否则归F。转售不新增生产; 转作展示品须将同一来源转至资产T，且不在本路线内。 |  |
@@ -86,11 +87,11 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 完整原封LILLABO60320094原零售包件 (`receipt`)
+###### 完整原封木制玩具火车套装原零售包件 (`receipt`)
 
 按originalID计数首次收货的完整原包件; 实际玩具/包装质量与来源责任另账保留。
 
-- 选定流：完整原封LILLABO60320094原零售包件
+- 选定流：完整原封木制玩具火车套装原零售包件
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_receipt / Q; 仅实物通过量; 本模块不附加G_i背景
 - 数值来源模式：`foreground_record`
@@ -100,11 +101,11 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_custody`
 
-###### 顾客实物退回的完整原封LILLABO60320094包件 (`customer_return`)
+###### 顾客实物退回的完整原封木制玩具火车套装包件 (`customer_return`)
 
 同一包件退回不新增制造。开封/缺件退回须先另建状态卡才可完整。
 
-- 选定流：顾客实物退回的完整原封LILLABO60320094包件
+- 选定流：顾客实物退回的完整原封木制玩具火车套装包件
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_return / Q; 每次真实完整原封退回事件
 - 数值来源模式：`foreground_record`
@@ -128,11 +129,11 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_power`
 
-###### 一套完整原封LILLABO60320094原包件的摇篮至门店供给 (`failed_supply`)
+###### 一套完整原封木制玩具火车套装原包件的摇篮至门店供给 (`failed_supply`)
 
 零售商负责的失败originalID背景耦合输入，以原完整包件等价量表示。逐一绑定包含完整玩具、原包装及供应商至门店运输的实际供应方清单G_i。与卫星毛收货分开，不得同时给receipt附加生产。不得按任意质量/件数份额拆G_i。
 
-- 选定流：一套完整原封LILLABO60320094原包件的摇篮至门店供给
+- 选定流：一套完整原封木制玩具火车套装原包件的摇篮至门店供给
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_F / Q; 每个原来源G_i一次
 - 数值来源模式：`foreground_record`
@@ -146,11 +147,11 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 一套最终验收原封LILLABO60320094套装的店内保管与结账零售服务 (`accepted_service`)
+###### 一套最终验收原封木制玩具火车套装套装的店内保管与结账零售服务 (`accepted_service`)
 
 截止修正后一个最终有效不同originalID的服务，与商品实物毛交付分开。
 
-- 选定流：一套最终验收原封LILLABO60320094套装的店内保管与结账零售服务
+- 选定流：一套最终验收原封木制玩具火车套装套装的店内保管与结账零售服务
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：1 Item(s)
 - 数值来源模式：`foreground_record`
@@ -160,11 +161,11 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_acceptance`
 
-###### 交给顾客的完整原封LILLABO60320094包件 (`customer_handover`)
+###### 交给顾客的完整原封木制玩具火车套装包件 (`customer_handover`)
 
 每次初始合格顾客实物毛交付均计数，含后来撤销的销售; eventID与初始未验收external_retention互斥; 最终服务由验收账确定。
 
-- 选定流：交给顾客的完整原封LILLABO60320094包件
+- 选定流：交给顾客的完整原封木制玩具火车套装包件
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_handover / Q
 - 数值来源模式：`foreground_record`
@@ -174,11 +175,11 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_custody`
 
-###### 实物退供的完整原封LILLABO60320094包件 (`supplier_transfer`)
+###### 实物退供的完整原封木制玩具火车套装包件 (`supplier_transfer`)
 
 退供签收是实物商品转交; 另行保留具名T或F的原背景责任。
 
-- 选定流：实物退供的完整原封LILLABO60320094包件
+- 选定流：实物退供的完整原封木制玩具火车套装包件
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_supplier / Q
 - 数值来源模式：`foreground_record`
@@ -188,11 +189,11 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_custody`
 
-###### 转交其他门店的完整原封LILLABO60320094包件 (`internal_transfer`)
+###### 转交其他门店的完整原封木制玩具火车套装包件 (`internal_transfer`)
 
 转交具名门店保留同一originalID及T来源责任; 不是零售服务或新生产。
 
-- 选定流：转交其他门店的完整原封LILLABO60320094包件
+- 选定流：转交其他门店的完整原封木制玩具火车套装包件
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_internal / Q
 - 数值来源模式：`foreground_record`
@@ -202,11 +203,11 @@ sync_with: pcr.en-US.md
 - 证据类型：`calculated_from_collection`
 - 采集协议：`cp_custody`
 
-###### 外部接收人无验收留存的完整原封LILLABO60320094包件 (`external_retention`)
+###### 外部接收人无验收留存的完整原封木制玩具火车套装包件 (`external_retention`)
 
 仅记录区别于customer_handover的真实有据实物毛外部转交。无退回撤销是责任/验收修正，绝不产生第二次实物转交。失败留存包件须有实际接收人/状态及F或有据延续T责任。
 
-- 选定流：外部接收人无验收留存的完整原封LILLABO60320094包件
+- 选定流：外部接收人无验收留存的完整原封木制玩具火车套装包件
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_external / Q
 - 数值来源模式：`foreground_record`
@@ -218,11 +219,11 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 受损完整LILLABO60320094玩具及原包装废物载体 (`toy_waste`)
+###### 受损完整木制玩具火车套装玩具及原包装废物载体 (`toy_waste`)
 
 实际出运的完整原套装及其自身受损零售包装的干态复合物，不含电池或新增处置容器。按实际载体组成及接收方接纳证明称量整批净kg。已拆组件、开封/缺件套装、湿污染及外加容器须独立具体卡; 不得再报本载体相同组成部分。废物处理位于本出运门外，须另补全。
 
-- 选定流：受损完整LILLABO60320094玩具及原包装废物载体
+- 选定流：受损完整木制玩具火车套装玩具及原包装废物载体
 - 流属性/单位：质量 / kg
 - 数量规则：kg_dispatch / Q
 - 数值来源模式：`foreground_record`
@@ -291,12 +292,14 @@ sync_with: pcr.en-US.md
 | dataset_role | partial_incremental_retail_module |
 | downstream_use | secondary_dataset; background_dataset |
 | allowed_use | 本精确原封路线的保管/结账及G_F贡献; 仅固定模块补全验收后用于完整零售 |
-| excluded_use | 整件玩具环境声明; 安全/法规符合性; 全分类叶或其他SKU; 线上配送; 未补全总零售 |
+| excluded_use | 整件玩具环境声明; 安全/法规符合性; 全分类叶或声明玩具火车类别外产品; 线上配送; 未补全总零售 |
 | required_metadata | 全部参考限定信息; 来源及供应方边界; 原分母; 池/Q版本; S/F/O/T; 完整模块覆盖 |
 | required_quality_disclosure | 部分覆盖; 未绑定身份; BOM/数量/供应方缺口; 测量不确定性; 来源年代及历史身份观察; 所有跳过工作 |
 | update_trigger | BOM/包件/标签/渠道/门变化; 新真实交换; 验收修订; 资产寿命/供应方/来源变化 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

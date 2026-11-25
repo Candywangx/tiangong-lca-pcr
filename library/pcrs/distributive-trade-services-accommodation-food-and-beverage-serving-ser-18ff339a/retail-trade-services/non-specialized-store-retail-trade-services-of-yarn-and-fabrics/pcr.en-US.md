@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental manual counter-cut retail service for white woven 100% cotton fabric, K001-1387
+# Manual measure-and-cut counter retail services for white woven 100% cotton fabric
 
 ## 1. Scope and Applicability
 
@@ -19,9 +19,9 @@ This authored candidate defines a partial retail counter-service module for actu
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-yarn-and-fabrics |
 | classification_refs | CPC 3.0 62131; narrower |
-| covered_products | K001-1387 WHITE, finished woven 100% cotton fabric, manual full-width counter cut. |
-| excluded_products | Other yarns/fibres/fabrics/SKUs/colours, coated/knitted/blended products, pre-cuts and powered processing. |
-| representative_product | Incremental manual counter-cut retail service for white woven 100% cotton fabric, K001-1387 |
+| covered_products | Finished white woven 100% cotton fabric sold by manual full-width counter cutting; actual supplier/finish/lot strata are separate. |
+| excluded_products | Other fibres, yarn, coated/laminated, knitted or blended fabric, non-white fabric, pre-cuts and powered processing; other qualifying SKUs are separate data strata, not excluded brands. |
+| representative_product | Manual measure-and-cut counter retail services for white woven 100% cotton fabric; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier finished bolt → store receipt/holding → inspection/manual measure/shears → packaging/counter handover → final acceptance/actual returns and residual routing. Fabric manufacture is separately coupled. |
 | market_state | Unwashed, slack, finished white woven fabric; actual lot moisture/finish, final quality and geometry recorded. |
 
@@ -38,7 +38,7 @@ This authored candidate defines a partial retail counter-service module for actu
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Manual counter-cut retail service for finally accepted usable area of K001-1387 white woven cotton fabric |
+| Reference product flow | Manual counter-cut retail service for finally accepted usable area of white woven cotton fabric |
 | Reference flow property | Area `93a60a56-a3c8-19da-a746-0800200c9a66` |
 | Reference unit group | Units of area `93a60a57-a3c8-18da-a746-0800200c9a66` |
 | Reference unit | m2 |
@@ -67,7 +67,8 @@ This authored candidate defines a partial retail counter-service module for actu
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| scope | all | Apply only to one recorded SKU K001-1387 WHITE finished woven 100% cotton bolt, one supplier finish/lot specification, sold by manual measuring and shears across full bolt width in an attended non-specialized store. Record supplier declaration, weave identification, finish/size specification, bolt ID and original length/full width. No assumption of a particular bleaching recipe, weave pattern, finish add-on, certified status or nominal areal density. Exclude yarn, knits, blends, laminated/coated/special fabric, other colours/SKUs, pre-cut packs, electric cutting, sewing, washing, dyeing and customer delivery; changes require distinct authored cards/protocols before completeness. | kaufman-white-k001-1387; un-cpc-62131 |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope | all | Apply to finished white woven 100% cotton bolts, sold by manual measuring and shears across full bolt width in an attended non-specialized store. Any brand/SKU in this class is eligible; keep actual supplier, finish, lot and geometry separate per pool. Record supplier fibre/weave declaration, finish/size specification, bolt ID and original length/full width. Do not infer bleaching recipe, weave pattern, finish add-on, certification or areal density from the retained manufacturer example. Exclude yarn, knits, blends, laminated/coated/special or non-white fabric, pre-cut packs, powered cutting, sewing, washing, dyeing and customer delivery; changed routes need specific cards/protocols and review before completeness. | kaufman-white-k001-1387; un-cpc-62131 |
 | gates | all | Start when merchant accepts identified finished fabric bolts into the store receiving ledger; include target storage/handling, inspection, measuring, manual cutting, wrapping, counter handover, actual reversals and residual routing. End at final qualified consumer acceptance after the declared contractual return/claim period and terminal responsibility for retailer residues; goods still retained or uncertain are open responsibility, not failed waste or final service. Partial module includes direct counter lamp electricity, actual counter packaging, directly traceable failed-fabric upstream burden, retailer waste/carrier transfers and attributable exterior cotton-fibre particulate flux. | ghg-product-2011 |
 | partial_completion | all | This is a partial counter module, never the whole retail footprint. Before whole-retail aggregation supply fixed completion modules: common building/shelf/counter-table/shears/ruler/cutting-mat/lamp/POS acquisition-installation, maintenance and terminal treatment; premises HVAC/lighting/POS power and refrigerant releases; general cleaning and shared toilets water/chemicals/effluent; staff/office/administrative devices and their operation/assets; receiving and return transport including actual empty movements; manual handling support assets; successful merchandise production/inbound transport. Use cp_completion and calc_completion on the identical pool, final Q and event IDs. A missing module is unverified, not zero. Customer travel/use/end of life, employees commuting and human metabolism are outside the declared retail service. | ghg-product-2011 |
 | commodity_ownership | failed_background; qualified_service | The retail reference is a service, not newly produced cloth. Track every original bolt coordinate to exclusive final accepted, failed-service, continuing-transfer and open portions. Allocate original-gate fabric and its inbound background once to those portions using measured original full-width dry-fabric mass including finish and delivered selvedges; never kg of final ambient cloth by default. Successful portion B_s/Q is attached once by downstream completion; only B_f_service/Q enters failed_background here. Supplier returns/open transfers retain named continuing owner and original burden; do not erase or duplicate it. Continuing re-sale carries original background without generating another fabric-production input. | ghg-product-2011 |
@@ -93,11 +94,11 @@ This authored candidate defines a partial retail counter-service module for actu
 
 ##### Product flows
 
-###### Finished white woven 100% cotton fabric K001-1387 at store receiving gate, failed-service portion (`failed_background`)
+###### Finished white woven 100% cotton fabric at store receiving gate, failed-service portion (`failed_background`)
 
 Coupled original receiving background for the exclusive failed portion assigned to this retail pool; includes its evidenced production/finish/inbound package/legs and excludes the successful/continuing/open portion. Not total incoming cloth and not another retail service.
 
-- Selected flow: Finished white woven 100% cotton fabric K001-1387 at store receiving gate, failed-service portion
+- Selected flow: Finished white woven 100% cotton fabric at store receiving gate, failed-service portion
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: B_f_service/Q kg dry finished-fabric receiving equivalent per1m2 service, the source-coordinate calculation rule; linked provider must convert its actual moisture/mass/area basis explicitly, with no default1kg/kg.
 - Value mode: Foreground record (`foreground_record`)
@@ -178,11 +179,11 @@ Actual counter consumable of the stated material and specification. Optional non
 
 ##### Product flows
 
-###### Manual counter-cut retail service for finally accepted usable area of K001-1387 white woven cotton fabric (`qualified_service`)
+###### Manual counter-cut retail service for finally accepted usable area of white woven cotton fabric (`qualified_service`)
 
 Reference retail service at contractual quality and final acceptance, including one traceable physical delivered piece history. Commodity source background remains separately coupled; exclude delivered selvedges/defects from usable area only.
 
-- Selected flow: Manual counter-cut retail service for finally accepted usable area of K001-1387 white woven cotton fabric
+- Selected flow: Manual counter-cut retail service for finally accepted usable area of white woven cotton fabric
 - Flow property / unit: Area `93a60a56-a3c8-19da-a746-0800200c9a66` / m2
 - Amount rule: 1 m2
 - Value mode: Foreground record (`foreground_record`)
@@ -218,11 +219,11 @@ This selected identity makes no particle-size or chemical-composition claim. Ret
 
 ##### Product flows
 
-###### Nonaccepted K001-1387 white woven cotton fabric retained by external recipient (`unqualified_retained`)
+###### Nonaccepted  white woven cotton fabric retained by external recipient (`unqualified_retained`)
 
 Actual physical cloth retained externally without qualified acceptance after claim settlement, not a retailer waste carrier. Record actual recipient/state and source coordinates. Before known continuing owner evidence, keep original burden provisionally in the original service failure ledger and block final completeness; release only by signed evidenced reassignment.
 
-- Selected flow: Nonaccepted K001-1387 white woven cotton fabric retained by external recipient
+- Selected flow: Nonaccepted  white woven cotton fabric retained by external recipient
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Actual net externally retained as-received fabric kg/Q from handover minus actual returns, not a financial refund amount; zero final acceptance area.
 - Value mode: Foreground record (`foreground_record`)
@@ -233,11 +234,11 @@ Actual physical cloth retained externally without qualified acceptance after cla
 - Collection protocol: `cp_residual`
 - Sources: `ghg-product-2011`
 
-###### Saleable K001-1387 white woven cotton fabric transferred to named continuing recipient (`failed_transfer`)
+###### Saleable  white woven cotton fabric transferred to named continuing recipient (`failed_transfer`)
 
 Actual physical supplier/other continuing transfer with accepted saleable state and original background ownership. Not a qualified consumer service, waste, automatic failed-service burden or new fabric production.
 
-- Selected flow: Saleable K001-1387 white woven cotton fabric transferred to named continuing recipient
+- Selected flow: Saleable  white woven cotton fabric transferred to named continuing recipient
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Actual net dispatched as-received kg attributed once/Q, independent of B_f_continuing dry equivalent and final Q; cp_residual.
 - Value mode: Foreground record (`foreground_record`)
@@ -250,11 +251,11 @@ Actual physical supplier/other continuing transfer with accepted saleable state 
 
 ##### Waste flows
 
-###### Clean finished K001-1387 cotton fabric offcuts sent for treatment (`fabric_offcuts`)
+###### Clean finished  cotton fabric offcuts sent for treatment (`fabric_offcuts`)
 
 One actual segregated whole carrier at dispatch to evidenced treatment receiver. Preserve measured condition/composition, traceable source event and provider haul/treatment boundary. Non-occurrence must be evidenced; no assumed recycling or avoided credit.
 
-- Selected flow: Clean finished K001-1387 cotton fabric offcuts sent for treatment
+- Selected flow: Clean finished  cotton fabric offcuts sent for treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Actual attributable net whole-carrier W_x/Q kg per1m2 service, measured cp_residual; internal contained cotton/moisture/finish is not another exchange.
 - Value mode: Foreground record (`foreground_record`)
@@ -265,11 +266,11 @@ One actual segregated whole carrier at dispatch to evidenced treatment receiver.
 - Collection protocol: `cp_residual`
 - Sources: `ghg-product-2011`
 
-###### Defective finished K001-1387 cotton fabric sent for treatment (`defective_fabric`)
+###### Defective finished  cotton fabric sent for treatment (`defective_fabric`)
 
 One actual segregated whole carrier at dispatch to evidenced treatment receiver. Preserve measured condition/composition, traceable source event and provider haul/treatment boundary. Non-occurrence must be evidenced; no assumed recycling or avoided credit.
 
-- Selected flow: Defective finished K001-1387 cotton fabric sent for treatment
+- Selected flow: Defective finished  cotton fabric sent for treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: Actual attributable net whole-carrier W_x/Q kg per1m2 service, measured cp_residual; internal contained cotton/moisture/finish is not another exchange.
 - Value mode: Foreground record (`foreground_record`)
@@ -432,12 +433,14 @@ One actual segregated whole carrier at dispatch to evidenced treatment receiver.
 | dataset_role | secondary_dataset; background_dataset |
 | downstream_use | Partial incremental counter service only; whole-retail use requires fixed completion and successful source background coupling on identical Q. |
 | allowed_use | Use for the identical recorded SKU/manual route/state/contract after measured quantities and UUID/background completion; disclose partial scope. |
-| excluded_use | Entire CPC leaf, other fabric/SKU/route, full retail or certified/current-compliance claim, pure merchandise manufacture, default nominal area/mass or missing-data zero. |
+| excluded_use | Entire CPC leaf, fabric or routes outside the declared class, full retail or certified/current-compliance claim, pure merchandise manufacture, default nominal area/mass or missing-data zero. |
 | required_metadata | SKU and fibre declaration and woven construction and actual finish and supplier lot; actual full and usable width/length map and defects; unwashed slack measurement temperature/RH and calibration; receiving dry-finished-mass and moisture/finish method; manual full-width cut route and packaging absence/presence; start/end gate and return policy and terminal acceptance evidence; pool configuration and coverage and late-revision IDs; gross physical crossings and source-coordinate ownership; partial counter boundary and fixed completion scope matrix; outside-air cotton source/capture/path closure and uncertainty; receiver and carrier and provider duplicate-scope checks |
 | required_quality_disclosure | Row identity/background gaps, receiving vs final state, geometry/moisture sampling uncertainty, partial-module scope matrix, closed/failed pools, revisions and exterior cotton coverage. |
 | update_trigger | SKU/finish/lot construction, route, measuring state, packaging, provider boundaries, assets/life, contract/return outcomes, air paths or source evidence changes. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

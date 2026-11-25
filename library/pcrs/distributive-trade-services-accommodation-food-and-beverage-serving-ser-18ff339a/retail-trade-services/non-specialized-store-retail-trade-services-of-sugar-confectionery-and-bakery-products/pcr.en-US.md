@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental dry-stock retail service for factory-sealed 1 kg bags of white beet granulated sugar
+# Dry-stock retail services for factory-sealed nominal-1-kg bags of white beet granulated sugar
 
 ## 1. Scope and Applicability
 
@@ -19,7 +19,7 @@ This PCR covers a deliberately partial operating module in a walk-in non-special
 | classification_refs | CPC 3.0 62125; narrower: only the specified sugar retail module; bakery, molasses and confectionery remain outside |
 | covered_products | Retail service for one homogeneous factory-sealed nominal 1 kg consumer-bag SKU of additive-free white beet granulated sugar |
 | excluded_products | Cane sugar; brown, caster, icing, jam or flavored sugar; sweeteners; syrups/molasses; bakery and confectionery; other pack sizes or constructions without separate datasets |
-| representative_product | One intact bag of the declared SKU; the manufacturer specification lists a 1 kg format but does not establish the site bag construction |
+| representative_product | Dry-stock retail services for factory-sealed nominal-1-kg bags of white beet granulated sugar; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier-packed receipt → manual ambient stock/display → in-store customer acceptance; dry quarantining/residual dispatch for failures |
 | market_state | Factory-sealed dry free-flowing crystalline sugar; actual lot specification, seal, odor/contamination and damp/caking observations govern qualification |
 
@@ -65,6 +65,7 @@ This PCR covers a deliberately partial operating module in a walk-in non-special
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_gate | retail_service | Apply only to the declared single intact factory-bag SKU and manual ambient route. Record actual receipt, stock, quarantine, handover, return and closure timestamps; do not equate sealed with vapor-impermeable. Current signed supplier/lot conditions govern acceptance; use cp_conditions to measure temperature and relative humidity throughout custody and inspect seal, caking, odor and contamination at receipt, daily holding review and every handover. No source numerical ranges or legal conformity are adopted as defaults. | sugar-spec; sugar-products |
 | reference_ownership | retail_service | N is the number of unique original parents finally qualified and retained for final use. Gross handovers H and physical returns C are separate events. Pure price refunds, credits and discounts without physical reversal do not reduce N only while final qualification and acceptance remain valid. An actual final acceptance revocation without return removes that parent from N and records the physically retained unqualified bag as U_keep. Return then resale of the same intact parent produces at most one final service. An externally retained unqualified intact bag is physically U_keep, not N or automatic waste; U_keep=F_keep+T_keep+O_keep partitions its original background responsibility, not additional physical handovers. Reopening an original period must revise its numerators, N and fate allocation together, never charge its complete burden again to a later pool. | ghg-product |
 | goods_background | failed_background | Each original bag is assigned exactly once to successful S, irrevocable failed F, continuing supplier/other-system transfer T, or open responsibility O. One broken bag retains one full original background regardless of the number of waste/recovery descendants; no allocation credit to recovered sugar. F includes destroyed originals and externally retained unqualified originals whose background remains with this service. T carries original production, pack and receipt-transport responsibility to a named supplier or other receiving system under signed acknowledgment; absent acknowledgment it remains O, not zero. T is a mutually exclusive original-background partition, never a count of all supplier handoff events. Independently record actual physical supplier handoffs T_supplier and retained unqualified U_keep, with recipient/state/event IDs. T_keep belongs to U_keep already; moving an externally retained parent from F_keep/O_keep to T_keep changes background ownership only, without a second physical output. A genuinely new outward object/state needs its own specific card. S backgrounds are excluded here and must be coupled once downstream as S/N original bags using their actual receiving net fill/BOM. Never substitute the nominal 1 kg for measured original fill or assume receipt mass equals final mass. | ghg-product |
@@ -322,6 +323,8 @@ One physically collected mixture at the actual waste handover, with measured sug
 | update_trigger | SKU/pack/construction/closure/source/route change; actual extra process; provider boundary or instrument change; new returns; receipt/fate correction; reviewed identity evidence |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

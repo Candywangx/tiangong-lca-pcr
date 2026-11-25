@@ -6,11 +6,11 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Counter retail service for one XPRT 5 LB rubber hex dumbbell pair in a non-specialized store
+# Counter retail services for paired rubber-coated hexagonal dumbbells
 
 ## 1. Scope and Applicability
 
-This candidate covers counter retail service of the single XPRT Rubber Hex Dumbbells 5 LB Pair configuration: two unused black rubber-coated cast-iron hex-head dumbbells with chrome-finished steel handles, supplied as one original pair. The nominal 5 LB is per dumbbell; neither nominal weight nor two components defines the service denominator. It is an ambient, walk-in, non-specialized non-food store route, with electronic receipts, no retail-added bag, no demonstrations, no assembly, no repair and no external sales delivery. Record original supplier packaging configuration and actual net masses; the product page is specification evidence, not an LCI. This is an explicitly partial incremental service model with mandatory completion rules below. It cannot support a complete retail-business footprint before completion. UN CPC 3.0 62155 includes sports goods, pleasure/sporting boats and non-motorized cycles; this pair is a narrower sports-goods subset, not coverage of the entire leaf.
+This candidate covers counter retail service of the declared complete matched rubber-coated hexagonal dumbbell-pair configuration: two unused black rubber-coated cast-iron hex-head dumbbells with chrome-finished steel handles, supplied as one original pair. Any nominal weight in the retained example describes a dumbbell; neither nominal weight nor two components defines the service denominator. It is an ambient, walk-in, non-specialized non-food store route, with electronic receipts, no retail-added bag, no demonstrations, no assembly, no repair and no external sales delivery. Record original supplier packaging configuration and actual net masses; the product page is specification evidence, not an LCI. This is an explicitly partial incremental service model with mandatory completion rules below. It cannot support a complete retail-business footprint before completion. UN CPC 3.0 62155 includes sports goods, pleasure/sporting boats and non-motorized cycles; this pair is a narrower sports-goods subset, not coverage of the entire leaf.
 
 ## 2. Product Category Identity
 
@@ -18,11 +18,11 @@ This candidate covers counter retail service of the single XPRT Rubber Hex Dumbb
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-sports-goods-incl-bicycles |
 | classification_refs | CPC 3.0 62155; narrower |
-| covered_products | Counter retail service of one complete original unused XPRT 5 LB Pair; homogeneous configuration and source lot |
-| excluded_products | Other weights; single dumbbells; mixed pairs; boats; cycles; rental; used goods; demonstrations; repair; opened or incomplete component sets outside the explicit complete-pair states |
-| representative_product | XPRT Rubber Hex Dumbbells, 5 LB Pair; supplier lot/package/BOM and actual non-specialized store channel evidence required |
+| covered_products | Complete original unused matched pairs of rubber-coated hexagonal dumbbells; actual mass and source/BOM configuration fixed per homogeneous pool. |
+| excluded_products | Single dumbbells, mixed pairs, boats, cycles, rentals, used goods, demonstrations, repairs and incomplete component sets outside the declared complete-pair states. |
+| representative_product | Counter retail services for paired rubber-coated hexagonal dumbbells; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receive; inspect; ambient hold; counter handover; acceptance correction; actual supplier return or waste dispatch |
-| market_state | Unused complete pair; two nominal 5 LB dumbbells; cast-iron heads/rubber coating/chrome-finished steel handles; actual original packaging documented |
+| market_state | Unused complete pair; two dumbbells of the actual declared mass; cast-iron heads/rubber coating/chrome-finished steel handles; actual original packaging documented |
 
 ## 3. Reference Flow
 
@@ -37,7 +37,7 @@ This candidate covers counter retail service of the single XPRT Rubber Hex Dumbb
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter retail service for one XPRT 5 LB rubber hex dumbbell pair |
+| Reference product flow | Counter retail service for one rubber-coated hexagonal dumbbell pair |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -66,7 +66,8 @@ This candidate covers counter retail service of the single XPRT Rubber Hex Dumbb
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | retail; custody | Apply only to the single documented complete-pair configuration and counter route. Presence of retail-added bags/paper receipts, assembly, demonstration, repair, external sales delivery, incomplete pairs, component shedding or materially different SKU requires concrete atomic cards, aligned protocols and bilingual revision before completeness; unknown is blocking, not absent. | xprt-spec |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | retail; custody | Apply only to the single documented complete-pair configuration and counter route. Presence of retail-added bags/paper receipts, assembly, demonstration, repair, external sales delivery, incomplete pairs, component shedding or an actual configuration requiring unrepresented flows requires concrete atomic cards, aligned protocols and bilingual revision before completeness; unknown is blocking, not absent. | xprt-spec |
 | ownership | failed_original; customer_pair; supplier_pair; external_damaged; damaged_pair_waste | Assign each original_id exactly once to S finally valid sold responsibility, F irrecoverable retailer responsibility including loss, O original open stock, or T named transferred responsibility. Original vector includes manufacture+full original package+transport to receiving gate once. S leaves that vector with the sold-goods life cycle; O carries it; T transfers the same source to the identified supplier/recipient with written continuing responsibility; only F enters failed_original. Never recharge resale or count each failed descendant as another original. Unknown fate/owner blocks completeness. Financial refund alone does not change acceptance. | ghg-product |
 | satellites | customer_pair; supplier_pair; external_damaged | Only customer_pair, supplier_pair and external_damaged are physical custody satellite outputs without another manufacturing/background supplier. Their counts are gross movements, never service or background multipliers. This exclusion does not apply to failed_original, AC, service_output or waste treatment. Supplier physical handoff does not create a second T allocation. | ghg-product |
 | support_gate | retail | Complete-service qualification requires an equipment walkdown, landlord utility boundary diagram, bills and signed current absence evidence for every on-site/landlord combustion fuel, refrigerant-containing HVAC/refrigerator and purchased heat or purchased cooling route. This PCR admits only evidenced absent stationary combustion, refrigerants, purchased heat and purchased cooling. Unknown or present fails this route and requires a separate reviewed atomic-method revision; never assume zero from a tenant electricity bill. Lighting/fans/checkout operation and capital remain required even if electric only. | jrc-retail |
@@ -106,7 +107,7 @@ Actual attributed store electric operation; provider/geography/voltage/supply mi
 
 One item is one original pair plus its full original packaging and inbound gate responsibility, not one dumbbell. Bind actual supplier production/package/inbound sources once, even if the pair is lost with no waste dispatch. This is the characterized background input, not a physical satellite.
 
-- Selected flow: Original complete XPRT 5 LB dumbbell pair with full supplier packaging at store receiving gate
+- Selected flow: Original complete rubber-coated hexagonal dumbbell pair with full supplier packaging at store receiving gate
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q Item(s)
 - Value mode: `calculated_value`
@@ -125,7 +126,7 @@ One item is one original pair plus its full original packaging and inbound gate 
 
 Count the final-valid distinct original pair service; never count the two constituent dumbbells as two services. Unknown acceptance does not qualify.
 
-- Selected flow: Counter retail service for one XPRT 5 LB rubber hex dumbbell pair
+- Selected flow: Counter retail service for one rubber-coated hexagonal dumbbell pair
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -146,7 +147,7 @@ Count the final-valid distinct original pair service; never count the two consti
 
 Each actual intact pair handover event, including never-accepted and later-revoked events. Classify H_intact versus H_damaged exclusively by the observed complete-pair state at that actual gate-crossing event_id; each event is in exactly one set. Later external damage or no-movement revocation updates final external state/acceptance only, never another H_damaged crossing. Gross physical movement is independent of Q. Supplier packaging travels only when actually present, with its separately measured fate ledger; no package manufacturing is added here.
 
-- Selected flow: Complete unused XPRT 5 LB dumbbell pair handed to customer
+- Selected flow: Complete unused rubber-coated hexagonal dumbbell pair handed to customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_intact/Q Item(s)
 - Value mode: `calculated_value`
@@ -161,7 +162,7 @@ Each actual intact pair handover event, including never-accepted and later-revok
 
 Actual signed receiving party and physical original-package state required. This physical return does not itself prove T background responsibility. Opened or damaged supplier returns require a concrete separate-state extension.
 
-- Selected flow: Complete unused XPRT 5 LB dumbbell pair in intact original supplier package returned to supplier
+- Selected flow: Complete unused rubber-coated hexagonal dumbbell pair in intact original supplier package returned to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_supplier/Q Item(s)
 - Value mode: `calculated_value`
@@ -176,7 +177,7 @@ Actual signed receiving party and physical original-package state required. This
 
 Both dumbbells and handles remain complete; H_damaged counts only actual outward event_ids whose observed gate-crossing state already had cracked coating and is disjoint from H_intact. Later damage/acceptance revocation without movement is a final-state observation, never a second outward event. Identify actual recipient, state and F or written T owner; it is not retailer waste. Missing components or coating material detached are outside this exact state.
 
-- Selected flow: Complete XPRT 5 LB dumbbell pair with cracked rubber coating retained by external customer
+- Selected flow: Complete rubber-coated hexagonal dumbbell pair with cracked rubber coating retained by external customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_damaged/Q Item(s)
 - Value mode: `calculated_value`
@@ -193,7 +194,7 @@ Both dumbbells and handles remain complete; H_damaged counts only actual outward
 
 Direct actual consignment net mass of two complete damaged dumbbells, excluding all packaging/container; weigh actual full objects, not a sum of unrelated repair material. Bind receiving treatment and transport boundaries once, with no assumed credit. Loss is not a waste dispatch.
 
-- Selected flow: Complete XPRT 5 LB rubber-coated cast-iron and steel dumbbell pair waste
+- Selected flow: Complete rubber-coated cast-iron and steel hexagonal dumbbell pair waste
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_pair_kg/Q kg
 - Value mode: `calculated_value`
@@ -268,6 +269,8 @@ Direct actual consignment net mass of two complete damaged dumbbells, excluding 
 | update_trigger | SKU/BOM/package/state/channel change; new fuel/refrigerant; new asset/route; source lifetime revision; late acceptance or fate correction |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | source_id | type | title | reference | use |
 | --- | --- | --- | --- | --- |

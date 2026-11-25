@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail of sealed four-cell LR6 alkaline battery packs in paperboard packaging
+# Retail services for factory-sealed four-cell cardboard packs of LR6 alkaline batteries
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ This PCR defines the incremental retail service for one final-valid original fou
 | classification_refs | CPC3.0:62159; narrower |
 | covered_products | Retail of homogeneous intact unused four-cell LR6 alkaline original paperboard packs |
 | excluded_products | Tyres/tubes; musical instruments; other battery chemistry/size; loose cells; charging; delivery; whole-product life cycle |
-| representative_product | VARTA Longlife Power4906 order04906 121414 four-cell pack; actual supplier batch and full BOM required |
+| representative_product | Retail services for factory-sealed four-cell cardboard packs of LR6 alkaline batteries; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier delivered receiving; manual ambient storage/display; electric checkout; walk-in handover; returns/controlled residual handling |
 | market_state | Unused original sealed paperboard pack; intact cells/contacts; actual date/lot and acceptance specification |
 
@@ -66,6 +66,7 @@ This PCR defines the incremental retail service for one final-valid original fou
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope | store_sale | Only a demonstrably non-specialized mixed-assortment store, one homogeneous unused primary alkaline LR6 four-cell consumer SKU with intact original paperboard packaging, and walk-in handover qualify. Preserve manufacturer/order number, actual GTIN, cell model, four-cell count, lot/date, packaging full BOM and acceptance specification. VARTA4906 order04906 121414 (catalogue GTIN4008496559435) is a representative specification, not an LCI or a default mass. Brand non-exclusivity alone does not establish a non-specialized store. Exclude tyre, tube, instrument, rechargeable/lithium/other-size cell, loose-cell, repacking, installation, testing/discharge and delivery services. | un-cpc-62159; varta-catalogue-2025 |
 | route | all processes | Use an ambient naturally ventilated store route with manual handling and electrically powered lighting, fan, radiant heating and checkout only where actual site survey confirms no refrigerant circuit, combustion fuel, purchased heat, on-site charging or powered handling. These are applicability conditions, never zero assumptions. Include actual shared building circuits through electricity allocation. Any different necessary source needs a named atomic extension with protocol, calculation and aligned translation before completeness; otherwise report this route inapplicable. | jrc-retail-2013 |
 | gates | store_sale; residual | Start at supplier-delivered store receiving after original merchandise production and inbound transport, including its original consumer pack and allocated transport packaging. End at final-valid customer acceptance or the evidenced actual final fate; include storage, display, checkout, returns, failure handling, hygiene, capital and waste handover/treatment. Customer travel, use and normal post-sale disposal belong downstream. No customer bag/wrap is assumed: require actual no-additional-packaging policy and issue records, or add its measured material and fates. | jrc-retail-2013 |
@@ -876,6 +877,8 @@ Attach actual authorized collection transport/treatment once; no duplicate new-c
 | update_trigger | SKU/BOM/route/provider/asset lifetime/takeback/acceptance or source-boundary change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

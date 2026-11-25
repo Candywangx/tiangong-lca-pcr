@@ -6,7 +6,7 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# 原厂整包Eurodib HBS-250L商用切片机的实体混合店零售与送达服务
+# 原厂整包商用食品切片机实体店零售与送达服务
 
 ## 1. 范围与适用性
 
@@ -18,9 +18,9 @@ content_maturity: authored_methodology
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-other-industry-specific-machinery-and-eq-16e6a975 |
 | classification_refs | CPC 3.0 62188；group445食品加工机械的较窄子集 |
-| covered_products | 单一实际地区/版本/批次的完整原厂包装Eurodib HBS-250L商用皮带传动10英寸肉类切片机，含已装标准不锈钢刀、磨刀器、滑架/推料器、防护罩、电线、原配附件/手册及全部原包装；由非专门实体混合店零售给最终使用者，并由该零售商原封送达。 |
-| excluded_products | 其他HBS尺寸/JS或后继型号、另售Teflon刀/替换刀、二手/翻新/已开封设备、批发/转售采购、网络/邮购、专门设备店、机器调试/切片/清洗/磨刀/润滑/维修及顾客后续使用或处置。不得按额定瓦数、刀径或运输重量视为等价。 |
-| representative_product | HBS-250L商用食品制备切片机；须有实际批次铭牌、锁定/防护版本及签署完整装箱单。目录仅证明真实型号，不证明实际库存或完整BOM。 |
+| covered_products | 全新原厂整包商用皮带传动食品切片机，保留实际已装刀片、防护罩、滑架/推料器、电源连接、原配附件/手册及全部原包装；每个同质池固定实际地区、修订及BOM；由非专门实体混合店售给最终用户并由该零售商原封送达。 |
+| excluded_products | 商用皮带传动食品切片机类别外产品、单售刀片/零件、二手/翻新/开封设备、批发/转售采购、网络/邮购、专门设备店、调试/切片/清洗/磨刀/润滑/维修及顾客使用/处置；额定瓦数、刀径或运输质量均不证明背景等价。 |
+| representative_product | 原厂整包商用食品切片机实体店零售与送达服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 实体混合店陈列选购并收银付款→封装保管/储存及备货→零售商安排原封送达→具名最终用户交接及最终有效验收；保留全部失败/撤销尝试和关联退回。 |
 | market_state | 全新完整原厂包装，所涉零售路线中从未开封或上电。原厂装配/测试/润滑可能已在原上游向量内，不推断其不存在。 |
 
@@ -37,7 +37,7 @@ content_maturity: authored_methodology
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | 一台最终验收合格原厂整包HBS-250L切片机的实体店零售与送达服务 |
+| Reference product flow | 一台最终验收合格原厂整包商用食品切片机的实体店零售与送达服务 |
 | Reference flow property | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -66,8 +66,9 @@ content_maturity: authored_methodology
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
 | `b_route` | retail; failure; custody | 适用性须有实际非专门实体店混合商品陈列选购/收银证据、将现场选购付款关联到本唯一包的收据，以及最终使用而非批发/转售目的。记录store_ID、布局/陈列证据、purchase_channel、cashier_receipt_ID、customer_use及delivery_order_ID。同一品牌的网络/邮购、批发、专门店交易均排除。Costco送货页面仅为型号/渠道发现线索，不证明合格实体交易、分店库存或零售而非批发。渠道未知阻断适用，不由建模者选择。 | un621; un62188; costco-hbs |
-| `b_machine` | retail; failure; custody | 核对单一实际HBS-250L地区/版本/铭牌及完整原装BOM。已装标准刀/防护/磨刀器及原包装保持同一完整来源；另售Teflon刀/替换刀排除。所链规格将10英寸图标为HBS-250JS而手册列HBS-250L；标称厚度、尺寸/净重和奶酪用途存在冲突，不能挑选方便的目录数字解决。须不拆零售包取得实际供应方版本/配置证明。本路线排除开封、刀片调节、通电试机、食品接触、清洗、上油、磨刀和安装；实际发生时，完整性前须有实态专属已审扩展及实际食品/油/清洁剂/水/能源/废物卡。厂家操作时长不是零售用电默认、整机防水、食品用途许可或安全批准。 | eurodib-hbs; eurodib-manual; eurodib-spec |
+| `b_machine` | retail; failure; custody | 核对单一实际商用食品地区/版本/铭牌及完整原装BOM。已装标准刀/防护/磨刀器及原包装保持同一完整来源；另售Teflon刀/替换刀排除。所链规格将10英寸图标为HBS-250JS而手册列商用食品；标称厚度、尺寸/净重和奶酪用途存在冲突，不能挑选方便的目录数字解决。须不拆零售包取得实际供应方版本/配置证明。本路线排除开封、刀片调节、通电试机、食品接触、清洗、上油、磨刀和安装；实际发生时，完整性前须有实态专属已审扩展及实际食品/油/清洁剂/水/能源/废物卡。厂家操作时长不是零售用电默认、整机防水、食品用途许可或安全批准。 | eurodib-hbs; eurodib-manual; eurodib-spec |
 | `b_original` | failure; custody | 逐唯一原包j保留发运门制造/原包装向量W_j及独立实际入场运输向量I_j。真正新增原来源与期初携入来源互斥；退回/重试/再售不再取得制造。每一原来源一次分为S最终成功商品、F归本服务的失败/遗失商品、T具名后继/资产原责任方、O尚未确定/分配，逐原包S+F+T+O=1。本同质整包路线不接纳组件责任分割。零售排除S制造及I_S；独立下游GOODS系统可各加一次。W_F通过failed_original纳入，I_F通过强制运输补全纳入。供应商退回不自动产生抵扣，须签署具名T后继或明确未解O。原身份/背景缺失不能置零。 | ghg2011 |
 | `b_delivery` | retail; failure | 纳入零售商安排的全部发运、失败尝试、再投递、空载返程、实际关联顾客/供应商退货运输及内部搬运，包含成功送达。商品入场运输仅按b_original纳入F。实际路段/event_ID和生命周期阶段互斥；商品、资产/材料运输按c_transport/a_assets保留独立原责任方。包送价标签不证明活动量、阶段覆盖或分配。顾客自提不能与本送达服务互换。 | ghg2011; costco-hbs |
 | `b_support` | retail | 本记录明确为局部增量核心。完整零售服务另须实际设施/建筑/货架、搬运、收银、照明/风机/HVAC资产；设施热/冷/燃烧/制冷剂；网络/支付/收据/行政/安防；场地清洁和纸张/额外送货包装/处理。逐具名来源覆盖全部营业/关闭/空闲区间（含租赁/共用/房东服务）确定实际存在、不存在或未知。完整状态前执行固定c_transport/a_assets/c_digital/c_clean/c_material/c_species方法并补实际原子卡/协议/供应方。完整合同包仅在精确对象、组成/阶段、物理活动/分母及排除项均已核实时保留；供应方不同不证明无重叠。存在性、来源身份或范围未知均明确不完整。 | ghg2011 |
@@ -116,7 +117,7 @@ content_maturity: authored_methodology
 
 按c_pool为一个最终验收原包提供的服务，含零售商安排送达；仅付款不是产出。
 
-- 选定流: 一台最终验收合格原厂整包HBS-250L切片机的实体店零售与送达服务
+- 选定流: 一台最终验收合格原厂整包商用食品切片机的实体店零售与送达服务
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: 1 Item(s)
 - 数值来源模式: `fixed_value`
@@ -141,7 +142,7 @@ content_maturity: authored_methodology
 
 原同质完整来源一次承载W_F/N_F发运制造/包装；实际F入场独立。
 
-- 选定流: 供应商发运门的完整原厂包装HBS-250L切片机
+- 选定流: 供应商发运门的完整原厂包装商用食品切片机
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_F/Q Item(s)
 - 数值来源模式: `calculated_value`
@@ -182,7 +183,7 @@ content_maturity: authored_methodology
 
 接收方签署实际毛实物退交，不是制造抵扣或后继责任证明。
 
-- 选定流: 原封完整HBS-250L切片机退交供应商
+- 选定流: 原封完整商用食品切片机退交供应商
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_ret/Q Item(s)
 - 数值来源模式: `calculated_value`
@@ -197,7 +198,7 @@ content_maturity: authored_methodology
 
 关联实际交接的不同原ID截止状态，既非新移动也非自动废物。
 
-- 选定流: 具名外部接收方留存且无最终有效验收的原封完整HBS-250L切片机
+- 选定流: 具名外部接收方留存且无最终有效验收的原封完整商用食品切片机
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_ext/Q Item(s)
 - 数值来源模式: `calculated_value`
@@ -212,7 +213,7 @@ content_maturity: authored_methodology
 
 实际签署实物转交，有据时同一原来源转T。演示开封/操作须另路线。
 
-- 选定流: 原封完整HBS-250L切片机转交具名内部保管
+- 选定流: 原封完整商用食品切片机转交具名内部保管
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_transfer/Q Item(s)
 - 数值来源模式: `calculated_value`
@@ -229,7 +230,7 @@ content_maturity: authored_methodology
 
 仅实际原封完整包且签署接收全部实际设备/附件/包装组成，并按c_stock最终实际完整同范围处理时，逐唯一原ID一次称匹配终端运单净量；拒收/返运或仅收未处理尝试不进入该完整处理量。已开封、泄漏或拆解设备须不同实态卡/供应范围才完整。
 
-- 选定流: 由接收方接受整包处理的判废原封完整HBS-250L切片机包
+- 选定流: 由接收方接受整包处理的判废原封完整商用食品切片机包
 - 流属性/单位: 质量 / kg
 - 数量规则: W_dispatch_kg/Q kg
 - 数值来源模式: `calculated_value`
@@ -301,12 +302,14 @@ content_maturity: authored_methodology
 | dataset_role | secondary_dataset; background_dataset |
 | downstream_use | 仅实际支持补齐后的精确合格送达零售服务；GOODS+service系统另加S上游一次 |
 | allowed_use | 全部具名补全/身份/现场条件通过前，仅作为须审查的局部核心情景 |
-| excluded_use | 完整门店足迹、机器生命周期/使用、网络/批发/专门店服务、其他配置、避免产品主张或安全/合规认证 |
+| excluded_use | 完整门店足迹、机器生命周期/使用、网络/批发/专门店服务、声明类别外配置、避免产品主张或安全/合规认证 |
 | required_metadata | 全部参考限定、实际原来源/接收/渠道/阶段、单位/分母、方法/版本及完整存在/供应登记 |
 | required_quality_disclosure | 候选方法、局部核心、每一未验流/供应/量及冲突、原数据期间/不确定性、历史身份观测及科学审查状态 |
 | update_trigger | 按v_updates处理后续验收/退回/去向、原配置/BOM、供应范围、方法、寿命或边界变化 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

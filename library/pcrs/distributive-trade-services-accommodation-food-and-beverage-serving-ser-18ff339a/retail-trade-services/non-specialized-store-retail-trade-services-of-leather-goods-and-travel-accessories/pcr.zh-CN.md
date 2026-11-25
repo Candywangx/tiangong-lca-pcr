@@ -6,11 +6,11 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Longchamp L1500987001 黑色牛皮手袋的柜台零售服务
+# 牛皮手袋柜台零售服务
 
 ## 1. 范围与适用性
 
-本候选规则规定非专营店中同一原始 Longchamp Le Pliage Xtra XS 黑色手袋（型号 L1500987001）的部分增量、无现金、进店柜台零售服务。原始产品页列明牛皮、17 x 14 x 10 cm、暗银色五金、聚酰胺/聚酯再生提花内衬、拉链/按扣闭合及可拆可调肩带。该网页是规格证据，不是 LCI 或完整物料清单。供应商批次记录必须核实物种、鞣制/整理/涂层、内衬比例、线、胶、五金合金/镀层、肩带、标签/商标以及完整原始展示/运输包装 BOM；未知数量绝不能转为纯皮革质量。每个池必须事先固定一个经签认的包装配置。禁止用型号10291987001 或其他颜色/型号替代。实际门店商品组合及交易记录必须证明非专营渠道；制造商品牌网页不证明该渠道。暗银色表示颜色，不代表银材质；尺寸不能确定净重。
+本候选覆盖非专门店内保持完整供应商原包装的牛皮手袋无现金到店柜台零售部分增量服务。材质/功能类别内任何制造商、颜色、尺寸及款式均可适用，按实际同质供应商/配置/BOM分别建池。核验动物物种、鞣制/整理/涂层、内里组成、线、胶、五金合金/镀层、肩带、标签及原展示/运输包装每个组件；不得将保留的品牌手袋案例当作通用BOM，或将未知数量变为纯皮革。实际签认包装配置及匹配来源向量须分别保留，不用另一型号替代。须由实际商品组合及交易证据证明混合门店渠道；颜色名称、尺寸及厂家网页均不证明金属组成、净重或门店资格。
 
 服务从店铺接收门有证据的实物保管开始，止于最终有效的顾客验收，并修正后续验收历史。排除店铺配送、礼品包装、打印票据、修理、养护膏、防水处理、重新包装、分离零件销售及永久展示品。展示使用照片；不得默默从存货提取实物资产。适用设施必须有所有固定燃料燃烧和制冷剂（包括房东系统）均不存在的证据，采用电阻加热/自然通风。不存在情况不明阻断完整性。排除 CPC2831、291 的商品、292 的其他商品及皮革批发；本规则是62156 下的较窄候选范围，不覆盖整个叶类。
 
@@ -20,9 +20,9 @@ content_maturity: authored_methodology
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-leather-goods-and-travel-accessories |
 | classification_refs | CPC3.0:62156; narrower; Non-specialized store retail trade services, of leather goods and travel accessories |
-| covered_products | Longchamp L1500987001 黑色牛皮手袋的柜台零售服务 |
+| covered_products | 保持供应商原包装的完整牛皮手袋柜台零售服务；每个同质池固定实际整理、颜色、五金、内里及BOM。 |
 | excluded_products | 服务从店铺接收门有证据的实物保管开始，止于最终有效的顾客验收，并修正后续验收历史。排除店铺配送、礼品包装、打印票据、修理、养护膏、防水处理、重新包装、分离零件销售及永久展示品。展示使用照片；不得默默从存货提取实物资产。适用设施必须有所有固定燃料燃烧和制冷剂（包括房东系统）均不存在的证据，采用电阻加热/自然通风。不存在情况不明阻断完整性。排除 CPC2831、291 的商品、292 的其他商品及皮革批发；本规则是62156 下的较窄候选范围，不覆盖整个叶类。 |
-| representative_product | Longchamp L1500987001；黑色；牛皮；批次定义的完整原套包 |
+| representative_product | 牛皮手袋柜台零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 常温柜台接收、无现金销售、有记录退回；部分增量服务 |
 | market_state | 完整新品功能套包；受损完整退回单列 |
 
@@ -30,7 +30,7 @@ content_maturity: authored_methodology
 
 | 字段 | 值 |
 | --- | --- |
-| What | Longchamp L1500987001 黑色牛皮手袋的柜台零售服务 |
+| What | 牛皮手袋 黑色牛皮手袋的柜台零售服务 |
 | How much | 1 Item(s)；Q 为最终有效不同原始 ID 数 |
 | How well | 准确型号/BOM、完整性、顾客验收及事件可追溯 |
 | How long or cycle | 一个固定12个月池加迟退替换历史；a_reference |
@@ -39,7 +39,7 @@ content_maturity: authored_methodology
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Longchamp L1500987001 黑色牛皮手袋的柜台零售服务 |
+| 参考产品流 | 牛皮手袋 黑色牛皮手袋的柜台零售服务 |
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
@@ -70,6 +70,7 @@ content_maturity: authored_methodology
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
 | b_gate | all inventory rows | 记录原始套包 ID、接收批次、完整配置、供应商向量 ID/版本和声明门。向量 B_u 包含原商品制造、每项原包装及实际供应商至店铺各运输段，均仅一次。成功商品的顾客使用及末端处置在增量服务之外。不得假设未售商品负荷为零。 | longchamp-l1500987001; ghg-product-2011 |
 | b_custody | returned_intact; returned_damaged; handover_intact; handover_damaged; supplier_intact; supplier_damaged; discarded_pack | 仅这七个具名实物保管/废物行是实物卫星记账，不再附加另一商品生产向量。必须保留真实接收方/状态及件数或实测完整载体质量。该例外不涵盖 failed_original、counter_ac、retail_service 或任何支持/处理输入。原始套包接收量是原始接收核对记录，不是另一可表征输入。重复保管不产生另一个原始 B_u。 | ghg-product-2011 |
 | b_partial | all inventory rows | 本投影仅覆盖柜台电表运行、失败原商品责任及保管/发运。必须补齐的模块为场址电气服务及网络/支付、完整建筑/固定装置/柜台设备资本、仅用水的超细纤维布清洁以及完整废物载体运输/处理。规则 a_support、a_assets、a_clean、a_transport 固定其数量和组装方法；在补充明确原子卡并双语同步之前，这些模块仍不在本部分投影内。不得仅凭本投影宣称完整零售服务结果。 | jrc-retail-2013 |
@@ -89,11 +90,11 @@ content_maturity: authored_methodology
 
 ##### 产品流
 
-###### 店铺接收门的完整原始 L1500987001 零售套包（`failed_original`）
+###### 店铺接收门的完整原始 牛皮手袋 零售套包（`failed_original`）
 
 可表征的原始源等价输入，仅链接 F 归属 B_u 一次；实物接收仍为原始核对。
 
-- 选定流：店铺接收门的完整原始 L1500987001 零售套包
+- 选定流：店铺接收门的完整原始 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：N_F / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -119,11 +120,11 @@ content_maturity: authored_methodology
 - 采集协议：`cp_power`
 - 来源：`jrc-retail-2013`
 
-###### 顾客退回的完整且功能完好 L1500987001 零售套包（`returned_intact`）
+###### 顾客退回的完整且功能完好 牛皮手袋 零售套包（`returned_intact`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：顾客退回的完整且功能完好 L1500987001 零售套包
+- 选定流：顾客退回的完整且功能完好 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：R_i / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -134,11 +135,11 @@ content_maturity: authored_methodology
 - 采集协议：`cp_goods`
 - 来源：`longchamp-l1500987001`; `ghg-product-2011`
 
-###### 顾客退回的完整但受损 L1500987001 零售套包（`returned_damaged`）
+###### 顾客退回的完整但受损 牛皮手袋 零售套包（`returned_damaged`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：顾客退回的完整但受损 L1500987001 零售套包
+- 选定流：顾客退回的完整但受损 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：R_d / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -153,11 +154,11 @@ content_maturity: authored_methodology
 
 ##### 产品流
 
-###### Longchamp L1500987001 黑色牛皮手袋的柜台零售服务（`retail_service`）
+###### 牛皮手袋 黑色牛皮手袋的柜台零售服务（`retail_service`）
 
 参考服务输出由最终有效性决定，不用毛交付量。
 
-- 选定流：Longchamp L1500987001 黑色牛皮手袋的柜台零售服务
+- 选定流：牛皮手袋 黑色牛皮手袋的柜台零售服务
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：1 Item(s)
 - 数值来源模式：前景记录（`foreground_record`）
@@ -168,11 +169,11 @@ content_maturity: authored_methodology
 - 采集协议：`cp_goods`
 - 来源：`longchamp-l1500987001`; `ghg-product-2011`
 
-###### 交给顾客的完整且功能完好 L1500987001 零售套包（`handover_intact`）
+###### 交给顾客的完整且功能完好 牛皮手袋 零售套包（`handover_intact`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：交给顾客的完整且功能完好 L1500987001 零售套包
+- 选定流：交给顾客的完整且功能完好 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：H_i / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -183,11 +184,11 @@ content_maturity: authored_methodology
 - 采集协议：`cp_goods`
 - 来源：`longchamp-l1500987001`; `ghg-product-2011`
 
-###### 由外部顾客持有的完整但受损 L1500987001 零售套包（`handover_damaged`）
+###### 由外部顾客持有的完整但受损 牛皮手袋 零售套包（`handover_damaged`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：由外部顾客持有的完整但受损 L1500987001 零售套包
+- 选定流：由外部顾客持有的完整但受损 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：H_d / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -198,11 +199,11 @@ content_maturity: authored_methodology
 - 采集协议：`cp_goods`
 - 来源：`longchamp-l1500987001`; `ghg-product-2011`
 
-###### 退回供应商的完整且功能完好 L1500987001 零售套包（`supplier_intact`）
+###### 退回供应商的完整且功能完好 牛皮手袋 零售套包（`supplier_intact`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：退回供应商的完整且功能完好 L1500987001 零售套包
+- 选定流：退回供应商的完整且功能完好 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：T_i / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -213,11 +214,11 @@ content_maturity: authored_methodology
 - 采集协议：`cp_goods`
 - 来源：`longchamp-l1500987001`; `ghg-product-2011`
 
-###### 退回供应商的完整但受损 L1500987001 零售套包（`supplier_damaged`）
+###### 退回供应商的完整但受损 牛皮手袋 零售套包（`supplier_damaged`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：退回供应商的完整但受损 L1500987001 零售套包
+- 选定流：退回供应商的完整但受损 牛皮手袋 零售套包
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：T_d / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -230,11 +231,11 @@ content_maturity: authored_methodology
 
 ##### 废物流
 
-###### 作为废物托运的完整报废 L1500987001 零售套包（`discarded_pack`）
+###### 作为废物托运的完整报废 牛皮手袋 零售套包（`discarded_pack`）
 
 按 b_custody 实测实物卫星；接收方/状态必填；不重复原始向量。
 
-- 选定流：作为废物托运的完整报废 L1500987001 零售套包
+- 选定流：作为废物托运的完整报废 牛皮手袋 零售套包
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：W_dispatch / Q
 - 数值来源模式：前景记录（`foreground_record`）
@@ -304,6 +305,8 @@ content_maturity: authored_methodology
 | update_trigger | 迟发验收变化；原商品/包装/BOM/供应商变化；资产寿命/退役；实测记录修订 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

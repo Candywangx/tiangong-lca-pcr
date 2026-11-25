@@ -6,7 +6,7 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Non-specialized store retail service for original NIBCO NL998X8 full-port ball valves
+# Retail services for original complete full-port threaded lever-operated ball valves
 
 ## 1. Scope and Applicability
 
@@ -18,9 +18,9 @@ The declared object is an incremental physical retail service for one specified 
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-other-machinery-and-equipment-n-e-c |
 | classification_refs | CPC 3.0 62189; narrower; goods43240 |
-| covered_products | Actual single-revision unused complete NL998X8 original configuration handled intact in the eligible mixed physical store |
-| excluded_products | Other valve models/sizes/actuators/material states; generic machinery; wholesale/online/delivery; installation/testing/use and modified or dismantled goods |
-| representative_product | NIBCO NL998X8; T-FP-600A-LF; 3/4 in female NPT x female NPT; standard lever |
+| covered_products | Complete unused original full-port threaded lever-operated ball valves handled intact in the admitted mixed physical-store route; actual diameter, pressure class, materials, handle and package BOM fixed per homogeneous pool. |
+| excluded_products | Other valve functions, powered actuators, solder/press connections, generic machinery, wholesale/online/delivery, installation/testing/use and used/modified/dismantled goods. |
+| representative_product | Retail services for original complete full-port threaded lever-operated ball valves; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Actual mixed-assortment shelf choice → attended cashier/payment → physical intact pickup; receipt/return/cutoff reconciliation |
 | market_state | New complete unused valve; actual supplier original individual packaging/BOM and lot verified before complete use |
 
@@ -37,11 +37,11 @@ The declared object is an incremental physical retail service for one specified 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Retail service for one original NIBCO NL998X8 valve with final valid acceptance |
+| Reference product flow | Retail service for one original full-port threaded valve with final valid acceptance |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | actual mixed-store choice/cashier evidence; actual site/time and pool/cutoff; NL998X8 lot/revision; actual individual/master package BOM; intact unused gate and exclusions; latest valid acceptance; raw original source and S/F/T/O history; partial core and completion status; original units/denominators/provider scopes; uncertainty and unresolved identities |
+| Required qualifiers | actual mixed-store choice/cashier evidence; actual site/time and pool/cutoff; full-port threaded lot/revision; actual individual/master package BOM; intact unused gate and exclusions; latest valid acceptance; raw original source and S/F/T/O history; partial core and completion status; original units/denominators/provider scopes; uncertainty and unresolved identities |
 
 ## 4. Measurement and Unit Rules
 
@@ -66,7 +66,8 @@ The declared object is an incremental physical retail service for one specified 
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| b_route | retail; custody; residual | Only one actual lot/revision of NIBCO NL998X8, T-FP-600A-LF 3/4 in female NPT x female NPT full-port two-piece valve with standard lever is eligible. Preserve its complete original body/end cap, ball, seats, stem/packing, nuts, handle and actual individual original packaging. Record supplier BOM, lot labels and actual unit-versus-master-carton configuration; do not assume an individual factory seal or material composition from a photo. No other size, locking/extended handle, drain model NL999X8CL, solder/press valve, used or dismantled valve is equivalent. Nominal 0.660 lb, 0.30 kg, carton12 and pressure/temperature claims are identity information, never field mass, packing quantity, LCI or a compliance limit adopted here. The retained specification distinguishes chrome-plated lead-free brass ball for the 1/2–1 in group from stainless steel316 for larger sizes, with PTFE seats/packing and a plated-steel lever/stainless nut; actual lot evidence must preserve these role/state distinctions, not a pure-brass or stainless-ball proxy. | nibco-item; nibco-spec |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| b_route | retail; custody; residual | Apply to original complete unused full-port threaded lever-operated ball valves in separate actual supplier/lot/revision/diameter/material/handle/BOM strata. Preserve actual body/end cap, ball, seats, stem/packing, nuts, handle and original packaging. Record actual individual-versus-master-carton quantities; a photo does not prove a factory seal or composition. Different brands, diameters and manual handle configurations are eligible within this class with their own complete source vectors; do not treat them as burden-equivalent. Exclude solder/press, powered, used or dismantled products. The retained commercial specification illustrates material changes between size groups; nominal mass, carton counts and pressure/temperature ratings are not measured quantities, LCI or adopted compliance limits. Actual brass/plating/steel/PTFE or other component materials must follow the actual BOM and atomic extensions, not a pure-metal proxy. | nibco-item; nibco-spec |
 | b_channel | retail | Start when the actual mixed-assortment physical store takes custody of this original configuration; end at an identified customer physically taking the selected unit through an attended cashier with signed valid acceptance. Require actual dated assortment/display evidence, customer choice, cashier/payment and custody events. Online/mail-order/wholesale, delivery, installation, pressure/leak/flow testing, valve actuation demonstration, thread sealant/tape application, machining, washing, lubrication and disassembly are outside this route. Public product listings establish no actual branch stock or completed transaction. Factory manufacture/testing remains inside its original supplier source, not assumed absent. | un621; un62189 |
 | b_source | retail; custody; residual | This is an incremental retail-service core. Exclude successful-merchandise S manufacture and its inlet transport from the service; the separately declared downstream GOODS system adds their same original S sources once. Include F original merchandise manufacture through failed_original and separate actual F inlet transport under c_transport. For each actual original unit source j retain W_j for manufacture including original individual packaging at supplier dispatch, and I_j for inlet transport separately; bundled stages require evidenced separation, otherwise incomplete. For each indivisible original valve source S/F/T/O are one-hot0/1 final responsibility flags, not component-mass fractions, and sum1: S has final valid service; F is irreversible retail responsibility not carried by another goods/asset system; T has a signed named successor carrying the same W_j/I_j; O is open/unresolved responsibility. Physical supplier returns alone do not imply T or a credit. Missing/lost goods retain F or explicit O, never disappear. A transferred demonstrator retains the SAME original source in asset T; no duplicate full F or new acquisition. Repeated receipts/returns never acquire W_j/I_j again. | ghg2011 |
 | b_facility | retail | This bounded dry route requires full-period documented absence of on-site fuel combustion/backup/handling, refrigerant equipment and HVAC/purchased heat/cold over every included leased/shared/landlord-served zone. The facility manager must inventory actual equipment, owner, served area, temporary plant and service contracts during open/closed/idle/maintenance periods and sign applicable/absent/unknown. External fuel vehicles remain outside the included site gate. Unknown or actual presence blocks this route until a reviewed extension defines real species, activity, state, actual external medium and disjoint cards/protocols; an unplugged valve does not prove facility absence. |  |
@@ -103,11 +104,11 @@ Measured point-of-use retail electricity; supply technology/provider remain actu
 - Collection protocol: cp_retail
 - Sources:
 
-###### Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration (`failed_original`)
+###### Complete unused full-port threaded ball valve in its original individual retail configuration (`failed_original`)
 
 Original complete-valve manufacture/individual-packing source equivalent assigned to F, under c_goods. It excludes its separately completed inlet transport and the shared master carton.
 
-- Selected flow: Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration
+- Selected flow: Complete unused full-port threaded ball valve in its original individual retail configuration
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q
 - Value mode: calculated_value
@@ -126,11 +127,11 @@ Original complete-valve manufacture/individual-packing source equivalent assigne
 
 ##### Product flows
 
-###### Retail service for one original NIBCO NL998X8 valve with final valid acceptance (`service_output`)
+###### Retail service for one original full-port threaded valve with final valid acceptance (`service_output`)
 
 The service of final-valid physical retail acceptance, rather than the material valve production output.
 
-- Selected flow: Retail service for one original NIBCO NL998X8 valve with final valid acceptance
+- Selected flow: Retail service for one original full-port threaded valve with final valid acceptance
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: fixed_value
@@ -159,11 +160,11 @@ The service of final-valid physical retail acceptance, rather than the material 
 
 ##### Product flows
 
-###### Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration (`supplier_return`)
+###### Complete unused full-port threaded ball valve in its original individual retail configuration (`supplier_return`)
 
 Gross intact original units physically handed back to the named supplier; only custody is represented.
 
-- Selected flow: Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration
+- Selected flow: Complete unused full-port threaded ball valve in its original individual retail configuration
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_R/Q
 - Value mode: calculated_value
@@ -174,11 +175,11 @@ Gross intact original units physically handed back to the named supplier; only c
 - Collection protocol: cp_custody
 - Sources: nibco-item; nibco-spec
 
-###### Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration (`internal_transfer`)
+###### Complete unused full-port threaded ball valve in its original individual retail configuration (`internal_transfer`)
 
 Gross intact original units handed to named internal asset/other custody; source T needs separate signed acceptance.
 
-- Selected flow: Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration
+- Selected flow: Complete unused full-port threaded ball valve in its original individual retail configuration
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_T/Q
 - Value mode: calculated_value
@@ -189,11 +190,11 @@ Gross intact original units handed to named internal asset/other custody; source
 - Collection protocol: cp_custody
 - Sources: nibco-item; nibco-spec
 
-###### Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration (`external_retention`)
+###### Complete unused full-port threaded ball valve in its original individual retail configuration (`external_retention`)
 
 Cutoff stock-state satellite for intact original units already outside the store without final valid acceptance. Link original gross pickup; no new movement or automatic waste.
 
-- Selected flow: Complete unused NIBCO NL998X8 ball valve in its original individual retail configuration
+- Selected flow: Complete unused full-port threaded ball valve in its original individual retail configuration
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_X/Q
 - Value mode: calculated_value
@@ -224,11 +225,11 @@ Cutoff stock-state satellite for intact original units already outside the store
 
 ##### Waste flows
 
-###### Condemned intact NIBCO NL998X8 valve with its original individual packaging accepted for complete treatment (`intact_valve_waste`)
+###### Condemned intact full-port threaded valve with its original individual packaging accepted for complete treatment (`intact_valve_waste`)
 
 One actual whole-carrier consignment containing the complete original unit in this specified state; all materials need receiver acceptance, not a pure brass scrap proxy. Under c_stock, only the unique finally accepted and actually completely treated net carrier quantity receives the matching complete-treatment provider; unsuccessful movement attempts remain raw custody/transport records.
 
-- Selected flow: Condemned intact NIBCO NL998X8 valve with its original individual packaging accepted for complete treatment
+- Selected flow: Condemned intact full-port threaded valve with its original individual packaging accepted for complete treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_out/Q
 - Value mode: calculated_value
@@ -277,7 +278,7 @@ One actual whole-carrier consignment containing the complete original unit in th
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| q_identity | retail; custody; residual | Verify exact original NL998X8 lot/standard lever/individual package and actual 621 in-store choice/cashier route, not online listing or another near-name model. Unknown BOM, opened/reworked goods or unresolved source state blocks completeness. | cp_retail; supplier lot/BOM, display and signed physical transaction |
+| q_identity | retail; custody; residual | Verify exact original full-port threaded lot/standard lever/individual package and actual 621 in-store choice/cashier route, not online listing or another near-name model. Unknown BOM, opened/reworked goods or unresolved source state blocks completeness. | cp_retail; supplier lot/BOM, display and signed physical transaction |
 | q_measurement | all inventory rows | Retain raw quantity/unit/denominator, calibrated method, coverage, owner/pool/version and uncertainty. Investigate signed residuals and missing/unknown fields; never zero-fill, clamp or fabricate defaults. No empirically verified range is supplied; sensitivity scenarios must remain labelled and cannot satisfy a missing actual source. | Instrument checks, raw source ledger, variance investigation and explicit incomplete register |
 | q_complete | retail | Dataset producer must reconcile every named b_completion source with actual homogeneous cards/protocols/provider identities and exact stage overlap, including all zero-sale/failed/idle activity. Manager signatures establish actual absence only for their covered place/time. Historical official identities are not fresh observations; scientific review, actual measurements and provider bindings remain separate. | Complete occurrence/absence/unknown matrix, source scope contracts and c_merge exchange audit |
 
@@ -303,6 +304,8 @@ One actual whole-carrier consignment containing the complete original unit in th
 | update_trigger | Actual configuration/route change, late acceptance/source/lifetime revision, new provider scope or verified identity |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Use |
 | --- | --- | --- | --- |

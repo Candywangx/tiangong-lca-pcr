@@ -6,7 +6,7 @@ language: en-US
 sync_with: pcr.zh-CN.md
 ---
 
-# Dedicated manual-cabinet retail service for one factory-sealed 20-count filtered cigarette pack
+# Manual-cabinet retail services for factory-sealed 20-count filtered-cigarette packs
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ This is a partial incremental retail-service module for a staffed counter inside
 | classification_refs | CPC3.0:62128; narrower |
 | covered_products | One specified sealed20-count factory-made filtered combustible-cigarette SKU and its dedicated manual security-enclosure service only |
 | excluded_products | Other tobacco/ENDS products, altered pack/SKU, manufacturing, consumer smoking/disposal, and known common retail modules until separately completed |
-| representative_product | One actual brand/market/filter/20-count board-foil-film consumer pack, original receiving BOM required |
+| representative_product | Manual-cabinet retail services for factory-sealed 20-count filtered-cigarette packs; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Non-specialized store: receiving→hand restock→ambient manual keyed enclosure→staffed intact-pack final handover; dry dusting; no power in enclosure |
 | market_state | Finished sealed consumer packs held ambient, with actual condition/specification acceptance; no on-site cigarette opening/combustion |
 
@@ -66,6 +66,7 @@ This is a partial incremental retail-service module for a staffed counter inside
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope | all | Use the declared narrow SKU, intact consumer-pack and manual-cabinet route only. Cigars, loose/rolling tobacco, smokeless tobacco, heated-tobacco consumables, electronic cigarettes, nicotine liquids, vending, self-service access, online delivery, refrigerated/humidified storage and retailer processing are outside this applicability. An observed excluded route cannot be treated as zero; stop applicability and create reviewed bilingual named cards/protocols for a separately disclosed extension before use. | un-cpc62128; pmi-manufacture; fda-retail |
 | gates | all | Start at retailer acceptance of identified sealed packs at the store receiving dock, after inbound supplier transport; record supplier acceptance/rejection and actual timestamps. Supplier production, consumer packaging and inbound carriage are outside the incremental module but fixed to the same receiving gate in calc_background. Include dedicated cabinet occupation, all retrieval/return/restocking and dry dusting, cabinet/set acquisition and actual replacement locks, dedicated residuals and terminal asset treatment. End service after physical handover, intact-pack/specification acceptance and final adjudication of linked returns. Failed external retention has no service output. | ghg-product-2011; fda-retail |
 | partial_completion | all | This module excludes common premises and fixed wiring, general lighting, HVAC, common security/IT, checkout equipment/payment/receipt paper, common cleaning/water/sewer, shared handling equipment, staff travel and retailer-controlled transport after the receiving gate. These are known completion modules, not insignificant or zero. cp_completion and calc_completion fix their collection, ownership, drivers, asset life and one-time aggregation to this same N and cohort. A total retail result requires every listed module either actually quantified with named atomic cards or evidenced absent at this site; partial-module output alone must retain the partial label. Consumer smoking and post-accepted-sale disposal remain outside even the completed retail boundary and must be separate consumer modules. | ghg-product-2011 |
@@ -407,6 +408,8 @@ sum_j(m_end_j*f_final_jc)/N kg using cp_assets and calc_assets; actual complete 
 | update_trigger | Changed SKU/pack/BOM/market/route/gate; actual powered equipment or cleaning/material/transport route; provider identity/scope; lifetime forecast/retirement; new/late returns/failures; source/translation/projection changes |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

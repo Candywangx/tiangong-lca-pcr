@@ -8,7 +8,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Sealed M4 Mac mini 16GB/256GB original-package retail service in a mixed-assortment store — partial core
+# Retail services for factory-sealed complete compact desktop-computer packages
 
 ## 1. Scope and Applicability
 
@@ -20,9 +20,9 @@ This is a narrow, configuration-specific partial incremental retail-service meth
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-computers-and-packaged-software |
 | classification_refs | CPC 3.0 62184; narrower; goods452 hardware subset |
-| covered_products | b_scope complete sealed M4 Mac mini retail service |
-| excluded_products | Other configurations; M4 Pro; build-to-order; hardware components; standalone software/licenses/downloads; opened/activated/demonstration service; customer use/end-of-life; full-business claim without completion |
-| representative_product | Apple Mac mini (2024), silver M4 10CPU/10GPU 16GB/256GB Gigabit Ethernet US original package; actual part/lot verified |
+| covered_products | Complete new factory-sealed compact desktop-computer packages in the b_scope/b_channel physical mixed-store route. |
+| excluded_products | Components and incomplete kits; standalone software/licences/downloads; store assembly; opened, activated, demonstrated or used goods; customer use/end-of-life; full-business claims without completion. |
+| representative_product | Retail services for factory-sealed complete compact desktop-computer packages; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receiving -> sealed holding -> checkout -> documented onsite handover/acceptance, plus residual fate; b_channel |
 | market_state | New unused factory-sealed complete original mini+cord+retail package; contained-cell state from lot/BOM, no assumed cell absence |
 
@@ -39,7 +39,7 @@ This is a narrow, configuration-specific partial incremental retail-service meth
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Accepted sealed M4 Mac mini 16GB/256GB original-package retail service |
+| Reference product flow | Accepted sealed compact desktop computer original-package retail service |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -68,8 +68,9 @@ This is a narrow, configuration-specific partial incremental retail-service meth
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| b_scope | receive; custody; checkout; residual | Apply only to US-market silver Mac mini (2024), M4 10-core CPU/10-core GPU, 16GB unified memory, 256GB SSD, Gigabit Ethernet, original complete retail package containing Mac mini and 1.8m power cord. Record actual manufacturer part number, hardware revision, serial, region and lot. Internal power supply, board, RAM, SSD, enclosure, contained cells if any, cord, inserts, labels, inks, adhesives and closures remain in the original supplier BOM. Require new unused factory-sealed status at customer acceptance; no separate adapter, display, keyboard, mouse or extra software entitlement is inferred. Factory macOS/app provisioning is not a second retail output. | apple-mini-spec |
-| b_channel | receive; checkout | Start at store receiving custody gate, end at documented physical customer handover and valid acceptance, retaining later corrections. Actual site must sell a mixed non-specialized assortment, with dated floor plan, assortment and warehouse transaction evidence for this configuration. The retained Costco menu demonstrates mixed product categories only; it establishes neither this Mac configuration nor local availability. Actual named-branch stock and onsite handover for this configuration require field evidence. This is a narrower hardware route within CPC3.0 62184 goods452, not the whole452/478 leaf. Classification acceptance remains governed by external mapping and ADR records. | un-cpc62184; costco-mixed-mini |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| b_scope | receive; custody; checkout; residual | Apply to new complete compact desktop-computer packages, unused and factory-sealed at customer acceptance, in the declared mixed-store channel. Any manufacturer, processor architecture, memory/storage capacity, colour or regional supply configuration is eligible within this physical product family, using separate homogeneous BOM/source strata. Record actual part number, hardware/firmware revision, serial, region and lot. Verify the actual processor, board, memory, storage, enclosure, power supply or adapter, cord, contained cells, accessories, inserts, labels, inks, adhesives and closures as one complete original supplier BOM; no component is inferred present or absent from the specimen. Preinstalled operating-system/application provisioning is not a second retail output. Additional actual components require specific cards where they are separately represented; never duplicate an included supplier stage. | apple-mini-spec |
+| b_channel | receive; checkout | Start at store receiving custody gate, end at documented physical customer handover and valid acceptance, retaining later corrections. Actual site must sell a mixed non-specialized assortment, with dated floor plan, assortment and warehouse transaction evidence for this configuration. The retained Costco menu demonstrates mixed product categories only; it establishes neither the actual desktop-computer configuration nor local availability. Actual named-branch stock and onsite handover for this configuration require field evidence. This is a narrower hardware route within CPC3.0 62184 goods452, not the whole452/478 leaf. Classification acceptance remains governed by external mapping and ADR records. | un-cpc62184; costco-mixed-mini |
 | b_core | all inventory rows | The partial incremental core includes failed original-package production responsibility failed_pack, isolated store operational electricity store_ac, retail output retail_service, the explicitly named physical custody satellites supplier_sealed/external_sealed/external_opened, and actual terminal carriers kit_waste/carton_waste/wrap_waste. Only the three named Product custody satellites are non-characterized physical accounting outputs. Waste carriers require complete treatment. Original receipts and gross customer movement are raw QA, not additional characterized inputs. Failed_pack is a characterized Product input and is never excluded as custody. Complete service requires b_completion and a_completion; partial results must retain the partial label. |  |
 | b_goods | failed_pack; retail_service | For every original homogeneous supplier package vector V_s at manufacturer dispatch, establish exclusive count-equivalent ownership S_s+F_s+T_s+O_s=N_source_s. S is finally valid accepted goods, F is confirmed lost/condemned/nonservice-retained goods whose original background remains charged to this service pool, T transfers original responsibility to a named continuing owner (including supplier-return owner or demonstrator asset), O is unresolved/open stock. Whole-package mode requires all constituents of each original unit to share that ownership. failed_pack=N_F/Q links the complete original manufacturing vector including original packaging, cord and factory provisioning exactly once. S production is excluded from this retail service; a distinct downstream GOODS system adds sum(S_s*V_s)/Q once. T and O cannot be relabelled zero burden. Missing supplier vector/BOM blocks quantified completeness. | apple-mini-spec |
 | b_components | failed_pack; kit_waste; external_opened | Opening, diagnostic use, charging, software download/activation, replacement, repacking, resale as used or component separation cannot count as sealed output. Record actual changed state and actual contained-cell condition; neither maximum155W nor CPU/memory/storage specifications establish measured electricity or complete LCI. Whole original damaged kit may remain one actual waste carrier only when receiver signs acceptance for the full actual constituents/state including contained cells and packaging with matching treatment boundary. If constituents acquire different S/F/T/O owners, first add specific component Product inputs using verified original supplier component vectors and actual component quantities/units; remove those exact vectors from failed_pack. Never split environmental vectors by arbitrary mass/count shares or duplicate an adapter/cord/cell already included. | apple-mini-spec |
@@ -93,11 +94,11 @@ This is a narrow, configuration-specific partial incremental retail-service meth
 
 ##### Product flows
 
-###### Original complete M4 Mac mini 16GB/256GB US retail package (`failed_pack`)
+###### Original complete compact desktop-computer retail package of the actual declared region (`failed_pack`)
 
 Source-equivalent original complete supplier package input for the F-owned production burden, including cord and original retail packaging; not a second physical receipt. Only one homogeneous original configuration/vector is permitted. Each original source line keeps its actual matching vector; if model/BOM/manufacturing scope differs, add separate named input cards before quantified use rather than multiplying the aggregate count by one heterogeneous vector.
 
-- Selected flow: Original complete M4 Mac mini 16GB/256GB US retail package
+- Selected flow: Original complete compact desktop-computer retail package of the actual declared region
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -135,11 +136,11 @@ Measured supply to the actual store receiving, holding and checkout circuits; th
 
 ##### Product flows
 
-###### Accepted sealed M4 Mac mini 16GB/256GB original-package retail service (`retail_service`)
+###### Accepted sealed compact desktop computer original-package retail service (`retail_service`)
 
 The service output is a finally valid acceptance of one distinct sealed complete configuration; actual series ownership and subsequent revocation determine Q. No computing performance or software license is delivered as a separate reference flow.
 
-- Selected flow: Accepted sealed M4 Mac mini 16GB/256GB original-package retail service
+- Selected flow: Accepted sealed compact desktop computer original-package retail service
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Fixed value (`fixed_value`)
@@ -156,11 +157,11 @@ The service output is a finally valid acceptance of one distinct sealed complete
 
 ##### Product flows
 
-###### Sealed complete M4 Mac mini 16GB/256GB package handed to supplier (`supplier_sealed`)
+###### Sealed complete compact desktop computer package handed to supplier (`supplier_sealed`)
 
 Actual intact supplier-return handoff across store gate, independently evidenced from continuing T background responsibility. This physical satellite has no second manufacturing characterization.
 
-- Selected flow: Sealed complete M4 Mac mini 16GB/256GB package handed to supplier
+- Selected flow: Sealed complete compact desktop computer package handed to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: physical_handover_count/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -171,11 +172,11 @@ Actual intact supplier-return handoff across store gate, independently evidenced
 - Collection protocol: `cp_fates`
 - Sources:
 
-###### Sealed complete M4 Mac mini 16GB/256GB package retained without valid acceptance (`external_sealed`)
+###### Sealed complete compact desktop computer package retained without valid acceptance (`external_sealed`)
 
 Actual recipient retains a complete sealed package despite failed/revoked service; recipient/state are measured, not automatically a waste stream. Background remains F or signed T under c_source.
 
-- Selected flow: Sealed complete M4 Mac mini 16GB/256GB package retained without valid acceptance
+- Selected flow: Sealed complete compact desktop computer package retained without valid acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: sealed_retained_count/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -186,11 +187,11 @@ Actual recipient retains a complete sealed package despite failed/revoked servic
 - Collection protocol: `cp_fates`
 - Sources:
 
-###### Opened complete M4 Mac mini 16GB/256GB kit retained without valid acceptance (`external_opened`)
+###### Opened complete compact desktop computer kit retained without valid acceptance (`external_opened`)
 
 Actual opened complete kit retains original mini, cord and packaging with named recipient and recorded condition/use history; it cannot count as sealed output. Component loss/separation needs b_components extension.
 
-- Selected flow: Opened complete M4 Mac mini 16GB/256GB kit retained without valid acceptance
+- Selected flow: Opened complete compact desktop computer kit retained without valid acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: opened_complete_retained_count/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -203,11 +204,11 @@ Actual opened complete kit retains original mini, cord and packaging with named 
 
 ##### Waste flows
 
-###### Discarded complete M4 Mac mini original kit with cord and retail packaging (`kit_waste`)
+###### Discarded complete compact desktop computer original kit with cord and retail packaging (`kit_waste`)
 
 Directly weighed actual complete terminal carrier, including actual contained cells and damaged/opened state. Admit only signed receiver acceptance and matching whole-carrier treatment; no second component waste/manufacturing flow for the same kit.
 
-- Selected flow: Discarded complete M4 Mac mini original kit with cord and retail packaging
+- Selected flow: Discarded complete compact desktop computer original kit with cord and retail packaging
 - Flow property / unit: Mass / kg
 - Amount rule: D_kit/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -315,6 +316,8 @@ Actual separately dispatched polyethylene stretch-film carrier from inbound hand
 | update_trigger | Configuration/BOM/site/route/provider change; late return/revocation; asset-life revision/retirement; original evidence or identity change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

@@ -6,7 +6,7 @@ product_category_identity:
   classification_refs: "CPC 3.0 62111; narrower"
   covered_products: "Incremental non-specialized physical-store retail service for dry whole food wheat, accepted in sealed supplier packs and handed to the customer in those packs; stratify food grade, wheat species, pack specification and store route."
   excluded_products: "Seed for sowing, feed, oilseeds, oleaginous fruits, other cereal species, flour, cooked grain, bulk dispensing, repacking, processing, chilled storage, online fulfilment, wholesale and independent delivery."
-  representative_product: "Retail service for 1 kg net whole food wheat delivered to the buyer; this is a mass-throughput service, not a wheat production product."
+  representative_product: "Retail services for sealed dry whole food wheat; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum."
   production_route: "Store receipt and acceptance; sealed ambient holding and display; manual handling; checkout and buyer handover. No grain opening or fumigation. Store utilities are metered electricity and water; any additional actual route requires completed exchange expansion before dataset use."
   market_state: "Completed buyer handover of intact, accepted supplier-packed food wheat, preserving the declared moisture and quality specification. Retailer retains responsibility for its rejects, stock losses and returns."
 functional_unit:
@@ -17,6 +17,10 @@ functional_unit:
   reference_flow_link: "retail_service"
 system_boundary:
   rules:
+    - rule_id: b_product_family
+      applies_to: "all inventory rows"
+      rule: "This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval."
+      source_ids: []
     - rule_id: b_scope
       applies_to: "retail"
       rule: "Only the declared sealed dry whole-food-wheat physical-store route is covered. Keep each quality/specification stratum separate; neither the shared CPC label nor equal kg makes food wheat equivalent to seeds, feed or oilseeds. The classification association is narrower."
@@ -651,21 +655,21 @@ data_sources:
     used_for: "Retail energy, store monitoring and waste-scope context; no transfer of benchmark numbers, performance claims or legal compliance"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:b6974a154338736b05985ac8f1d86eb41fc43dbdfe1a278dd32dcc40789402e0"
+  source_sha256: "sha256:b66ce9843c09fb1131f7a03a7df102ffb6560a034293c90cdb7dad65a5100147"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4040"
+    - unit_id: "normative_4049"
       family: "system_boundary"
       span:
         start:
-          offset: 4040
+          offset: 4049
           line: 51
           column: 1
         end:
-          offset: 10820
-          line: 74
+          offset: 12060
+          line: 75
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Sealed wheat physically arriving at retailer receipt and acceptance; record supplier-delivery scope |\n| starting_condition_role | Incremental retail foreground at receipt gate; lost-goods upstream background separately attributed |\n| product_classification_scope | CPC 3.0 62111; narrower |\n| recursive_input_rule | Same-category retail service inputs require verified non-overlapping gates; never recursively add the same store service |\n| upstream_dataset_requirement | Match actual supply region, period, technology and gate; separately match lost packaged wheat, electricity, complete assets and waste treatment scopes |\n| disclosure | Disclose service/goods composition, loss responsibility, shared attribution, asset cohorts, treatment destinations and all unknowns |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| b_scope | retail | Only the declared sealed dry whole-food-wheat physical-store route is covered. Keep each quality/specification stratum separate; neither the shared CPC label nor equal kg makes food wheat equivalent to seeds, feed or oilseeds. The classification association is narrower. | un-cpc3-62111 |\n| b_gates | retail | Start at retailer receipt, including unloading/acceptance effort, quarantine, sealed storage/display, checkout, cleaning, stock administration, buyer handover, returns attributable to that service, and downstream treatment of retailer waste. End at buyer handover for qualified goods and verified treatment boundaries for waste. Supplier delivery up to receipt is outside foreground and is in the matched goods background; exclude buyer travel, consumption and buyer packaging disposal. | jrc-retail-2013 |\n| b_goods_loss | wheat_loss_input | Qualified goods production and their original packs remain in the downstream goods system. Within this service, include only L/Q kg of packaged wheat background for irreversible retailer losses L, at the same delivered-receipt gate, including the lost share of original packaging and supplier transport. Do not include all incoming goods here. A downstream product-plus-service result adds 1 kg of the matched delivered-receipt goods background plus this service, so lost goods production is included once. Supplier returns with documented recovery remain transferred stock; unrecovered or unknown disposition is not assumed recovered. |  |\n| b_stock | retail | Keep merchandise ledgers separate from inventory exchanges. Record opening stock, supplier receipts, customer returns, closing stock, supplier returns, gross buyer handovers, damaged grain and moisture change by lot. Internal moves are not new receipts, sales or outputs. Distinguish physical customer returns R from financial refunds/discounts. Q = H - R - F, where H is physical buyer-handover mass, R is physically returned mass reversing that cohort handover, and F is final disqualified handover mass retained by the buyer without a physical return. A price concession with unchanged acceptance does not change physical mass or Q. Trace all reversals to original handover IDs. Failed customer-retained wheat is not automatically retailer grain waste: record its actual recipient, status and final disposition, include its lost-goods background in L, and add the specific terminal transfer or treatment card under b_expansion before completeness. Do not count F as qualified service. Resale enters only the new handover after reversal of the original. Positive Q is required for normalization; retain every Q=0 burden in an unnormalized report or the prospectively declared same-configuration 12-month pool, never delete it or select a pool retrospectively to improve the result. |  |\n| b_capital | building_input,pallet_input,till_input,lighting_input,broom_input | Include manufacture, maintenance and terminal treatment of the complete building shell and fixed infrastructure, wooden pallets, complete tills, complete LED luminaires and complete brooms used by the service. Use manufacture-to-installed/commissioned-gate asset backgrounds, including construction/installation and upstream delivery, but excluding operation, maintenance and terminal treatment. The building package excludes every separately modelled till, pallet, broom and LED luminaire whether fixed or movable. A background containing terminal treatment must have that module verifiably removed before use with the paired terminal card; otherwise it is incompatible and blocks completion. Complete devices include their components; do not add their steel, electronics, lamps or wood again. Use asset cohorts and documented service-life allocation in c_capital, with paired terminal flows for that same cohort; no second charge for actual period retirement. Include refurbishment and maintenance replacements using separate exact material/device cards when they are not already included in a verified complete-asset background. Ownership versus lease does not remove responsibility; a verified leased supply may replace, never overlap, the owned asset scope. |  |\n| b_expansion | all inventory rows | Inspect equipment, contracts, invoices, safety sheets, maintenance and waste records for each reporting period. Any actual fuel, heat, refrigeration/refrigerant, chemical cleaner, pest-control agent, powered transport, additional packaging, information/telecom service, consumable, asset, maintenance part, direct dust/emission or waste not represented by a card blocks completeness until a specific card with direction/type, state, property/unit, measurement protocol, quantity, attribution and treatment/receiving medium has been added to both languages and resynced. No generic other-material/other-service row or omission is allowed. Evidence-confirmed absence is not_applicable; unknown is unresolved and cannot be zero. Opening bags, grain treatment, repacking, cooking or buyer delivery falls outside this route and requires a separate applicability decision. |  |\n| b_waste | grain_waste,paper_waste,film_waste,wastewater | Follow each actual waste carrier to its recipient and treatment. Grain waste excludes separately measured bag/liner mass; paper and polyethylene wastes contain only those actual streams. A contaminated or inseparable composite requires its own identified waste card rather than fictional pure-material splitting. Sewage is a waste output to treatment, never an elementary emission to water. Do not add constituent emissions to the untreated carrier; treatment datasets own their emissions unless that treatment is explicitly expanded. Sold recoverable goods remain goods only with quality, acceptance and destination evidence; no automatic recycling/substitution credit. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Sealed wheat physically arriving at retailer receipt and acceptance; record supplier-delivery scope |\n| starting_condition_role | Incremental retail foreground at receipt gate; lost-goods upstream background separately attributed |\n| product_classification_scope | CPC 3.0 62111; narrower |\n| recursive_input_rule | Same-category retail service inputs require verified non-overlapping gates; never recursively add the same store service |\n| upstream_dataset_requirement | Match actual supply region, period, technology and gate; separately match lost packaged wheat, electricity, complete assets and waste treatment scopes |\n| disclosure | Disclose service/goods composition, loss responsibility, shared attribution, asset cohorts, treatment destinations and all unknowns |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |\n| b_scope | retail | Only the declared sealed dry whole-food-wheat physical-store route is covered. Keep each quality/specification stratum separate; neither the shared CPC label nor equal kg makes food wheat equivalent to seeds, feed or oilseeds. The classification association is narrower. | un-cpc3-62111 |\n| b_gates | retail | Start at retailer receipt, including unloading/acceptance effort, quarantine, sealed storage/display, checkout, cleaning, stock administration, buyer handover, returns attributable to that service, and downstream treatment of retailer waste. End at buyer handover for qualified goods and verified treatment boundaries for waste. Supplier delivery up to receipt is outside foreground and is in the matched goods background; exclude buyer travel, consumption and buyer packaging disposal. | jrc-retail-2013 |\n| b_goods_loss | wheat_loss_input | Qualified goods production and their original packs remain in the downstream goods system. Within this service, include only L/Q kg of packaged wheat background for irreversible retailer losses L, at the same delivered-receipt gate, including the lost share of original packaging and supplier transport. Do not include all incoming goods here. A downstream product-plus-service result adds 1 kg of the matched delivered-receipt goods background plus this service, so lost goods production is included once. Supplier returns with documented recovery remain transferred stock; unrecovered or unknown disposition is not assumed recovered. |  |\n| b_stock | retail | Keep merchandise ledgers separate from inventory exchanges. Record opening stock, supplier receipts, customer returns, closing stock, supplier returns, gross buyer handovers, damaged grain and moisture change by lot. Internal moves are not new receipts, sales or outputs. Distinguish physical customer returns R from financial refunds/discounts. Q = H - R - F, where H is physical buyer-handover mass, R is physically returned mass reversing that cohort handover, and F is final disqualified handover mass retained by the buyer without a physical return. A price concession with unchanged acceptance does not change physical mass or Q. Trace all reversals to original handover IDs. Failed customer-retained wheat is not automatically retailer grain waste: record its actual recipient, status and final disposition, include its lost-goods background in L, and add the specific terminal transfer or treatment card under b_expansion before completeness. Do not count F as qualified service. Resale enters only the new handover after reversal of the original. Positive Q is required for normalization; retain every Q=0 burden in an unnormalized report or the prospectively declared same-configuration 12-month pool, never delete it or select a pool retrospectively to improve the result. |  |\n| b_capital | building_input,pallet_input,till_input,lighting_input,broom_input | Include manufacture, maintenance and terminal treatment of the complete building shell and fixed infrastructure, wooden pallets, complete tills, complete LED luminaires and complete brooms used by the service. Use manufacture-to-installed/commissioned-gate asset backgrounds, including construction/installation and upstream delivery, but excluding operation, maintenance and terminal treatment. The building package excludes every separately modelled till, pallet, broom and LED luminaire whether fixed or movable. A background containing terminal treatment must have that module verifiably removed before use with the paired terminal card; otherwise it is incompatible and blocks completion. Complete devices include their components; do not add their steel, electronics, lamps or wood again. Use asset cohorts and documented service-life allocation in c_capital, with paired terminal flows for that same cohort; no second charge for actual period retirement. Include refurbishment and maintenance replacements using separate exact material/device cards when they are not already included in a verified complete-asset background. Ownership versus lease does not remove responsibility; a verified leased supply may replace, never overlap, the owned asset scope. |  |\n| b_expansion | all inventory rows | Inspect equipment, contracts, invoices, safety sheets, maintenance and waste records for each reporting period. Any actual fuel, heat, refrigeration/refrigerant, chemical cleaner, pest-control agent, powered transport, additional packaging, information/telecom service, consumable, asset, maintenance part, direct dust/emission or waste not represented by a card blocks completeness until a specific card with direction/type, state, property/unit, measurement protocol, quantity, attribution and treatment/receiving medium has been added to both languages and resynced. No generic other-material/other-service row or omission is allowed. Evidence-confirmed absence is not_applicable; unknown is unresolved and cannot be zero. Opening bags, grain treatment, repacking, cooking or buyer delivery falls outside this route and requires a separate applicability decision. |  |\n| b_waste | grain_waste,paper_waste,film_waste,wastewater | Follow each actual waste carrier to its recipient and treatment. Grain waste excludes separately measured bag/liner mass; paper and polyethylene wastes contain only those actual streams. A contaminated or inseparable composite requires its own identified waste card rather than fictional pure-material splitting. Sewage is a waste output to treatment, never an elementary emission to water. Do not add constituent emissions to the untreated carrier; treatment datasets own their emissions unless that treatment is explicitly expanded. Sold recoverable goods remain goods only with quality, acceptance and destination evidence; no automatic recycling/substitution credit. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -674,19 +678,19 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 348
+              offset: 328
               line: 8
-              column: 70
-          text: "# Non-specialized physical-store retail service for sealed food wheat"
+              column: 50
+          text: "# Retail services for sealed dry whole food wheat"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 4040
+              offset: 4049
               line: 51
               column: 1
             end:
-              offset: 4061
+              offset: 4070
               line: 51
               column: 22
           text: "## 5. System Boundary"
@@ -702,16 +706,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_26891"
+    - unit_id: "normative_28131"
       family: "allocation"
       span:
         start:
-          offset: 26891
-          line: 366
+          offset: 28131
+          line: 367
           column: 1
         end:
-          offset: 28673
-          line: 373
+          offset: 29913
+          line: 374
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_subdivision | all inventory rows | First meter or record the actual task and subdivide dedicated use. Allocate each remaining shared end use using its determining physical driver: measured equipment power-time for electricity; occupied floor-area-time for building and general lighting; pallet position-time for pallets; checkout handling time for till; cleaned area-time for water/broom. Determine driver shares over all products using that end use, including other categories, with shares summing to one. Reconcile all shares to the total meter/asset pool before dividing by Q. Include idle, closed and no-sale intervals in each end-use pool. Allocate building-related common/base-load energy and circulation/office floor pools using measured occupied department floor-area-time across all categories; allocate equipment idle provision using its same full-pool causal user shares, including failed-service/return handling. Zero annual driver or an unassignable common pool remains unresolved with the full burden retained, never discarded or divided by an invented driver. Do not allocate the complete store solely over wheat sales or multiply a driver share twice. |  |\n| a_unresolved | all inventory rows | If a causal driver or full shared-use denominator is missing, collect a time-and-motion/submeter study covering operating and idle periods and all users; until then retain unresolved attribution and block a complete dataset. Do not default to turnover, purchase value, equal shares or zero. No co-product allocation or negative burden is introduced for rejects; disposal costs or recovery revenue are disclosed separately from physical quantities. |  |\n\n"
       headings:
@@ -722,20 +726,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 348
+              offset: 328
               line: 8
-              column: 70
-          text: "# Non-specialized physical-store retail service for sealed food wheat"
+              column: 50
+          text: "# Retail services for sealed dry whole food wheat"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 26891
-              line: 366
+              offset: 28131
+              line: 367
               column: 1
             end:
-              offset: 26931
-              line: 366
+              offset: 28171
+              line: 367
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -750,16 +754,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43920"
+    - unit_id: "normative_45160"
       family: "validation"
       span:
         start:
-          offset: 43920
-          line: 405
+          offset: 45160
+          line: 406
           column: 1
         end:
-          offset: 45162
-          line: 413
+          offset: 46402
+          line: 414
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | retail_service | Require Q > 0, one linked output of 1 kg mass-throughput retail service, complete required qualifiers and consistent per-reference denominators in both languages. The service must never resolve to a wheat commodity UUID. |  |\n| v_responsibility | wheat_loss_input,grain_waste | Reconcile cp_stock, loss makeup L/Q, packaging and recipient records; demonstrate that downstream goods background at 1 kg plus service covers qualified and lost goods once. Unknown supplier-return recovery or later returns prevents a final claim until corrected. No missing production burden or duplicate whole-receipt charge is allowed. |  |\n| v_complete | all inventory rows | Pass only after every applicable exchange, upstream gate, shared allocation, asset cohort, treatment route and conditional expansion under b_expansion is measured or explicitly evidenced; verify all row/protocol/rule links and source hashes after sync. A schema/fingerprint pass or the atomic/localized marker is not scientific, translation or publication approval. Absent processes require positive absence evidence; unresolved scope is incomplete. |  |\n\n"
       headings:
@@ -770,20 +774,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 348
+              offset: 328
               line: 8
-              column: 70
-          text: "# Non-specialized physical-store retail service for sealed food wheat"
+              column: 50
+          text: "# Retail services for sealed dry whole food wheat"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 43920
-              line: 405
+              offset: 45160
+              line: 406
               column: 1
             end:
-              offset: 43942
-              line: 405
+              offset: 45182
+              line: 406
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -800,209 +804,222 @@ normative_context:
           markdown: "---\n"
   bindings:
     - pointer: "/system_boundary/rules/0"
+      rule_id: "b_product_family"
+      identity_kind: "explicit"
+      unit_id: "normative_4049"
+      source_span:
+        start:
+          offset: 5008
+          line: 66
+          column: 1
+        end:
+          offset: 6238
+          line: 66
+          column: 1231
+    - pointer: "/system_boundary/rules/1"
       rule_id: "b_scope"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 4999
-          line: 66
+          offset: 6239
+          line: 67
           column: 1
         end:
-          offset: 5308
-          line: 66
+          offset: 6548
+          line: 67
           column: 310
-    - pointer: "/system_boundary/rules/1"
+    - pointer: "/system_boundary/rules/2"
       rule_id: "b_gates"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 5309
-          line: 67
+          offset: 6549
+          line: 68
           column: 1
         end:
-          offset: 5836
-          line: 67
+          offset: 7076
+          line: 68
           column: 528
-    - pointer: "/system_boundary/rules/2"
+    - pointer: "/system_boundary/rules/3"
       rule_id: "b_goods_loss"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 5837
-          line: 68
+          offset: 7077
+          line: 69
           column: 1
         end:
-          offset: 6513
-          line: 68
+          offset: 7753
+          line: 69
           column: 677
-    - pointer: "/system_boundary/rules/3"
+    - pointer: "/system_boundary/rules/4"
       rule_id: "b_stock"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 6514
-          line: 69
+          offset: 7754
+          line: 70
           column: 1
         end:
-          offset: 7823
-          line: 69
+          offset: 9063
+          line: 70
           column: 1310
-    - pointer: "/system_boundary/rules/4"
+    - pointer: "/system_boundary/rules/5"
       rule_id: "b_capital"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 7824
-          line: 70
+          offset: 9064
+          line: 71
           column: 1
         end:
-          offset: 9173
-          line: 70
+          offset: 10413
+          line: 71
           column: 1350
-    - pointer: "/system_boundary/rules/5"
+    - pointer: "/system_boundary/rules/6"
       rule_id: "b_expansion"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 9174
-          line: 71
+          offset: 10414
+          line: 72
           column: 1
         end:
-          offset: 10082
-          line: 71
+          offset: 11322
+          line: 72
           column: 909
-    - pointer: "/system_boundary/rules/6"
+    - pointer: "/system_boundary/rules/7"
       rule_id: "b_waste"
       identity_kind: "explicit"
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 10083
-          line: 72
+          offset: 11323
+          line: 73
           column: 1
         end:
-          offset: 10818
-          line: 72
+          offset: 12058
+          line: 73
           column: 736
     - pointer: "/allocation_rules/0"
       rule_id: "a_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_26891"
+      unit_id: "normative_28131"
       source_span:
         start:
-          offset: 27004
-          line: 370
+          offset: 28244
+          line: 371
           column: 1
         end:
-          offset: 28180
-          line: 370
+          offset: 29420
+          line: 371
           column: 1177
     - pointer: "/allocation_rules/1"
       rule_id: "a_unresolved"
       identity_kind: "explicit"
-      unit_id: "normative_26891"
+      unit_id: "normative_28131"
       source_span:
         start:
-          offset: 28181
-          line: 371
+          offset: 29421
+          line: 372
           column: 1
         end:
-          offset: 28671
-          line: 371
+          offset: 29911
+          line: 372
           column: 491
     - pointer: "/validation_rules/0"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_43920"
+      unit_id: "normative_45160"
       source_span:
         start:
-          offset: 44015
-          line: 409
+          offset: 45255
+          line: 410
           column: 1
         end:
-          offset: 44273
-          line: 409
+          offset: 45513
+          line: 410
           column: 259
     - pointer: "/validation_rules/1"
       rule_id: "v_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_43920"
+      unit_id: "normative_45160"
       source_span:
         start:
-          offset: 44274
-          line: 410
+          offset: 45514
+          line: 411
           column: 1
         end:
-          offset: 44669
-          line: 410
+          offset: 45909
+          line: 411
           column: 396
     - pointer: "/validation_rules/2"
       rule_id: "v_complete"
       identity_kind: "explicit"
-      unit_id: "normative_43920"
+      unit_id: "normative_45160"
       source_span:
         start:
-          offset: 44670
-          line: 411
+          offset: 45910
+          line: 412
           column: 1
         end:
-          offset: 45160
-          line: 411
+          offset: 46400
+          line: 412
           column: 491
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 4040
+          offset: 4049
           line: 51
           column: 1
         end:
-          offset: 4061
+          offset: 4070
           line: 51
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4040"
+      unit_id: "normative_4049"
       source_span:
         start:
-          offset: 4089
+          offset: 4098
           line: 55
           column: 1
         end:
-          offset: 4926
+          offset: 4935
           line: 62
           column: 149
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_26891"
+      unit_id: "normative_28131"
       source_span:
         start:
-          offset: 26891
-          line: 366
+          offset: 28131
+          line: 367
           column: 1
         end:
-          offset: 26931
-          line: 366
+          offset: 28171
+          line: 367
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43920"
+      unit_id: "normative_45160"
       source_span:
         start:
-          offset: 43920
-          line: 405
+          offset: 45160
+          line: 406
           column: 1
         end:
-          offset: 43942
-          line: 405
+          offset: 45182
+          line: 406
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1011,5 +1028,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:b6974a154338736b05985ac8f1d86eb41fc43dbdfe1a278dd32dcc40789402e0"
-  generated_content_sha256: "sha256:67a142cd7fb7ee320a54c3ac0f1d83c7b3783b25885b81774ac8286dfd1f250d"
+    sha256: "sha256:b66ce9843c09fb1131f7a03a7df102ffb6560a034293c90cdb7dad65a5100147"
+  generated_content_sha256: "sha256:3f943f565a24689cc6089f6f0d4fb3570f251d0a3d4c410d920bfb792d56091e"

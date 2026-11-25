@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# In-store retail service for sealed vacuum-packed chilled boneless pork tenderloin
+# Retail services for supplier-sealed vacuum-packed chilled boneless pork tenderloin
 
 ## 1. Scope and Applicability
 
@@ -19,7 +19,7 @@ This candidate methodology specifies the incremental retail service for one homo
 | classification_refs | CPC 3.0 62123: Non-specialized store retail trade services, of meat, poultry and game; narrower proposed relationship; official note includes goods of group 211. |
 | covered_products | Incremental in-store retail service for one declared SKU of intact vacuum PA/PE packed raw chilled boneless pork tenderloin, customer carryout. |
 | excluded_products | Other species/cuts; minced, cured or cooked meat; bone-in meat; open counter meat; absorbent-pad packs; frozen/thawed goods; slaughter/primary chilling; repacking; ice; retailer bags; delivery. |
-| representative_product | In-store retail service for sealed vacuum-packed chilled boneless pork tenderloin |
+| representative_product | Retail services for supplier-sealed vacuum-packed chilled boneless pork tenderloin; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receipt of already chilled sealed packs; R290 closed-cabinet hold/display; electric checkout and customer carryout; fate and hygiene; complete asset accounting. |
 | market_state | Raw chilled never-frozen boneless pork tenderloin, intact vacuum PA/PE pouch; net wet contents include retained purge and exclude dry package/outer carton. |
 
@@ -65,6 +65,7 @@ This candidate methodology specifies the incremental retail service for one homo
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_route | all | Only one prospectively declared SKU configuration: chilled never-frozen raw boneless pork tenderloin in intact vacuum PA/PE pouches, no retailer repacking, cutting, cooking, added ice, carrier bags or delivery. Record species, cut, supplier, pouch construction/tare, pack size, temperature acceptance specification and actual time-temperature history. A failed specification is not qualified service. Changed species, frozen route, open meat, absorbent pads or added packaging require a separately authored and checked configuration before use. | un-cpc62123; fao-cold02; fao-cold04 |
 | gates | all | Foreground starts at physical receipt of already chilled packed goods at the store door and ends at qualified customer carryout or documented terminal fate. Cover receipt, storage/display, checkout, refusals/returns, cleaning, utility provision, refrigerant and waste handling plus all six named asset classes. Include shared staff sanitation, office and closed/idle/failure periods. Customer travel/use is excluded and disclosed; no retailer vehicle route occurs in this configuration. | jrc-retail2013; ghg-product2011 |
 | goods_coupling | failed_goods_background | Keep the original-gate responsibility of finally successful merchandise outside this incremental service, including its original primary/transit packaging and inbound transport. Downstream full product aggregation adds B_s/Q original-gate kg per actual finally accepted kg Q, never a default 1 kg/kg. This service includes B_f/Q only; open B_open and evidenced successor B_t retain their traceable owners and cannot be dropped. Assign each whole original pack to one exclusive final responsibility class; failed-pack descendants share that one parent background and do not receive separate original manufacture. Receipt-equivalent closure is independent of physical endpoint mass. Supplier returns retain original ownership until evidenced successor responsibility, including reverse-route responsibility. External unqualified retention F has recipient, physical state, destination and original-background owner; it is not automatic retailer waste. | ghg-product2011 |
@@ -701,6 +702,8 @@ Actual separately drained compressor mineral oil / Q kg; during-life removal use
 | update_trigger | SKU/pack/state/temperature acceptance changes, route or refrigerant change, asset lifetime revision, late return/fate correction or improved provider evidence. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

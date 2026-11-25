@@ -7,11 +7,11 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental mixed-store custody and checkout service for sealed NDC 50580-378-06 acetaminophen packs
+# Custody and checkout retail services for factory-sealed acetaminophen tablet product packages
 
 ## 1. Scope and Applicability
 
-This PCR defines an explicitly partial service module for one original boxed100-caplet TYLENOL EXTRA STRENGTH pack, NDC50580-378-06, in an actual mixed-assortment physical store. It is a method for custody, traceable qualified handover, source responsibility and measured failed intact packs, not a medicine production or use recommendation. The product label establishes real formulation/package/storage distinctions; it supplies no actual LCI. Pharmaceutical lot/expiry/recall and seal-dependent acceptance require this scope-specific method rather than a noun substitution in a general retail rule. Other retail PCRs for food, tools or packaging do not establish equivalence for original pharmaceutical source vectors or returned-pack eligibility.
+This PCR defines an explicitly partial service module for finished acetaminophen tablet bottles in complete original sealed retail cartons, with actual strength/count/configuration fixed separately per homogeneous pool, in an actual mixed-assortment physical store. It is a method for custody, traceable qualified handover, source responsibility and measured failed intact packs, not a medicine production or use recommendation. The product label establishes real formulation/package/storage distinctions; it supplies no actual LCI. Pharmaceutical lot/expiry/recall and seal-dependent acceptance require this scope-specific method rather than a noun substitution in a general retail rule. Other retail PCRs for food, tools or packaging do not establish equivalence for original pharmaceutical source vectors or returned-pack eligibility.
 
 ## 2. Product Category Identity
 
@@ -19,9 +19,9 @@ This PCR defines an explicitly partial service module for one original boxed100-
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-pharmaceutical-products |
 | classification_refs | CPC3.0:62173; Non-specialized store retail trade services, of pharmaceutical products; narrower subset of group352-related services |
-| covered_products | Manual ambient custody/checkout of the exact intact unopened NDC50580-378-06 retail configuration; expiry/recall quarantine only while complete original carrier remains intact |
-| excluded_products | Other NDCs, APIs, blister/pouch/bulk/loose or opened forms, sterile/injectable/liquid/cold-chain goods; dispensing, clinical/prescription service, pharmacy-specialized channels, online/delivery; successful-goods upstream and consumer stages |
-| representative_product | Kenvue NDC50580-378-06: one original carton with plastic bottle of100 film-coated acetaminophen caplets, nominal500mg ingredient per caplet, actual lot/BOM/mass separately verified |
+| covered_products | Manual ambient custody/checkout of intact unopened finished acetaminophen tablet bottles in complete original retail cartons; actual strength, count, label/product code, lot, formulation and seal configuration are fixed separately per homogeneous pool. Expiry/recall quarantine is included only while the complete original carrier remains intact. |
+| excluded_products | APIs, combination-active products, blister/pouch/bulk/loose or opened forms, sterile/injectable/liquid/cold-chain goods; dispensing, clinical/prescription services, specialist pharmacies, online/delivery; successful-goods upstream and consumer stages. |
+| representative_product | Custody and checkout retail services for factory-sealed acetaminophen tablet product packages; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Mixed-store receipt → seal/lot/storage/expiry verification → ambient shelf or segregated quarantine → manual counter/POS acceptance or actual supplier/waste handover; full support completion mandatory for complete retail result |
 | market_state | Finished solid formulation in original unopened carton/bottle/foil seal; documented lot and remaining expiry, no medicinal-suitability inference |
 
@@ -38,11 +38,11 @@ This PCR defines an explicitly partial service module for one original boxed100-
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Mixed-store custody and checkout service for one sealed NDC 50580-378-06 original pack |
+| Reference product flow | Mixed-store custody and checkout service for one sealed acetaminophen tablet retail package |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | actual mixed-store channel; NDC50580-378-06; actual supplier/lot/configuration/BOM/source-vector version; original_pack_id; intact carton/bottle/foil seal; actual storage and expiry/recall state; receiving gate and inbound boundary; pool/cutoff/Q; final acceptance version; S/F/T/O original responsibility; partial-module exclusions and completion status |
+| Required qualifiers | actual mixed-store channel; acetaminophen tablet retail pack; actual supplier/lot/configuration/BOM/source-vector version; original_pack_id; intact carton/bottle/foil seal; actual storage and expiry/recall state; receiving gate and inbound boundary; pool/cutoff/Q; final acceptance version; S/F/T/O original responsibility; partial-module exclusions and completion status |
 
 Declare every qualifier in dataset metadata, process notes or reference-flow description. Missing qualifiers make the reference incomplete. Reference service flow UUID is unresolved; support property/unit UUIDs do not bind its identity.
 
@@ -60,7 +60,7 @@ Declare every qualifier in dataset metadata, process notes or reference-flow des
 
 | Field | Value |
 | --- | --- |
-| declared_starting_condition | Actual delivered intact finished NDC50580-378-06 packs at the store receiving gate, source/lot/BOM and inbound scope identified |
+| declared_starting_condition | Actual delivered intact finished acetaminophen tablet retail pack packs at the store receiving gate, source/lot/BOM and inbound scope identified |
 | starting_condition_role | Declared service gate; raw custody events retained separately from F background input |
 | product_classification_scope | Narrow actual intact ambient mixed-store service subset of CPC3.0:62173, not all pharmaceutical retail |
 | recursive_input_rule | Do not recurse service flow into itself. Only explicit gross_handover and supplier_handover satellites are uncharacterized. failed_pack requires original F supplier vector including receiving-gate inbound; completion consumes disjoint real source vectors |
@@ -69,7 +69,8 @@ Declare every qualifier in dataset metadata, process notes or reference-flow des
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | all inventory rows | Apply only to actual non-specialized physical stores with mixed merchandise, manual ambient receipt/shelf/quarantine/counter handover of exactly NDC50580-378-06. One pool contains one supplier-evidenced homogeneous complete configuration and source-vector version. The package is finished solid formulation, never raw API. No opening, tablet counting, dispensing, compounding, prescription review, clinical advice, online order or delivery is included. Actual storage and carton/foil seal records must match the specific label and lot; label context does not approve a medicine for use. Different NDCs, even100-count variants, require separate applicability review. | un-cpc3-62173; dailymed-tylenol-37806 |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | all inventory rows | Apply to actual mixed-assortment non-specialized physical stores and manual ambient receipt/shelf/quarantine/counter handover of original sealed finished acetaminophen tablet bottles in complete retail cartons. Any brand and product code within that family is eligible; separate supplier, formulation, strength, tablet count, lot and complete package/source-vector version per pool. This is finished solid formulation, never raw API or a combination-active product. No opening, counting, dispensing, compounding, prescription review, clinical advice, online order or delivery is included. Verify actual storage and seal requirements against the actual label and lot; neither this PCR nor the example label approves use of a medicine. A different product code requires its own data matching, not exclusion by brand. | un-cpc3-62173; dailymed-tylenol-37806 |
 | partial_scope | all inventory rows | This is an explicitly partial incremental custody/checkout module. It includes core_ac and original failure background through failed_pack, plus measured physical satellite outputs gross_handover and supplier_handover and actual sealed pharmaceutical waste dispatch sealed_waste. Only gross_handover and supplier_handover are non-characterized custody satellites. Actual original receipts and physical returns are raw QA events. failed_pack is a characterized Product input, never excluded as a satellite. Successful merchandise production S is outside this service, and consumer use/travel/end-of-life is outside. No complete-business result is permitted until completion_gate and completion_sum pass. | ghg-product-2011 |
 | lot_gate | service_out; failed_pack; gross_handover; supplier_handover; sealed_waste | Assign immutable original_pack_id, source_id, lot, expiry, actual NDC/carton/bottle/seal configuration, receiving date and original source vector to each pack. Read actual label and supplier lot/BOM; original tablets plus excipients/coating, bottle body/closure/liner/foil/label/adhesive/carton and actual included inserts form the complete source. Nominal100 count or500mg cannot substitute measured original complete pack mass, contents mass, packaging BOM or receiving background. A whole-pack supplier vector is valid only for its full identical object. Component manufacturing vectors are an exclusive alternative requiring supplier-specific quantities and conserved original IDs, never mass fractions of a whole environmental vector. | dailymed-tylenol-37806 |
 | state_gate | service_out; gross_handover; supplier_handover; sealed_waste | Record actual unopened carton and inner foil seal, visible damage, expiry, recall notice and temperature history at every receipt/release/return/quarantine event. Final service requires documented valid handover acceptance for this actual pack; re-release of a return requires independently recorded eligibility and authorized decision, never presumed from a refund or intact appearance. Recall, expiry or other invalidation can revoke acceptance without a physical return. A purely financial adjustment with valid acceptance does not revoke it. Never-opened intact expired/recalled packs may enter the specified waste card only under actual receiver acceptance; broken/opened/wet/contaminated packs or loose tablets require a state-specific atomic extension, bilingual sync and new matching receiver/provider evidence before completeness. | dailymed-tylenol-37806 |
@@ -94,11 +95,11 @@ Declare every qualifier in dataset metadata, process notes or reference-flow des
 
 ##### Product flows
 
-###### NDC 50580-378-06 acetaminophen caplets in the sealed original plastic bottle and carton, at receiving gate (`failed_pack`)
+###### finished acetaminophen tablets in the sealed original plastic bottle and carton, at receiving gate (`failed_pack`)
 
 Original failure manufacturing plus actual inbound responsibility at the declared receiving gate. Actual complete configuration/provider vector and N_F remain foreground requirements.
 
-- Selected flow: NDC 50580-378-06 acetaminophen caplets in the sealed original plastic bottle and carton, at receiving gate
+- Selected flow: finished acetaminophen tablets in the sealed original plastic bottle and carton, at receiving gate
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F / Q
 - Value mode: `calculated_value`
@@ -128,11 +129,11 @@ Actual custody/checkout circuits including mains logger only; completion electri
 
 ##### Product flows
 
-###### Mixed-store custody and checkout service for one sealed NDC 50580-378-06 original pack (`service_out`)
+###### Mixed-store custody and checkout service for one sealed acetaminophen tablet retail package (`service_out`)
 
 Reference service for one distinct final-valid pack ID, including its attributable failed/idle effort under the prospective pool.
 
-- Selected flow: Mixed-store custody and checkout service for one sealed NDC 50580-378-06 original pack
+- Selected flow: Mixed-store custody and checkout service for one sealed acetaminophen tablet retail package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -143,11 +144,11 @@ Reference service for one distinct final-valid pack ID, including its attributab
 - Collection protocol: cp_goods
 - Sources: un-cpc3-62173; dailymed-tylenol-37806
 
-###### Intact sealed NDC 50580-378-06 original pack physically handed to customer (`gross_handover`)
+###### Intact sealed acetaminophen tablet retail package physically handed to customer (`gross_handover`)
 
 Physical customer custody handovers remain separate from the corrected service and source background ledgers. An original pack can have several physical handovers but at most one final-valid service.
 
-- Selected flow: Intact sealed NDC 50580-378-06 original pack physically handed to customer
+- Selected flow: Intact sealed acetaminophen tablet retail package physically handed to customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_gross_customer_handover / Q
 - Value mode: `calculated_value`
@@ -158,11 +159,11 @@ Physical customer custody handovers remain separate from the corrected service a
 - Collection protocol: cp_goods
 - Sources: dailymed-tylenol-37806
 
-###### Intact sealed NDC 50580-378-06 original pack physically returned to supplier (`supplier_handover`)
+###### Intact sealed acetaminophen tablet retail package physically returned to supplier (`supplier_handover`)
 
 Conditional only on actual intact supplier return with matching commercial/non-waste receiving state. If actual waste, use a matching waste extension rather than this product satellite.
 
-- Selected flow: Intact sealed NDC 50580-378-06 original pack physically returned to supplier
+- Selected flow: Intact sealed acetaminophen tablet retail package physically returned to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_supplier_handover / Q
 - Value mode: `calculated_value`
@@ -181,11 +182,11 @@ Conditional only on actual intact supplier return with matching commercial/non-w
 
 ##### Waste flows
 
-###### Intact unopened NDC 50580-378-06 pharmaceutical waste in original bottle and carton (`sealed_waste`)
+###### Intact unopened acetaminophen tablet retail pack pharmaceutical waste in original bottle and carton (`sealed_waste`)
 
 Conditional actual sealed expiry/recall quarantine dispatch with signed receiver state/constituent/treatment acceptance. Provider binding and actual mass are unresolved until site evidence; do not infer hazardous classification or disposal route.
 
-- Selected flow: Intact unopened NDC 50580-378-06 pharmaceutical waste in original bottle and carton
+- Selected flow: Intact unopened acetaminophen tablet retail pack pharmaceutical waste in original bottle and carton
 - Flow property / unit: Mass / kg
 - Amount rule: W_dispatch_kg / Q
 - Value mode: `calculated_value`
@@ -265,6 +266,8 @@ This process holds the completion obligation and cp_completion intake. No invent
 | update_trigger | Label/SKU/formulation/pack/BOM/lot state, channel, storage/seal/recall acceptance, late events, supplier vectors, module scope, asset exposure/lifetime/retirement or provider attribution changes |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | source_id | Title | Type | Reference | Use |
 | --- | --- | --- | --- | --- |

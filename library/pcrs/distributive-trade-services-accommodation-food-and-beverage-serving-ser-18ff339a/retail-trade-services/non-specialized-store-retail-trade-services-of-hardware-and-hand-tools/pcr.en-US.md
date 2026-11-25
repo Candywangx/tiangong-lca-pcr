@@ -7,7 +7,7 @@ content_maturity: authored_methodology
 translation_status: canonical
 ---
 
-# Mixed-assortment store counter retail service for one factory-packed BAHCO 2101G-180 manual side cutter
+# Counter retail services for original-pack manual side-cutting pliers
 
 ## 1. Scope and Applicability
 
@@ -19,9 +19,9 @@ This methodology defines a narrow incremental retail service for one evidenced c
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-hardware-and-hand-tools |
 | classification_refs | CPC 3.0:62165; narrower subset of hand tools in 4292; not machine-tools 442 |
-| covered_products | Retail service for one complete new BAHCO 2101G-180 manual side cutter, EAN 7314150106493,180mm, black anti-corrosion finish, ERGO handle, original unopened homogeneous factory retail package; verify actual lot and full packaging configuration. |
-| excluded_products | Other models/IP/IPD variants, separate jaws/grips/springs, mixed kits, powered tools, machine-tools, installation, sharpening, repair, demonstrations, customer use, non-store orders and delivery. Opened, used, contaminated, dismantled or incomplete packages require a separately authored state-specific extension before completeness; never discard their existing cohort records. |
-| representative_product | One whole 2101G-180 tool and its actual original factory package, not 230 g of generic steel. Catalogue mass and cutting capacities are nominal specifications, not field quantities, material fractions, compliance limits or supplier LCI. |
+| covered_products | Complete new manual side-cutting pliers in original unopened factory retail packages; actual length, finish, handle, supplier lot and full package BOM verified separately per homogeneous pool. |
+| excluded_products | Separate jaws, grips or springs; mixed kits; powered tools; machine-tools; installation, sharpening, repair, demonstration, customer use, non-store orders and delivery. Opened, used, contaminated, dismantled or incomplete packages require specific state extensions before completeness, retaining all original cohort records. |
+| representative_product | Counter retail services for original-pack manual side-cutting pliers; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Physical counter purchase and customer collection in a non-specialized mixed-assortment store; retain assortment evidence. Selling multiple brands alone does not establish non-specialized retail. No retailer unpacking or repacking, added carry bag, printed receipt or tool actuation in the core route. |
 | market_state | Complete new dry solid manual tool in its unopened original packaging. Steel frame, joint, return-spring function and composite handles remain one real complete tool; catalogue series descriptions require lot/model confirmation, not invented mass percentages. |
 
@@ -38,7 +38,7 @@ This methodology defines a narrow incremental retail service for one evidenced c
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter retail service for one factory-packed BAHCO 2101G-180 manual side cutter |
+| Reference product flow | Counter retail service for one factory-packed manual side-cutting pliers |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -70,6 +70,7 @@ All required qualifiers must appear in dataset metadata, process notes, referenc
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | route_gate | all inventory rows | Admit only an evidenced mixed-assortment store with sealed homogeneous original packages and the declared counter route. Record invoices, photographs, assortment, package mass/BOM and configuration revision. Actual additional wrapping, printing, cleaning, powered demonstration, delivery, combustion or refrigerant equipment cannot be assumed absent: cp_modules determines coverage and adds mandatory specific cards/protocols under complete_modules. Unknown presence blocks dataset completeness. If a stock package becomes a permanent demonstrator, transfer the SAME original V_s to a named internal asset T, never charge full F plus a new asset manufacture; author the actual opened tool/packaging states and module before completeness. | un-cpc3-62165; bahco-pliers-catalogue; jrc-retail-2013 |
 | source_ownership | failed_original; retail_service | For every original package source s fix N_s and the matching whole supplier vector V_s at the same receiving gate. Partition source-equivalent whole IDs into final-valid S_s, service-responsible failed F_s, named continuing transfer T_s and unresolved/open O_s, with N_s=S_s+F_s+T_s+O_s. No arbitrary material mass shares of environmental vectors. This route keeps the complete package intact, so one original ID has one whole final responsibility. N_F=sum_s F_s. Failed unreturned customer-held goods and confirmed missing goods remain F with evidenced responsibility; unknown missing residual remains O and blocks closure. Supplier returns are T only with named continuing responsibility, never an automatic credit. | ghg-product-2011 |
 | acceptance_custody | retail_service; failed_pack_waste; rejected_external; supplier_handoff | Keep goods-only stock and held-waste stock separate. G_close=G_open+receipts+physical_customer_returns-ALL_gross_customer_handovers-physical_supplier_handoffs-internal_asset_transfers-condemnations-confirmed_goods_missing+signed_unresolved_goods_residual. ALL handovers already include accepted and never-accepted exits; do not subtract a second unaccepted set. Condemnation moves goods into held waste; W_close=W_open+condemnations-waste_dispatch-confirmed_waste_missing+signed_unresolved_waste_residual. No second goods exit on waste dispatch. Q=count distinct original IDs with final-valid acceptance; revocations without return reclassify the old acceptance, not a new movement or a second subtraction from Q. A monetary refund/discount does not revoke acceptance by itself. | ghg-product-2011 |
@@ -93,13 +94,13 @@ All required qualifiers must appear in dataset metadata, process notes, referenc
 
 ##### Product flows
 
-###### Complete new factory-packed BAHCO 2101G-180 manual side cutter at receiving gate (`failed_original`)
+###### Complete new factory-packed manual side-cutting pliers at receiving gate (`failed_original`)
 
 Actual whole original-source Product input for failed goods under source_ownership; retain complete tool and its actual factory package.
 
 n_failed=N_F/Q; failed_background; cp_goods. Match each actual whole source vector; this Product input carries F manufacture and receiving-gate transport once.
 
-- Selected flow: Complete new factory-packed BAHCO 2101G-180 manual side cutter at receiving gate
+- Selected flow: Complete new factory-packed manual side-cutting pliers at receiving gate
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F / Q
 - Value mode: `calculated_value`
@@ -131,13 +132,13 @@ Metered attributable AC energy crosses the counter service boundary, with disjoi
 
 ##### Product flows
 
-###### Counter retail service for one factory-packed BAHCO 2101G-180 manual side cutter (`retail_service`)
+###### Counter retail service for one factory-packed manual side-cutting pliers (`retail_service`)
 
 The single reference Product output is the final accepted service; keep physical custody in its separate ledger.
 
 1 Item(s); final_service; cp_goods. The reference is the finally accepted retail service, not merchandise production, gross handover or nominal kg of tool.
 
-- Selected flow: Counter retail service for one factory-packed BAHCO 2101G-180 manual side cutter
+- Selected flow: Counter retail service for one factory-packed manual side-cutting pliers
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `fixed_value`
@@ -154,13 +155,13 @@ The single reference Product output is the final accepted service; keep physical
 
 ##### Product flows
 
-###### Unopened complete nonconforming factory-packed BAHCO 2101G-180 retained by an external recipient (`rejected_external`)
+###### Unopened complete nonconforming factory-packed manual side-cutting pliers retained by an external recipient (`rejected_external`)
 
 Record actual unopened nonconforming package transfer/retention by an external recipient without implying retailer waste.
 
 N_external_rejected/Q Item(s); terminal_carriers; cp_terminal. Physical non-characterized satellite only; original F/T/O responsibility remains in source_ownership, no waste or avoided-product credit inferred.
 
-- Selected flow: Unopened complete nonconforming factory-packed BAHCO 2101G-180 retained by an external recipient
+- Selected flow: Unopened complete nonconforming factory-packed manual side-cutting pliers retained by an external recipient
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_external_rejected / Q
 - Value mode: `calculated_value`
@@ -171,13 +172,13 @@ N_external_rejected/Q Item(s); terminal_carriers; cp_terminal. Physical non-char
 - Collection protocol: `cp_terminal`
 - Sources: `ghg-product-2011`
 
-###### Unopened complete factory-packed BAHCO 2101G-180 physically handed back to supplier (`supplier_handoff`)
+###### Unopened complete factory-packed manual side-cutting pliers physically handed back to supplier (`supplier_handoff`)
 
 Record actual complete-package supplier handoff independently of source ownership or acceptance status.
 
 N_supplier_handoff/Q Item(s); terminal_carriers; cp_terminal. Satellite custody transfer, not automatic T or avoided manufacture; record actual recipient and continuing source responsibility.
 
-- Selected flow: Unopened complete factory-packed BAHCO 2101G-180 physically handed back to supplier
+- Selected flow: Unopened complete factory-packed manual side-cutting pliers physically handed back to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_supplier_handoff / Q
 - Value mode: `calculated_value`
@@ -190,13 +191,13 @@ N_supplier_handoff/Q Item(s); terminal_carriers; cp_terminal. Satellite custody 
 
 ##### Waste flows
 
-###### Whole unopened failed factory-packed BAHCO 2101G-180 manual side cutter for contracted treatment (`failed_pack_waste`)
+###### Whole unopened failed factory-packed manual side-cutting pliers for contracted treatment (`failed_pack_waste`)
 
 Record the measured actual whole failed package sent to a receiver contractually accepting its complete constituents and state.
 
 sum dispatch_net_kg/Q; terminal_carriers; cp_terminal. Actual dry whole mixed carrier with complete tool and actual original package; receiver must accept this exact composition/state and full treatment boundary.
 
-- Selected flow: Whole unopened failed factory-packed BAHCO 2101G-180 manual side cutter for contracted treatment
+- Selected flow: Whole unopened failed factory-packed manual side-cutting pliers for contracted treatment
 - Flow property / unit: Mass / kg
 - Amount rule: sum dispatch_net_kg / Q
 - Value mode: `calculated_value`
@@ -272,6 +273,8 @@ sum dispatch_net_kg/Q; terminal_carriers; cp_terminal. Actual dry whole mixed ca
 | update_trigger | Any actual configuration, package, route, acceptance/fate, provider boundary, lifetime/BOM, driver or source revision; replace all affected prior versions. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Counter retail service for paired leather-upper rubber-sole casual shoes in a non-specialized store
+# Counter retail services for paired casual shoes with leather uppers and rubber outsoles
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ This service PCR covers the declared shoe construction and in-store route only. 
 | classification_refs | CPC 3.0 62134; narrower subset of non-specialized store retail trade services, of footwear |
 | covered_products | One declared homogeneous SKU, colour, size system, size and width of new matched left/right low casual shoes, leather upper and rubber outer sole; actual animal species, tanning/coating, lining, sock, laces, adhesive and sole compound declared from supplier BOM. Leather is not proof of bovine origin. |
 | excluded_products | Sports, protective, orthopaedic, skating, asbestos or second-hand footwear; sandals, boots, parts, loose insoles, mixed sizes and mixed materials; online delivery, repair, polishing, manufacture and consumer wearing. |
-| representative_product | A supplier-verified matched pair of one leather-upper rubber-sole casual-shoe SKU. Historical Clarks Stratton Way 26102520/26102519 illustrates this construction only; it supplies no current SKU, animal species, mass or BOM default. |
+| representative_product | Counter retail services for paired casual shoes with leather uppers and rubber outsoles; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Ambient all-electric non-specialized store with electric resistance fan heating and natural ventilation, no mechanical cooling or refrigerant circuit; manual stock handling and disposable cellulose floor wipes; receiving, pair/size inspection, dry storage/display, supervised indoor try-on, counter checkout and handover, return inspection and disjoint residual dispatch. No shoe treatment or on-site manufacture. Personal employee meals, sanitation and commuting, and consumer travel/use are outside this incremental service; disclose this exclusion without claiming a whole-store or shoe life-cycle inventory. |
 | market_state | New dry finished shoes; indoor-tried but still saleable status explicitly inspected. Original pair box and stuffing remain a receiving-background component until physically discarded; replacement store packaging is separate. |
 
@@ -68,6 +68,7 @@ This service PCR covers the declared shoe construction and in-store route only. 
 
 | rule_id | Rule | Applies to | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. | all inventory rows |  |
 | b_scope | The declared construction and route are eligibility gates. Only original matched pairs qualify: retain original_pair_id and left/right_source_id. Re-pairing shoes from different original pairs is outside this route and blocks completeness until a separately reviewed extension allocates each original shoe background and all leftover singles. Same-label shoes with different animal species, sole compounds, sizes or widths form separate homogeneous pools; no sport/part/service expansion from classification breadth. | all | src_un; src_clarks; src_label |
 | b_operations | Include receipt inspection, storage, fitting bench/mirror, try-on resources, lighting, checkout/POS, electric resistance fan heating, cleaning, packaging, returns and actual residual transfers. The all-electric route excludes combustion only with signed site inspection and utility evidence; all observed outgoing supplier/internal handover and waste-carrier backgrounds must declare whether pickup/haul and treatment are included. Verify provider actual loaded and empty routes, distance, gross load and idle time; an empty route is not zero activity because t*km=0. Missing provider transport scope or additional observed substances/transport require atomic cards, single-process protocols and bilingual sync before completeness. | all | src_retail |
 | b_assets | Each asset card is one evidenced complete-unit lifecycle provision package: manufacturing, installation, non-operational maintenance/replacements and terminal treatment for the specified asset only. Exclude its operating electricity, cleaning and merchandise from that package. Building shell excludes all separately listed fixtures, bench, mirror, POS, luminaires and fan-heater. Maintenance replacements mean parts only, never a complete successor asset: a whole replacement gets its own new serial and lifetime history, with no duplicate package-contained part exchange. No package is presumed available: missing signed scope/model, lifecycle mass/carrier evidence or missing actual equipment blocks completed dataset use. | assets | src_retail; src_ghg |
@@ -713,6 +714,8 @@ c_transport computes actual raw idle activity / Q; include only actual observed 
 | update_trigger | SKU/species/size/construction, route/provider/cleaner/packaging, return gate, meter scope, asset/revised lifetime or source change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

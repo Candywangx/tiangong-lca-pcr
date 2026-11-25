@@ -6,7 +6,7 @@ product_category_identity:
   classification_refs: "CPC 3.0 62121; narrower"
   covered_products: "In-store net-mass retail service for fresh whole dessert apples of one declared cultivar/grade/state and the scope_route configuration"
   excluded_products: "Other fruits/nuts/vegetables; preserved/prepared products; produce production as reference; processing and delivery outside scope_route"
-  representative_product: "One cultivar-specific whole fresh dessert apple service pool, such as Golden Delicious, not a generic produce basket"
+  representative_product: "Retail services for fresh whole dessert apples; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum."
   production_route: "Receiving, sorting, ordinary-air R134a refrigeration, ambient display, optional LDPE self-bagging, checkout, reverse handling and residual management"
   market_state: "Fresh whole raw edible apples, cultivar and quality contract fixed; actual wet state recorded at receiving and acceptance"
 functional_unit:
@@ -17,6 +17,10 @@ functional_unit:
   reference_flow_link: "retail_service"
 system_boundary:
   rules:
+    - rule_id: b_product_family
+      applies_to: "all inventory rows"
+      rule: "This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval."
+      source_ids: []
     - rule_id: scope_route
       applies_to: "all processes"
       rule: "Apply only to in-store non-specialized retail of fresh whole dessert apples (Malus domestica), one declared cultivar/grade/receiving state per dataset, using ordinary-air R134a refrigerated holding and ambient display, sold by calibrated net mass. Exclude frozen, dried, canned, juiced, cut, washed/waxed on site, mixed-cultivar composite references, controlled atmosphere, home delivery and other produce. Customer self-bagging in specified LDPE bags is included."
@@ -1376,21 +1380,21 @@ data_sources:
     used_for: "General subdivision and physical-allocation hierarchy only; pool, wet-state background ownership, return correction and asset ledger are explicit PCR design decisions, not source-mandated factors"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:1c62b043510756ee1f28f1773b1955e371da1375bf79ed354f80511e6ad2f1ed"
+  source_sha256: "sha256:4bceda4f7d39f463362bab47f2a91980952175f3692304676b111ba33639bcff"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4503"
+    - unit_id: "normative_4529"
       family: "system_boundary"
       span:
         start:
-          offset: 4503
+          offset: 4529
           line: 55
           column: 1
         end:
-          offset: 13335
-          line: 80
+          offset: 14592
+          line: 81
           column: 1
-      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `scope_route` | all processes | Apply only to in-store non-specialized retail of fresh whole dessert apples (Malus domestica), one declared cultivar/grade/receiving state per dataset, using ordinary-air R134a refrigerated holding and ambient display, sold by calibrated net mass. Exclude frozen, dried, canned, juiced, cut, washed/waxed on site, mixed-cultivar composite references, controlled atmosphere, home delivery and other produce. Customer self-bagging in specified LDPE bags is included. | `un-cpc`; `cde-apples` |\n| `service_gates` | retail | Start at documented store receiving gate after inbound transport; end at final customer acceptance at checkout with agreed cultivar, net mass, grade, freedom from visible decay and recorded condition. Declare the actual quality contract and temperature/humidity/time specification prospectively; no literature value becomes a universal acceptance limit. Include receiving, sorting, cold holding, ambient display, checkout, sanitation, reversals, residual handling and attributable assets. No on-site produce processing occurs. | `cde-apples` |\n| `goods_responsibility` | failed_apples | This incremental retail service excludes production and inbound transport for successful merchandise from its burden numerator; downstream links that receiving-gate background exactly once using B_s/D receiving-state kg, not 1 kg of newly produced apples. Include B_f/D receiving-state background for all permanently failed goods, spoilage, shrink and non-sale external transfers, including donation and supplier return. Keep retailer responsibility for these failed cohorts; no displacement credit or supplier refund removes it. A failed external handoff must state recipient, physical state, onward function and treatment responsibility and is never automatically waste. Upstream dataset boundary must include actual cultivar/origin/harvest/storage/packing and inbound transport through the same gate; subtract evidenced overlaps only. |  |\n| `physical_boundary` | retail | The service inventory is not an all-receipts apple production model. cp_goods nevertheless closes all physical receiving, storage, sold, returned, donated, supplier-returned, wasted, respiration and moisture histories. Successful goods are documented carriers outside the service reference product; donor and supplier product outputs are physical carriers with no burden credit. Only failed_apples imports ancillary failed-goods background. Waste carriers link treatment once, never both treatment-service and its emissions. Upstream carton manufacture follows merchandise gate ownership; retailer carton treatment remains included. |  |\n| `conditional_completeness` | all processes | For each conditional exchange retain equipment register, purchase/work-order search and operating inspection proving presence or absence for the whole period. Absence is not inferred from a blank invoice. Unknown occurrence, missing quantity, unverified identity, undefined background or unclosed balances block a complete dataset. Additional actual chemicals, bags, replacements, spills, waste carriers, cleaning evaporation or emissions need named atomic cards, matched single-process protocols and bilingual regeneration before completeness. Fruit washing or another refrigerant requires scope revision before use. | `jrc-retail` |\n| `external_chain` | donated_apples; supplier_return_apples; failed_apples | A supplier return or donation is failure to provide this store retail service, not automatic physical destruction. Track unique fruit to documented recipient acceptance, condition, onward sale/use/treatment and ultimate background owner. Under this PCR original receiving-gate production and inbound transport for external non-sale transfers remain B_f responsibility of the origin service. Every recipient transfer record must carry an origin-cohort ID and production-already-borne marker with the exact B_f receiving-equivalent amount and original background reference; onward recipient models add only post-handoff actions and must not import that original production again. A recipient cannot silently reassign it through a financial credit. If the same fruit returns and is finally resold by this store, reopen the original pool, change B_s/B_f, D and actual numerator under calc_late_return, and reverse the external marker version. Unresolved recipient fate or ownership is incomplete. |  |\n| `asset_completeness` | assets | Required retail capital is explicit: cold_assembly, retail_building, checkout_pos, weighing_scale and apple_display_rack, including leased/shared counterparts. Allocate each real asset through calc_assets; not owning it does not remove its responsibility. Building module includes structural shell, finishes, fixed wiring/plumbing, fixed general lighting and building ventilation, but excludes the cold-room assembly and movable POS/scale/rack. Cold-room complete assembly includes insulated wall/ceiling/floor panels, doors, internal lights, compressor/condenser/evaporator, piping and controls plus dedicated installation; excludes building shell, R134a charge, operation, maintenance and disposal. The separate terminal carrier matches that same full physical assembly after measured refrigerant recovery. The other four asset modules each cover one complete actual asset with manufacture, installation and its explicitly measured terminal treatment, excluding operation and maintenance. Verify supplier boundaries so no panel, control, light, wiring, structural element, installation or terminal treatment appears in two modules. Include actual asset maintenance/replacements via named atomic additions with no physical quantity retained inside the labour-only inspection card; missing necessary asset evidence is incomplete, not exclusion. |  |\n| `external_air_and_condensate` | all processes | Elementary air exchanges occur only across the actual exterior store boundary. Fruit respiration/moisture trials define internal source terms; no indoor source is automatically emitted to the environment. Cold-room condensation/defrost water is a separate actual waste carrier under cold_condensate, measured at its sewer handoff. If it physically joins cleaning_effluent before one common meter, declare that actual common carrier and allocate its measured whole liquid once between the disjoint process views using upstream condensate and cleaning source meters/composition; the sum must equal the one common-meter mass. Do not record the full common mass in both cards, or record captured fruit water both as vapour and wastewater. Missing source split or capture evidence makes the relevant result incomplete. For retained liquid use stock change until an actual handoff occurs. Other captured species/carriers require their own atomic actual carrier cards when present. |  |\n| split_exchange_identity | all inventory rows | Each card has exactly one concrete exchange identity and one reference measurement property/unit; a unit group is not a second property, and auxiliary measurements are conversion evidence only. Labour cards no longer carry bundled materials/energy/equipment/wastes. Retained complete homogeneous assets, original packaged goods and real mixed waste carriers require matching actual whole-scope background/receiver treatment and full composition; heterogeneous collections or selectors are prohibited. An original exchange enters one core card or one split source only; reverse all old package characterization when replacing it and combine only disjoint raw quantities with identical identity/property/unit. Every other actual substance, part, fuel, refrigerant, emission and treatment gap requires a named bilingual card and process protocol; unknown is never zero or complete. |  |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole fresh apples delivered at store receiving gate with known cultivar, wet state and upstream responsibility |\n| starting_condition_role | foreground_service_gate |\n| product_classification_scope | CPC 3.0 62121 narrower apple-service subset |\n| recursive_input_rule | No recursive retail-service input is automatically adopted; failed_apples is an explicitly required receiving-gate apple production background, not another copy of this retail service. |\n| upstream_dataset_requirement | State-compatible source with origin, period, cultivar, packing, prior storage and inbound transport boundary; successful and failed receiving-equivalent quantities partitioned under goods_responsibility |\n| disclosure | Disclose incremental-service boundary, physical ledger, final wet reference versus receiving-state backgrounds, all exclusions, unverified links and actual gate conditions |\n\n"
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |\n| `scope_route` | all processes | Apply only to in-store non-specialized retail of fresh whole dessert apples (Malus domestica), one declared cultivar/grade/receiving state per dataset, using ordinary-air R134a refrigerated holding and ambient display, sold by calibrated net mass. Exclude frozen, dried, canned, juiced, cut, washed/waxed on site, mixed-cultivar composite references, controlled atmosphere, home delivery and other produce. Customer self-bagging in specified LDPE bags is included. | `un-cpc`; `cde-apples` |\n| `service_gates` | retail | Start at documented store receiving gate after inbound transport; end at final customer acceptance at checkout with agreed cultivar, net mass, grade, freedom from visible decay and recorded condition. Declare the actual quality contract and temperature/humidity/time specification prospectively; no literature value becomes a universal acceptance limit. Include receiving, sorting, cold holding, ambient display, checkout, sanitation, reversals, residual handling and attributable assets. No on-site produce processing occurs. | `cde-apples` |\n| `goods_responsibility` | failed_apples | This incremental retail service excludes production and inbound transport for successful merchandise from its burden numerator; downstream links that receiving-gate background exactly once using B_s/D receiving-state kg, not 1 kg of newly produced apples. Include B_f/D receiving-state background for all permanently failed goods, spoilage, shrink and non-sale external transfers, including donation and supplier return. Keep retailer responsibility for these failed cohorts; no displacement credit or supplier refund removes it. A failed external handoff must state recipient, physical state, onward function and treatment responsibility and is never automatically waste. Upstream dataset boundary must include actual cultivar/origin/harvest/storage/packing and inbound transport through the same gate; subtract evidenced overlaps only. |  |\n| `physical_boundary` | retail | The service inventory is not an all-receipts apple production model. cp_goods nevertheless closes all physical receiving, storage, sold, returned, donated, supplier-returned, wasted, respiration and moisture histories. Successful goods are documented carriers outside the service reference product; donor and supplier product outputs are physical carriers with no burden credit. Only failed_apples imports ancillary failed-goods background. Waste carriers link treatment once, never both treatment-service and its emissions. Upstream carton manufacture follows merchandise gate ownership; retailer carton treatment remains included. |  |\n| `conditional_completeness` | all processes | For each conditional exchange retain equipment register, purchase/work-order search and operating inspection proving presence or absence for the whole period. Absence is not inferred from a blank invoice. Unknown occurrence, missing quantity, unverified identity, undefined background or unclosed balances block a complete dataset. Additional actual chemicals, bags, replacements, spills, waste carriers, cleaning evaporation or emissions need named atomic cards, matched single-process protocols and bilingual regeneration before completeness. Fruit washing or another refrigerant requires scope revision before use. | `jrc-retail` |\n| `external_chain` | donated_apples; supplier_return_apples; failed_apples | A supplier return or donation is failure to provide this store retail service, not automatic physical destruction. Track unique fruit to documented recipient acceptance, condition, onward sale/use/treatment and ultimate background owner. Under this PCR original receiving-gate production and inbound transport for external non-sale transfers remain B_f responsibility of the origin service. Every recipient transfer record must carry an origin-cohort ID and production-already-borne marker with the exact B_f receiving-equivalent amount and original background reference; onward recipient models add only post-handoff actions and must not import that original production again. A recipient cannot silently reassign it through a financial credit. If the same fruit returns and is finally resold by this store, reopen the original pool, change B_s/B_f, D and actual numerator under calc_late_return, and reverse the external marker version. Unresolved recipient fate or ownership is incomplete. |  |\n| `asset_completeness` | assets | Required retail capital is explicit: cold_assembly, retail_building, checkout_pos, weighing_scale and apple_display_rack, including leased/shared counterparts. Allocate each real asset through calc_assets; not owning it does not remove its responsibility. Building module includes structural shell, finishes, fixed wiring/plumbing, fixed general lighting and building ventilation, but excludes the cold-room assembly and movable POS/scale/rack. Cold-room complete assembly includes insulated wall/ceiling/floor panels, doors, internal lights, compressor/condenser/evaporator, piping and controls plus dedicated installation; excludes building shell, R134a charge, operation, maintenance and disposal. The separate terminal carrier matches that same full physical assembly after measured refrigerant recovery. The other four asset modules each cover one complete actual asset with manufacture, installation and its explicitly measured terminal treatment, excluding operation and maintenance. Verify supplier boundaries so no panel, control, light, wiring, structural element, installation or terminal treatment appears in two modules. Include actual asset maintenance/replacements via named atomic additions with no physical quantity retained inside the labour-only inspection card; missing necessary asset evidence is incomplete, not exclusion. |  |\n| `external_air_and_condensate` | all processes | Elementary air exchanges occur only across the actual exterior store boundary. Fruit respiration/moisture trials define internal source terms; no indoor source is automatically emitted to the environment. Cold-room condensation/defrost water is a separate actual waste carrier under cold_condensate, measured at its sewer handoff. If it physically joins cleaning_effluent before one common meter, declare that actual common carrier and allocate its measured whole liquid once between the disjoint process views using upstream condensate and cleaning source meters/composition; the sum must equal the one common-meter mass. Do not record the full common mass in both cards, or record captured fruit water both as vapour and wastewater. Missing source split or capture evidence makes the relevant result incomplete. For retained liquid use stock change until an actual handoff occurs. Other captured species/carriers require their own atomic actual carrier cards when present. |  |\n| split_exchange_identity | all inventory rows | Each card has exactly one concrete exchange identity and one reference measurement property/unit; a unit group is not a second property, and auxiliary measurements are conversion evidence only. Labour cards no longer carry bundled materials/energy/equipment/wastes. Retained complete homogeneous assets, original packaged goods and real mixed waste carriers require matching actual whole-scope background/receiver treatment and full composition; heterogeneous collections or selectors are prohibited. An original exchange enters one core card or one split source only; reverse all old package characterization when replacing it and combine only disjoint raw quantities with identical identity/property/unit. Every other actual substance, part, fuel, refrigerant, emission and treatment gap requires a named bilingual card and process protocol; unknown is never zero or complete. |  |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole fresh apples delivered at store receiving gate with known cultivar, wet state and upstream responsibility |\n| starting_condition_role | foreground_service_gate |\n| product_classification_scope | CPC 3.0 62121 narrower apple-service subset |\n| recursive_input_rule | No recursive retail-service input is automatically adopted; failed_apples is an explicitly required receiving-gate apple production background, not another copy of this retail service. |\n| upstream_dataset_requirement | State-compatible source with origin, period, cultivar, packing, prior storage and inbound transport boundary; successful and failed receiving-equivalent quantities partitioned under goods_responsibility |\n| disclosure | Disclose incremental-service boundary, physical ledger, final wet reference versus receiving-state backgrounds, all exclusions, unverified links and actual gate conditions |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -1399,19 +1403,19 @@ normative_context:
               line: 9
               column: 1
             end:
-              offset: 359
+              offset: 338
               line: 9
-              column: 70
-          text: "# Non-specialized store retail service for fresh whole dessert apples"
+              column: 49
+          text: "# Retail services for fresh whole dessert apples"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 4503
+              offset: 4529
               line: 55
               column: 1
             end:
-              offset: 4524
+              offset: 4550
               line: 55
               column: 22
           text: "## 5. System Boundary"
@@ -1427,16 +1431,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_43279"
+    - unit_id: "normative_44536"
       family: "allocation"
       span:
         start:
-          offset: 43279
-          line: 655
+          offset: 44536
+          line: 656
           column: 1
         end:
-          offset: 47357
-          line: 665
+          offset: 48614
+          line: 666
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `full_pool` | all inventory rows | Subdivide by meters and unique events first. For a shared source total Q and causal driver x, attributable Q_i = Q*x_i/sum(x_j) over every actual beneficiary, including other store departments, failed cohorts, idle and closed periods. Use cold occupied m3-hours with declared vacancy standby capacity, sanitation measured task-time and store lighting occupied m2-hours; verify the physical relationship and include every beneficiary in the denominator. Do not allocate merely by successful apple sales or omit zero-driver intervals. | `ghg-product` |\n| `idle_zero` | all inventory rows | Prospectively declare a same-cultivar/grade/route/configuration pool and observation period covering complete receiving cohorts and return resolution. Assign zero-driver standby by reserved capacity shares declared before outcomes; reconcile full Q including idle/closed time. Keep all failed and zero-sale cohorts and their actual burdens in this pool. A wholly zero-output pool has raw totals and unresolved normalization, never a zero service intensity or deletion; combine only with a prospectively justified same-configuration pool. |  |\n| `persistent_assets` | assets | Maintain one persistent asset and package ledger across every period and beneficiary: unique serial/package ID, full manufacturing/installation burden, actual service history, expected lifetime capacity, earlier cumulative fractions and residual. Assign period fractions against total life capacity; cumulative fractions must not exceed one, and allocate the terminal residual with documented beneficiaries. A lifetime revision recalculates remaining responsibility and corrections to earlier allocations without restarting manufacture. Manufacture/installation, operation, inspection, replacements and end-of-life scopes are disjoint. maintenance_service represents evidenced purchased inspection labour h ONLY; complete work-order count is not its quantity. Actual travel, consumables, tool manufacture/terminal carriers and replacement parts use their specific separate cards. Labour background excludes those sources; reverse the old full package before installing the split, never retain both. Attribute inspection labour and its actual event physical sources by all-beneficiary asset exposure during the supported work-order cycle, without another whole-device manufacturing-lifetime fraction; an inspection tool own manufacture/terminal follows its separate all-history lifetime ledger. Quantify physical replacements by their own complete-product cards. |  |\n| `no_coproduct_credit` | retail | The physical apple carriers are not additional retail services or allocation co-products. Donation, markdown, supplier credit, disposal proceeds and financial refund do not create a second functional output or an avoided-production credit. Keep physical return events separate from money events. |  |\n| split_attribution | maintenance_service; split_inspection_glove; split_inspection_glove_waste; split_leak_detector; split_leak_detector_waste; split_support_electricity; split_support_travel | Prefer exclusive direct measurements. For shared cleaning events attribute each raw physical quantity by actual cleaned area-events across all beneficiaries; for maintenance use the repaired asset physical driver over all beneficiaries of the actual supported work-order cycle. Retain idle, failed, closed and zero-driver loads and their original carryover rules, never discard them using sales. New tool manufacture/retirement uses persistent lifetime ledgers and historical revision deltas; installed replacement parts are charged once to their actual maintenance event, not again as an original whole-asset acquisition. Do not reapply a share to an already-attributed source or charge terminal tools only to the retirement period. Remove any contained quantity from its old background or replace the entire package with this split; never characterize both. |  |\n\n"
       headings:
@@ -1447,20 +1451,20 @@ normative_context:
               line: 9
               column: 1
             end:
-              offset: 359
+              offset: 338
               line: 9
-              column: 70
-          text: "# Non-specialized store retail service for fresh whole dessert apples"
+              column: 49
+          text: "# Retail services for fresh whole dessert apples"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 43279
-              line: 655
+              offset: 44536
+              line: 656
               column: 1
             end:
-              offset: 43319
-              line: 655
+              offset: 44576
+              line: 656
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -1475,16 +1479,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_89251"
+    - unit_id: "normative_90508"
       family: "validation"
       span:
         start:
-          offset: 89251
-          line: 739
+          offset: 90508
+          line: 740
           column: 1
         end:
-          offset: 91089
-          line: 750
+          offset: 92346
+          line: 751
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `v_scope` | all processes | Confirm cultivar/grade/state, ordinary-air R134a cold holding, ambient display and checkout net-mass gates; incompatible processing, mixed cultivar or refrigerant is outside scope. |  |\n| `v_reference` | retail_service | Require positive D, unique final accepted goods history, exact 1 kg service output and one normalization. Refusal, physical return, resale, money-only refund, internal transfer and donation must remain distinguishable. |  |\n| `v_balance` | all inventory rows | Reject unclosed stock, wet-state transition, water, refrigerant, source-meter or persistent asset balances; verify B_s+B_f=R and successful downstream coupling exactly once. Retain zero-output pools as unnormalizable. |  |\n| `v_complete` | all inventory rows | A target mechanical check does not approve methodology or unresolved identities. Complete datasets require bound row-specific UUID/property/unit/medium, actual quantities and background, all conditional occurrence decisions, additional actual atomic flows and bilingual alignment; no unsupported defaults. |  |\n| `v_returns` | all inventory rows | Audit late-return corrections against original numerators, D, wet-state mapping, background and fates, with dates and deltas; ensure reverse-handling events are not also charged to a later cohort. |  |\n| split_completeness | all inventory rows | Check every exact identity and single reference property, all actual work-order constituents, disjoint measurements, old-package reversal, no duplicated source/asset terminal scope, all-beneficiary historical attribution and one final normalization. Unverified sources, uncarded actual exchanges, unknown quantities or a mere claim of contract inclusion are incomplete. |  |\n\n"
       headings:
@@ -1495,20 +1499,20 @@ normative_context:
               line: 9
               column: 1
             end:
-              offset: 359
+              offset: 338
               line: 9
-              column: 70
-          text: "# Non-specialized store retail service for fresh whole dessert apples"
+              column: 49
+          text: "# Retail services for fresh whole dessert apples"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 89251
-              line: 739
+              offset: 90508
+              line: 740
               column: 1
             end:
-              offset: 89273
-              line: 739
+              offset: 90530
+              line: 740
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -1525,313 +1529,326 @@ normative_context:
           markdown: "---\n"
   bindings:
     - pointer: "/system_boundary/rules/0"
+      rule_id: "b_product_family"
+      identity_kind: "explicit"
+      unit_id: "normative_4529"
+      source_span:
+        start:
+          offset: 4623
+          line: 59
+          column: 1
+        end:
+          offset: 5853
+          line: 59
+          column: 1231
+    - pointer: "/system_boundary/rules/1"
       rule_id: "scope_route"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 4597
-          line: 59
+          offset: 5854
+          line: 60
           column: 1
         end:
-          offset: 5122
-          line: 59
+          offset: 6379
+          line: 60
           column: 526
-    - pointer: "/system_boundary/rules/1"
+    - pointer: "/system_boundary/rules/2"
       rule_id: "service_gates"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 5123
-          line: 60
+          offset: 6380
+          line: 61
           column: 1
         end:
-          offset: 5695
-          line: 60
+          offset: 6952
+          line: 61
           column: 573
-    - pointer: "/system_boundary/rules/2"
+    - pointer: "/system_boundary/rules/3"
       rule_id: "goods_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 5696
-          line: 61
+          offset: 6953
+          line: 62
           column: 1
         end:
-          offset: 6581
-          line: 61
+          offset: 7838
+          line: 62
           column: 886
-    - pointer: "/system_boundary/rules/3"
+    - pointer: "/system_boundary/rules/4"
       rule_id: "physical_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 6582
-          line: 62
+          offset: 7839
+          line: 63
           column: 1
         end:
-          offset: 7252
-          line: 62
+          offset: 8509
+          line: 63
           column: 671
-    - pointer: "/system_boundary/rules/4"
+    - pointer: "/system_boundary/rules/5"
       rule_id: "conditional_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 7253
-          line: 63
+          offset: 8510
+          line: 64
           column: 1
         end:
-          offset: 7934
-          line: 63
+          offset: 9191
+          line: 64
           column: 682
-    - pointer: "/system_boundary/rules/5"
+    - pointer: "/system_boundary/rules/6"
       rule_id: "external_chain"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 7935
-          line: 64
+          offset: 9192
+          line: 65
           column: 1
         end:
-          offset: 9009
-          line: 64
+          offset: 10266
+          line: 65
           column: 1075
-    - pointer: "/system_boundary/rules/6"
+    - pointer: "/system_boundary/rules/7"
       rule_id: "asset_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 9010
-          line: 65
+          offset: 10267
+          line: 66
           column: 1
         end:
-          offset: 10393
-          line: 65
+          offset: 11650
+          line: 66
           column: 1384
-    - pointer: "/system_boundary/rules/7"
+    - pointer: "/system_boundary/rules/8"
       rule_id: "external_air_and_condensate"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 10394
-          line: 66
+          offset: 11651
+          line: 67
           column: 1
         end:
-          offset: 11423
-          line: 66
+          offset: 12680
+          line: 67
           column: 1030
-    - pointer: "/system_boundary/rules/8"
+    - pointer: "/system_boundary/rules/9"
       rule_id: "split_exchange_identity"
       identity_kind: "explicit"
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 11424
-          line: 67
+          offset: 12681
+          line: 68
           column: 1
         end:
-          offset: 12356
-          line: 67
+          offset: 13613
+          line: 68
           column: 933
     - pointer: "/allocation_rules/0"
       rule_id: "full_pool"
       identity_kind: "explicit"
-      unit_id: "normative_43279"
+      unit_id: "normative_44536"
       source_span:
         start:
-          offset: 43392
-          line: 659
+          offset: 44649
+          line: 660
           column: 1
         end:
-          offset: 43979
-          line: 659
+          offset: 45236
+          line: 660
           column: 588
     - pointer: "/allocation_rules/1"
       rule_id: "idle_zero"
       identity_kind: "explicit"
-      unit_id: "normative_43279"
+      unit_id: "normative_44536"
       source_span:
         start:
-          offset: 43980
-          line: 660
+          offset: 45237
+          line: 661
           column: 1
         end:
-          offset: 44559
-          line: 660
+          offset: 45816
+          line: 661
           column: 580
     - pointer: "/allocation_rules/2"
       rule_id: "persistent_assets"
       identity_kind: "explicit"
-      unit_id: "normative_43279"
+      unit_id: "normative_44536"
       source_span:
         start:
-          offset: 44560
-          line: 661
+          offset: 45817
+          line: 662
           column: 1
         end:
-          offset: 45959
-          line: 661
+          offset: 47216
+          line: 662
           column: 1400
     - pointer: "/allocation_rules/3"
       rule_id: "no_coproduct_credit"
       identity_kind: "explicit"
-      unit_id: "normative_43279"
+      unit_id: "normative_44536"
       source_span:
         start:
-          offset: 45960
-          line: 662
+          offset: 47217
+          line: 663
           column: 1
         end:
-          offset: 46295
-          line: 662
+          offset: 47552
+          line: 663
           column: 336
     - pointer: "/allocation_rules/4"
       rule_id: "split_attribution"
       identity_kind: "explicit"
-      unit_id: "normative_43279"
+      unit_id: "normative_44536"
       source_span:
         start:
-          offset: 46296
-          line: 663
+          offset: 47553
+          line: 664
           column: 1
         end:
-          offset: 47355
-          line: 663
+          offset: 48612
+          line: 664
           column: 1060
     - pointer: "/validation_rules/0"
       rule_id: "v_scope"
       identity_kind: "explicit"
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 89346
-          line: 743
+          offset: 90603
+          line: 744
           column: 1
         end:
-          offset: 89561
-          line: 743
+          offset: 90818
+          line: 744
           column: 216
     - pointer: "/validation_rules/1"
       rule_id: "v_reference"
       identity_kind: "explicit"
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 89562
-          line: 744
+          offset: 90819
+          line: 745
           column: 1
         end:
-          offset: 89820
-          line: 744
+          offset: 91077
+          line: 745
           column: 259
     - pointer: "/validation_rules/2"
       rule_id: "v_balance"
       identity_kind: "explicit"
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 89821
-          line: 745
+          offset: 91078
+          line: 746
           column: 1
         end:
-          offset: 90080
-          line: 745
+          offset: 91337
+          line: 746
           column: 260
     - pointer: "/validation_rules/3"
       rule_id: "v_complete"
       identity_kind: "explicit"
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 90081
-          line: 746
+          offset: 91338
+          line: 747
           column: 1
         end:
-          offset: 90429
-          line: 746
+          offset: 91686
+          line: 747
           column: 349
     - pointer: "/validation_rules/4"
       rule_id: "v_returns"
       identity_kind: "explicit"
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 90430
-          line: 747
+          offset: 91687
+          line: 748
           column: 1
         end:
-          offset: 90668
-          line: 747
+          offset: 91925
+          line: 748
           column: 239
     - pointer: "/validation_rules/5"
       rule_id: "split_completeness"
       identity_kind: "explicit"
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 90669
-          line: 748
+          offset: 91926
+          line: 749
           column: 1
         end:
-          offset: 91087
-          line: 748
+          offset: 92344
+          line: 749
           column: 419
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 4503
+          offset: 4529
           line: 55
           column: 1
         end:
-          offset: 4524
+          offset: 4550
           line: 55
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4503"
+      unit_id: "normative_4529"
       source_span:
         start:
-          offset: 12384
-          line: 71
+          offset: 13641
+          line: 72
           column: 1
         end:
-          offset: 13333
-          line: 78
+          offset: 14590
+          line: 79
           column: 189
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_43279"
+      unit_id: "normative_44536"
       source_span:
         start:
-          offset: 43279
-          line: 655
+          offset: 44536
+          line: 656
           column: 1
         end:
-          offset: 43319
-          line: 655
+          offset: 44576
+          line: 656
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_89251"
+      unit_id: "normative_90508"
       source_span:
         start:
-          offset: 89251
-          line: 739
+          offset: 90508
+          line: 740
           column: 1
         end:
-          offset: 89273
-          line: 739
+          offset: 90530
+          line: 740
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1840,5 +1857,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:1c62b043510756ee1f28f1773b1955e371da1375bf79ed354f80511e6ad2f1ed"
-  generated_content_sha256: "sha256:12f09f5a1581630860b6d516b77b63d3486f81a75de2802a2ed197ebc6fb4154"
+    sha256: "sha256:4bceda4f7d39f463362bab47f2a91980952175f3692304676b111ba33639bcff"
+  generated_content_sha256: "sha256:fba78a6fbac723c139224750d312d183a5044a838270ac06eef846794e3083fa"

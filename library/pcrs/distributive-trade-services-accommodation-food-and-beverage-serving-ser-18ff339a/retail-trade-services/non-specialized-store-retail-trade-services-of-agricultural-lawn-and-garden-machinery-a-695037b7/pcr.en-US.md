@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Counter-pickup retail service for an unopened EGO LM2135SP complete mower kit in a non-specialized store
+# Counter-pickup retail services for unopened complete battery-powered lawnmower kits with supplied battery and charger
 
 ## 1. Scope and Applicability
 
@@ -17,9 +17,9 @@ A configuration-specific candidate methodology for incremental retail service an
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-agricultural-lawn-and-garden-machinery-a-695037b7 |
 | classification_refs | CPC 3.0 62186; narrower |
-| covered_products | One declared regional EGO LM2135SP complete original battery mower kit; unopened retailer counter-pickup retail service in a documented non-specialized store |
-| excluded_products | All other kit configurations, bare tools and separate parts; consumer mowing; retailer assembly, charging, testing, fuelling, repair and delivery |
-| representative_product | LM2135SP kit with original 7.5Ah battery and Rapid charger, actual original complete mower/blade/bag/chute/packing configuration verified by lot; a catalog specification, not claimed current stock |
+| covered_products | Complete original battery-powered lawnmower kits with supplied battery and charger, new and unopened, for counter pickup in evidenced non-specialized physical stores. |
+| excluded_products | Bare tools or separately sold components; used goods; consumer mowing; retailer assembly, charging, testing, fuelling, repair or delivery. |
+| representative_product | Counter-pickup retail services for unopened complete battery-powered lawnmower kits with supplied battery and charger; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier-dispatch background; retail receipt, unopened holding, counter handover, returns and residual history; no retailer operational preparation |
 | market_state | New original unopened complete kit, one fixed region and lot configuration; factory assembly, contained cell and precharge verified independently |
 
@@ -27,7 +27,7 @@ A configuration-specific candidate methodology for incremental retail service an
 
 | Field | Value |
 | --- | --- |
-| What | Counter-pickup retail service for one unopened EGO LM2135SP complete mower kit |
+| What | Counter-pickup retail service for one unopened battery-powered lawnmower complete mower kit |
 | How much | One final-valid accepted service for one distinct original complete kit |
 | How well | Correct declared configuration and unopened complete state supported by supplier lot/closure evidence, confirmed recipient acceptance; no onsite preparation |
 | How long or cycle | One prospectively fixed retail pool interval with all original histories to declared cut-off and versioned late-event correction |
@@ -36,7 +36,7 @@ A configuration-specific candidate methodology for incremental retail service an
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter-pickup retail service for one unopened EGO LM2135SP complete mower kit |
+| Reference product flow | Counter-pickup retail service for one unopened battery-powered lawnmower complete mower kit |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -66,7 +66,8 @@ A configuration-specific candidate methodology for incremental retail service an
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| b_scope | custody; retail; residual | This narrower scope covers only a documented non-specialized physical store and counter pickup of the single declared regional LM2135SP kit configuration, new and unopened by the retailer. LM2130SP tool-only, other battery configurations, used machines, separately sold cells, delivery, assembly, charging, test mowing, fuelling and repair are outside this route. The official product page identifies a mower kit with a 7.5Ah battery, Rapid charger and blade system; the linked LM2130SP tool manual lists bag, frame, preinstalled mulching insert, chute and blades. They establish product scope, not current stock, a lot BOM or a retailer operation. Coming Soon is not stock evidence. Require signed lot packing/BOM, original closure, exact regional machine/cell/charger/accessory identities, original factory assembly and precharge states; absent information is unknown. The retailer does not open a package to prove the sealed route. This narrowly selected core additionally requires documented absence of onsite and landlord-supplied space heating/cooling, combustion fuel and refrigerant equipment serving the declared store area. Inspect the complete facility/lease/equipment records, including backrooms, rather than inferring absence from no mower preparation. Any present or unknown HVAC, fuel, purchased heat or refrigerant requires a route-specific extension with exact carrier/species/medium cards and measured activity/leak/stock data before completeness; no zero combustion or refrigerant emission is inferred. | `un-cpc62186`; `un-cpc44121`; `ego-lm2135sp`; `ego-mower-manual` |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| b_scope | custody; retail; residual | This narrower scope covers only a documented non-specialized physical store and counter pickup of the single declared regional battery-powered lawnmower kit configuration, new and unopened by the retailer. Bare-tool kits without supplied battery/charger, used machines, separately sold cells, delivery, assembly, charging, test mowing, fuelling and repair are outside this route. The official product page identifies a mower kit with a 7.5Ah battery, Rapid charger and blade system; the linked LM2130SP tool manual lists bag, frame, preinstalled mulching insert, chute and blades. They establish product scope, not current stock, a lot BOM or a retailer operation. Coming Soon is not stock evidence. Require signed lot packing/BOM, original closure, exact regional machine/cell/charger/accessory identities, original factory assembly and precharge states; absent information is unknown. The retailer does not open a package to prove the sealed route. This narrowly selected core additionally requires documented absence of onsite and landlord-supplied space heating/cooling, combustion fuel and refrigerant equipment serving the declared store area. Inspect the complete facility/lease/equipment records, including backrooms, rather than inferring absence from no mower preparation. Any present or unknown HVAC, fuel, purchased heat or refrigerant requires a route-specific extension with exact carrier/species/medium cards and measured activity/leak/stock data before completeness; no zero combustion or refrigerant emission is inferred. | `un-cpc62186`; `un-cpc44121`; `ego-lm2135sp`; `ego-mower-manual` |
 | b_gates | custody; retail; residual | The incremental service starts when this original complete package is physically received by the retailer and ends at final-valid counter acceptance, with residual and late-return histories retained to the declared cut-off. Supplier manufacture and original packing end at supplier dispatch; inbound transport to receipt is a separate mandatory source. Consumer mowing, post-acceptance charging and consumer end-of-life remain downstream. Physical custody satellite flows supplier_receipt, returned_kit, handover_kit, supplier_return_kit and internal_asset_kit are a separate goods ledger: never connect their gross incoming counts as additional manufacturing demands in the incremental service. b_background assigns original embodied sources once. The failed_original_kit input represents the original F manufacture at supplier dispatch; operational retail electricity and actual waste dispatch also enter the incremental service, while all omitted support sources must be completed under b_completion before a full-service claim. | `ghg-product-2011` |
 | b_background | custody; retail; residual | For every original package ID j retain W_j, the full manufacturing/original-packing inventory vector strictly at supplier dispatch, including actual contained battery, charger, installed and spare blades, accessories and actual full packaging BOM. Add separately verified inbound vector I_j to the retailer receiving gate. If a provider bundles inbound, require evidenced stage separation and count that segment once; unknown separation blocks completeness. Never substitute bare-tool mass or Ah-scaled battery impacts, and never add a second component source already included in W_j. At each cut-off give that same original source exactly one current responsibility S (final-valid sale; merchandise vector remains downstream), F (failed/lost/condemned or retained externally without valid acceptance; charged to its original retail pool), T (supplier or named internal asset custodian with continuing background), or O (still open stock/history). S/F/T/O are exclusive background ownership states, not physical counts. Return/resale replaces the old state and never manufactures another kit; transfer to demonstration moves the SAME W_j and I_j to T, not full F plus new manufacture. F background stays even if no physical waste is dispatched; a waste carrier receives no duplicate W_j. failed_original_kit is this same original dispatch-manufacturing demand, expanded by W_F/N_F only once, with actual F inbound I_F added separately; never add the expanded W_F again beside that input. | `ego-lm2135sp`; `ego-mower-manual`; `ghg-product-2011` |
 | b_completion | custody; retail; residual | This core is an explicitly partial incremental inventory. Before claiming a complete retail service, attach disjoint measured modules for receiving/handling and storage; building structure, shelves, handling trolley and checkout/ICT/lighting/HVAC assets; their actual operation and maintenance; cleaning/water/effluent and packaging actually added by the retailer; payment, communications, administration and security backend; supplier inbound, actual supplier-return/internal/waste transport and complete waste treatment. Apply a_shared, a_assets, a_transport, a_digital, a_cleaning and c_aggregate. A complete provider package may remain intact only with its real model/contract, reference denominator, original source scope and exact included manufacture, installation, fuel/electricity, repair, transport and end-of-life exclusions. Otherwise collect named atomic cards, applicable protocols, quantities and bilingual sync for actual missing exchanges before completeness. Named modules without those data are not a complete dataset; missing quantities/providers are unknown, never zero. Parent/submeter deductions occur only when the parent really contains the child. Do not double count a utility, transport leg, contained component or provider-contained terminal carrier. | `ghg-product-2011` |
@@ -88,11 +89,11 @@ A configuration-specific candidate methodology for incremental retail service an
 
 ##### Product flows
 
-###### Unopened EGO LM2135SP complete original mower kit (`supplier_receipt`)
+###### Unopened battery-powered lawnmower complete original kit (`supplier_receipt`)
 
 New supplier receipts at the retailer receiving gate. Count the actual complete original kit, including its original packaging, as one custody object; the kit is neither bare mower mass nor an extra battery purchase.
 
-- Selected flow: Unopened EGO LM2135SP complete original mower kit
+- Selected flow: Unopened battery-powered lawnmower complete original kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_R/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -103,11 +104,11 @@ New supplier receipts at the retailer receiving gate. Count the actual complete 
 - Collection protocol: `cp_custody`
 - Sources: `ego-lm2135sp`; `ego-mower-manual`
 
-###### Unopened EGO LM2135SP complete original mower kit (`returned_kit`)
+###### Unopened battery-powered lawnmower complete original kit (`returned_kit`)
 
 Physical customer returns only when the same original kit remains unopened, complete and within the same configuration. Inspect outer closure and supplier records without opening it. Opened, damaged or incomplete returns require a state-specific extension before completeness.
 
-- Selected flow: Unopened EGO LM2135SP complete original mower kit
+- Selected flow: Unopened battery-powered lawnmower complete original kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_C/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -122,11 +123,11 @@ Physical customer returns only when the same original kit remains unopened, comp
 
 ##### Product flows
 
-###### Unopened EGO LM2135SP complete original mower kit (`handover_kit`)
+###### Unopened battery-powered lawnmower complete original kit (`handover_kit`)
 
 Gross physical counter handovers include successful and subsequently invalid or refused-acceptance external retention. Identify each recipient and actual sealed state; this physical movement is independent of the reference service.
 
-- Selected flow: Unopened EGO LM2135SP complete original mower kit
+- Selected flow: Unopened battery-powered lawnmower complete original kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_H/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -137,11 +138,11 @@ Gross physical counter handovers include successful and subsequently invalid or 
 - Collection protocol: `cp_custody`
 - Sources: `ego-lm2135sp`; `ego-mower-manual`
 
-###### Unopened EGO LM2135SP complete original mower kit (`supplier_return_kit`)
+###### Unopened battery-powered lawnmower complete original kit (`supplier_return_kit`)
 
 Actual unopened complete-kit dispatch to a named supplier with its retained original source history. A financial credit or transfer of background responsibility alone is not a physical dispatch.
 
-- Selected flow: Unopened EGO LM2135SP complete original mower kit
+- Selected flow: Unopened battery-powered lawnmower complete original kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_T/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -152,11 +153,11 @@ Actual unopened complete-kit dispatch to a named supplier with its retained orig
 - Collection protocol: `cp_custody`
 - Sources: `ego-lm2135sp`; `ego-mower-manual`
 
-###### Unopened EGO LM2135SP complete original mower kit (`internal_asset_kit`)
+###### Unopened battery-powered lawnmower complete original kit (`internal_asset_kit`)
 
 Actual unopened complete-kit transfer out of this merchandise pool to a named internal demonstration-asset account. Later opening, assembly, charging and demonstration belong to that separate asset process, with the same original manufacturing source.
 
-- Selected flow: Unopened EGO LM2135SP complete original mower kit
+- Selected flow: Unopened battery-powered lawnmower complete original kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_I/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -173,11 +174,11 @@ Actual unopened complete-kit transfer out of this merchandise pool to a named in
 
 ##### Product flows
 
-###### EGO LM2135SP complete original mower kit at supplier dispatch (`failed_original_kit`)
+###### battery-powered lawnmower complete original kit at supplier dispatch (`failed_original_kit`)
 
 Original manufacturing/original-packing responsibility for distinct F-owned kit IDs, not another physical receipt. Bind the actual complete dispatch configuration including contained cell, charger, blades, accessories and original pack; never substitute the current failed carrier state. The source-specific weighted upstream vector W_F/N_F expands this input once; F inbound I_F remains a separate completion source. When N_F=0 retain the observed absence and raw source ledger without dividing by N_F.
 
-- Selected flow: EGO LM2135SP complete original mower kit at supplier dispatch
+- Selected flow: battery-powered lawnmower complete original kit at supplier dispatch
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -207,11 +208,11 @@ Measured point-of-use AC electricity for the declared incremental retail circuit
 
 ##### Product flows
 
-###### Counter-pickup retail service for one unopened EGO LM2135SP complete mower kit (`service_output`)
+###### Counter-pickup retail service for one unopened battery-powered lawnmower complete mower kit (`service_output`)
 
 One final-valid accepted service for one unique original complete kit at the counter gate. This is a retail service, not mowing, mower manufacturing or one battery-charge cycle.
 
-- Selected flow: Counter-pickup retail service for one unopened EGO LM2135SP complete mower kit
+- Selected flow: Counter-pickup retail service for one unopened battery-powered lawnmower complete mower kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Fixed value (`fixed_value`)
@@ -228,11 +229,11 @@ One final-valid accepted service for one unique original complete kit at the cou
 
 ##### Waste flows
 
-###### Discarded unopened EGO LM2135SP complete original mower kit with contained battery and original packaging (`whole_kit_waste`)
+###### Discarded unopened battery-powered lawnmower complete original kit with contained battery and original packaging (`whole_kit_waste`)
 
 Whole intact original kit actually dispatched as one waste consignment to a qualified named treatment recipient. Weigh its full original body, battery, charger, accessories and original packaging together; a separate transport overpack is excluded and needs its own extension. This row cannot cover broken, opened, dismantled, leaking or separated-cell waste.
 
-- Selected flow: Discarded unopened EGO LM2135SP complete original mower kit with contained battery and original packaging
+- Selected flow: Discarded unopened battery-powered lawnmower complete original kit with contained battery and original packaging
 - Flow property / unit: Mass / kg
 - Amount rule: W_dispatch/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -308,6 +309,8 @@ Whole intact original kit actually dispatched as one waste consignment to a qual
 | update_trigger | Any configuration/lot/route/provider change; new exchanges; calibration failure; revised lifetime, acceptance or late physical event; changed source scope |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

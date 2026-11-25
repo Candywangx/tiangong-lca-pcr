@@ -4,9 +4,9 @@ source_markdown: pcr.en-US.md
 product_category_identity:
   canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-perfumery-articles-cosmetic-articles-and-56ec67e2"
   classification_refs: "CPC 3.0 62175; non-specialized store retail trade services of perfumery articles, cosmetic articles and toilet soaps; UN explanatory note refers to goods class3532; proposed narrower applicability, subject to separate mapping acceptance."
-  covered_products: "Incremental attended checkout and stock handling for one homogeneous manufacturer lot/configuration of Dr. Bronner Baby Unscented Pure-Castile Magic Bar Soap OBBA05, UPC018787782057, one nominal5oz/140g bar in its original paper wrapper, in a physical non-specialized mixed-assortment store."
+  covered_products: "Incremental attended checkout and stock handling for intact original paper-wrapped unscented soap bars in physical mixed-assortment non-specialized stores; actual supplier formulation, fill mass and wrapper BOM fixed per homogeneous pool."
   excluded_products: "Liquid soap, detergents sold by refill, perfumes, aerosols, testers, decanting, opened or damaged soap, customer use, online fulfilment, home delivery and specialist-only channels; no claim to cover the full3532 goods class."
-  representative_product: "Manufacturer current OBBA05 product specification and historical BSBA05US7-02 label establish an actual soap product, not a supplier LCI or a measured retail observation. A first dataset needs physical lot label and supplier BOM/version reconciliation."
+  representative_product: "In-store retail services for original paper-wrapped unscented soap bars; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum."
   production_route: "Store receiving gate -> ambient original-wrapped shelf stock -> attended electronic checkout -> physical customer handover -> confirmed final acceptance, with original-event return and rejection tracking."
   market_state: "Solid saponified formulation plus complete printed paper wrapper; original-wrapped does not mean hermetically sealed or zero water/volatile loss. No opening, sampling or washing in the admitted route."
 functional_unit:
@@ -17,9 +17,13 @@ functional_unit:
   reference_flow_link: "accepted_service"
 system_boundary:
   rules:
+    - rule_id: b_product_family
+      applies_to: "all inventory rows"
+      rule: "This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval."
+      source_ids: []
     - rule_id: scope_gate
       applies_to: "all inventory rows"
-      rule: "Admit only physically verified OBBA05/UPC018787782057 original-wrapped intact bars in the defined non-specialized store route. Record lot label, actual net soap and whole-pack mass, wrapper composition/printing/adhesive and supplier full finished formulation/BOM. Current page lists feed ingredients and explains sodium hydroxide is consumed; do not model a finished bar as pure oil or sodium hydroxide. Historical label and current page are different editions; reconcile actual lot (including Jojoba Oil/Wax naming) before background use. No ingredient mass fractions or package tare are inferred from ingredient order, nominal5oz/140g or online shipping weight."
+      rule: "Admit only physically verified unscented paper-wrapped soap original-wrapped intact bars in the defined non-specialized store route. Record lot label, actual net soap and whole-pack mass, wrapper composition/printing/adhesive and supplier full finished formulation/BOM. Current page lists feed ingredients and explains sodium hydroxide is consumed; do not model a finished bar as pure oil or sodium hydroxide. Historical label and current page are different editions; reconcile actual lot (including Jojoba Oil/Wax naming) before background use. No ingredient mass fractions or package tare are inferred from ingredient order, nominal5oz/140g or online shipping weight."
       source_ids:
         - bronner-product
         - bronner-label
@@ -61,8 +65,8 @@ reference_flow_definition:
   required_qualifiers:
     - store_id
     - physical_non_specialized_channel
-    - OBBA05
-    - UPC018787782057
+    - "unscented paper-wrapped soap"
+    - "actual recorded UPC"
     - manufacturer_lot
     - formulation_version
     - wrapper_BOM_version
@@ -174,7 +178,7 @@ process_inventory:
       product:
         - row_id: failed_original_bar
           role: "Failed original whole-bar source responsibility"
-          name: "Dr. Bronner OBBA05 unscented whole soap bar with original printed paper wrapper at receiving gate"
+          name: "unscented whole soap bar with original printed paper wrapper at receiving gate"
           flow_type: "product"
           property_unit: "Number of items / Item(s)"
           description: "The receiving-gate complete formulation and original-wrapper source vector finally assigned F enters the service once as N_F/Q; it is not a custody satellite."
@@ -200,7 +204,7 @@ process_inventory:
       product:
         - row_id: customer_pack
           role: "Gross original-wrapped customer handover custody satellite"
-          name: "Intact original-wrapped Dr. Bronner OBBA05 bar handed to customer"
+          name: "Intact original-wrapped unscented soap bar handed to customer"
           flow_type: "product"
           property_unit: "Number of items / Item(s)"
           description: "Gross physical intact original-wrapped handovers to the customer, including subsequently refused or reversed events, are counted as a non-characterized custody satellite; they do not define Q."
@@ -219,7 +223,7 @@ process_inventory:
             ranges: []
         - row_id: supplier_return
           role: "Actual intact supplier handover custody satellite"
-          name: "Intact original-wrapped Dr. Bronner OBBA05 bar returned to supplier"
+          name: "Intact original-wrapped unscented soap bar returned to supplier"
           flow_type: "product"
           property_unit: "Number of items / Item(s)"
           description: "Actual physical intact original-wrapped handovers to the named supplier are a non-characterized custody satellite; quantity does not assign T responsibility automatically."
@@ -239,7 +243,7 @@ process_inventory:
       waste:
         - row_id: condemned_pack
           role: "Dispatched intact soap and original-wrapper waste carrier"
-          name: "Condemned intact Dr. Bronner OBBA05 soap bar with original printed paper wrapper for accepted complete treatment"
+          name: "Condemned intact the soap manufacturer unscented paper-wrapped soap soap bar with original printed paper wrapper for accepted complete treatment"
           flow_type: "waste"
           property_unit: "Mass / kg"
           description: "Direct net kg of the dispatched intact whole soap with original printed paper wrapper, excluding dispatch overpack; carrier_boundary requires signed receiver acceptance and matching complete treatment, without repeated stock deductions."
@@ -434,7 +438,7 @@ validation_rules:
 published_dataset_profile:
   dataset_role: "partial_incremental_retail_foreground"
   downstream_use: "secondary_dataset; background_dataset only after all completion and identity gates"
-  allowed_use: "Same physical-store original-wrapped OBBA05 configuration and gates, with pool/version-specific completion disclosure."
+  allowed_use: "Same physical-store original-wrapped unscented paper-wrapped soap configuration and gates, with pool/version-specific completion disclosure."
   excluded_use: "No complete-business, full3532, perfume/refill/tester, safety/compliance, supplier LCI or customer-use claim from this candidate."
   required_metadata: "All required qualifiers, Q, original supplier/source versions, S/F/T/O, actual site/channel, complete support scope, calibration and ownership corrections."
   required_quality_disclosure: "Candidate unverified row identities; missing foreground/BOM/provider/treatment evidence; partial scope, uncertainty, zero-output pools and historical replacements."
@@ -458,21 +462,21 @@ data_sources:
     used_for: "General subdivision and underlying physical relationship hierarchy; exact drivers and ledger methods are PCR design duties, not quoted source mandates or full-standard conformity."
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:87ba075863a64abc40015d6a911758a1024cf48732584477fd5aff3fe6c43d89"
+  source_sha256: "sha256:ef84442c9eeba65d3b0863a11e11508bd494eb9e24800306beaf23a4f978b49a"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_4560"
+    - unit_id: "normative_4447"
       family: "system_boundary"
       span:
         start:
-          offset: 4560
+          offset: 4447
           line: 53
           column: 1
         end:
-          offset: 10901
-          line: 74
+          offset: 12025
+          line: 75
           column: 1
-      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole original bar accepted into store custody at measured receiving gate, with identified supplier manufacturing and inbound-transport source vectors; quantity and background ownership are separate ledgers. |\n| starting_condition_role | Incremental retailer service; successful merchandise manufacturing/inbound burden is outside this service and accompanies goods to the downstream goods system. |\n| product_classification_scope | Only the original-wrapped solid bar route in identity table; non-specialized means mixed assortment, not a brand licensing status. |\n| recursive_input_rule | Do not recursively add successful goods production or custody satellite outputs. This exclusion does NOT exclude failed_original_bar: its F source background is a characterized Product input exactly once. |\n| upstream_dataset_requirement | Each original whole bar source V includes actual full finished formulation and original wrapper manufacturing, with disjoint inbound transport at the same receiving gate. Ingredient lists and nominal net mass do not quantify V. |\n| disclosure | Core rows are a partial incremental foreground, never complete store operation. Mandatory support completion below precedes any completed-retail-service claim; unbound identities and missing supplier/site evidence remain explicit. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| scope_gate | all inventory rows | Admit only physically verified OBBA05/UPC018787782057 original-wrapped intact bars in the defined non-specialized store route. Record lot label, actual net soap and whole-pack mass, wrapper composition/printing/adhesive and supplier full finished formulation/BOM. Current page lists feed ingredients and explains sodium hydroxide is consumed; do not model a finished bar as pure oil or sodium hydroxide. Historical label and current page are different editions; reconcile actual lot (including Jojoba Oil/Wax naming) before background use. No ingredient mass fractions or package tare are inferred from ingredient order, nominal5oz/140g or online shipping weight. | bronner-product; bronner-label; un-cpc62175 |\n| state_gate | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock records actual intactness, moisture change, contamination, missing units and incident history at each gate. Original paper wrap is not a zero-emission assumption. Any opening, wrapper damage, breakage, spill, measurable loss, suspected leakage/volatilization, testing or water contact suspends this route completeness. Before inclusion add real state-specific atomic carrier and species cards, single-process protocols, mass/state reconciliation, final recipient and complete treatment/background responsibility in BOTH languages; unresolved species, external pathway or state blocks a complete result. Internal store-air transfer is not automatically an elementary outdoor emission. Do not force an opened bar into an intact carrier or infer zero from no incident log. | bronner-product |\n| goods_responsibility | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock preserves original source IDs from receiving through all resale/return events. Partition each original whole-source vector into final S (accepted goods), F (service failure/loss), T (named internal asset or supplier/other recipient responsibility) and O (open responsibility), fractions summing1 with no overlap. For this intact homogeneous route each individual original bar has one final owner; no mass split of its environmental vector. Charge failed_original_bar only actual N_F source-equivalent whole bars with supplier V and inbound source once. S is added once only in a separately declared downstream GOODS system. T keeps named receiving owner/source/version; transfer does not create a new manufacture. O remains unresolved and blocks complete characterization. A real supplier return physical movement and T responsibility are independent. If components acquire different owners, require verified supplier component inventory vectors, separate real component input cards and conserved original boundary/source IDs; exclude those portions from whole-pack F. |  |\n| carrier_boundary | customer_pack; supplier_return; condemned_pack | Only customer_pack and supplier_return are non-characterized physical custody satellites, retaining actual intact states/recipient. condemned_pack is a real Waste output: direct consignment net kg of intact soap with original printed wrapper, only when receiver signs acceptance of exact soap/wrapper constituents/state and the verified treatment dataset covers this complete carrier. A license/photo alone is insufficient. Do not split the accepted complete carrier into soap and paper again or add treatment utilities/transport already included by provider. Missing treatment or rejection needs real disposition and blocks completion; a financial refund or externally retained unaccepted bar is never automatically retailer waste. |  |\n| support_gate | all inventory rows | Before complete service reporting cp_support must inventory every actual facility, shelf, checkout, ICT, network, payment, security, administration, cleaning, capital and independent transport source. Core checkout electricity covers only its metered circuit. For each actual object and constituent lifecycle stage record present/absent/unknown, provider boundary and source IDs. Absence needs signed site inspection and equipment/contract evidence for the entire pool. Unknown blocks completion. Actual building, lighting, fan/HVAC, shelf, scanner/terminal, router, camera/storage, payment/admin backend and cleaning cannot disappear because they lack core cards. Apply fixed methods support_operating, support_assets, support_transport, support_cleaning and completion_join; add named real atomic cards and single-process protocols before a dataset is complete. Complete provider bundles may remain one genuine measurable service only with exact actual signed scope, original denominator and constituent/stage overlap checks; internet access does not include payment/admin/security backend by implication. This PCR does not leave boundary/driver/denominator choices to the modeller. |  |\n\n"
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole original bar accepted into store custody at measured receiving gate, with identified supplier manufacturing and inbound-transport source vectors; quantity and background ownership are separate ledgers. |\n| starting_condition_role | Incremental retailer service; successful merchandise manufacturing/inbound burden is outside this service and accompanies goods to the downstream goods system. |\n| product_classification_scope | Only the original-wrapped solid bar route in identity table; non-specialized means mixed assortment, not a brand licensing status. |\n| recursive_input_rule | Do not recursively add successful goods production or custody satellite outputs. This exclusion does NOT exclude failed_original_bar: its F source background is a characterized Product input exactly once. |\n| upstream_dataset_requirement | Each original whole bar source V includes actual full finished formulation and original wrapper manufacturing, with disjoint inbound transport at the same receiving gate. Ingredient lists and nominal net mass do not quantify V. |\n| disclosure | Core rows are a partial incremental foreground, never complete store operation. Mandatory support completion below precedes any completed-retail-service claim; unbound identities and missing supplier/site evidence remain explicit. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |\n| scope_gate | all inventory rows | Admit only physically verified unscented paper-wrapped soap original-wrapped intact bars in the defined non-specialized store route. Record lot label, actual net soap and whole-pack mass, wrapper composition/printing/adhesive and supplier full finished formulation/BOM. Current page lists feed ingredients and explains sodium hydroxide is consumed; do not model a finished bar as pure oil or sodium hydroxide. Historical label and current page are different editions; reconcile actual lot (including Jojoba Oil/Wax naming) before background use. No ingredient mass fractions or package tare are inferred from ingredient order, nominal5oz/140g or online shipping weight. | bronner-product; bronner-label; un-cpc62175 |\n| state_gate | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock records actual intactness, moisture change, contamination, missing units and incident history at each gate. Original paper wrap is not a zero-emission assumption. Any opening, wrapper damage, breakage, spill, measurable loss, suspected leakage/volatilization, testing or water contact suspends this route completeness. Before inclusion add real state-specific atomic carrier and species cards, single-process protocols, mass/state reconciliation, final recipient and complete treatment/background responsibility in BOTH languages; unresolved species, external pathway or state blocks a complete result. Internal store-air transfer is not automatically an elementary outdoor emission. Do not force an opened bar into an intact carrier or infer zero from no incident log. | bronner-product |\n| goods_responsibility | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock preserves original source IDs from receiving through all resale/return events. Partition each original whole-source vector into final S (accepted goods), F (service failure/loss), T (named internal asset or supplier/other recipient responsibility) and O (open responsibility), fractions summing1 with no overlap. For this intact homogeneous route each individual original bar has one final owner; no mass split of its environmental vector. Charge failed_original_bar only actual N_F source-equivalent whole bars with supplier V and inbound source once. S is added once only in a separately declared downstream GOODS system. T keeps named receiving owner/source/version; transfer does not create a new manufacture. O remains unresolved and blocks complete characterization. A real supplier return physical movement and T responsibility are independent. If components acquire different owners, require verified supplier component inventory vectors, separate real component input cards and conserved original boundary/source IDs; exclude those portions from whole-pack F. |  |\n| carrier_boundary | customer_pack; supplier_return; condemned_pack | Only customer_pack and supplier_return are non-characterized physical custody satellites, retaining actual intact states/recipient. condemned_pack is a real Waste output: direct consignment net kg of intact soap with original printed wrapper, only when receiver signs acceptance of exact soap/wrapper constituents/state and the verified treatment dataset covers this complete carrier. A license/photo alone is insufficient. Do not split the accepted complete carrier into soap and paper again or add treatment utilities/transport already included by provider. Missing treatment or rejection needs real disposition and blocks completion; a financial refund or externally retained unaccepted bar is never automatically retailer waste. |  |\n| support_gate | all inventory rows | Before complete service reporting cp_support must inventory every actual facility, shelf, checkout, ICT, network, payment, security, administration, cleaning, capital and independent transport source. Core checkout electricity covers only its metered circuit. For each actual object and constituent lifecycle stage record present/absent/unknown, provider boundary and source IDs. Absence needs signed site inspection and equipment/contract evidence for the entire pool. Unknown blocks completion. Actual building, lighting, fan/HVAC, shelf, scanner/terminal, router, camera/storage, payment/admin backend and cleaning cannot disappear because they lack core cards. Apply fixed methods support_operating, support_assets, support_transport, support_cleaning and completion_join; add named real atomic cards and single-process protocols before a dataset is complete. Complete provider bundles may remain one genuine measurable service only with exact actual signed scope, original denominator and constituent/stage overlap checks; internet access does not include payment/admin/security backend by implication. This PCR does not leave boundary/driver/denominator choices to the modeller. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -481,19 +485,19 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 374
+              offset: 352
               line: 8
-              column: 96
-          text: "# Incremental in-store retail service for original-wrapped Dr. Bronner unscented 5 oz soap bars"
+              column: 74
+          text: "# In-store retail services for original paper-wrapped unscented soap bars"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 4560
+              offset: 4447
               line: 53
               column: 1
             end:
-              offset: 4581
+              offset: 4468
               line: 53
               column: 22
           text: "## 5. System Boundary"
@@ -509,16 +513,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_16289"
+    - unit_id: "normative_17418"
       family: "allocation"
       span:
         start:
-          offset: 16289
-          line: 196
+          offset: 17418
+          line: 197
           column: 1
         end:
-          offset: 23349
-          line: 205
+          offset: 24478
+          line: 206
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| support_operating | all inventory rows | Use cp_support source-numerator pools per exchange/property/unit. Submeter direct active work first; subtract a submeter only from a parent that actually contains it. Split active, idle and fixed components into mutually exclusive measured same-unit numerator pools that sum to the parent. Active device pools use measured task-reserved equipment seconds; idle/fixed checkout, ICT and network device pools use actual reserved equipment seconds across ALL beneficiaries including empty/closed reservations. Facility lighting/HVAC/fixed operation pools use measured served floor-area*m2*time*h as m2*h, with disjoint zone/time footprints and explicit empty reservations. Each pool uses e_h/sum_all(e_h) with e in that pool same driver unit, strictly positive/known total, retaining failures and zero-output cohorts. Never add seconds to m2*h or kWh to any driver. For network connection-hour service, each unique actual connection interval k has measured provider network_source_hours_k in h and beneficiary h has measured endpoint_reserved_connection_seconds_k_h in s. Allocate network_attributed_source_hours_k_h=network_source_hours_k*endpoint_reserved_connection_seconds_k_h/all_beneficiary_reserved_connection_seconds_k, where the denominator is the known positive sum of actual reserved endpoint connection seconds across ALL beneficiaries in interval k, including empty and failed reservations; shares sum1. First attribute these actual source-hours to the original SKU/pool/version; skip this attribution only when provider evidence already binds the exact final owner/pool/version, never merely an endpoint or consignment. Count the unique source connection service once; exclude equipment electricity or other operations already contained in that same provider scope, and do not treat connection-service h as overlapping active/idle/fixed equipment electricity hours. Payment authorization attempts and administrative batches are unique shared events: allocate actual line-level processing seconds within each event, shares sum1 including failed lines; a basket event cannot be whole-counted for every SKU. Security capture uses actual timestamped camera field-of-view beneficiary footprint m2*coverage h in disjoint zone/time plus empty reservations; freeze original source/pool/version map and allocate storage byte*h by that original map through all retention periods. Measured GB=10^9 bytes and GiB=2^30 bytes are distinct. Reject missing causal evidence rather than fall back to revenue or sales count. | ghg-allocation |\n| support_assets | all inventory rows | cp_support identifies each homogeneous actual model/BOM/scope asset vector V separately: complete building excludes separately modelled shelves, lights/fans/HVAC and electronic devices unless verified included; each separate shelf/fixture/terminal/router/camera module excludes operations and independently modelled maintenance/EOL/transport. Declare complete-package versus disjoint stage mode from signed supplier scope; never both. For each asset and historical beneficiary-period h, e_h is actual task-reserved equipment h for electronic devices, actual occupied served m2*h for buildings/fixtures/shelves, and actual cleaned m2 for a reusable cleaning implement. Its expected L has exactly the same unit and spans all beneficiaries/lifetime. Provisional f_h=e_h/L; store all historical allocations, cumulative fractions<=1 and revise L before exceeding1, without dropping service intervals. At actual retirement replace EVERY historical allocation by f_final_h=e_actual_h/sum_all_h(e_actual_h). For each original pool/version post delta_h=f_new_h*V_new-f_old_h*V_old, including earlier periods; use the same replacement for packaging, independent asset/repair/retirement transport and terminal whole-device waste. Residual1-sum_old_f is QA only, never a current-period shortcut. Do not restart complete manufacture after replacement/lifetime revision, sum heterogeneous models as one Item(s), or charge manufacture plus the same complete lifecycle package. Measured whole terminal carrier excludes removed parts already; BOM reconstruction is a separately evidenced exclusive mode. Whole included treatment carriers and provider-contained components have no second foreground waste. | ghg-allocation |\n| support_transport | all inventory rows | cp_support transport attribution has three levels: measured trip/segment source -> actual consignment/asset/material source -> final S/F/T/O or first-use/asset beneficiary-period owner. Preserve attribution_level, exact source, owner, pool and version. Trip source uses actual vehicle-km including measured empty distance and idle reserved vehicle h with nonzero fuel; never turn zero-load t*km into zero trip. For loaded capacity allocation fix driver to measured occupied m3 on that segment only when signed actual cube/volume capacity is binding and measured mass limit is satisfied; if actual mass constraint binds use separately reviewed mass-capacity route, not this volume route, before completeness. All beneficiary occupied/reserved m3 shares sum1, with empty capacity reserved to evidenced beneficiaries. Provider consignment allocation removes only repeat trip share. Only exact final owner/pool/version attribution skips owner fraction; original goods transport follows F fraction, unused support material follows its first-use owner, and asset transport follows all historical asset fractions. Include actual distance and background transport unit conversion supported by provider scope; measured litre fuel or vehicle-km is not automatically t*km. Compare constituents/time/event/stage, not different provider IDs, to remove overlaps. Unknown capacity or empty/idle coverage blocks completion. |  |\n| support_cleaning | all inventory rows | Actual cleaning modules must add one specific real formulated input per product, imported supply water separately, and each actual complete terminal wet wipe/container/liquid waste carrier with receiver/treatment evidence. cp_support measures formulation-origin kg among unused retained, used retained, dispatched wipe, dispatched container residue, rinsate and confirmed loss as disjoint final destinations; intermediate used->rinsed is replacement, not another destination. Added rinse water/dirt is excluded from formulation kg; direct wet carrier kg is measured independently and not multiplied by formulation share again. Unused input stock carries original manufacture/inbound sources until first use; reused implements never repeat them. Import water meters already exclude internal reuse. Direct effluent mode is actual V_discharge*rho only, with measured same-state density, not supply minus reuse/storage. This route admits only direct measurement, no water-only reconstructed full-liquid carrier. Unknown discharge, spray/species or carrier composition requires actual atomic extension before completeness. |  |\n\n"
       headings:
@@ -529,20 +533,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 374
+              offset: 352
               line: 8
-              column: 96
-          text: "# Incremental in-store retail service for original-wrapped Dr. Bronner unscented 5 oz soap bars"
+              column: 74
+          text: "# In-store retail services for original paper-wrapped unscented soap bars"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 16289
-              line: 196
+              offset: 17418
+              line: 197
               column: 1
             end:
-              offset: 16329
-              line: 196
+              offset: 17458
+              line: 197
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -557,16 +561,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_36222"
+    - unit_id: "normative_37351"
       family: "validation"
       span:
         start:
-          offset: 36222
-          line: 233
+          offset: 37351
+          line: 234
           column: 1
         end:
-          offset: 38011
-          line: 241
+          offset: 39140
+          line: 242
           column: 1
       markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| admissibility | all inventory rows | Require scope_gate/state_gate, source/BOM evidence and actual no-opening route observations; missing incidents or supplier evidence is unknown, never zero. Fuel/combustion and refrigerants are outside the admitted ambient core; full service support requires signed actual equipment/building provider records proving no uncovered combustion/refrigerant stage or verified covered complete provider package. An uncovered fuel/refrigerant needs real species/carrier methods and atomic bilingual extension before completeness, not a default emission factor. |  |\n| identity_gate | all inventory rows | Every unbound row remains individually unverified. Before characterization bind one actual public Tiangong original response/receipt with recomputed hash and matching observed UUID, official bilingual name, flow type, direction, qualifiers, compartment/property/unit chain and background stage; identity binding alone proves no quantity, applicability or safety. The service output must remain candidate-unbound until its actual output row identity is verified. No UUID-shaped external label is a Tiangong identity. |  |\n| closure | all inventory rows | Complete dataset requires Q>0, independent count/kg balances, closed S/F/T/O source ownership, direct meter and waste receipts, complete support inventory and source deduplication. Maintain all failures and zero-output pools; signed residuals are not automatic missing-goods quantities, credits or zeros. Reject missing treatment, state-specific carrier, owner, capacity, measurement, calibration or lifetime history. Report partial scope and unresolved evidence without a complete-business claim. |  |\n\n"
       headings:
@@ -577,20 +581,20 @@ normative_context:
               line: 8
               column: 1
             end:
-              offset: 374
+              offset: 352
               line: 8
-              column: 96
-          text: "# Incremental in-store retail service for original-wrapped Dr. Bronner unscented 5 oz soap bars"
+              column: 74
+          text: "# In-store retail services for original paper-wrapped unscented soap bars"
           depth: 1
         - kind: "heading"
           span:
             start:
-              offset: 36222
-              line: 233
+              offset: 37351
+              line: 234
               column: 1
             end:
-              offset: 36244
-              line: 233
+              offset: 37373
+              line: 234
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -607,209 +611,222 @@ normative_context:
           markdown: "---\n"
   bindings:
     - pointer: "/system_boundary/rules/0"
+      rule_id: "b_product_family"
+      identity_kind: "explicit"
+      unit_id: "normative_4447"
+      source_span:
+        start:
+          offset: 5941
+          line: 68
+          column: 1
+        end:
+          offset: 7171
+          line: 68
+          column: 1231
+    - pointer: "/system_boundary/rules/1"
       rule_id: "scope_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 6054
-          line: 68
+          offset: 7172
+          line: 69
           column: 1
         end:
-          offset: 6801
-          line: 68
-          column: 748
-    - pointer: "/system_boundary/rules/1"
+          offset: 7925
+          line: 69
+          column: 754
+    - pointer: "/system_boundary/rules/2"
       rule_id: "state_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 6802
-          line: 69
+          offset: 7926
+          line: 70
           column: 1
         end:
-          offset: 7685
-          line: 69
+          offset: 8809
+          line: 70
           column: 884
-    - pointer: "/system_boundary/rules/2"
+    - pointer: "/system_boundary/rules/3"
       rule_id: "goods_responsibility"
       identity_kind: "explicit"
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 7686
-          line: 70
+          offset: 8810
+          line: 71
           column: 1
         end:
-          offset: 8863
-          line: 70
+          offset: 9987
+          line: 71
           column: 1178
-    - pointer: "/system_boundary/rules/3"
+    - pointer: "/system_boundary/rules/4"
       rule_id: "carrier_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 8864
-          line: 71
+          offset: 9988
+          line: 72
           column: 1
         end:
-          offset: 9671
-          line: 71
+          offset: 10795
+          line: 72
           column: 808
-    - pointer: "/system_boundary/rules/4"
+    - pointer: "/system_boundary/rules/5"
       rule_id: "support_gate"
       identity_kind: "explicit"
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 9672
-          line: 72
+          offset: 10796
+          line: 73
           column: 1
         end:
-          offset: 10899
-          line: 72
+          offset: 12023
+          line: 73
           column: 1228
     - pointer: "/allocation_rules/0"
       rule_id: "support_operating"
       identity_kind: "explicit"
-      unit_id: "normative_16289"
+      unit_id: "normative_17418"
       source_span:
         start:
-          offset: 16402
-          line: 200
+          offset: 17531
+          line: 201
           column: 1
         end:
-          offset: 18979
-          line: 200
+          offset: 20108
+          line: 201
           column: 2578
     - pointer: "/allocation_rules/1"
       rule_id: "support_assets"
       identity_kind: "explicit"
-      unit_id: "normative_16289"
+      unit_id: "normative_17418"
       source_span:
         start:
-          offset: 18980
-          line: 201
+          offset: 20109
+          line: 202
           column: 1
         end:
-          offset: 20726
-          line: 201
+          offset: 21855
+          line: 202
           column: 1747
     - pointer: "/allocation_rules/2"
       rule_id: "support_transport"
       identity_kind: "explicit"
-      unit_id: "normative_16289"
+      unit_id: "normative_17418"
       source_span:
         start:
-          offset: 20727
-          line: 202
+          offset: 21856
+          line: 203
           column: 1
         end:
-          offset: 22182
-          line: 202
+          offset: 23311
+          line: 203
           column: 1456
     - pointer: "/allocation_rules/3"
       rule_id: "support_cleaning"
       identity_kind: "explicit"
-      unit_id: "normative_16289"
+      unit_id: "normative_17418"
       source_span:
         start:
-          offset: 22183
-          line: 203
+          offset: 23312
+          line: 204
           column: 1
         end:
-          offset: 23347
-          line: 203
+          offset: 24476
+          line: 204
           column: 1165
     - pointer: "/validation_rules/0"
       rule_id: "admissibility"
       identity_kind: "explicit"
-      unit_id: "normative_36222"
+      unit_id: "normative_37351"
       source_span:
         start:
-          offset: 36317
-          line: 237
+          offset: 37446
+          line: 238
           column: 1
         end:
-          offset: 36913
-          line: 237
+          offset: 38042
+          line: 238
           column: 597
     - pointer: "/validation_rules/1"
       rule_id: "identity_gate"
       identity_kind: "explicit"
-      unit_id: "normative_36222"
+      unit_id: "normative_37351"
       source_span:
         start:
-          offset: 36914
-          line: 238
+          offset: 38043
+          line: 239
           column: 1
         end:
-          offset: 37473
-          line: 238
+          offset: 38602
+          line: 239
           column: 560
     - pointer: "/validation_rules/2"
       rule_id: "closure"
       identity_kind: "explicit"
-      unit_id: "normative_36222"
+      unit_id: "normative_37351"
       source_span:
         start:
-          offset: 37474
-          line: 239
+          offset: 38603
+          line: 240
           column: 1
         end:
-          offset: 38009
-          line: 239
+          offset: 39138
+          line: 240
           column: 536
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 4560
+          offset: 4447
           line: 53
           column: 1
         end:
-          offset: 4581
+          offset: 4468
           line: 53
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_4560"
+      unit_id: "normative_4447"
       source_span:
         start:
-          offset: 4609
+          offset: 4496
           line: 57
           column: 1
         end:
-          offset: 5981
+          offset: 5868
           line: 64
           column: 248
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_16289"
+      unit_id: "normative_17418"
       source_span:
         start:
-          offset: 16289
-          line: 196
+          offset: 17418
+          line: 197
           column: 1
         end:
-          offset: 16329
-          line: 196
+          offset: 17458
+          line: 197
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_36222"
+      unit_id: "normative_37351"
       source_span:
         start:
-          offset: 36222
-          line: 233
+          offset: 37351
+          line: 234
           column: 1
         end:
-          offset: 36244
-          line: 233
+          offset: 37373
+          line: 234
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -818,5 +835,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:87ba075863a64abc40015d6a911758a1024cf48732584477fd5aff3fe6c43d89"
-  generated_content_sha256: "sha256:362939cea6c4f8def75edb0595eb0c48f93d48b032a1d12870c4f910e39bbc67"
+    sha256: "sha256:ef84442c9eeba65d3b0863a11e11508bd494eb9e24800306beaf23a4f978b49a"
+  generated_content_sha256: "sha256:26fd5ab46cb551edd6418d6168033a29c10c3cafff48c8e48892cfe5ce61dc26"

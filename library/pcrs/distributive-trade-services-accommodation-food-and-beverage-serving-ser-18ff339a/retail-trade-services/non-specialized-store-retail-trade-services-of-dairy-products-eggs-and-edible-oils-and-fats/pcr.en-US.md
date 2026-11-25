@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Ambient non-specialized store retail service for sealed glass-bottled refined sunflower oil
+# Ambient retail services for refined sunflower oil in sealed glass bottles
 
 ## 1. Scope and Applicability
 
@@ -21,7 +21,7 @@ This PCR defines the incremental retail service for one homogeneous oil/package/
 | classification_refs | CPC 3.0 62122; narrower: only the specified vegetable-oil retail route, not the whole subclass |
 | covered_products | Retail service for unopened 1000 mL nominal dark-green Marasca glass bottles of refined conventional sunflower seed oil, Helianthus annuus; sole ingredient sunflower oil; no added flavouring; actual bottle/cap/pourer/label specification recorded |
 | excluded_products | Oil manufacture, filling or repacking; crude/cold-pressed/high-oleic/mid-oleic oils; oil blends, other fats and oils; dairy, whey and eggs; oil-cake/residues; bulk dispensing; online ordering, delivery and refrigerated or heated merchandise holding |
-| representative_product | One kg net oil content successfully retailed in the specified sealed bottles; mass is a service-throughput coordinate, not a manufactured-oil reference flow |
+| representative_product | Ambient retail services for refined sunflower oil in sealed glass bottles; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Retailer receiving gate → manual trolley put-away → ambient steel shelf → customer self-selection → staffed POS checkout → accepted walk-in handover; no retailer vehicle leg after receipt |
 | market_state | Shelf-stable unopened liquid oil in intact food-contact glass packaging, cool/dry/dark to current supplier label; no universal temperature, shelf life or density assigned |
 
@@ -72,6 +72,7 @@ Declare every required qualifier in dataset metadata or equivalent fields. The s
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_gate | retail | Apply only to a walk-in non-specialized store with manual handling, natural ventilation, mains-powered lighting/POS, no HVAC, cold room, lift, standby generator or retailer transport after receipt. Verify every absence by dated equipment/route survey. Other actual equipment or exchanges require named atomic cards, collection protocols and bilingual projection before completeness; unknown presence is not absence. | jrc-retail-2013; un-cpc62122 |
 | oil_storage | retail | Keep unopened refined conventional sunflower oil and exact current package identity separate from crude, cold-pressed and fatty-acid variants. Record label-specific cool/dry/dark conditions, lot/date/closure integrity and measured dwell; manufacturer examples support feasibility only, not a mandatory temperature, density, shelf life or a universal packaging composition. | spack-refined-oil; spack-packaging |
 | merchandise_owner | retail; residual | Exclude background production, primary packaging and pre-receipt inbound delivery only for eventual qualified merchandise output or documented saleable stock carried forward. The service owns the same receiving-gate background for all irrecoverable loss, damage, theft and failed external retention and supplier returns until a signed continuing-responsibility transfer or verified future qualified resale assigns it once. Record recipient, state, receiving-gate burden owner and unique origin on each transfer; an unresolved transfer blocks completeness. Never assign waste merely because an order fails. | ghg-product-2011 |
@@ -838,6 +839,8 @@ Actual measured removed assembly and compatible treatment, disjoint from remaini
 | update_trigger | Supplier composition/package/storage change; channel/equipment/route change; meter/provider/lifetime revision; late acceptance/return or fate/responsibility correction |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

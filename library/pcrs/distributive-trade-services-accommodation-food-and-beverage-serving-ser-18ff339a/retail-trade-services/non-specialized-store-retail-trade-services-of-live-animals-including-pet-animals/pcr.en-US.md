@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail handover of weaned domestic guinea pigs
+# Retail handover services for weaned domestic guinea pigs
 
 ## 1. Scope and Applicability
 
@@ -21,7 +21,7 @@ This PCR covers the declared guinea-pig route only. Its reference is a retail se
 | classification_refs | CPC 3.0 62114; narrower |
 | covered_products | On-site retail service for weaned domestic guinea pigs (Cavia porcellus) in a non-specialized store, using dry hay, vitamin-C-fortified pellets and wood-shaving litter; customer collection. |
 | excluded_products | Other species, animal breeding, wholesale, specialist pet stores, slaughter, long-term boarding, home delivery, on-site pharmaceutical treatment, fresh-produce feeding, combustion heating and refrigerant cooling; an actual different route needs a separately reviewed inventory extension. |
-| representative_product | One accepted guinea-pig retail handover service; the animal itself is a separately traced traded product. |
+| representative_product | Retail handover services for weaned domestic guinea pigs; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Reception and identity checks; temporary dry-feed holding, feeding and care; cleaned reusable housing with fans/resistance heating where needed; purchaser suitability check and care information; accepted collection and return-window closure. |
 | market_state | Live, weaned, identified, fit for transfer under applicable local requirements; no numerical age, weight, residence duration or welfare compliance is assumed. |
 
@@ -57,6 +57,7 @@ This PCR covers the declared guinea-pig route only. Its reference is a retail se
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope | all processes | Include receipt checks, every holding day including weekends, care, hygiene, enclosure wear, attributed store utilities, final handover and post-return repeat care through cohort closure. Animal reproduction and successful animals upstream production are outside this incremental retail-service boundary; retain their product links. |  |
 | loss_background | animal background responsibility | Allocate upstream production of dead or irrecoverably lost acquired animals to loss_animal input L / N. Link N successful animals separately in the downstream animal-plus-retail system, exactly once each, with their upstream production and delivery through signed in-store receipt. For L, use a delivered-animal background including that delivery once; if its producer dataset ends earlier, attach the missing transport within that background before linking loss_animal. Intact supplier returns retain their product background with the identified supplier; prove continuing responsibility and include all store custody and return-operation burdens here. Unknown disappearance is unresolved L, never zero. |  |
 | exclusions | gate and supporting datasets | Supplier-to-store animal delivery before signed receipt is part of the separately linked delivered-animal background (including L under loss_background), while customer travel/use and final pet end-of-life are outside this store-gate operating service and must be disclosed and linked separately when the downstream study includes them. Consumable production, enclosure manufacture and treatment after waste handover require compatible upstream/downstream datasets; actual treatment emissions are not also store emissions. Building construction and employee commuting are excluded and disclosed, not claimed negligible. |  |
@@ -465,6 +466,8 @@ The output is one completed retail handover service for an identified individual
 | update_trigger | Species, feed, housing, heating/cooling, disinfectant, supplier scope, return policy, waste route or authoritative evidence changes; correction after late returns. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

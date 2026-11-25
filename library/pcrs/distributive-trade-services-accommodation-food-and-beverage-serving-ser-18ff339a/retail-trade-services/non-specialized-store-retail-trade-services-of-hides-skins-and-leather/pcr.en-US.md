@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized in-store retail service for whole dry-salted bovine raw hides
+# Retail services for whole untanned dry-salted bovine raw hides
 
 ## 1. Scope and Applicability
 
@@ -23,7 +23,7 @@ Exclude fresh, wet-salted, chilled or frozen routes, other species and furskins,
 | classification_refs | CPC 3.0 62115; narrower |
 | covered_products | Non-specialized in-store final own-use retail service for whole dry-salted bovine raw hides |
 | excluded_products | Tanned leather; leather goods; wholesale; delivery; on-site preservation/processing; other species/states |
-| representative_product | Service for final retained acceptance of one whole hide in one declared configuration pool |
+| representative_product | Retail services for whole untanned dry-salted bovine raw hides; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Preserved-hide receipt → identity and grade check → passive dry holding → manual wrapping and in-store handover → returns and final-fate reconciliation |
 | market_state | Untanned; dry-salted; whole; hair, salt and moisture states documented; in-store final own use |
 
@@ -72,6 +72,7 @@ Declare every required qualifier in the actual dataset. The service-flow UUID re
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | `boundary_receipt` | service; lost_hide_supply; discarded_hide; receipt_board | At the same receiving gate, fix the goods-system owner of production, preservation, supplier packing and inbound transport for every hide. Successful/resold goods retain that owner; do not add provision for every input hide to this service. Service-caused irrecoverable losses transfer that original-gate background once through lost_hide_supply, including the matched inbound transport. Goods supplier returns require named continuing background ownership and verified fate; a credit or a refund does not prove recovery. | ghg-product-2011 |
 | `boundary_terminal` | all inventory rows | Include all service operation, hygiene, packing, actual maintenance, relevant complete-asset manufacture/installation and terminal responsibility. Treatment providers begin at measured handover and identify collection/transport and treatment exactly once. Supplier datasets for assets exclude operation, replacement and end-of-life represented here. | jrc-retail-2013 |
 | `boundary_screen` | all inventory rows | Screen utilities, refrigeration, combustion, chemical/pest treatment, transport, drainage, direct emissions, incoming packaging and all assets with site inspection, contracts and ledgers for the full pool. Only evidenced absence permits conditional exclusion; unknowns require collection. Actual exchanges outside named cards require bilingual atomic extension before dataset completeness. | jrc-retail-2013 |
@@ -592,6 +593,8 @@ Measured terminal carrier of the one physically mixed shell demolition carrier w
 | update_trigger | Changes in specification, species, preservation, channel, facilities, energy, packing, hygiene, asset life, returns/fate or background responsibility; late events and new evidence |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

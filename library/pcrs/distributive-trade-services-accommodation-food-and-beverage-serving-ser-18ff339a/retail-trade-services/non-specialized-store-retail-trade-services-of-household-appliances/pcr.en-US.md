@@ -5,11 +5,11 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Sealed HD9350/90 electric-kettle store-pickup retail service
+# Pickup retail services for original-box household electric kettles
 
 ## 1. Scope and Applicability
 
-This PCR defines one explicitly partial incremental retail-operation module for a homogeneous lot of new Philips HD9350/90 1.7 L mains electric kettles, in their intact sealed original supplier boxes, received at a non-specialized store and physically collected there by the customer. Eligibility requires actual model/market variant, seal, complete original configuration, non-specialized channel and ambient storage evidence. The 2023 manufacturer specification identifies a kettle with separate 360-degree base, cord, removable filter, lid and controller; stainless-steel body is not a complete pure-steel appliance inventory. This is a narrower case of CPC 3.0 62144, whose explanatory note refers to goods of group 448; it does not cover that entire group.
+This PCR defines an explicitly partial incremental retail module for complete new mains-powered household electric kettles in intact sealed original boxes, received by non-specialized stores and collected physically by customers. Any manufacturer/model within this family may qualify with its own actual regional supply configuration, lot, closure, complete BOM and ambient-storage evidence. Verify the kettle body, actual base and power connection, controls/lid and any supplied filter/accessories/instructions as one original supplier package; the manufacturer example is not a class-wide component list or LCI. Stainless appearance does not establish a pure-steel inventory. This service remains a narrower subset of the appliance category.
 
 Exclude installed or delivered appliances, loose spare parts, refrigerators, gas appliances, rechargeable/battery appliances, opened/repacked boxes, used goods, active display/boiling tests, repair, installation and consumer use. No demonstration kettle, boiling water, kettle washing or rated-power energy estimate belongs to this route. Counter visual inspection is of the closed box and labels only. Any opening, damage that changes the carrier configuration, test, repackaging, added bag/printed receipt, refrigerant plant or fuel combustion requires a concrete state-specific extension and bilingual cards before completeness; absence must be evidenced, never inferred from silence. Necessary support infrastructure is excluded only as the explicitly named modules governed by completion_modules, not as zero burdens.
 
@@ -19,9 +19,9 @@ Exclude installed or delivered appliances, loose spare parts, refrigerators, gas
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-household-appliances |
 | classification_refs | CPC 3.0 62144; narrower |
-| covered_products | Sealed new complete HD9350/90 original-box customer pickup service |
+| covered_products | Sealed new complete household electric kettle original-box customer pickup service |
 | excluded_products | Exclude installed or delivered appliances, loose spare parts, refrigerators, gas appliances, rechargeable/battery appliances, opened/repacked boxes, used goods, active display/boiling tests, repair, installation and consumer use. No demonstration kettle, boiling water, kettle washing or rated-power energy estimate belongs to this route. Counter visual inspection is of the closed box and labels only. Any opening, damage that changes the carrier configuration, test, repackaging, added bag/printed receipt, refrigerant plant or fuel combustion requires a concrete state-specific extension and bilingual cards before completeness; absence must be evidenced, never inferred from silence. Necessary support infrastructure is excluded only as the explicitly named modules governed by completion_modules, not as zero burdens. |
-| representative_product | HD9350/90 1.7 L 220–240 V electric kettle; original complete sealed configuration |
+| representative_product | Pickup retail services for original-box household electric kettles; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receive closed box → ambient rack custody → closed-box visual check → qualified physical customer pickup |
 | market_state | New, unpowered and unopened; no added retail packaging or printing |
 
@@ -38,11 +38,11 @@ Exclude installed or delivered appliances, loose spare parts, refrigerators, gas
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Sealed HD9350/90 store-pickup retail service |
+| Reference product flow | Sealed household electric kettle store-pickup retail service |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | actual HD9350/90 market variant and supplier lot; complete original device/base/cord/filter/accessory and package BOM version; seal and unpowered unopened state; non-specialized store and ambient pickup route; receiving gate and original source IDs; prospective pool dates and final acceptance/revocation cutoff; actual meter and support-module coverage; goods and held-waste custody and background S/F/O/T ledger; electricity provider geography voltage and losses |
+| Required qualifiers | actual household electric kettle market variant and supplier lot; complete original device/base/cord/filter/accessory and package BOM version; seal and unpowered unopened state; non-specialized store and ambient pickup route; receiving gate and original source IDs; prospective pool dates and final acceptance/revocation cutoff; actual meter and support-module coverage; goods and held-waste custody and background S/F/O/T ledger; electricity provider geography voltage and losses |
 
 ## 4. Measurement and Unit Rules
 
@@ -67,7 +67,8 @@ Exclude installed or delivered appliances, loose spare parts, refrigerators, gas
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | retail; failures | Require closed original boxes of one evidenced HD9350/90 market configuration. Complete original package includes the entire kettle, base, cord, filter, control and lid assemblies, all supplied accessories/instructions and every actual original packaging component. Supplier BOM/source boundary must confirm this configuration; catalogue dimensions and recycled-content claims cannot establish masses or production vectors. Never split the original source vector by arbitrary component mass or count fractions. | philips-hd9350-spec |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | retail; failures | Require closed original boxes of one evidenced household electric kettle market configuration. Complete original package includes the entire kettle, base, cord, filter, control and lid assemblies, all supplied accessories/instructions and every actual original packaging component. Supplier BOM/source boundary must confirm this configuration; catalogue dimensions and recycled-content claims cannot establish masses or production vectors. Never split the original source vector by arbitrary component mass or count fractions. | philips-hd9350-spec |
 | service_gate | pickup_service | Start at documented store receipt of the closed box; finish at actual physical handover plus qualified acceptance of that same original ID. Q counts distinct finally valid original IDs, with seal, correct SKU and complete supplier configuration warranted by traceable supplier records; no internal opening is presumed. Repeated handovers and resale of the same returned ID count once. Revocation removes its prior acceptance even without physical return; a financial discount/refund alone does not remove still-valid acceptance. Retention without qualified acceptance is not service. | retail-foreground-protocol |
 | custody | retail; failures | Maintain a goods-only count balance: G_open + I + R = H + U + K + L + G_close, using gross customer physical handovers H and gross physical returns R, supplier handover U, internal condemnation K and actual external custody loss L. K transfers goods into held-waste stock, not outside custody. Separately W_open + K = D + W_close for intact whole-package waste counts; dispatch D removes held waste once, not goods twice. Track measured whole-package kg separately from counts; no service denominator is a stock-balance term. Unknown discrepancy or external recipient/state blocks physical completeness. Any observed external custody-loss L event lies outside these supplier/customer state-specific cards and requires an exact recipient/state extension before completeness; retain the entire original pool and its loss burden, never delete that cohort or relabel it as a customer retention. | retail-foreground-protocol |
 | background_ownership | failed_original_package | At the identical receiving gate, assign each original supplier source once to S (final accepted goods), F (retailer-responsible irreversible failure), O (still open/held) or T (named continuing custodian/background owner), with S+F+O+T conserving each original source. Same-item returns replace prior states. The incremental service carries only F/Q of complete original manufacturing plus inbound-to-receiving transport in failed_original_package; S is excluded and downstream product systems must restore its exact source vector S/Q. O remains pending and T has named continuing responsibility including supplier return. Background reassignment creates no physical movement. No avoided-production credit on supplier returns. An unauthorized permanent demonstrator retains the SAME original source as T to the named asset; never F plus a second full new asset; such events block this no-demo route pending extension. | retail-foreground-protocol |
@@ -107,11 +108,11 @@ Metered POS, lighting and fan operation assigned by electricity_calc; measured r
 
 ##### Product flows
 
-###### Sealed HD9350/90 store-pickup retail service (`pickup_service`)
+###### Sealed household electric kettle store-pickup retail service (`pickup_service`)
 
 1 Item(s) per reference flow, from Q by accepted_count and cp_custody. This is the service output, not merchandise manufacturing.
 
-- Selected flow: Sealed HD9350/90 store-pickup retail service
+- Selected flow: Sealed household electric kettle store-pickup retail service
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Foreground record (`foreground_record`)
@@ -128,11 +129,11 @@ Metered POS, lighting and fan operation assigned by electricity_calc; measured r
 
 ##### Product flows
 
-###### Complete sealed original HD9350/90 appliance package at store receiving gate (`failed_original_package`)
+###### Complete sealed original household electric kettle appliance package at store receiving gate (`failed_original_package`)
 
 Use failure_source_count_per_service from original_background with exact supplier V_s; whole original kettle/base/cord/filter/accessories/instructions/package manufacturing plus inbound transport. Only F responsibility, not all I or supplier-return T. This is source-equivalent background input; gross merchandise movements remain cp_custody, not duplicate manufacturing exchanges.
 
-- Selected flow: Complete sealed original HD9350/90 appliance package at store receiving gate
+- Selected flow: Complete sealed original household electric kettle appliance package at store receiving gate
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Measured original-source failure package count per reference flow.
 - Value mode: Foreground record (`foreground_record`)
@@ -147,11 +148,11 @@ Use failure_source_count_per_service from original_background with exact supplie
 
 ##### Product flows
 
-###### Intact sealed original HD9350/90 appliance package handed to supplier (`supplier_handoff_package`)
+###### Intact sealed original household electric kettle appliance package handed to supplier (`supplier_handoff_package`)
 
 Measured gross actual supplier-handoff U/Q under physical_transfers. Keep original ID, actual recipient, intact sealed full package state and same-gate source responsibility T in the ledger. This is a physical product output, not a second manufacturing vector, automatic credit or invented movement from a background reassignment.
 
-- Selected flow: Intact sealed original HD9350/90 appliance package handed to supplier
+- Selected flow: Intact sealed original household electric kettle appliance package handed to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Measured state-specific physical original-package count per reference flow.
 - Value mode: Foreground record (`foreground_record`)
@@ -162,11 +163,11 @@ Measured gross actual supplier-handoff U/Q under physical_transfers. Keep origin
 - Collection protocol: `cp_supplier`
 - Sources: `retail-foreground-protocol`
 
-###### Intact sealed original HD9350/90 appliance package retained by unaccepted customer (`external_retained_package`)
+###### Intact sealed original household electric kettle appliance package retained by unaccepted customer (`external_retained_package`)
 
 Measure X_final/Q under physical_transfers for actual finally unaccepted external intact original packages, with identified recipient, seal/full configuration evidence, original gross handover event and no physical return. This state replaces any prior accepted disposition of that SAME original ID/event; acceptance revocation creates no second movement. Named F or T background responsibility follows original_background separately; neither creates avoided-production credit. Unknown recipient or opened/broken state blocks this card and completeness.
 
-- Selected flow: Intact sealed original HD9350/90 appliance package retained by unaccepted customer
+- Selected flow: Intact sealed original household electric kettle appliance package retained by unaccepted customer
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Measured state-specific physical original-package count per reference flow.
 - Value mode: Foreground record (`foreground_record`)
@@ -179,11 +180,11 @@ Measure X_final/Q under physical_transfers for actual finally unaccepted externa
 
 ##### Waste flows
 
-###### Intact sealed complete HD9350/90 appliance-box waste (`sealed_package_waste`)
+###### Intact sealed complete household electric kettle appliance-box waste (`sealed_package_waste`)
 
 Use actual whole_carrier_kg_per_service from waste_dispatch; includes complete original device and original package once. Condemnation stock is not dispatch; provider scope must match actual intact whole carrier.
 
-- Selected flow: Intact sealed complete HD9350/90 appliance-box waste
+- Selected flow: Intact sealed complete household electric kettle appliance-box waste
 - Flow property / unit: Mass / kg
 - Amount rule: Measured dispatched whole-carrier net kg per reference flow.
 - Value mode: Foreground record (`foreground_record`)
@@ -266,6 +267,8 @@ Use actual whole_carrier_kg_per_service from waste_dispatch; includes complete o
 | update_trigger | Actual variant/package/channel change; new exchange; late acceptance/return; asset lifetime or provider-boundary revision |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

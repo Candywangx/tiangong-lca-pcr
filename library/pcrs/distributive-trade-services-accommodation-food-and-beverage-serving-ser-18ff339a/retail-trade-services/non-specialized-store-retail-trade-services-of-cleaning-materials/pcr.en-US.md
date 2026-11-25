@@ -6,11 +6,11 @@ language: en-US
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental walk-in retail service for Cif Professional Cream Cleaner Lemon 7508636 original 2 L bottles
+# In-store retail services for original bottles of abrasive hard-surface scouring cream
 
 ## 1. Scope and Applicability
 
-This candidate defines one original 2 L micro-particle scouring-cream bottle retail service, not cleaning performance. CPC35334 is within3533 and the62176 commodity boundary. Verify the actual abrasive formulation and retail channel before applicability; complete SERVICE requires every real atomic source and identity.
+This candidate defines original sealed abrasive hard-surface scouring-cream bottles retail service, not cleaning performance. CPC35334 is within3533 and the62176 commodity boundary. Verify the actual abrasive formulation and retail channel before applicability; complete SERVICE requires every real atomic source and identity.
 
 ## 2. Product Category Identity
 
@@ -18,9 +18,9 @@ This candidate defines one original 2 L micro-particle scouring-cream bottle ret
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-cleaning-materials |
 | classification_refs | CPC3.0 62176; External accepted mapping/ADR is authoritative; proposed narrower is not an acceptance decision. |
-| covered_products | Incremental walk-in retail service for Cif Professional Cream Cleaner Lemon 7508636 original 2 L bottles |
-| excluded_products | Other SKU/concentration/state; specialized stores; online/delivery; refill; merchandise use/manufacturing |
-| representative_product | Cif Professional Cream Cleaner Lemon 7508636; original 2 L bottle; hard-surface micro-particle scouring cream; actual lot complete formulation/packaging BOM independently verified before use. |
+| covered_products | Incremental walk-in retail services for abrasive hard-surface scouring cream in original sealed bottles; actual complete formulation and package configuration fixed per homogeneous pool. |
+| excluded_products | Nonabrasive dissolved-surfactant washing preparations; other physical states; specialist stores; online/delivery; refill; merchandise use/manufacturing. |
+| representative_product | In-store retail services for original bottles of abrasive hard-surface scouring cream; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Mixed-assortment physical supermarket, walk-in/ambient/intact counter handover |
 | market_state | Abrasive cream suspension in a complete original bottle; not pure surfactant, dishwashing detergent, water, dry powder or abrasive-particle mass alone. |
 
@@ -37,7 +37,7 @@ This candidate defines one original 2 L micro-particle scouring-cream bottle ret
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Incremental walk-in retail service for Cif Professional Cream Cleaner Lemon 2 L original bottles |
+| Reference product flow | Incremental walk-in retail service for abrasive hard-surface scouring cream original sealed bottles |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -66,7 +66,8 @@ This candidate defines one original 2 L micro-particle scouring-cream bottle ret
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | retail; hygiene | Admit only Diversey/Pro Formula Cif Professional Cream Cleaner Lemon 7508636 original 2 L bottle, one actual complete formulation/closure/label/liner lot per pool. Manufacturer page establishes hard-surface cleaning micro-particles; its linked 2021-09-19 v05.2 SDS lists calcium carbonate but is not a complete current-batch formula. Verify actual current label/SDS and supplier full BOM evidence of scouring particles; never adopt old SDS percentages or nominal density. A nonabrasive washing preparation containing only dissolved surfactants is outside this route and needs classification review. Nominal 2 L, ingredient ranges, marketing and recommended use never establish measured kg/dose or compliance limits. Require actual store, complete original pack, current use and classification compatibility. | un-cpc62176; un-cpc35334; cif-product; cif-sds |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | retail; hygiene | Admit only abrasive hard-surface scouring cream original sealed bottle, one actual complete formulation/closure/label/liner lot per pool. Manufacturer page establishes hard-surface cleaning micro-particles; its linked 2021-09-19 v05.2 SDS lists calcium carbonate but is not a complete current-batch formula. Verify actual current label/SDS and supplier full BOM evidence of scouring particles; never adopt old SDS percentages or nominal density. A nonabrasive washing preparation containing only dissolved surfactants is outside this route and needs classification review. Nominal 2 L, ingredient ranges, marketing and recommended use never establish measured kg/dose or compliance limits. Require actual store, complete original pack, current use and classification compatibility. | un-cpc62176; un-cpc35334; cif-product; cif-sds |
 | channel_gate | retail | Require actual mixed-assortment physical supermarket planogram, store address and timestamped receipts for this SKU. The manufacturer product page and its distributor links establish a real product only, not an eligible mixed physical branch, local stock, purchase or customer use. Walk-in selection, ambient intact storage and counter handover only; online fulfilment, refill/decanting, demonstrations, dilution for sale, customer delivery and detergent manufacturing are excluded routes. Verify dedicated route has no combustion or refrigerant-bearing equipment; shared facility HVAC remains a required completion module. Unknown route evidence blocks applicability. | cif-sds; cif-product |
 | core_boundary | retail; hygiene | This is a partial incremental core from inspected store-receiving gate to qualified physical counter acceptance, including rehandling, reverse events, dedicated metered electricity, failed-original background and the specified spill-tray hygiene. Successful merchandise manufacturing and its upstream transport belong to downstream GOODS, excluded from SERVICE. The necessary facility, ICT, network, payment, security, administration, other cleaning, capital and transport modules must be completed under module_completion before complete retail SERVICE is claimed. Actual Waste outputs always require treatment; only customer_pack and supplier_pack and transfer_pack and external_pack are physical non-characterized custody satellites. failed_original is an actual characterized Product input. | jrc-retail; ghg-product |
 | source_ownership | failed_original; customer_pack; supplier_pack; transfer_pack; external_pack | For every original homogeneous whole-pack manufacturing plus inbound-transport source vector V_s at receiving, conserve original unit IDs exactly in S/F/T/O: S final accepted customer goods; F failed-source responsibility in this SERVICE; T named continuing owner; O unresolved/open stock. Rehandling/resale never repeats V_s. Physical supplier return needs actual signed receiving owner and background continuation, otherwise retain O. Theft, confirmed missing and unopened external failure carry original-source F unless a documented continuing T accepts it. Revoked acceptance without physical return transfers the original event from S to F or evidenced T; money-only adjustment with acceptance intact leaves S. Full-pack source F follows its original source once even if several later physical waste carriers descend from it; do not duplicate original backgrounds per carrier. If component responsibilities differ, replace the whole-pack input by verified component-quantity Product cards and supplier component vectors conserving V_s; mass fractions never split an environmental vector. |  |
@@ -107,13 +108,13 @@ The selected flow uses the single Net calorific value energy property. The inven
 - Collection protocol: `cp_energy`
 - Sources:
 
-###### Cif Professional Cream Cleaner Lemon abrasive scouring cream7508636, complete original2L filled bottle (`failed_original`)
+###### abrasive hard-surface scouring cream, complete original sealed filled bottle (`failed_original`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 N_F/Q under failed_source; whole-source manufacturing plus receiving-gate transport, never successful S.
 
-- Selected flow: Cif Professional Cream Cleaner Lemon abrasive scouring cream7508636, complete original2L filled bottle
+- Selected flow: abrasive hard-surface scouring cream, complete original sealed filled bottle
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q
 - Value mode: `calculated_value`
@@ -128,13 +129,13 @@ N_F/Q under failed_source; whole-source manufacturing plus receiving-gate transp
 
 ##### Product flows
 
-###### Incremental walk-in retail service for Cif Professional Cream Cleaner Lemon 2 L original bottles (`service_output`)
+###### Incremental walk-in retail service for abrasive hard-surface scouring cream original sealed bottles (`service_output`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 1 Item(s) of reference flow; Q under service_count.
 
-- Selected flow: Incremental walk-in retail service for Cif Professional Cream Cleaner Lemon 2 L original bottles
+- Selected flow: Incremental walk-in retail service for abrasive hard-surface scouring cream original sealed bottles
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `fixed_value`
@@ -145,13 +146,13 @@ This card represents only this actual exchange; retain raw quantity, attribution
 - Collection protocol: `cp_goods`
 - Sources:
 
-###### Intact original Cif Professional7508636 2L filled bottle initially accepted at customer handover (`customer_pack`)
+###### Intact original abrasive scouring cream 2L filled bottle initially accepted at customer handover (`customer_pack`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual gross initially-accepted intact customer handover event units/Q; disjoint from external_pack; custody satellite only under physical_ledgers.
 
-- Selected flow: Intact original Cif Professional7508636 2L filled bottle initially accepted at customer handover
+- Selected flow: Intact original abrasive scouring cream 2L filled bottle initially accepted at customer handover
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: X_customer_pack/Q
 - Value mode: `calculated_value`
@@ -162,13 +163,13 @@ Actual gross initially-accepted intact customer handover event units/Q; disjoint
 - Collection protocol: `cp_goods`
 - Sources:
 
-###### Intact original Cif Professional7508636 2L filled bottle physically returned to supplier (`supplier_pack`)
+###### Intact original abrasive scouring cream 2L filled bottle physically returned to supplier (`supplier_pack`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual intact supplier-return units/Q; source responsibility separately under source_ownership.
 
-- Selected flow: Intact original Cif Professional7508636 2L filled bottle physically returned to supplier
+- Selected flow: Intact original abrasive scouring cream 2L filled bottle physically returned to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: X_supplier_pack/Q
 - Value mode: `calculated_value`
@@ -179,13 +180,13 @@ Actual intact supplier-return units/Q; source responsibility separately under so
 - Collection protocol: `cp_goods`
 - Sources:
 
-###### Intact original Cif Professional7508636 2L filled bottle handed to another store (`transfer_pack`)
+###### Intact original abrasive scouring cream 2L filled bottle handed to another store (`transfer_pack`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual intact interstore-handover units/Q; named owner and original source retained.
 
-- Selected flow: Intact original Cif Professional7508636 2L filled bottle handed to another store
+- Selected flow: Intact original abrasive scouring cream 2L filled bottle handed to another store
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: X_transfer_pack/Q
 - Value mode: `calculated_value`
@@ -196,13 +197,13 @@ Actual intact interstore-handover units/Q; named owner and original source retai
 - Collection protocol: `cp_goods`
 - Sources:
 
-###### Intact original Cif Professional7508636 2L filled bottle handed to external recipient without initial qualified acceptance (`external_pack`)
+###### Intact original abrasive scouring cream 2L filled bottle handed to external recipient without initial qualified acceptance (`external_pack`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual gross intact handover-event units lacking initial qualified acceptance/Q; disjoint from customer_pack. Revocation without new movement creates no additional physical output; retain actual recipient and subsequent state history.
 
-- Selected flow: Intact original Cif Professional7508636 2L filled bottle handed to external recipient without initial qualified acceptance
+- Selected flow: Intact original abrasive scouring cream 2L filled bottle handed to external recipient without initial qualified acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: X_external_pack/Q
 - Value mode: `calculated_value`
@@ -215,13 +216,13 @@ Actual gross intact handover-event units lacking initial qualified acceptance/Q;
 
 ##### Waste flows
 
-###### Damaged Cif Professional7508636 original2L bottle containing residual liquid and original closure (`failed_bottle`)
+###### Damaged abrasive scouring cream original2L bottle containing residual liquid and original closure (`failed_bottle`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual direct dispatched whole wet carrier net kg/Q under direct_quantities and state_gate; treatment included by matched receiver dataset.
 
-- Selected flow: Damaged Cif Professional7508636 original2L bottle containing residual liquid and original closure
+- Selected flow: Damaged abrasive scouring cream original2L bottle containing residual liquid and original closure
 - Flow property / unit: Mass / kg
 - Amount rule: X_failed_bottle/Q
 - Value mode: `calculated_value`
@@ -238,13 +239,13 @@ Actual direct dispatched whole wet carrier net kg/Q under direct_quantities and 
 
 ##### Product flows
 
-###### Cif Professional Cream Cleaner Lemon abrasive scouring cream7508636, complete original2L filled bottle (`cleaner_pack`)
+###### abrasive hard-surface scouring cream, complete original sealed filled bottle (`cleaner_pack`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Attributed janitorial complete packs first opened/Q, under cleaning_origin; separate actual purchase IDs from failed_original.
 
-- Selected flow: Cif Professional Cream Cleaner Lemon abrasive scouring cream7508636, complete original2L filled bottle
+- Selected flow: abrasive hard-surface scouring cream, complete original sealed filled bottle
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: X_cleaner_pack/Q
 - Value mode: `calculated_value`
@@ -293,13 +294,13 @@ Attributed dry first-use wipe kg/Q under direct_quantities; actual cellulose com
 
 ##### Waste flows
 
-###### Aqueous utility-sink spill-tray rinsate containing Cif Professional formulation and measured soil (`rinsate`)
+###### Aqueous utility-sink spill-tray rinsate containing abrasive scouring cream formulation and measured soil (`rinsate`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual direct whole-liquid discharged net kg/Q; original formulation kg is an independent source balance, not this amount multiplier.
 
-- Selected flow: Aqueous utility-sink spill-tray rinsate containing Cif Professional formulation and measured soil
+- Selected flow: Aqueous utility-sink spill-tray rinsate containing abrasive scouring cream formulation and measured soil
 - Flow property / unit: Mass / kg
 - Amount rule: X_rinsate/Q
 - Value mode: `calculated_value`
@@ -310,13 +311,13 @@ Actual direct whole-liquid discharged net kg/Q; original formulation kg is an in
 - Collection protocol: `cp_hygiene`
 - Sources:
 
-###### Used wet cellulose spill wipe containing Cif Professional formulation (`wet_wipe`)
+###### Used wet cellulose spill wipe containing abrasive scouring cream formulation (`wet_wipe`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual dispatched complete wet wipe net kg/Q; retain actual water/dirt/formulation constituents under state_gate.
 
-- Selected flow: Used wet cellulose spill wipe containing Cif Professional formulation
+- Selected flow: Used wet cellulose spill wipe containing abrasive scouring cream formulation
 - Flow property / unit: Mass / kg
 - Amount rule: X_wet_wipe/Q
 - Value mode: `calculated_value`
@@ -327,13 +328,13 @@ Actual dispatched complete wet wipe net kg/Q; retain actual water/dirt/formulati
 - Collection protocol: `cp_hygiene`
 - Sources:
 
-###### Used original Cif Professional7508636 2L janitorial bottle with closure and liquid residue (`used_bottle`)
+###### Used original abrasive scouring cream 2L janitorial bottle with closure and liquid residue (`used_bottle`)
 
 This card represents only this actual exchange; retain raw quantity, attribution and final normalization under the linked protocol and rules, with evidenced occurrence/absence.
 
 Actual dispatched whole used bottle and closure net kg/Q, including measured residue; no separate duplicate residue output.
 
-- Selected flow: Used original Cif Professional7508636 2L janitorial bottle with closure and liquid residue
+- Selected flow: Used original abrasive scouring cream 2L janitorial bottle with closure and liquid residue
 - Flow property / unit: Mass / kg
 - Amount rule: X_used_bottle/Q
 - Value mode: `calculated_value`
@@ -372,7 +373,7 @@ Actual dispatched whole used bottle and closure net kg/Q, including measured res
 | service_count | service_output | Q=count distinct original IDs with final-valid qualified acceptance at cutoff, after linked late-return/revocation replacements; count each ID once even after resale, never subtract revocations again from an already final-valid set. Gross handover, refund, physical return, rehandling and final validity are separate records. Qualify only correct SKU/lot intact closed bottle, correct physical counter recipient and accepted quantity/condition; no customer possession alone. Late returns revise the original pool numerator, denominator and S/F/T/O versions at actual event dates; new pools do not repeat allocations. | original_id; final_acceptance; cutoff; return_link; prior_version; pool_id | Q |  |
 | physical_ledgers | customer_pack; supplier_pack; transfer_pack; external_pack; failed_bottle | Goods-only Count balance: G_close=G_open+receipts+physical_customer_returns-gross_customer_handover-supplier_handover-internal_handover-condemnation_count-confirmed_missing_count+signed_goods_residual. gross_customer_handover=initially_accepted_handover_count+never_accepted_at_handover_count, disjoint immutable actual event IDs. customer_pack reports the former and external_pack the latter, never a subset duplicated in both. Later acceptance/revocation or return changes final service/source responsibility, not the original physical event direction or initial handover category. Revocation without movement reclassifies original event only. Condemnation changes goods into held waste internally. Independent held-waste kg: W_close=W_open+condemned_actual_kg+other_waste_received_kg-dispatched_actual_kg-confirmed_missing_waste_kg+signed_waste_residual. Count is never kg. Link condemnation IDs to separately weighed whole carrier kg; dispatch directly uses actual consignment net kg, never deduct opening/closing or retained stock again. Signed unknown residuals remain investigated and block completeness. | G_open; receipts; physical_customer_returns; gross_customer_handover; initially_accepted_handover_count; never_accepted_at_handover_count; supplier_handover; internal_handover; condemnation_count; confirmed_missing_count; signed_goods_residual; W_open; condemned_actual_kg; other_waste_received_kg; dispatched_actual_kg; confirmed_missing_waste_kg; signed_waste_residual | G_close; W_close |  |
 | failed_source | failed_original | N_F=sum_s original whole-bottle units assigned final F; input amount=N_F/Q. Bind the actual supplier full-formulation/full-container V_s once per original unit, including original receiving-gate inbound transport by transport_ownership. No pure surfactant or net-liquid-kg proxy for a complete pack. Successful S excluded from SERVICE; downstream GOODS may add N_S*V_s/Q once; T retains named responsibility and O retains open source. Failed original never disappears through satellite exclusions. | original_id; V_s; N_F; N_S; Q; attribution_level; owner_id; pool_id; version | failed_original |  |
-| cleaning_origin | cleaner_pack; wash_water; dry_wipe; rinsate; wet_wipe; used_bottle | For EACH original source j separately retain source_class=goods_F or janitorial; a spilled merchandise source retains its same failed_original parent and receives no second cleaner_pack background. Janitorial cleaner uses different purchased original IDs from merchandise, even if the same7508636 formula is chosen for utility-sink washing of spill trays. Never convert retail goods to janitorial stock within this route. Charge the complete original janitorial pack manufacturing plus inbound source once to its first-opening event pool; shared first-opening events use that batch measured wetted tray-area shares summing1. Later withdrawals/reuse retain the same source and do not repeat manufacture/inbound. Unused closed stock/returns/transfers carry unassigned source. Independently allocate each source original liquid m_src_j kg to actual exclusive final destinations; link dispatched_bottle_residue to failed_bottle for goods_F and used_bottle for janitorial: retained unused; retained in wet wipe; retained in bottle; dispatched bottle residue; dispatched wet wipe; dispatched rinsate; verified outside species transfer. At cutoff classify each source ID and measured source portion once: retained_unused is original liquid stock only in never-used, undamaged, factory-sealed original bottles; retained_bottle is original liquid residue retained on site in already-opened or damaged original bottles, whether or not dosed yet, excluding retained_unused. Record each bottle initial seal, first opening, damage and cutoff state and original source measurement ID; the same measured source portion enters only one cutoff state. Unknown seal/state blocks completeness; a state transition replaces the old state for the same source and measured portion, never retains both old and new buckets. Used is intermediate: when used becomes rinsed replace its state, do not add a second destination. Use each source cumulative ledger through cutoff: m_src_j=retained_unused+retained_wipe+retained_bottle+dispatched_bottle_residue+dispatched_wipe_origin+dispatched_rinsate_origin+verified_species_transfer+source_residual, keeping original quantity and all historical destinations/version corrections; downstream period withdrawals do not create a new original source. New rinse water/dirt/dry wipe are not m_src_j. Require source-origin mass assay/tracer/validated actual dosing-transfer record; do not infer original formulation kg from whole wet carrier kg or label active%. No signed source residual may be hidden. Actual wet carrier kg, source-origin kg and full-pack count are distinct. | bottle_initial_seal_state; first_open_at; damaged_at; cutoff_state; state_transition_id; source_measurement_id; measured_source_portion_id; retained_origin_kg; source_class; source_original_id; janitorial_original_id; first_open_id; m_src_j; retained_unused; retained_wipe; retained_bottle; dispatched_bottle_residue; dispatched_wipe_origin; dispatched_rinsate_origin; verified_species_transfer; source_residual; Q | source_origin_balance |  |
+| cleaning_origin | cleaner_pack; wash_water; dry_wipe; rinsate; wet_wipe; used_bottle | For EACH original source j separately retain source_class=goods_F or janitorial; a spilled merchandise source retains its same failed_original parent and receives no second cleaner_pack background. Janitorial cleaner uses different purchased original IDs from merchandise, even if the same formula is chosen for utility-sink washing of spill trays. Never convert retail goods to janitorial stock within this route. Charge the complete original janitorial pack manufacturing plus inbound source once to its first-opening event pool; shared first-opening events use that batch measured wetted tray-area shares summing1. Later withdrawals/reuse retain the same source and do not repeat manufacture/inbound. Unused closed stock/returns/transfers carry unassigned source. Independently allocate each source original liquid m_src_j kg to actual exclusive final destinations; link dispatched_bottle_residue to failed_bottle for goods_F and used_bottle for janitorial: retained unused; retained in wet wipe; retained in bottle; dispatched bottle residue; dispatched wet wipe; dispatched rinsate; verified outside species transfer. At cutoff classify each source ID and measured source portion once: retained_unused is original liquid stock only in never-used, undamaged, factory-sealed original bottles; retained_bottle is original liquid residue retained on site in already-opened or damaged original bottles, whether or not dosed yet, excluding retained_unused. Record each bottle initial seal, first opening, damage and cutoff state and original source measurement ID; the same measured source portion enters only one cutoff state. Unknown seal/state blocks completeness; a state transition replaces the old state for the same source and measured portion, never retains both old and new buckets. Used is intermediate: when used becomes rinsed replace its state, do not add a second destination. Use each source cumulative ledger through cutoff: m_src_j=retained_unused+retained_wipe+retained_bottle+dispatched_bottle_residue+dispatched_wipe_origin+dispatched_rinsate_origin+verified_species_transfer+source_residual, keeping original quantity and all historical destinations/version corrections; downstream period withdrawals do not create a new original source. New rinse water/dirt/dry wipe are not m_src_j. Require source-origin mass assay/tracer/validated actual dosing-transfer record; do not infer original formulation kg from whole wet carrier kg or label active%. No signed source residual may be hidden. Actual wet carrier kg, source-origin kg and full-pack count are distinct. | bottle_initial_seal_state; first_open_at; damaged_at; cutoff_state; state_transition_id; source_measurement_id; measured_source_portion_id; retained_origin_kg; source_class; source_original_id; janitorial_original_id; first_open_id; m_src_j; retained_unused; retained_wipe; retained_bottle; dispatched_bottle_residue; dispatched_wipe_origin; dispatched_rinsate_origin; verified_species_transfer; source_residual; Q | source_origin_balance |  |
 | direct_quantities | core_electricity; wash_water; dry_wipe; failed_bottle; rinsate; wet_wipe; used_bottle | Retain actual raw direct/attributed numerators X_r first. Electricity is meter-end minus meter-start in kWh, converted once by3.6MJ/kWh if needed; wash-water input is actual entrance m3*rho_actual kg/m3, no second subtraction of internally reused water. Rinsate is DIRECT whole-liquid net mass kg at discharge (or exclusive direct discharge-volume*rho at measured temperature), never a supply-balance reconstruction. Failed_bottle, wet_wipe and used_bottle are direct dispatched whole-carrier net kg; no stock or source-composition factor applied again. Dry wipe original mass uses first-use weights excluding independent wrapping; unused stock/returns retain source and reused wipes never repeat manufacture. External labels/density/active percentage never replace actual calibrated measurements. Each final card amount=X_r/Q exactly once. | meter_start; meter_end; meter_boundary; water_volume; rho_actual; temperature; discharge_mode; direct_net_kg; first_use_mass; source_id; pool_id; Q | X_r/Q |  |
 | completion_aggregation | all inventory rows | For each compatible exchange identity/property/unit/boundary r and original source/pool/version, N_complete_r=N_core_raw_r+sum disjoint N_external_raw_r+sum disjoint z_external_r*D_original_r. Preserve raw external numerators directly; only already normalized z is multiplied by its evidenced original D to restore raw. Apply pool_allocation, digital_events, asset_lifetime and transport_ownership at their actual source levels before aggregation. N_core_raw includes failed_original N_F and core_electricity raw numerator, not their displayed /Q card amounts. Compare constituents/event/time/asset/stage across source IDs to remove overlaps; different provider IDs alone prove nothing. Convert only compatible units, never kg+MJ or raw+normalized; final amount=N_complete_r/Q once. Omitted/unbound actual modules prevent a complete-business claim. | N_core_raw_r; N_external_raw_r; z_external_r; D_original_r; exchange_identity; property; unit; boundary; source_id; owner_id; pool_id; version; Q | N_complete_r/Q |  |
 | card_numerators | all inventory rows | X_core_electricity=attributed metered kWh; failed_original raw numerator=N_F; X_customer_pack=initially_accepted_handover_count; X_supplier_pack=actual intact supplier-return count; X_transfer_pack=actual intact interstore count; X_external_pack=never_accepted_at_handover_count; X_failed_bottle=direct dispatched damaged whole-bottle kg. X_cleaner_pack=attributed first-open janitorial complete-pack count; X_wash_water=attributed entrance water kg; X_dry_wipe=attributed first-use dry cellulose kg; X_rinsate=attributed actual whole-liquid discharge kg; X_wet_wipe=attributed dispatched whole wet-wipe kg; X_used_bottle=attributed dispatched whole used-janitorial-bottle kg. Record raw direct amounts, then attributable amounts under source_allocation; final amount for each displayed X is X/Q, N_F/Q for failed_original, and exactly1Item(s) for service_output. No source-origin composition or stock correction multiplies direct terminal kg again. | gross_customer_handover; supplier_handover; internal_handover; initially_accepted_handover_count; never_accepted_at_handover_count; dispatched_actual_kg; first_open_count; water_volume; rho_actual; first_use_mass; raw_X_r; attributed_X_r; N_F; Q | card_raw_and_final_amounts |  |
@@ -407,6 +408,8 @@ Actual dispatched whole used bottle and closure net kg/Q, including measured res
 | update_trigger | Actual configuration/source/route/acceptance/life/vector/late-return change, replacing all affected historical versions |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

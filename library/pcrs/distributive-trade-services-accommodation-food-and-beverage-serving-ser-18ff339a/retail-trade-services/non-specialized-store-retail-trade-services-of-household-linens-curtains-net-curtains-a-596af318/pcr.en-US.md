@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Counter-collection retail of dry cotton terry bath towels in non-specialized stores
+# Counter-pickup retail services for dry cotton terry bath towels
 
 
 ## 1. Scope and Applicability
@@ -21,7 +21,7 @@ This PCR defines an explicitly partial incremental retail service from store rec
 | classification_refs | CPC 3.0 62132; narrower |
 | covered_products | Retail service for a dry, unused, folded 100% cotton terry bath towel of one declared actual SKU and unchanged original pack at counter handover |
 | excluded_products | Curtains; net curtains; ropes; netting; other textiles; used towels; reconditioned or laundered goods; parcel delivery |
-| representative_product | Illustrative VÅGSJÖN 405.762.55 bright-blue bath towel, 70 by 140 cm, 400 g/m2, 100% cotton; actual lot, packaging BOM, finish and receiving net masses must be collected; no generic adoption of website package weight |
+| representative_product | Counter-pickup retail services for dry cotton terry bath towels; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Non-specialized store receiving, dry storage/display, attended counter handover, actual returns and stock fates; no product transformation |
 | market_state | Unused dry cotton terry towel with its recorded label, ties and original wrapper; original opened/damaged states are separately recorded and cannot count as qualified unchanged-pack acceptance |
 
@@ -67,6 +67,7 @@ This PCR defines an explicitly partial incremental retail service from store rec
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | bound_scope | all processes | Apply only the section 2 route and qualifiers. Confirm original label/tie/wrapper composition and handover state per lot; visible stains, odour, dampness, mould, tears or an altered required pack trigger quarantine and recorded disposition. No retail laundering or disinfection of merchandise is assumed. If such treatment occurs, this route is inapplicable until a separately reviewed transformation extension is authored in both languages and synced. | ikea-towel-spec |
 | bound_partial | all processes | Direct foreground includes measured counter circuits, newly added bag/receipt, actual original-pack waste, failed towel fates and floor cleaning. It excludes merchandise manufacture and inbound transport for successful goods, customer travel/use/end-of-life and all unexpanded facilities/assets/logistics modules. This is a partial increment; a complete retail service requires calc_complete, calc_assets, calc_transport and calc_background without overlapping direct rows. | jrc-retail-2013 |
 | bound_ownership | receiving | Keep unique receiving lot/item lineage through internal moves, return, reopening and resale. Sold merchandise manufacture and transport to the same receiving gate remain a separately disclosed parent responsibility B_S. Assign original-gate-equivalent kg/BOM burdens once among B_S, retailer failure B_F, transfer B_T and open B_O. Supplier-return and externally retained failure require named recipient, physical state, responsibility contract and continuation; neither is automatically waste. Original packaging production follows the same parent ownership, but actual retail removal treatment remains here. | ghg-product-2011 |
@@ -436,6 +437,8 @@ Conditional whole liquid carrier sent to verified wastewater treatment; not an e
 | update_trigger | SKU/pack/state change, route or supplier change, late return, meter correction, lifetime revision or new module/provider evidence |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

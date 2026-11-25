@@ -7,7 +7,7 @@ translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 
-# 非专门实体门店原装40 lb Solar Naturals太阳蒸发盐袋零售服务
+# 原袋太阳蒸发软化水盐晶体店内零售服务
 
 ## 1. 范围与适用性
 
@@ -19,9 +19,9 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-non-metallic-minerals-and-other-products-n-e-c |
 | classification_refs | CPC 3.0 62199；属于162组盐类的narrower子集，以非专门实体门店零售证据为条件。 |
-| covered_products | 同一实际批次/配置、未开封的Diamond Crystal Solar Naturals 40 lb原塑料袋，货号100012411、UPC013600769406；白色不透明太阳蒸发软化水盐晶体；参考产品为服务，而非盐制造。 |
-| excluded_products | 其他袋重、未核对批次的托盘变体、散盐零售、盐丸、岩盐、氯化钾、添加配方、食用/泳池/融雪盐、线上或订单主导提货/配送、专门门店、批发以及顾客软水设备再生均不适用。实际意外破损仍是本路线失败，必须计入。 |
-| representative_product | 制造商Salt-3201 (1-26)中的40 lb PE袋货号100012411。典型干基氯化钠含量只是描述，不是批次化验、含水率、袋皮重或LCI默认值。 |
+| covered_products | 原装未开封PE袋装白色太阳蒸发软化水盐晶体；每个同质池固定实际装量、配方、供应批次及完整包装BOM；参考产品为服务而非盐制造。 |
+| excluded_products | 未核实托盘/批次配置、散盐、盐丸、岩盐、氯化钾、添加配方、食用/泳池/融雪盐、线上或订单主导提货/配送、专门店、批发及顾客软水设备再生；意外破损仍属本路线失败，须计入。 |
+| representative_product | 原袋太阳蒸发软化水盐晶体店内零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 供应商太阳蒸发和原装包装在零售门之前。门店收货、干态储存并展示完整袋，允许店内选购，再收银并实体交付；顾客销售路线不故意开袋、分装、溶解、重新包装或作顾客演示/产品测试。calc_kf所需独立牺牲QC原袋不成为合格服务；按calc_stock及calc_ownership保留其实际F/暂存/样品记录，不得因顾客路线限制将其排除。仅适用boundary_no_plant中已证明无设备的运行配置。 |
 | market_state | 工厂原袋包装的晶体矿物盐。必须取得供应商对批次、生产/包装场址、袋体、接缝/封口、提手、印刷/标签/胶及任何内衬的确认；PE文字不能证明纯单一聚合物包装或绝对阻湿。 |
 
@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | 一袋原装40 lb Solar Naturals太阳蒸发盐的店内零售服务 |
+| 参考产品流 | 一袋原装40 lb 太阳蒸发软化水盐的店内零售服务 |
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
@@ -69,6 +69,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
 | boundary_scope | all processes | 仅在cp_applicability证明实际混合商品实体门店、本SKU/批次货架选购及收银交付后适用。制造商目录、门店定位、价格、提货或配送页面本身不能证明分店库存或CPC621渠道；线上/订单主导和批发情形不通过范围门。 | un-cpc62199; cargill-salt3201-2026 |
 | boundary_goods | failed_original; retail_service | 制造W固定在供应商发运门，含实际盐及每个原袋制造/包装组件，不含入站I。F通过failed_original表达实际N_F及完整W_F/N_F，并另计独立I_F。T保持具名接收方/来源责任，O保持未决。若供应方捆绑阶段，添加其他来源前须分离确切有据阶段；阶段未知则阻断补全。完整增量零售必须补全全部实际零售支持模块及F制造W_F和独立I_F，来源/阶段不得重复。S制造W_S和入站I_S排除在增量零售结果之外。只有另行具名的验收商品GOODS系统才加W_S/Q和I_S/Q一次，并有其系统标签和来源清单；此可选GOODS耦合不是零售完整性条件。保留S/F/T/O历史以守恒原责任，不在此添加S负荷。 | cargill-salt3201-2026; jrc-retail-2013 |
 | boundary_failure | residual | 未开封的预期零售路线不能免除实际失败核算。完整封闭废袋、扫集晶体盐残渣、倒空原袋和含盐清洁废液为不同状态。完整失败袋不得再拆计盐加袋。内部报废使商品变为暂存废物，随后才发运。卤水或袋载体中的盐不能另算盐输出。地面/室内盐移动不是向室外空气、土壤或水的基本流排放。 | cargill-salt3201-2026 |
@@ -108,11 +109,11 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_power`
 - 来源：
 
-###### 未开封原装Solar Naturals 40 lb太阳蒸发盐袋（`supplier_in`）
+###### 未开封原装太阳蒸发软化水盐袋（`supplier_in`）
 
 仅实际供应商向门店实体退回的完整原袋。本实体转移不产生服务/抵扣，也不推定W/I责任。必需数量方法：N_sup_in/Q，按calc_transfers；cp_transfers
 
-- 选定流：未开封原装Solar Naturals 40 lb太阳蒸发盐袋
+- 选定流：未开封原装太阳蒸发软化水盐袋
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_sup_in/Q，实际原袋实体移动仅除Q一次
 - 数值来源模式：计算值（`calculated_value`）
@@ -123,11 +124,11 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_transfers`
 - 来源：
 
-###### 未开封原装Solar Naturals 40 lb太阳蒸发盐袋（`retained_in`）
+###### 未开封原装太阳蒸发软化水盐袋（`retained_in`）
 
 仅实际外部实体退回的完整原袋。本实体转移不产生服务/抵扣，也不推定W/I责任。必需数量方法：N_ext_in/Q，按calc_transfers；cp_transfers
 
-- 选定流：未开封原装Solar Naturals 40 lb太阳蒸发盐袋
+- 选定流：未开封原装太阳蒸发软化水盐袋
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_ext_in/Q，实际原袋实体移动仅除Q一次
 - 数值来源模式：计算值（`calculated_value`）
@@ -146,11 +147,11 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 一袋原装40 lb Solar Naturals太阳蒸发盐的店内零售服务（`retail_service`）
+###### 一袋原装40 lb 太阳蒸发软化水盐的店内零售服务（`retail_service`）
 
 最终有效完整原袋ID的服务输出；不是盐制造或实体毛交付件数。必需数量方法：1 件；calc_acceptance；cp_custody
 
-- 选定流：一袋原装40 lb Solar Naturals太阳蒸发盐的店内零售服务
+- 选定流：一袋原装40 lb 太阳蒸发软化水盐的店内零售服务
 - 流属性/单位：物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则：1 Item(s)
 - 数值来源模式：固定值（`fixed_value`）
@@ -161,11 +162,11 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_custody`
 - 来源：
 
-###### 未开封原装Solar Naturals 40 lb太阳蒸发盐袋（`supplier_out`）
+###### 未开封原装太阳蒸发软化水盐袋（`supplier_out`）
 
 仅实际出站退供应商的完整原袋。本实体转移不产生服务/抵扣，也不推定W/I责任。必需数量方法：N_sup_out/Q，按calc_transfers；cp_transfers
 
-- 选定流：未开封原装Solar Naturals 40 lb太阳蒸发盐袋
+- 选定流：未开封原装太阳蒸发软化水盐袋
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_sup_out/Q，实际原袋实体移动仅除Q一次
 - 数值来源模式：计算值（`calculated_value`）
@@ -176,11 +177,11 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_transfers`
 - 来源：
 
-###### 未开封原装Solar Naturals 40 lb太阳蒸发盐袋（`retained_out`）
+###### 未开封原装太阳蒸发软化水盐袋（`retained_out`）
 
 仅实际未验收外留的完整原袋。本实体转移不产生服务/抵扣，也不推定W/I责任。必需数量方法：N_ext_out/Q，按calc_transfers；cp_transfers
 
-- 选定流：未开封原装Solar Naturals 40 lb太阳蒸发盐袋
+- 选定流：未开封原装太阳蒸发软化水盐袋
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_ext_out/Q，实际原袋实体移动仅除Q一次
 - 数值来源模式：计算值（`calculated_value`）
@@ -201,11 +202,11 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 供应商发运门的完整原装Solar Naturals 40 lb太阳蒸发盐袋（`failed_original`）
+###### 供应商发运门的完整原装太阳蒸发软化水盐袋（`failed_original`）
 
 不可逆失败原商品的背景供给。含实际盐及完整袋制造/包装；既不是纯NaCl或PE kg，也绝非所有入站商品固定为1。必需数量方法：按calc_ownership取N_F/Q，匹配完整W_F/N_F供应方；cp_failure；I_F独立通过calc_transport及calc_completion
 
-- 选定流：供应商发运门的完整原装Solar Naturals 40 lb太阳蒸发盐袋
+- 选定流：供应商发运门的完整原装太阳蒸发软化水盐袋
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_F/Q，原失败袋件数，匹配核实完整W_F/N_F供应方；I_F独立补全一次
 - 数值来源模式：计算值（`calculated_value`）
@@ -520,6 +521,8 @@ sync_with: pcr.en-US.md
 | update_trigger | SKU/批次/BOM/路线/分店/供应方更改、晚退、来源修订、设备寿命/报废、新状态或新观察到支持交换。 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

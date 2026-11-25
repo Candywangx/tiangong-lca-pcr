@@ -7,11 +7,11 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Mixed-store pickup retail service for factory-assembled HON H314.P.P office file cabinets
+# Pickup retail services for original-pack factory-assembled office filing cabinets
 
 ## 1. Scope and Applicability
 
-This candidate defines an incremental retail service for one homogeneous original HON H314.P.P configuration: 310 Series, four-drawer, letter-size steel vertical office file cabinet, lock option P and black finish P, nominal 15 in wide × 26.5 in deep × 52 in high. It is received as a factory-assembled welded-case cabinet in its complete original shipping package and handed over in that same unopened original package. Drawers, suspension, follower blocks, pulls, labels, original removable lock/core and supplied keys are parts of one product, never separate cabinet sales. Supplier confirmation of actual lot, complete contents/BOM, lock/key count, material grades, finishes, package constituents and assembled state is mandatory; a catalog illustration or shipping weight cannot supply these facts. Nominal dimensions define configuration and do not replace measured kg or occupied volume. The pricer is a specification, not an LCI dataset or approval of safety/compliance.
+This candidate defines incremental pickup retail services for complete factory-assembled office filing cabinets in unopened original transport packaging. Any manufacturer, drawer count, size, finish or lock option within this product family may qualify, with actual supplier/material/configuration/BOM strata kept separate. Verify the actual cabinet, drawers, rails, handles, label frames, supplied locks/keys, accessories and all packaging as one original complete product; they are not independent cabinet-service outputs. Obtain actual lot, material grades, coating, component quantities, package composition and assembly evidence from the supplier. Nominal dimensions, price-list options, images and shipping weight are specification context, not measured net mass, occupied volume, LCI or safety/compliance approval.
 
 The channel is a documented physical non-specialized store with a genuinely mixed assortment, its receiving/storeholding/pickup activities and final customer acceptance at that store. No source inspected establishes stock or availability at any actual branch. This is an applicability gate: signed branch assortment, ownership-of-stock, dated receipts, pickup and acceptance evidence must demonstrate this route before using the PCR. A website category, marketplace shipping listing or non-exclusive brand licence does not establish it. Specialized office-furniture dealers, direct factory dispatch, delivery/installation, assembly/unboxing service, rekeying, repair, demonstration, rental and cabinet use/storage function are outside this narrow service. An opened/damaged or unassembled customer transfer needs its own reviewed state-specific extension, atomic cards and bilingual projection before completeness; it cannot use the intact-pack handover cards.
 
@@ -23,9 +23,9 @@ The authored core contains final service accounting, original failed-goods suppl
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-office-machinery-and-equipment-including-0ed3be0f |
 | classification_refs | CPC 3.0 62183; narrower |
-| covered_products | Original unopened complete factory-assembled H314.P.P cabinet pickup service only |
+| covered_products | Original unopened complete factory-assembled office filing cabinets for store pickup; actual material, dimensions, drawer/lock configuration and complete supplier pack BOM fixed per homogeneous pool. |
 | excluded_products | Other office furniture, seats, machines, components, assembly and delivery |
-| representative_product | HON 310 H314.P.P |
+| representative_product | Pickup retail services for original-pack factory-assembled office filing cabinets; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Store receipt → holding → customer pickup → final acceptance; intact-package custody failures |
 | market_state | New factory-assembled welded-case office file cabinet in unopened original shipping package |
 
@@ -35,14 +35,14 @@ The authored core contains final service accounting, original failed-goods suppl
 | --- | --- |
 | What | Pickup retail service for the specified original cabinet package |
 | How much | One distinct final-valid original-package service |
-| How well | Same actual H314.P.P configuration and intact original contents/package accepted; no installation claim |
+| How well | Same actual factory-assembled office filing cabinet configuration and intact original contents/package accepted; no installation claim |
 | How long or cycle | One prospectively declared pool period, corrected for late events at original pool/version |
 | reference_flow_link | service |
 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Pickup retail service for one original-pack HON H314.P.P office file cabinet |
+| Reference product flow | Pickup retail service for one original-pack factory-assembled office filing cabinet |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -71,9 +71,10 @@ The authored core contains final service accounting, original failed-goods suppl
 
 | rule_id | applies_to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_gate | all inventory rows | Start at signed physical receipt of the complete original package into the named store; B_o and failed_pack include supplier manufacture plus original packaging at dispatch only and exclude inbound transport. Transport from that dispatch gate to actual receiving is a mandatory separate completion source under a_transport and b_completion, with actual atomic transport exchange cards and protocols before completeness. If an offered supplier dataset bundles that exact segment, require verified stage-separated dispatch B_o and the matched segment source vector, and count the segment once in the inbound completion; never leave it inside failed_pack or add a second segment. Unseparable or unknown bundled scope is incomplete. End at final-valid store pickup acceptance or the actual recipient/state exit. Exclude customer travel and subsequent cabinet installation/use. Store operation for failures and zero-sale periods remains included. Protocol cp_goods establishes gates and configuration. | un-cpc-62183; hon-pricer; hon-storage |
 | b_source | failed_pack; service; goods_handover; supplier_return; transfer_out; external_failure; packaged_waste | Apply a persistent original source ledger per original package ID. For each homogeneous full supplier manufacturing/original-package vector B_o at supplier dispatch (no inbound transport), partition source-equivalent quantities S_o/F_o/T_o/O_o exactly once: S final-valid customer original; F failed responsibility retained by this retail pool including confirmed lost original, condemned original and externally retained unaccepted original unless a signed continuing responsibility assigns it T; T signed continuation to supplier/another pool/asset; O unresolved or unsold stock retained open. S+F+T+O equals UNIQUE original acquired source equivalents with versioned corrections; physical return and resale never acquire B_o again. The goods balance receipt_count means external physical stock receipts only, excluding the separately counted physical_customer_return_count. Original ownership follows b_source regardless of a repeated physical receipt. Final-valid S production is outside incremental service and belongs once to a separately declared GOODS system; failed_pack is the real Product input N_F/Q and carries sum(F_o*B_o)/Q once for dispatch manufacture/original packaging only. Its F portion of dispatch-to-receiving transport is excluded from this core card and must be added as a distinct actual completion source under b_gate and a_transport; S inbound belongs to GOODS, while T/O original transport responsibility continues with the same original source ledger. Physical supplier_return, transfer_out, external_failure and goods_handover are explicitly uncharacterized custody satellites only, not extra manufacturing inputs; packaged_waste is a characterized Waste output requiring complete treatment. A responsibility transfer is not a new physical movement. Physically verified O stock carries its unassigned original source to the next period without reacquisition; unknown O identity/amount/fate blocks completeness; no automatic waste assumption for customer retention. |  |
-| b_package | failed_pack; packaged_waste | B_o must match actual H314.P.P full cabinet and original packing: steel case/drawers/reinforcements and suspension, aluminium pulls/label holders, locks/keys, follower blocks, coatings and every actual original packing constituent. Require signed supplier model/lot inventory and the exact dispatch manufacturing/original-package boundary excluding inbound transport; whole-package vector is used exclusively. Do not model a full cabinet as pure steel kg or infer a component environmental vector by mass fraction. If actual component responsibility differs, this whole-package method is unavailable until an extension supplies verified component original vectors, quantity/property/unit cards and source conservation with those parts removed from the whole vector. Real complete packaged waste may stay intact only with signed receiver acceptance of its actual constituents/state and matching complete treatment; otherwise add disjoint actual state/material cards before completeness. | hon-pricer; hon-storage |
+| b_package | failed_pack; packaged_waste | B_o must match actual factory-assembled office filing cabinet full cabinet and original packing: steel case/drawers/reinforcements and suspension, aluminium pulls/label holders, locks/keys, follower blocks, coatings and every actual original packing constituent. Require signed supplier model/lot inventory and the exact dispatch manufacturing/original-package boundary excluding inbound transport; whole-package vector is used exclusively. Do not model a full cabinet as pure steel kg or infer a component environmental vector by mass fraction. If actual component responsibility differs, this whole-package method is unavailable until an extension supplies verified component original vectors, quantity/property/unit cards and source conservation with those parts removed from the whole vector. Real complete packaged waste may stay intact only with signed receiver acceptance of its actual constituents/state and matching complete treatment; otherwise add disjoint actual state/material cards before completeness. | hon-pricer; hon-storage |
 | b_absence | all inventory rows | This route admits no on-site fuel combustion, purchased heat/steam, refrigerant equipment, product processing, unboxing, added customer packaging, printing or wet cleaning within its core. cp_support requires a dated all-equipment/all-period audit including landlord/shared plant, handling and standby equipment, circuits and cleaning contractor scopes. True occurrence or unknown absence means this narrow route cannot claim completeness: first extend the PCR with real atomic species/carrier cards, executable measurement and outside-environment transfer methods where relevant, bilingual rules and normal projection. An appliance name or an electricity meter does not prove absence. Electricity supply and provider-background plant impacts remain in their matched datasets. |  |
 | b_completion | all inventory rows | The core is partial and omits F inbound transport. The mandatory completion must supply its actual segment source, atomic exchange cards and protocols under b_gate/a_transport before any complete retail-service claim; supplier-bundled exact segments are separated and counted only once as specified in b_gate. Before complete retail-service use, cp_support must enumerate every actual facility, light/fan, shelf/rack, handling aid, checkout/ICT/network endpoint, payment/admin/security backend, cleaning system and capital source with its actual object/model/BOM, site/time, source/pool/version, included stages and overlap check. Add actual atomic exchange cards/protocols to this PCR in both languages and sync; a list of module names is insufficient. Apply a_energy to all operating AC, a_asset to each homogeneous capital package and its disjoint maintenance/retirement/asset transport, a_digital to network/payment/admin/camera and a_transport to receiving/return/waste/support transport. Cleaning uses an actual verified full contractor lifecycle service with measured cleaned-area m2 per event and allocation of the source vector by this pool cleaned area / all served cleaned area for that event; require full actual constituents/operation/capital/treatment coverage, exclude those included sources from other modules, and no fictitious generic cleaning bundle. Other necessary exchanges not covered by those methods block completeness until a concrete extension. Use c_complete to combine original raw numerators and disjoint completion numerators once; original S merchandise remains excluded. | ghg-product |
 
@@ -92,11 +93,11 @@ The authored core contains final service accounting, original failed-goods suppl
 
 ##### Product flows
 
-###### Original complete packaged HON H314.P.P cabinet (`failed_pack`)
+###### Original complete packaged factory-assembled office filing cabinet (`failed_pack`)
 
 Supplier-manufactured original cabinet and its full original packing at supplier dispatch, with F responsibility in this pool; B_o and this input exclude ALL inbound transport. N_F sums homogeneous whole-source equivalents under b_source, not waste kg. Require actual complete dispatch manufacturing/packing vector and cp_goods reconciliation before binding; F dispatch-to-receiving transport is mandatory separate completion with actual atomic cards under b_gate, never a core quantity on this card.
 
-- Selected flow: Original complete packaged HON H314.P.P cabinet
+- Selected flow: Original complete packaged factory-assembled office filing cabinet
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q
 - Value mode: calculated_value
@@ -124,11 +125,11 @@ AC entering actual receiving/holding/handling/checkout and support circuits. Met
 
 ##### Product flows
 
-###### Pickup retail service for one original-pack HON H314.P.P office file cabinet (`service`)
+###### Pickup retail service for one original-pack factory-assembled office filing cabinet (`service`)
 
 One finalized pickup service of one distinct original intact package, linked to final-valid acceptance under a_goods and c_goods; cabinet drawer count, storage capacity and nominal dimensions do not measure retail service.
 
-- Selected flow: Pickup retail service for one original-pack HON H314.P.P office file cabinet
+- Selected flow: Pickup retail service for one original-pack factory-assembled office filing cabinet
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: fixed_value
@@ -139,11 +140,11 @@ One finalized pickup service of one distinct original intact package, linked to 
 - Collection protocol: cp_goods
 - Sources: ghg-product
 
-###### Intact original packaged HON H314.P.P cabinet handed to customer (`goods_handover`)
+###### Intact original packaged factory-assembled office filing cabinet handed to customer (`goods_handover`)
 
 Gross actual physical handovers in the original intact-package state, only when initially accepted; never-accepted physical handovers belong exclusively to external_failure. Count each movement once. This custody satellite does not carry S manufacture or another service output.
 
-- Selected flow: Intact original packaged HON H314.P.P cabinet handed to customer
+- Selected flow: Intact original packaged factory-assembled office filing cabinet handed to customer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_customer/Q
 - Value mode: calculated_value
@@ -153,11 +154,11 @@ Gross actual physical handovers in the original intact-package state, only when 
 - Evidence kind: calculated_from_collection
 - Collection protocol: cp_goods
 
-###### Intact original packaged HON H314.P.P cabinet returned to supplier (`supplier_return`)
+###### Intact original packaged factory-assembled office filing cabinet returned to supplier (`supplier_return`)
 
 Actual whole intact-package supplier handoff with signed receiving state and continuation of B_o responsibility; financial credit alone is not this movement. An opened return needs a state-specific extension.
 
-- Selected flow: Intact original packaged HON H314.P.P cabinet returned to supplier
+- Selected flow: Intact original packaged factory-assembled office filing cabinet returned to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_supplier/Q
 - Value mode: calculated_value
@@ -167,11 +168,11 @@ Actual whole intact-package supplier handoff with signed receiving state and con
 - Evidence kind: calculated_from_collection
 - Collection protocol: cp_goods
 
-###### Intact original packaged HON H314.P.P cabinet transferred to another stockholder (`transfer_out`)
+###### Intact original packaged factory-assembled office filing cabinet transferred to another stockholder (`transfer_out`)
 
 Actual intact-package handoff to another stockholder with original ID and signed T continuation; an internal ledger reclassification without movement is not an output.
 
-- Selected flow: Intact original packaged HON H314.P.P cabinet transferred to another stockholder
+- Selected flow: Intact original packaged factory-assembled office filing cabinet transferred to another stockholder
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_transfer/Q
 - Value mode: calculated_value
@@ -181,11 +182,11 @@ Actual intact-package handoff to another stockholder with original ID and signed
 - Evidence kind: calculated_from_collection
 - Collection protocol: cp_goods
 
-###### Intact original packaged HON H314.P.P cabinet physically handed over without initial acceptance (`external_failure`)
+###### Intact original packaged factory-assembled office filing cabinet physically handed over without initial acceptance (`external_failure`)
 
 Actual never-initially-accepted physical handover, disjoint from initially accepted goods_handover events. A later revocation without movement only changes original responsibility/status and creates no output here. Current externally held unaccepted originals are tracked separately for F/T, never automatic retailer Waste.
 
-- Selected flow: Intact original packaged HON H314.P.P cabinet physically handed over without initial acceptance
+- Selected flow: Intact original packaged factory-assembled office filing cabinet physically handed over without initial acceptance
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_external/Q
 - Value mode: calculated_value
@@ -201,11 +202,11 @@ Actual never-initially-accepted physical handover, disjoint from initially accep
 
 ##### Waste flows
 
-###### Rejected complete HON H314.P.P cabinet in original shipping package for treatment (`packaged_waste`)
+###### Rejected complete factory-assembled office filing cabinet in original shipping package for treatment (`packaged_waste`)
 
 Direct measured net consignment mass of a real complete rejected cabinet plus its actual original package; receiver must explicitly accept that complete state and constituents under b_package. Cabinet count/condemnation is separate QA, not a second multiplication or inventory-stock subtraction from dispatch kg.
 
-- Selected flow: Rejected complete HON H314.P.P cabinet in original shipping package for treatment
+- Selected flow: Rejected complete factory-assembled office filing cabinet in original shipping package for treatment
 - Flow property / unit: Mass / kg
 - Amount rule: dispatch_kg/Q
 - Value mode: calculated_value
@@ -278,6 +279,8 @@ Direct measured net consignment mass of a real complete rejected cabinet plus it
 | update_trigger | Any configuration/channel/state change, late acceptance event, supplier boundary or lifetime/module revision |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

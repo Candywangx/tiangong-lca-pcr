@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Core non-specialized-store retail service for intact 25 kg bags of prilled 12-11-18 NPK fertilizer
+# Retail services for original bags of granular 12-11-18 NPK fertilizer
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ CPC 3.0 62172 includes trade in group346 goods. This authored candidate covers a
 | classification_refs | CPC 3.0 62172; proposed narrower; external mapping/acceptance ADRs are authoritative |
 | covered_products | Core non-specialized-store retail service for intact 25 kg bags of prilled 12-11-18 NPK fertilizer |
 | excluded_products | Other formulations/states, pesticide retail, bulk/600kg/liquid, opening/repacking, delivery and farm use; full business without completion |
-| representative_product | Actual YaraMila COMPLEX prilled12-11-18 original25kg-labelled bag SKU and complete packaging BOM |
+| representative_product | Retail services for original bags of granular 12-11-18 NPK fertilizer; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Manual ambient in-store holding and final in-person collection in actual mixed-assortment store |
 | market_state | Intact original sealed bag; actual contents and whole-package masses independently recorded |
 
@@ -37,7 +37,7 @@ CPC 3.0 62172 includes trade in group346 goods. This authored candidate covers a
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Core non-specialized-store retail service for one finally accepted intact original 25 kg-labelled bag of YaraMila COMPLEX prilled 12-11-18 NPK fertilizer |
+| Reference product flow | Core non-specialized-store retail service for one finally accepted intact original 25 kg-labelled bag of granular 12-11-18 NPK fertilizer |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -69,7 +69,8 @@ All required qualifiers must accompany the concrete dataset. Unverified referenc
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | all inventory rows | Use one actual homogeneous YaraMila COMPLEX 25 kg-labelled original-bag SKU, prilled nitrophosphate/SOP formulation 12-11-18 with Mg/S/micronutrients, one actual packaging model/BOM and supplier receiving boundary per pool. A real mixed-assortment walk-in store must document other merchandise classes; a non-exclusive brand agreement does not establish a non-specialized store. No actual site or stock is asserted by the representative manufacturer specification. | un-cpc3-62172; yara-complex |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope_gate | all inventory rows | Use one actual homogeneous granular 12-11-18 NPK fertilizer 25 kg-labelled original-bag SKU, prilled nitrophosphate/SOP formulation 12-11-18 with Mg/S/micronutrients, one actual packaging model/BOM and supplier receiving boundary per pool. A real mixed-assortment walk-in store must document other merchandise classes; a non-exclusive brand agreement does not establish a non-specialized store. No actual site or stock is asserted by the representative manufacturer specification. | un-cpc3-62172; yara-complex |
 | route_gate | all inventory rows | This is a partial incremental core: all attributed on-site AC electricity, failed original-package upstream responsibility and intact bag disposition. Receipt to final valid in-person acceptance is covered, including holding, failed/refused attempts, returns and closures. Exclude blending, repacking, open-bag sales, pesticide/liquid fertilizer, 600 kg bags, delivery to customers and farm application. The core is not complete retail business; completion_gate and complete_aggregation are mandatory before that claim. | ghg-product-2011; jrc-retail-2013 |
 | fertilizer_state | all inventory rows | Record actual seals, bag integrity, prill condition, moisture exposure, temperature history, lot label and current applicable SDS; manufacturer dust-free wording or an intact seal is not measured zero release. Record daily inspections and every incident. Broken/opened bags, dust escape, wet/dissolved fertilizer, decomposition, fire or uncertain mass loss block route completeness; preserve actual quantities, species/state, internal/external path and recipient and author reviewed matching atomic cards/protocols in both languages before inclusion. Never apply agricultural N2O/NH3 factors, label nutrient percentages or legal limits as measured retail emissions. No default compliance, no default zero. | yara-complex; yara-storage |
 | goods_ownership | failed_original_pack | For each original whole-package source vector V_c at the same receiving gate conserve S_c+F_c+T_c+O_c=N_c in original packages: S is the unique finally valid customer-held original; F is confirmed failure/loss with retailer background responsibility (including retained waste and external failed retention); T is evidenced continuing responsibility accepted by supplier or a named successor; O is still-open/unresolved responsibility. Successful S manufacture, original package and upstream receiving transport are outside this incremental core; downstream GOODS may add S once. failed_original_pack is the real Product input F_c/Q linked to full V_c including actual contents, whole bag body/closure/liner/label/adhesive and receiving transport. T retains those same original source IDs and obligations with the receiver; O is not zero or discarded. A supplier return physically moving a bag does not by itself prove T. A later resale transfers the same original source rather than creating manufacture again. | ghg-product-2011 |
@@ -97,7 +98,7 @@ All required qualifiers must accompany the concrete dataset. Unverified referenc
 
 q_failed_c from source_partition using cp_goods; one matching complete V_c per original source, not a material mass or custody satellite.
 
-- Selected flow: YaraMila COMPLEX prilled fertilizer in one intact original 25 kg-labelled bag, actual complete model
+- Selected flow: granular 12-11-18 NPK fertilizer in one intact original 25 kg-labelled bag, actual complete model
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: F_c / Q
 - Value mode: calculated_value
@@ -131,7 +132,7 @@ electricity_MJ from electricity_quantity using cp_energy; actual grid/provider/v
 
 1 Item(s); final_q from cp_goods defines Q distinct final-valid originals; count does not substitute actual fertilizer or bag mass.
 
-- Selected flow: Core non-specialized-store retail service for one finally accepted intact original 25 kg-labelled bag of YaraMila COMPLEX prilled 12-11-18 NPK fertilizer
+- Selected flow: Core non-specialized-store retail service for one finally accepted intact original 25 kg-labelled bag of granular 12-11-18 NPK fertilizer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: fixed_value
@@ -146,7 +147,7 @@ electricity_MJ from electricity_quantity using cp_energy; actual grid/provider/v
 
 q_customer from custody_quantities using cp_goods; gross physical satellite only, includes unaccepted/repeated handovers.
 
-- Selected flow: Intact original 25 kg-labelled bag of YaraMila COMPLEX prilled fertilizer at customer custody handover
+- Selected flow: Intact original 25 kg-labelled bag of granular 12-11-18 NPK fertilizer at customer custody handover
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_customer / Q
 - Value mode: calculated_value
@@ -161,7 +162,7 @@ q_customer from custody_quantities using cp_goods; gross physical satellite only
 
 q_supplier from custody_quantities using cp_goods; physical satellite only, continuing T requires separate responsibility evidence.
 
-- Selected flow: Intact original 25 kg-labelled bag of YaraMila COMPLEX prilled fertilizer at supplier return
+- Selected flow: Intact original 25 kg-labelled bag of granular 12-11-18 NPK fertilizer at supplier return
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_supplier / Q
 - Value mode: calculated_value
@@ -178,7 +179,7 @@ q_supplier from custody_quantities using cp_goods; physical satellite only, cont
 
 q_waste from terminal_quantity using cp_waste; actual whole-package dispatched net kg with signed receiver scope, never nominal25 times count.
 
-- Selected flow: Unopened intact original bag containing unsaleable YaraMila COMPLEX prilled fertilizer for accepted whole-carrier treatment
+- Selected flow: Unopened intact original bag containing unsaleable granular 12-11-18 NPK fertilizer for accepted whole-carrier treatment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: K_dispatch / Q
 - Value mode: calculated_value
@@ -258,6 +259,8 @@ q_waste from terminal_quantity using cp_waste; actual whole-package dispatched n
 | update_trigger | SKU/formulation/pack/source/route change, late acceptance/return, incident, asset retirement/life revision or source-provider boundary revision |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

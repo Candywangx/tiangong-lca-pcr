@@ -7,11 +7,11 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized-store retail service for unopened flat-pack composite-board household side tables, customer collection
+# Customer-pickup retail services for original-pack composite-board household side tables
 
 ## 1. Scope and Applicability
 
-This PCR defines an incremental retail-service method for one homogeneous unopened original sales-pack SKU of composite-board household side table, at a non-specialized store using customer collection. A representative physical object is IKEA LACK white55×55cm article304.499.08, assembled height45cm; its actual complete supplier BOM, packaging and receiving state must be verified for the dataset. This representative does not assert that an IKEA store meets this route. Exclude metal-frame seating, other furniture of a kind used in offices in class3812, other furniture, online/delivery channels, assembly, display models and customer travel/use/end-of-life. Those downstream stages require a separately declared product-system model. No source provides inventory defaults or methodological approval.
+This PCR defines incremental customer-pickup retail services for unopened original flat-pack composite-board household side tables in non-specialized physical stores. Any manufacturer is eligible within this family; each data pool fixes one actual supplier/SKU, dimensions, finish, full component/packaging BOM and receiving state. Retained branded catalogues are examples, not eligibility keys, measured masses or LCI. Exclude metal-frame seats, office furniture, other furniture, online/delivery routes, assembly, display-table sales and customer travel/use/end-of-life. Keep downstream goods stages separately declared. No source establishes actual site qualification, numerical defaults or methodology approval.
 
 ## 2. Product Category Identity
 
@@ -21,7 +21,7 @@ This PCR defines an incremental retail-service method for one homogeneous unopen
 | classification_refs | CPC3.0:62141 — Non-specialized store retail trade services, of household furniture; narrower proposed relationship only |
 | covered_products | Customer-collected unopened original flat-pack composite-board household side-table retail service, one actual homogeneous SKU/configuration per pool |
 | excluded_products | 38111 metal-frame seats; class3812; other furniture; opened/repacked/assembled goods; delivery and customer use |
-| representative_product | IKEA LACK white55×55cm side table304.499.08; complete actual component/pack BOM required |
+| representative_product | Customer-pickup retail services for original-pack composite-board household side tables; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receiving-gate custody → ambient unopened storage → manual picking → checkout → customer exit acceptance and follow-up |
 | market_state | Finished flat-pack household side table in unchanged unopened original complete sales package |
 
@@ -70,6 +70,7 @@ This PCR defines an incremental retail-service method for one homogeneous unopen
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_scope | all processes | Eligible configuration is a non-specialized store, one actual side-table SKU/colour/dimensions/receipt BOM and unchanged unopened original sales pack, manual handling and customer collection at the store exit. The table is composite board furniture, not a metal-frame seat; CPC62141 covers group381 except38111 and3812. The chosen table is a narrower subset; do not infer coverage of all furniture or all wood products. | un-cpc62141; ikea-lack-spec |
 | b_gates | retail | Start at physical receipt of the complete sales pack at the store receiving gate, including unloading custody; end at verified final-valid customer acceptance after the declared follow-up observation date, with later reversals reopening the original cohort. Include storage, picking, checkout, manual handover, failed attempts, customer self-returns and losses. Observe each real custody event on its actual date. Customer travel, including all roads travelled for self-collection/self-return, is explicitly outside this incremental store-gate service. Supplier physical handback and cross-store/internal logistics are not admitted: signed movement and purchase/returns registers must prove their absence. If either occurs, completeness stops until separate exact original-state product-transfer cards and route activity/protocols are authored bilingually before use. |  |
 | b_service | service_output | Output is a completed retail service for one unique original package ID, still unopened at qualified handover. Q counts distinct final-valid original IDs; unsuccessful attempts, acceptance revoked without return, internal moves and unaccepted external retention produce no output. A financial adjustment alone does not revoke physical acceptance. Repeated handling or resale of the same original ID cannot create a second completed service in the linked lifetime retail ledger. |  |
@@ -592,6 +593,8 @@ Actual whole carrier dispatched with closure/residue only if the receiver accept
 | update_trigger | Acceptance reversal, final ownership/fate change, SKU/BOM/pack/site/meter/provider change, asset lifetime/maintenance/retirement or newly observed exchange |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

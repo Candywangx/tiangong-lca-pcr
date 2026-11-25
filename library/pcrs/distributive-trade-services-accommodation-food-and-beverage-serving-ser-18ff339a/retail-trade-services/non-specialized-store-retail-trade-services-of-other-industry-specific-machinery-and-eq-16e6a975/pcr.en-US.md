@@ -6,7 +6,7 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Physical mixed-store retail and delivery of factory-packed Eurodib HBS-250L commercial slicers
+# Physical-store retail and delivery services for factory-packed commercial food slicers
 
 ## 1. Scope and Applicability
 
@@ -18,9 +18,9 @@ This PCR defines one narrow physical-store final-retail service with retailer de
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-other-industry-specific-machinery-and-eq-16e6a975 |
 | classification_refs | CPC 3.0 62188; narrower subset of group445 food-processing machinery |
-| covered_products | One actual region/revision/batch of complete factory-packed Eurodib HBS-250L commercial belt-driven 10in meat slicer, its installed standard stainless blade, sharpener, carriage/pusher, guards, cord, original accessories/manual and all original packaging, sold by a non-specialized physical mixed-assortment store to a final user and delivered unopened by that retailer. |
-| excluded_products | Other HBS sizes/JS or successor variants, separately sold Teflon/replacement blades, used/refurbished/opened units, wholesale/resale procurement, internet/mail orders, specialized equipment stores, machine commissioning/slicing/cleaning/sharpening/lubrication/repair and customer subsequent use or disposal. No equivalence by nominal watts, blade diameter or shipping weight. |
-| representative_product | HBS-250L commercial food-preparation slicer; exact batch nameplate, lock/guard version and signed complete packing list are required. Catalogue evidence establishes a real model, not the actual stock or complete BOM. |
+| covered_products | Complete new factory-packed commercial belt-driven food slicers with their actual installed blades, guards, carriage/pusher, power connection, supplied accessories/manual and all original packaging; actual region/revision/BOM fixed per homogeneous pool. Sold by a non-specialized mixed physical store to a final user and delivered unopened by that retailer. |
+| excluded_products | Products outside the commercial belt-driven food-slicer family; separately sold blades/parts; used/refurbished/opened units; wholesale/resale procurement; online/mail orders; specialist equipment stores; commissioning, slicing, cleaning, sharpening, lubrication, repair and customer use/disposal. Neither watts, diameter nor shipping weight establishes background equivalence. |
+| representative_product | Physical-store retail and delivery services for factory-packed commercial food slicers; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Physical mixed-store display selection and cashier payment -> sealed custody/storage and order preparation -> retailer-arranged unopened delivery -> named final-user handover and final valid acceptance, with all failed/reversed attempts and linked returns retained. |
 | market_state | New complete factory package, never opened or powered during the covered retail route. Factory assembly/test/lubrication may exist within the original upstream vector; their absence is not inferred. |
 
@@ -37,7 +37,7 @@ This PCR defines one narrow physical-store final-retail service with retailer de
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Physical-store retail and delivery service for one finally accepted factory-packed HBS-250L slicer |
+| Reference product flow | Physical-store retail and delivery service for one finally accepted factory-packed commercial food slicer |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -66,8 +66,9 @@ This PCR defines one narrow physical-store final-retail service with retailer de
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | `b_route` | retail; failure; custody | Applicability requires actual evidence of a non-specialized physical store with mixed goods displayed for selection and cashier payment, a receipt linking that on-site selection/payment to this unique package, and final-user rather than wholesale/resale purpose. Record store_ID, floor/display evidence, purchase_channel, cashier_receipt_ID, customer_use and delivery_order_ID. Internet/mail, wholesale and specialized-store transactions are excluded even when supplied by the same brand. The Costco delivery listing is model/channel discovery only: it does not prove a qualifying physical-store transaction, branch stock or retail rather than wholesale. Unknown channel blocks applicability, not a modeller choice. | un621; un62188; costco-hbs |
-| `b_machine` | retail; failure; custody | Verify one actual HBS-250L region/revision/nameplate and complete original packing BOM. Standard installed blade/guard/sharpener and original packing remain one whole source; separately sold Teflon/replacement blades are excluded. The linked spec labels its 10in image HBS-250JS whereas the manual names HBS-250L; nominal thickness, dimensions/net mass and cheese claims conflict. Do not resolve those by choosing convenient catalogue numbers. Obtain actual supplier revision/configuration proof without opening retail goods. The route excludes opening, blade adjustment, powered testing, food contact, cleaning, oiling, sharpening and installation; any occurrence requires a state-specific reviewed extension with actual food/oil/cleaner/water/energy/waste cards before completeness. Manufacturer operating intervals are not retail energy defaults, machine waterproofing, food-use permission or safety approval. | eurodib-hbs; eurodib-manual; eurodib-spec |
+| `b_machine` | retail; failure; custody | Verify one actual commercial food region/revision/nameplate and complete original packing BOM. Standard installed blade/guard/sharpener and original packing remain one whole source; separately sold Teflon/replacement blades are excluded. The linked spec labels its 10in image HBS-250JS whereas the manual names commercial food; nominal thickness, dimensions/net mass and cheese claims conflict. Do not resolve those by choosing convenient catalogue numbers. Obtain actual supplier revision/configuration proof without opening retail goods. The route excludes opening, blade adjustment, powered testing, food contact, cleaning, oiling, sharpening and installation; any occurrence requires a state-specific reviewed extension with actual food/oil/cleaner/water/energy/waste cards before completeness. Manufacturer operating intervals are not retail energy defaults, machine waterproofing, food-use permission or safety approval. | eurodib-hbs; eurodib-manual; eurodib-spec |
 | `b_original` | failure; custody | For each unique original package j retain dispatch-manufacture/original-packaging vector W_j and separate actual receiving-inbound vector I_j. New original acquisition and carried-in originals are disjoint; return/retry/resale never reacquires manufacture. Assign each original source once among S final successful goods, F failed/lost goods charged to this service, T a named successor/asset original owner, and O still open/unassigned; S+F+T+O=1 per original. No fractional component ownership is admitted by this homogeneous whole-package route. Retail excludes S manufacture and I_S; a separate downstream GOODS system may add each once. Include W_F through failed_original and I_F through mandatory transport completion. Supplier return is not automatically a credit: a signed named T successor or unresolved O is required. Missing original identity/background never becomes zero. | ghg2011 |
 | `b_delivery` | retail; failure | Include all retailer-arranged dispatch, failed attempt, redelivery, empty return and actual linked customer/supplier-return transport and internal handling sources, including successful deliveries. Merchandise receiving-inbound is included only for F under b_original. Keep actual legs/event_ID and lifecycle scope disjoint; merchandise transport and asset/material transport keep separate original owners under c_transport/a_assets. A delivered-price label never proves activity quantity, stage coverage or allocation. No customer self-collection route is interchangeable with this delivered service. | ghg2011; costco-hbs |
 | `b_support` | retail | This record is an explicit partial incremental core. Complete retail-service additionally requires actual facility/building/shelf, handling, checkout, lighting/fan/HVAC assets; facility heat/cooling/combustion/refrigerants; network/payment/receipt/admin/security; site cleaning and paper/extra delivery packaging/treatment. Determine actual presence, absence or unknown for every named source over all opening/closed/idle intervals, including leased/shared/landlord services. Use fixed c_transport/a_assets/c_digital/c_clean/c_material/c_species methods and actual atomic cards/protocols/providers before complete status. Complete contracted packages may remain intact only with verified exact objects, constituents/stages, physical activity/denominator and exclusions; distinct providers do not prove nonoverlap. Unknown presence, source identity or scope is explicit incompleteness. | ghg2011 |
@@ -116,7 +117,7 @@ Actual disjoint metered site sources attributed under a_power; machine operation
 
 One finally accepted original package service under c_pool, including retailer-arranged delivery; payment alone is not output.
 
-- Selected flow: Physical-store retail and delivery service for one finally accepted factory-packed HBS-250L slicer
+- Selected flow: Physical-store retail and delivery service for one finally accepted factory-packed commercial food slicer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `fixed_value`
@@ -141,7 +142,7 @@ One finally accepted original package service under c_pool, including retailer-a
 
 Original homogeneous whole source carrying W_F/N_F dispatch-manufacture/packing once; actual F inbound remains separate.
 
-- Selected flow: Complete factory-packed HBS-250L slicer at supplier dispatch
+- Selected flow: Complete factory-packed commercial food slicer at supplier dispatch
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q Item(s)
 - Value mode: `calculated_value`
@@ -182,7 +183,7 @@ Original homogeneous whole source carrying W_F/N_F dispatch-manufacture/packing 
 
 Actual recipient-signed gross physical handback, not a manufacturing credit or proof of successor responsibility.
 
-- Selected flow: Intact complete factory-packed HBS-250L slicer handed back to supplier
+- Selected flow: Intact complete factory-packed commercial food slicer handed back to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_ret/Q Item(s)
 - Value mode: `calculated_value`
@@ -197,7 +198,7 @@ Actual recipient-signed gross physical handback, not a manufacturing credit or p
 
 Distinct original cutoff state linked to actual handover; neither a new movement nor automatic waste.
 
-- Selected flow: Intact complete factory-packed HBS-250L slicer held by named external recipient without final valid acceptance
+- Selected flow: Intact complete factory-packed commercial food slicer held by named external recipient without final valid acceptance
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_ext/Q Item(s)
 - Value mode: `calculated_value`
@@ -212,7 +213,7 @@ Distinct original cutoff state linked to actual handover; neither a new movement
 
 Actual signed physical transfer, carrying the same original source to T where evidenced. A demonstrator opening/operation needs a separate route.
 
-- Selected flow: Intact complete factory-packed HBS-250L slicer transferred to named internal custody
+- Selected flow: Intact complete factory-packed commercial food slicer transferred to named internal custody
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_transfer/Q Item(s)
 - Value mode: `calculated_value`
@@ -229,7 +230,7 @@ Actual signed physical transfer, carrying the same original source to T where ev
 
 Only actual intact sealed complete packages with signed acceptance of all actual equipment/accessory/packing constituents and final actual complete same-scope treatment under c_stock; weigh matching terminal consignment net once per unique original, excluding rejected/returned or merely received unprocessed attempts. Opened, leaking or dismantled units require distinct state-specific cards/provider scope before completeness.
 
-- Selected flow: Condemned intact factory-packed HBS-250L complete slicer package accepted for whole-package treatment
+- Selected flow: Condemned intact factory-packed commercial food complete slicer package accepted for whole-package treatment
 - Flow property / unit: Mass / kg
 - Amount rule: W_dispatch_kg/Q kg
 - Value mode: `calculated_value`
@@ -301,12 +302,14 @@ Only actual intact sealed complete packages with signed acceptance of all actual
 | dataset_role | secondary_dataset; background_dataset |
 | downstream_use | Only the exact qualified delivered retail service after actual support completion; a GOODS+service system adds S upstream once separately |
 | allowed_use | Review-required partial-core scenario until all named completion/identity/field-data conditions pass |
-| excluded_use | Complete store footprint, machine life cycle/use, internet/wholesale/specialized-store service, other configurations, avoided-product claims or safety/compliance certification |
+| excluded_use | Complete store footprint, machine life cycle/use, internet/wholesale/specialized-store service, configurations outside the declared family, avoided-product claims or safety/compliance certification |
 | required_metadata | All reference qualifiers, actual original source/recipient/channel/stages, unit/denominator, method/version and complete presence/provider register |
 | required_quality_disclosure | Candidate methodology, partial core, each unverified flow/provider/quantity and conflict, original-data period/uncertainty, historical identity observation and scientific review status |
 | update_trigger | Late acceptance/return/fate, original config/BOM, provider scope, method, lifetime or boundary change under v_updates |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

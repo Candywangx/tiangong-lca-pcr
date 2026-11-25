@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Ambient manual shelf-retail service for sealed 500 mL PET bottles of still spring water
+# Ambient manual shelf-retail services for sealed 500 mL PET bottles of still spring water
 
 ## 1. Scope and Applicability
 
@@ -19,7 +19,7 @@ This PCR defines a partial manual ambient shelf-retail service. Named rules fix 
 | classification_refs | CPC 3.0 62126 — Non-specialized store retail trade services, of beverages; narrower |
 | covered_products | Stated partial manual ambient steel-shelf retail service for sealed 500 mL single-use PET-bottled unflavoured still spring water, homogeneous SKU with cap/label declared |
 | excluded_products | Other formats/packages, carbonated/flavoured/alcoholic beverages, generalized mineral-water legal classifications, opened/leaking route, chilling, automation, wholesale, e-commerce, on-site consumption and uncompleted full-store service |
-| representative_product | Nominal 500 mL sealed PET bottle of still spring water of one supplier SKU; manufacturer examples establish format/storage feasibility only, not default brand, recycled content or composition |
+| representative_product | Ambient manual shelf-retail services for sealed 500 mL PET bottles of still spring water; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier-finished goods receipt acceptance—remove transit carton/film—hand carry individual bottles to shelf—qualified customer acceptance and original-cohort returns closure—actual segregated residual handoff |
 | market_state | Original bottle sealed, not leaking, within expiry, ambient retail following supplier storage instructions; international mineral-water naming does not replace verification of local spring-water classification |
 
@@ -64,6 +64,7 @@ This PCR defines a partial manual ambient shelf-retail service. Named rules fix 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | route | all inventory rows | Only sealed, unflavoured, non-carbonated spring water, nominal 500 mL single-use PET, cap and label specification and homogeneous SKU are eligible. Receive already bottled goods in dry corrugated cases and LDPE shrink film; hand carry individual bottles to the complete steel shelf; no carts, pallet trucks, motors, chilling, dispensing, opening, on-site re-packing or vehicle delivery inside this module. Supplier label/instructions and actual temperature/expiry/seal inspection govern acceptance; no invented temperature or legal limit. | evian-faq; evian-500ml |
 | gates | all inventory rows | Start at signed store receiving acceptance; include the stated shelf operation through final qualified customer acceptance and original-cohort return closure, including failed/idle periods and residual handling. Receipt refusal before the start gate stays supplier responsibility with evidence; store-caused damage after signed receipt remains in this pool. Customer possession or payment alone is not qualified acceptance. | ghg-product-2011 |
 | partial_completion | all inventory rows | This is a partial manual shelf-retail module. A full retail result MUST add identified modules for building manufacture/installation/maintenance/end-of-life, ambient lighting and HVAC electricity/refrigerant/plant, checkout/POS and communications, any trolley/pallet-truck use and capital, common sanitation/water/chemicals/drains, personnel-support/site activities, inbound transport and successful-goods production. A named responsible data producer shall keep a source-ID/module overlap matrix, identical cohort/version/N and compatible reference basis; retain failed, idle and zero-output shares. Complete shelf capital, dry wipes, replacement bolts and these waste carriers belong only here. Other modules may not include them again. No full-retail footprint claim until every required module has evidence, raw activity, allocations and disjoint handoff/readback; unknown module coverage blocks that claim. | jrc-retail-2013; ghg-product-2011 |
@@ -360,6 +361,8 @@ sum(f_terminal_j*m_terminal_j)/N; calc_asset; cp_asset_end. Direct net terminal 
 | update_trigger | Bottle/label/spring-water classification or route changes; return/ownership corrections; leakage/wet-cleaning/powered equipment; lifetime/terminal changes; source and identity changes |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

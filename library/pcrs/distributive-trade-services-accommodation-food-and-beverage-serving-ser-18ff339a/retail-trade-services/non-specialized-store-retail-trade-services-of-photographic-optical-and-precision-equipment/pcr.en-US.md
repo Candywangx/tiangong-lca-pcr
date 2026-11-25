@@ -5,11 +5,11 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Factory-sealed passive 8×42 binocular kit counter retail service in a non-specialized store
+# Counter retail services for factory-sealed complete passive roof-prism binocular kits
 
 ## 1. Scope and Applicability
 
-A bounded non-specialized-store counter service for one actual factory-sealed passive 8×42 binocular kit configuration, with no cells or electronic stabilization. This is a partial incremental service; it does not represent the full CPC leaf, merchandise manufacture, or complete store operation. Manufacturer specifications anchor the optical object, not actual package BOM, battery absence, supply impacts or retail performance. Eligibility, failed-goods responsibility and fixed completion duties below are normative PCR design choices; the general GHG source does not prescribe this exact retail method or confer whole-standard conformity.
+This partial incremental method applies to factory-sealed complete passive roof-prism binocular kits in non-specialized stores. Any brand, magnification and objective diameter within this family may qualify using its own verified original supplier/configuration/accessory/pack BOM; optical specifications do not establish burden equivalence. Exclude electronic, battery-powered or stabilized optics and the other non-admitted states/routes below. The manufacturer example anchors a real optical object, not the actual full-package mass, cell absence, source inventory or retail performance. Complete-CPC coverage, goods manufacture and full-store operation are not implied. Boundary, failure-source and completion methods are authored candidate design choices, not an asserted exact mandate or conformity approval from the generic GHG source.
 
 ## 2. Product Category Identity
 
@@ -17,9 +17,9 @@ A bounded non-specialized-store counter service for one actual factory-sealed pa
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-photographic-optical-and-precision-equipment |
 | classification_refs | CPC 3.0 62152; narrower; goods group 483 |
-| covered_products | One prospectively selected supplier SKU/version of a new, factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit; unchanged binocular, original accessories and original full retail package remain together. |
-| excluded_products | 10×42 and other models; batteries and electronic or stabilized optics; cameras; lenses sold separately; components; second-hand or opened kits; optical testing, calibration, fitting, nitrogen filling, repair, demonstration, cleaning of merchandise, delivery and online fulfilment. |
-| representative_product | Nikon PROSTAFF P3 8×42, roof prism, central focusing, 8-fold magnification, 42 mm objective; source nikon-p3-spec distinguishes this from 10×42. Manufacturer device weight is not the actual full-kit or waste mass. |
+| covered_products | Factory-sealed complete passive roof-prism binocular kits, with original accessories and full original package retained together; actual optical specification and supplier configuration fixed per homogeneous pool. |
+| excluded_products | Electronic, battery-powered or stabilized optics; cameras; separately sold lenses/components; used/opened kits; testing, calibration, fitting, nitrogen filling, repair, demonstration, merchandise cleaning, delivery and online fulfilment. |
+| representative_product | Counter retail services for factory-sealed complete passive roof-prism binocular kits; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier receipt → dry ambient storage → exterior seal/model check and paperless point-of-sale → physical counter handover → final acceptance/return reconciliation. No opening, powered merchandise test or added bag. |
 | market_state | New original sealed complete kit; actual regional accessory list, body/caps/strap/case/manual and package body/closure/liners/labels/adhesives are established from supplier BOM, not inferred from a device specification. |
 
@@ -67,6 +67,7 @@ Every required qualifier must be declared in the data package; missing qualifier
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | boundary_route | all processes | Apply only after supplier specification/BOM and full-store plus landlord survey confirm passive non-stabilized optics without cell/electronics, sealed contained nitrogen, no optical bench/calibration lamp/target, no demonstrator, no lens-cleaning media, no printed receipt/label or retailer packaging. This route admits only all-electric unconditioned dry premises: no combustion fuel, refrigerant equipment, refrigerated stock, heat network or gas service anywhere in the allocated site/landlord boundary. Record equipment register, utility contracts and dated walkthrough; an unknown or present excluded source blocks this route, never establishes zero. Nitrogen sealed inside the device is not an elementary emission. | nikon-p3-spec |
 | boundary_gate | failed_kit; gross_handover; continuing_transfer; kit_waste | Keep each original kit ID and supplier lot through every receipt, handover and return. Original complete manufacturing and supplier-to-store inbound transport belong together at first store receipt and are conserved once per original ID as S/F/O/T responsibility: S finally valid customer product, F retailer loss/condemnation or externally retained nonaccepted product, O open stock, T signed continuing supplier/other-system responsibility. A resale changes that SAME original owner, never creates manufacture again. The failed_kit input is the actual F supply share, including original accessories/package and inbound transport once; it is not excluded as a custody satellite. S background stays in the downstream customer product system, O stays deferred with the original source, and T carries its signed background onward; a supplier return cannot erase it. Retain the full original source vector by source ID; component splits require verified supplier vectors conserving that boundary, never arbitrary mass fractions. |  |
 | boundary_physical | gross_handover; continuing_transfer; kit_waste | Use a goods-only custody count balance: C_close = C_open + R_supplier + R_customer - H_gross - X_continue - D_condemn - L_missing. All terms are actual event counts; supplier receipt and customer return are separate gross inflows. H_gross includes every physical customer handover including unaccepted and repeat handovers, so never subtract external_nonaccepted again. X_continue contains mutually exclusive actual supplier/internal-system outward events, not background-only owner changes. Condemnation moves goods to held waste internally; held-waste close = held-waste open + D_condemn - W_dispatch_count, with actual waste dispatch not deducted twice from goods. Reconcile original IDs, counts and measured whole-kit kg independently. Only gross_handover and continuing_transfer physical product outputs are custody satellites excluded from co-product characterization; service and failed_kit input remain characterized. Lost goods and external nonacceptance have named final recipient/state and responsibility; neither automatically creates waste dispatch. |  |
@@ -102,11 +103,11 @@ Actual AC supplied to the metered POS circuit including standby; merchandise has
 - Evidence kind: collected_record (`collected_record`)
 - Collection protocol: `cp_energy`
 
-###### Factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit (`failed_kit`)
+###### Factory-sealed passive roof-prism binocular complete retail kit (`failed_kit`)
 
 Actual manufactured complete-kit input attributable to F; do not omit manufacturing/packaging/inbound for loss, condemnation or final external nonacceptance. This burden input is not a second physical supplier receipt and is not a characterization-excluded satellite. Require complete original kit supply evidence; unknown BOM/background prevents completion.
 
-- Selected flow: Factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit
+- Selected flow: Factory-sealed passive roof-prism binocular complete retail kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F/Q
 - Value mode: foreground_record (`foreground_record`)
@@ -135,11 +136,11 @@ One finally valid service per distinct original sealed kit ID. Service identity 
 - Evidence kind: collected_record (`collected_record`)
 - Collection protocol: `cp_custody`
 
-###### Factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit (`gross_handover`)
+###### Factory-sealed passive roof-prism binocular complete retail kit (`gross_handover`)
 
 Custody satellite output of the real complete original kit; all accepted, unaccepted and repeated outward events included. Its count does not determine Q and is not co-product production.
 
-- Selected flow: Factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit
+- Selected flow: Factory-sealed passive roof-prism binocular complete retail kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: H_gross/Q
 - Value mode: foreground_record (`foreground_record`)
@@ -149,11 +150,11 @@ Custody satellite output of the real complete original kit; all accepted, unacce
 - Evidence kind: collected_record (`collected_record`)
 - Collection protocol: `cp_custody`
 
-###### Factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit (`continuing_transfer`)
+###### Factory-sealed passive roof-prism binocular complete retail kit (`continuing_transfer`)
 
 Custody satellite physical output with signed recipient; background-only reassignment has no quantity here. The same original kit source continues with T.
 
-- Selected flow: Factory-sealed Nikon PROSTAFF P3 8×42 complete retail kit
+- Selected flow: Factory-sealed passive roof-prism binocular complete retail kit
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: X_continue/Q
 - Value mode: foreground_record (`foreground_record`)
@@ -169,11 +170,11 @@ Custody satellite physical output with signed recipient; background-only reassig
 
 ##### Waste flows
 
-###### Discarded unopened Nikon PROSTAFF P3 8×42 complete retail kit (`kit_waste`)
+###### Discarded unopened passive roof-prism binocular complete retail kit (`kit_waste`)
 
 One whole actual article carrier including original device/accessories/package, admitted only when receiving treatment contract accepts that full unopened state. Do not split out glass, body resin or contained nitrogen again. Lost goods have no fictitious carrier. Actual opened content requires state-specific extension before completion.
 
-- Selected flow: Discarded unopened Nikon PROSTAFF P3 8×42 complete retail kit
+- Selected flow: Discarded unopened passive roof-prism binocular complete retail kit
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_kit/Q
 - Value mode: foreground_record (`foreground_record`)
@@ -246,6 +247,8 @@ One whole actual article carrier including original device/accessories/package, 
 | update_trigger | SKU/BOM/seal/route/source changes, added powered test or cell, new module evidence, late acceptance/return or asset-lifetime revision. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

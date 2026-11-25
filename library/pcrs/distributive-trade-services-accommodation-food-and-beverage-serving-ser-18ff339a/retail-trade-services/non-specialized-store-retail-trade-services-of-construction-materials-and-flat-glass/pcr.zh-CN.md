@@ -6,7 +6,7 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# 非专门店原尺寸透明退火浮法平板玻璃到店自提零售服务
+# 原尺寸透明退火浮法玻璃原片自提零售服务
 
 ## 1. 范围与适用性
 
@@ -20,7 +20,7 @@ content_maturity: authored_methodology
 | classification_refs | CPC 3.0 62161; narrower |
 | covered_products | 同SKU原尺寸透明无镀层退火单片浮法玻璃零售服务 |
 | excluded_products | 其他建材；加工玻璃；零售商切裁/配送/安装 |
-| representative_product | 实际有单证供应商库存原板；长宽厚/净kg实测，不设名义质量 |
+| representative_product | 原尺寸透明退火浮法玻璃原片自提零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 收货；手工干态架存；完好自提；最终验收及去向核对 |
 | market_state | 固态玻璃板，常温干态，声明边缘/包装规格 |
 
@@ -64,6 +64,7 @@ content_maturity: authored_methodology
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
 | scope_gate | glass_service | 每池只纳入一个实际同质SKU：透明无镀层单片退火浮法玻璃，供应商预裁矩形原尺寸库存板，自收货至销售不改变尺寸。记录制造商/批次、成分声明、实测净kg及长宽厚、边缘、包装和验收规格。不同厚度、尺寸或处理方式分池。非专门店须以实际混合商品组合证明，与品牌许可无关。其他建材、镜子、玻纤、镀层/钢化/夹层/中空玻璃、切裁、磨边、安装及零售商配送不属本路线。 | un-cpc30-62161; guardian-clear-2021; guardian-types-2019 |
 | service_gate | glass_service | 始于零售商实际收货门，止于顾客自提并最终有效验收完好指定板材。本规则为每1kg最终验收玻璃的增量零售服务，并非玻璃生产。顾客负责使用/安装及交付后运输。记录缺陷、自提失败及无实物退回的验收撤销；单纯折扣/退款不撤销验收。同一原板重复交付不得产生重复最终有效服务。 | jrc-retail-2013 |
 | goods_responsibility | failed_original_glass | 逐原始来源批次将收货门等价玻璃kg划分B = B_S+B_F+B_T+B_O，保留唯一来源ID。S为最终验收，商品生产及入库运输由下游按B_S/Q补入；F为不可恢复失败/遗失且无具名继续责任方，按failed_original_glass的B_F/Q纳入原始生产及入库运输向量；T把同一原向量转给已签认的供应商/外部责任方或内部用途；O为未结库存。退款本身不转移责任。迟退修订原池并替换旧向量，转售不重新计生产。仅supplier_glass_transfer、external_damaged_glass及customer_kraft是不表征保管卫星流。glass_cullet及waste_kraft为仅处理废物输出，保留实际收集/运输/处理责任，不得按卫星流删除其处理。各输出不产生新的制造负荷或避免生产信用。 | jrc-retail-2013 |
@@ -321,6 +322,8 @@ P_waste/Q；运单实测净重，仅处理
 | update_trigger | SKU/包装/路线/供应/寿命/验收变化或迟退 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

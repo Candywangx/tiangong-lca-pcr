@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental shelf and checkout retail service for sealed 250 g unflavoured black tea pouches
+# Shelf and checkout retail services for sealed 250 g pouches of unflavoured black tea
 
 ## 1. Scope and Applicability
 
@@ -21,7 +21,7 @@ This is one partial incremental retail module for non-specialized walk-in stores
 | classification_refs | CPC 3.0 62127; narrower |
 | covered_products | The sealed unflavoured 250 g black tea packet service specified above |
 | excluded_products | Other teas, coffee/spices, preparation, loose sales and other operational routes; common groups require completion matrix |
-| representative_product | One supplier/SKU dried Camellia sinensis black tea, nominal 250 g opaque PET/aluminium/PE heat-sealed pouch |
+| representative_product | Shelf and checkout retail services for sealed 250 g pouches of unflavoured black tea; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier filling → store receipt → unopened dry ambient shelf → attended final checkout acceptance |
 | market_state | Unopened shelf-stable dried leaf tea, purchased for own use |
 
@@ -70,6 +70,7 @@ This is one partial incremental retail module for non-specialized walk-in stores
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_route | all | This is one partial incremental retail module for non-specialized walk-in stores: supplier-filled, opaque heat-sealed PET/aluminium/PE laminate pouches, nominal net 250 g, containing only dried unflavoured black tea leaves of Camellia sinensis. Fix one manufacturer, SKU, tea grade, pouch construction and acceptance specification per dataset. Record the actual net tea mass and moisture basis of each receipt lot; 250 g is the format identifier, never an assumed measured mass. Receive at the store receiving gate, inspect and place unopened packets on a dry ambient shelf, then hand them over at an attended checkout for the buyer’s own use. There is no retailer brewing, tasting, grinding, blending, repacking, delivery, refrigeration or dehumidification within this module. Coffee, spices, green/oolong/instant tea, flavoured tea, tea bags, cans and loose bulk sales are excluded. Actual incidents and failed cohorts remain in the pool; an excluded operational route cannot be made equivalent by renaming it. The module includes dedicated shelf/checkout electricity, receipt paper and the specified residual carriers. Known common premises, assets and housekeeping are excluded here only under the mandatory completion matrix below. The partial result must never be described as the whole retail footprint. | un-cpc-62127; tea-board-storage |
 | gates | all | Start when the retailer accepts physical custody at the store receiving gate; end at qualified final handover after the prospectively declared physical return/acceptance observation window, or a recorded terminal/continuing failed fate. Record gate dates, custody, seal/label/lot/condition, buyer acceptance and destination. Payment alone is not qualified acceptance. Internal shelf movement is not a second receipt or service. Retailer transport after receipt is outside this route; any actual trip requires a separate completed route module before aggregation. | un-cpc-62127; ghg-product-2011 |
 | partial_completion | all | Before any whole-retail claim, the responsible assembler must attach a source-ID and boundary-matched completion matrix for (i) shared premises lighting, HVAC, ventilation and office/checkout IT operation not on the dedicated meter plus actual payment and communication services; (ii) building including shell, fixed wiring/luminaires and installed common systems; (iii) shelf, checkout/POS and actual loaded plus empty handling trolley/pallet equipment; (iv) all housekeeping water, each detergent/cloth, wastewater and other residuals; (v) maintenance, installation and terminal asset carriers and actual transport. For every module use this same cohort and final denominator Q, record meter/provider intersections and exclude duplicates by event/asset/component IDs. Retain failed, idle, closed and zero-output periods. Unknown coverage blocks completeness, never equals zero. Required measurement and allocation methods are fixed in completion_calc and completion_protocol; modellers may supply actual quantities and suppliers, not choose another denominator or cut-off. No excluded asset burden is silently declared insignificant. | ghg-product-2011 |
@@ -382,6 +383,8 @@ Actual failed/test receipts retained and discarded at store, not all receipt pap
 
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

@@ -6,12 +6,12 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Non-specialized store retail service for original Blaschak Rice anthracite bags
+# Retail services for original bags of rice-size anthracite coal
 
 
 ## 1. Scope and Applicability
 
-This candidate covers one actual supplier/plant/lot and original handled-bag configuration of Blaschak Rice anthracite, nominally40lb, physically selected and paid for in a mixed-assortment store. Cole’s SKU7788700/MPN RICE identifies a representative product, not actual local inventory or a qualifying transaction. This is retail service, not fuel extraction, combustion or heat. The partial core includes separate failed coal/bag original sources, electricity, custody, actual coal carriers and measured exterior transfers. Complete status requires the fixed support methods, real atomic provider cards, verified identities and field evidence; no measurements or scientific/release approval are claimed.
+This candidate covers original bags of rice-size anthracite coal selected and paid for by customers in actual mixed-assortment physical stores. Any supplier/brand within this rank/size family may qualify in separate actual factory/lot/moisture/complete-package configurations. Retail catalogue SKUs and nominal bag mass are examples only, not site-stock evidence, measured quantities or universal source vectors. The reference is retail service, not fuel mining, combustion or heat supply. The partial core includes separate failed-coal and original-bag source responsibility, electricity, custody transfers, actual coal carriers and measured exterior transfers. Completeness requires the fixed support methods, actual atomic provider cards, verified identities and foreground evidence; no actual-measurement or scientific/publication approval is asserted.
 
 ## 2. Product Category Identity
 
@@ -19,9 +19,9 @@ This candidate covers one actual supplier/plant/lot and original handled-bag con
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-solid-liquid-and-gaseous-fuels-and-relat-df647718 |
 | classification_refs | CPC3.0:62191; narrower |
-| covered_products | One evidenced original Blaschak Rice bag lot, sold intact at a qualifying physical mixed store; nonroutine rupture/leakage remains a recorded incident. |
-| excluded_products | Other coal ranks/sizes/brands/lots without evidence; peat, crude oil/gas, LPG/refined oils, nuclear fuel, wax firelogs, loose fuel retail, wholesale, specialist fuel shops, online/mail orders including online pickup, home delivery and on-site routine opening for sale/rebagging/sizing/blending/wetting/drying/combustion; customer travel, stove use and ash. |
-| representative_product | Blaschak Rice original handled bags, Cole’s7788700. Actual lot, size distribution, moisture, complete packaging BOM/closure and net mass require supplier/field evidence. |
+| covered_products | Original bags of rice-size anthracite coal sold intact in qualifying physical mixed stores; actual grade/size distribution, moisture, net mass and complete packaging BOM fixed per pool. Nonroutine rupture/leakage remains a recorded incident. |
+| excluded_products | Other coal ranks/sizes and unverified supplier/lot configurations; peat, crude oil/gas, LPG/refined oils, nuclear fuel, wax firelogs, loose fuel retail, wholesale, specialist fuel shops, online/mail orders including online pickup, home delivery and on-site routine opening for sale/rebagging/sizing/blending/wetting/drying/combustion; customer travel, stove use and ash. |
+| representative_product | Retail services for original bags of rice-size anthracite coal; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier dispatch -> store receipt/inspection -> covered display/storage -> customer self-selection and cashier payment -> signed intact-bag physical handover; quarantine, collection and original-source corrections included. |
 | market_state | Unburned washed/sized solid anthracite in original unopened bags. No assumption of hermetic water isolation, pure carbon, negligible dust or zero upstream impacts. |
 
@@ -38,7 +38,7 @@ This candidate covers one actual supplier/plant/lot and original handled-bag con
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Retail service for one original Blaschak Rice anthracite bag with final valid acceptance |
+| Reference product flow | Retail service for one original rice-size anthracite bag with final valid acceptance |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -67,6 +67,7 @@ This candidate covers one actual supplier/plant/lot and original handled-bag con
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_route | retail | Verify a named actual physical store with wide mixed assortment, self-selection from display and cashier payment followed by handover, using dated layout/photos, signed site audit, stock and transaction receipt. Online/mail orders, including online pickup at the same counter, wholesale and delivery are outside this route. Web stock and BuyOnlinePickupInStore banners are not field proof. Original bag state and acceptance terms must be evidenced before observing the pool. | un621; coles |
 | b_sources | failure; residual; air | Coal and complete original bag need separate supplier vectors under c_origin. Coal vector includes extraction/preparation/washing/sizing and actual filling activity to supplier dispatch, excludes separately inventoried bag manufacture. Bag vector covers complete actual body/handle/closure/liner/printing/label/adhesive, excludes coal. Verified supplier stage subdivision is required, never a mass split of a whole environmental vector or an assumed polymer/tare. Successful S backgrounds belong only to a separately declared GOODS system; F inputs below remain characterized. Actual inbound transport including F is separately mandatory under c_transport; bundled stages require verified separation before completion. | ghg2011 |
 | b_incidents | retail; residual; air | Unopened is not leakproof or moisture-invariant. Inspect receipt, every move/pickup and incident for rupture, wetness, air/drain paths, loose coal, dust and sampling. Quarantine damaged/unknown states and exclude them from intact accepted Q. Execute c_mass/c_moisture/c_dust/c_water for actual states/paths, including coal versus bag fate separation. Floor/tray/filter transfer is internal stock, not outside-air emission. Any real unlisted liquid, recovered Product or emission must obtain its specific state/medium card and protocol before full status, using the fixed original-source, direct-carrier and single-normalization methods, never assumed zero. |  |
@@ -114,11 +115,11 @@ Actual point-of-use store electricity under a_electricity, not the coal heating 
 
 ##### Product flows
 
-###### Retail service for one original Blaschak Rice anthracite bag with final valid acceptance (`service_output`)
+###### Retail service for one original rice-size anthracite bag with final valid acceptance (`service_output`)
 
 One service only when Q>0; original identity survives returns/resale.
 
-- Selected flow: Retail service for one original Blaschak Rice anthracite bag with final valid acceptance
+- Selected flow: Retail service for one original rice-size anthracite bag with final valid acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: fixed_value
@@ -139,11 +140,11 @@ One service only when Q>0; original identity survives returns/resale.
 
 ##### Product flows
 
-###### Blaschak Rice anthracite at original supplier dispatch, original as-received moisture basis (`original_coal`)
+###### rice-size anthracite at original supplier dispatch, original as-received moisture basis (`original_coal`)
 
 Original supplier wet-kg equivalent of its F dry-matter portions under c_origin, never current waste kg or whole-bag kg.
 
-- Selected flow: Blaschak Rice anthracite at original supplier dispatch, original as-received moisture basis
+- Selected flow: rice-size anthracite at original supplier dispatch, original as-received moisture basis
 - Flow property / unit: Mass / kg
 - Amount rule: B_F_wet/Q kg
 - Value mode: calculated_value
@@ -154,11 +155,11 @@ Original supplier wet-kg equivalent of its F dry-matter portions under c_origin,
 - Collection protocol: `cp_origin`
 - Sources:
 
-###### Complete empty original Blaschak Rice coal handled bag of one evidenced manufacturing configuration (`original_bag`)
+###### Complete empty original rice-size coal handled bag of one evidenced manufacturing configuration (`original_bag`)
 
 Complete actual body/handle/closure/liner/printing/label/adhesive object with stage-separated supplier vector, excluding coal.
 
-- Selected flow: Complete empty original Blaschak Rice coal handled bag of one evidenced manufacturing configuration
+- Selected flow: Complete empty original rice-size coal handled bag of one evidenced manufacturing configuration
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F_bag/Q Item(s)
 - Value mode: calculated_value
@@ -195,11 +196,11 @@ Complete actual body/handle/closure/liner/printing/label/adhesive object with st
 
 ##### Product flows
 
-###### Intact original Blaschak Rice anthracite bag handed to named supplier (`supplier_return`)
+###### Intact original rice-size anthracite bag handed to named supplier (`supplier_return`)
 
 Actual handover/recipient and signed T successor or unresolved O; no manufacture credit.
 
-- Selected flow: Intact original Blaschak Rice anthracite bag handed to named supplier
+- Selected flow: Intact original rice-size anthracite bag handed to named supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_supplier/Q Item(s)
 - Value mode: calculated_value
@@ -210,11 +211,11 @@ Actual handover/recipient and signed T successor or unresolved O; no manufacture
 - Collection protocol: `cp_custody`
 - Sources:
 
-###### Intact original Blaschak Rice anthracite bag held externally without final valid acceptance at cutoff (`external_retained`)
+###### Intact original rice-size anthracite bag held externally without final valid acceptance at cutoff (`external_retained`)
 
 Distinct original-ID cutoff state linked to gross handover, not another exit or automatic waste.
 
-- Selected flow: Intact original Blaschak Rice anthracite bag held externally without final valid acceptance at cutoff
+- Selected flow: Intact original rice-size anthracite bag held externally without final valid acceptance at cutoff
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_external/Q Item(s)
 - Value mode: calculated_value
@@ -225,11 +226,11 @@ Distinct original-ID cutoff state linked to gross handover, not another exit or 
 - Collection protocol: `cp_custody`
 - Sources:
 
-###### Intact original Blaschak Rice anthracite bag transferred to named internal non-combustion custody (`internal_transfer`)
+###### Intact original rice-size anthracite bag transferred to named internal non-combustion custody (`internal_transfer`)
 
 Retain same original coal/bag sources and signed T owner; later combustion is a separate route, not a new supply purchase.
 
-- Selected flow: Intact original Blaschak Rice anthracite bag transferred to named internal non-combustion custody
+- Selected flow: Intact original rice-size anthracite bag transferred to named internal non-combustion custody
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_internal/Q Item(s)
 - Value mode: calculated_value
@@ -260,11 +261,11 @@ Retain same original coal/bag sources and signed T owner; later combustion is a 
 
 ##### Waste flows
 
-###### Collected unburned Blaschak anthracite fines, separately dispatched without bag, measured moisture (`collected_coal`)
+###### Collected unburned rice-size anthracite fines, separately dispatched without bag, measured moisture (`collected_coal`)
 
 Unique actual final same-state net fines carrier with verified complete matching treatment under c_mass, not the sum of physical retries/returns. Original dry coal is separate QA; changed/soil/cleaner-mixed carriers require their actual specific card.
 
-- Selected flow: Collected unburned Blaschak anthracite fines, separately dispatched without bag, measured moisture
+- Selected flow: Collected unburned rice-size anthracite fines, separately dispatched without bag, measured moisture
 - Flow property / unit: Mass / kg
 - Amount rule: W_coal/Q kg
 - Value mode: calculated_value
@@ -275,11 +276,11 @@ Unique actual final same-state net fines carrier with verified complete matching
 - Collection protocol: `cp_waste`
 - Sources:
 
-###### Condemned original Blaschak Rice anthracite bag with remaining coal, accepted as one complete waste carrier (`complete_bag_waste`)
+###### Condemned original rice-size anthracite bag with remaining coal, accepted as one complete waste carrier (`complete_bag_waste`)
 
 Unique actual final same-state complete filled-bag net load with verified full-scope treatment under c_mass. Refused/returned or only partially processed material cannot use this full-treatment quantity/provider; actual failures remain separate sources.
 
-- Selected flow: Condemned original Blaschak Rice anthracite bag with remaining coal, accepted as one complete waste carrier
+- Selected flow: Condemned original rice-size anthracite bag with remaining coal, accepted as one complete waste carrier
 - Flow property / unit: Mass / kg
 - Amount rule: W_full/Q kg
 - Value mode: calculated_value
@@ -290,11 +291,11 @@ Unique actual final same-state complete filled-bag net load with verified full-s
 - Collection protocol: `cp_waste`
 - Sources:
 
-###### Emptied original Blaschak Rice handled bag with measured adherent coal residue, accepted as one waste carrier (`empty_bag_waste`)
+###### Emptied original rice-size handled bag with measured adherent coal residue, accepted as one waste carrier (`empty_bag_waste`)
 
 Incident-emptying carrier measured whole, counted once only at actual final same-state complete treatment under c_mass. Residue dry source kg is separate; do not repeat it as collected_coal or count returned attempts as full treatment.
 
-- Selected flow: Emptied original Blaschak Rice handled bag with measured adherent coal residue, accepted as one waste carrier
+- Selected flow: Emptied original rice-size handled bag with measured adherent coal residue, accepted as one waste carrier
 - Flow property / unit: Mass / kg
 - Amount rule: W_empty/Q kg
 - Value mode: calculated_value
@@ -340,7 +341,7 @@ Verified inward transfer is an environmental input, not a negative emission or u
 
 ##### Elementary flows
 
-###### Blaschak anthracite-derived suspended particulate matter, measured total particle-size coverage, to outside air (`coal_air`)
+###### rice-size anthracite-derived suspended particulate matter, measured total particle-size coverage, to outside air (`coal_air`)
 
 Only verified original-coal dry external transfer under c_dust; indoor liberation/deposition/filter stock are not emissions. Identity must match actual particle coverage and medium.
 
@@ -442,6 +443,8 @@ Verified outward intervals under c_water; wet coal weight loss alone is not an e
 | update_trigger | Actual source/lot/BOM/route change, late acceptance/fate, moisture/dust assay or uncertainty change, asset lifetime/provider scope or identity correction. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

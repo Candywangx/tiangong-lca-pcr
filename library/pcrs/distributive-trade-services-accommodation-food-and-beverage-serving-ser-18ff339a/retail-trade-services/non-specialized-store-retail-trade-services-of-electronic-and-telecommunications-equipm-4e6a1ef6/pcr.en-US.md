@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail service for factory-sealed TL-SG105 Ethernet switch kits
+# Retail services for factory-sealed complete Ethernet-switch kits
 
 ## 1. Scope and Applicability
 
@@ -19,9 +19,9 @@ A deliberately narrow candidate for unopened complete Ethernet-switch kit retail
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-electronic-and-telecommunications-equipm-4e6a1ef6 |
 | classification_refs | CPC 3.0 62185; narrower |
-| covered_products | Counter retail of one actual homogeneous unopened TL-SG105 complete retail kit configuration |
+| covered_products | Counter retail of one actual homogeneous unopened Ethernet-switch complete retail kit configuration |
 | excluded_products | Specialized equipment stores; other consumer electronics; bare boards/parts; recorded media; opened/activated/demo/installed/used kits; online dispatch/delivery; equipment manufacture as service output |
-| representative_product | TP-Link TL-SG105 five-port 10/100/1000 Mbps Ethernet switch retail kit; V2 official function evidence, actual lot/version verification required |
+| representative_product | Retail services for factory-sealed complete Ethernet-switch kits; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Intact receiving → ambient holding → counter handover → final acceptance/late correction; no power-on |
 | market_state | New factory-sealed complete original kit; real adapter/guide/package scope; no assumed cell absence |
 
@@ -29,7 +29,7 @@ A deliberately narrow candidate for unopened complete Ethernet-switch kit retail
 
 | Field | Value |
 | --- | --- |
-| What | Retail service for one factory-sealed TL-SG105 switch kit with final valid acceptance |
+| What | Retail service for one factory-sealed Ethernet switch kit with final valid acceptance |
 | How much | 1 Item(s) of retail service, not 1 kg or rated network capacity |
 | How well | Actual version/adapter/retail-package intactness and recipient final valid acceptance; no safety/compliance certification inferred |
 | How long or cycle | One prospectively fixed site/configuration/cohort observation window with ongoing original-pool late-return corrections |
@@ -38,7 +38,7 @@ A deliberately narrow candidate for unopened complete Ethernet-switch kit retail
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Retail service for one factory-sealed TL-SG105 switch kit with final valid acceptance |
+| Reference product flow | Retail service for one factory-sealed Ethernet switch kit with final valid acceptance |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -67,7 +67,8 @@ A deliberately narrow candidate for unopened complete Ethernet-switch kit retail
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `b_route` | retail; residual | Only a physically non-specialized mixed-assortment walk-in store, ambient indoor holding and counter handover of new unopened TL-SG105 five-port 10/100/1000 Mbps Ethernet switch kits is admitted. One pool has one actual hardware version, market plug/adapter model, supplier lot packaging BOM and acceptance specification. The representative official V2 datasheet establishes wired-network function; the manufacturer package list names switch, power adapter and installation guide. It does not prove actual stock, factory cell absence, complete BOM or LCI. Verify receiving labels and supplier lot statement. No kit opening, powering, cable connection, configuration, recording, installation, repair, charging, activation or demonstration occurs in this route. Any actual occurrence blocks this route until a state-specific extension has named cards and aligned protocols. A brand franchise or non-exclusive licence does not establish a non-specialized store. | `un-cpc62185`; `un-cpc4722`; `tplink-v2`; `tplink-package` |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| `b_route` | retail; residual | Only a physically non-specialized mixed-assortment walk-in store, ambient indoor holding and counter handover of new unopened complete wired Ethernet-switch kits of the actual declared port count and link specification is admitted. One pool has one actual hardware version, market plug/adapter model, supplier lot packaging BOM and acceptance specification. The representative official V2 datasheet establishes wired-network function; the manufacturer package list names switch, power adapter and installation guide. It does not prove actual stock, factory cell absence, complete BOM or LCI. Verify receiving labels and supplier lot statement. No kit opening, powering, cable connection, configuration, recording, installation, repair, charging, activation or demonstration occurs in this route. Any actual occurrence blocks this route until a state-specific extension has named cards and aligned protocols. A brand franchise or non-exclusive licence does not establish a non-specialized store. | `un-cpc62185`; `un-cpc4722`; `tplink-v2`; `tplink-package` |
 | `b_gates` | retail; residual | The foreground starts at documented retailer receiving custody of the intact kit and ends at counter handover plus final valid acceptance after the declared observation window; continue later-return corrections. The common Q is the number of distinct original kit IDs with final-valid acceptance in the prospectively fixed configuration/site/cohort pool. Retention without qualified acceptance gives no Q. A revocation removes that ID once even without movement; a financial refund or discount with valid acceptance does not. Repeated attempts and resale keep the same original ID and do not create another finally valid original unit. Keep refusal, never-accepted handover, return, revocation, reversal, internal transfer and confirmed missing events separately. Freeze pooling before outcomes; retain failed and zero-sale periods. A wholly zero-Q pool remains unnormalizable with raw burdens and fates, never dropped or assigned an invented Q. | `ghg-product-2011` |
 | `b_original` | failed_original_kit; supplier_return_kit; external_failed_kit; internal_transfer_kit; intact_kit_waste | Use one original whole-kit manufacturing vector strictly at supplier dispatch: complete device, factory-included adapter/accessories/cells if actually present, guide and complete original retail package body/closures/liners/labels/adhesives. Supplier BOM/lot evidence and background scope are required. On-site no-power-on never implies no factory testing or no factory-included cells; retain the actual factory testing stages in the original manufacturing vector. For each original source vector partition source-equivalent kit quantities into S final valid sale, F retailer-responsible irreversible loss/condemnation or failed retained goods, T named signed supplier/other/internal-asset transferred responsibility, O known open stock or unresolved responsibility; split known-open and unknown O and block completeness for unknown. S+F+T+O equals the distinct original source-equivalent kits in carried-in source ledger plus genuinely new original sources first acquired this period, with disjoint original_kit_id/original_source_id sets. A physical return, retry or resale never reacquires an original source or adds it again to carried-in/new-source totals; all state revisions replace its existing row. The failed_original_kit Product input carries F once, including known missing original kits; it is not a second physical receipt. Successful S manufacture is excluded from the incremental retail service; a separately labelled downstream GOODS system may add S once. Internal-asset T follows the same original source into its named asset ledger, never a new full kit plus F. T requires signed background-responsibility acceptance and retains named successor/source; physical supplier handback alone does not establish T. O retains its original open/unresolved responsibility until evidenced final disposition. Fractions cannot split a heterogeneous environmental vector by component mass/count. If adapter/cell/packaging has a different final owner, require verified supplier component vectors, actual component quantity/property/unit, separate atomic cards and exact original-source vector conservation before completion. Whole input then excludes those separated components. Inbound transport is separate mandatory completion, never inferred inside the dispatch vector. | `ghg-product-2011`; `tplink-package` |
 | `b_physical` | supplier_return_kit; external_failed_kit; internal_transfer_kit; intact_kit_waste | The three named Product satellites carry no new manufacture/background credit. supplier_return_kit and internal_transfer_kit are actual intact-sealed custody movements. external_failed_kit is exclusively a cutoff actual-state QA satellite: count distinct original kit IDs currently outside retailer custody without final-valid acceptance and still intact sealed, linked to the original handover. A no-movement revocation updates this state only, adds no handover and never subtracts N_ext in the goods stock balance. It is not a second physical output or a waste dispatch. Recipient/state/date and original owner are independent of S/F/T/O. Physical stock uses the goods-only ledger: closing_goods_count = opening_goods_count + receipts_count + customer_returns_to_goods_count + supplier_in_count - gross_customer_handover_count - supplier_return_count - internal_transfer_count - condemnation_count - confirmed_missing_goods_count + signed_goods_residual_count. All customer exits, including never-accepted handovers, are within gross_customer_handover_count once; revocation without movement only reclassifies the event. Condemnation transfers goods to held waste internally. Separately closing_held_waste_kg = opening_held_waste_kg + condemned_kg + returned_direct_to_waste_kg - dispatched_kg - other_waste_transfer_kg - confirmed_missing_waste_kg + signed_waste_residual_kg. Never equate counts with kg or subtract condemnation and dispatch twice. Weigh each condemnation/return carrier and link event IDs. Confirmed missing and unresolved signed residuals remain distinct. Unknown residuals block completeness. Externally retained failed kits are not retailer waste. Opened/damaged or incomplete devices need new state-specific physical cards before completion; intact_kit_waste cannot cover them. | `ghg-product-2011` |
@@ -121,7 +122,7 @@ Measured electricity used by actual retailer circuits; the merchandise switch st
 
 This is service output for one distinct finally accepted original kit, not one manufactured switch or network connection.
 
-- Selected flow: Retail service for one factory-sealed TL-SG105 switch kit with final valid acceptance
+- Selected flow: Retail service for one factory-sealed Ethernet switch kit with final valid acceptance
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Calculated value (`calculated_value`)
@@ -146,7 +147,7 @@ This is service output for one distinct finally accepted original kit, not one m
 
 One source-equivalent complete homogeneous kit: device, actual included adapter/accessories/cells, guide and original retail packaging. It links retailer-responsible failed/lost goods to original manufacture once; not a second receipt and not inbound transport.
 
-- Selected flow: Factory-sealed TL-SG105 switch retail kit at supplier dispatch
+- Selected flow: Factory-sealed Ethernet switch retail kit at supplier dispatch
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -169,7 +170,7 @@ One source-equivalent complete homogeneous kit: device, actual included adapter/
 
 Count actual physical handbacks with supplier recipient acceptance; ownership may continue or transfer only on evidence, not because a refund exists. No manufacture credit or new input.
 
-- Selected flow: Intact factory-sealed TL-SG105 retail kit handed to supplier
+- Selected flow: Intact factory-sealed Ethernet-switch retail kit handed to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_ret/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -184,7 +185,7 @@ Count actual physical handbacks with supplier recipient acceptance; ownership ma
 
 Count distinct original kit IDs in the actual sealed external-retention state at cutoff without valid acceptance, including never-accepted and later-revoked originals. Link the original handover, actual recipient and background owner; this QA state adds neither a physical movement nor Q or automatic waste.
 
-- Selected flow: Intact factory-sealed TL-SG105 retail kit held externally without valid acceptance at cutoff
+- Selected flow: Intact factory-sealed Ethernet-switch retail kit held externally without valid acceptance at cutoff
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_ext/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -199,7 +200,7 @@ Count distinct original kit IDs in the actual sealed external-retention state at
 
 A recorded physical transfer of the same original source into T, still sealed at transfer gate; later opening/use requires an asset-route extension and preserves original manufacturing source.
 
-- Selected flow: Intact factory-sealed TL-SG105 retail kit transferred to named internal asset custody
+- Selected flow: Intact factory-sealed Ethernet-switch retail kit transferred to named internal asset custody
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_transfer/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -216,7 +217,7 @@ A recorded physical transfer of the same original source into T, still sealed at
 
 The actual complete sealed waste carrier includes device, adapter, guide and original retail packaging; direct consignment net mass excludes weighing tare only. Treatment must accept all actual constituents and state; opened/incomplete goods need another card.
 
-- Selected flow: Condemned intact sealed TL-SG105 complete retail kit accepted for whole-kit waste treatment
+- Selected flow: Condemned intact sealed Ethernet-switch complete retail kit accepted for whole-kit waste treatment
 - Flow property / unit: Mass / kg
 - Amount rule: W_dispatch_kg/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -292,6 +293,8 @@ The actual complete sealed waste carrier includes device, adapter, guide and ori
 | update_trigger | Late acceptance/return/state change; supplier BOM/version; site/route change; source, lifetime or provider revision |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

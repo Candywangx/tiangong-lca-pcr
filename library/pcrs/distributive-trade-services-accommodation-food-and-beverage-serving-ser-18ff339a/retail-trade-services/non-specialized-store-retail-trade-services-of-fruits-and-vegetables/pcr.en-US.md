@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail service for fresh whole dessert apples
+# Retail services for fresh whole dessert apples
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ This PCR retains the fruit-and-vegetable retail identity but its usable methodol
 | classification_refs | CPC 3.0 62121; narrower |
 | covered_products | In-store net-mass retail service for fresh whole dessert apples of one declared cultivar/grade/state and the scope_route configuration |
 | excluded_products | Other fruits/nuts/vegetables; preserved/prepared products; produce production as reference; processing and delivery outside scope_route |
-| representative_product | One cultivar-specific whole fresh dessert apple service pool, such as Golden Delicious, not a generic produce basket |
+| representative_product | Retail services for fresh whole dessert apples; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receiving, sorting, ordinary-air R134a refrigeration, ambient display, optional LDPE self-bagging, checkout, reverse handling and residual management |
 | market_state | Fresh whole raw edible apples, cultivar and quality contract fixed; actual wet state recorded at receiving and acceptance |
 
@@ -56,6 +56,7 @@ This PCR retains the fruit-and-vegetable retail identity but its usable methodol
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | `scope_route` | all processes | Apply only to in-store non-specialized retail of fresh whole dessert apples (Malus domestica), one declared cultivar/grade/receiving state per dataset, using ordinary-air R134a refrigerated holding and ambient display, sold by calibrated net mass. Exclude frozen, dried, canned, juiced, cut, washed/waxed on site, mixed-cultivar composite references, controlled atmosphere, home delivery and other produce. Customer self-bagging in specified LDPE bags is included. | `un-cpc`; `cde-apples` |
 | `service_gates` | retail | Start at documented store receiving gate after inbound transport; end at final customer acceptance at checkout with agreed cultivar, net mass, grade, freedom from visible decay and recorded condition. Declare the actual quality contract and temperature/humidity/time specification prospectively; no literature value becomes a universal acceptance limit. Include receiving, sorting, cold holding, ambient display, checkout, sanitation, reversals, residual handling and attributable assets. No on-site produce processing occurs. | `cde-apples` |
 | `goods_responsibility` | failed_apples | This incremental retail service excludes production and inbound transport for successful merchandise from its burden numerator; downstream links that receiving-gate background exactly once using B_s/D receiving-state kg, not 1 kg of newly produced apples. Include B_f/D receiving-state background for all permanently failed goods, spoilage, shrink and non-sale external transfers, including donation and supplier return. Keep retailer responsibility for these failed cohorts; no displacement credit or supplier refund removes it. A failed external handoff must state recipient, physical state, onward function and treatment responsibility and is never automatically waste. Upstream dataset boundary must include actual cultivar/origin/harvest/storage/packing and inbound transport through the same gate; subtract evidenced overlaps only. |  |
@@ -760,6 +761,8 @@ Measured actual remaining complete carrier, with battery-removal event and separ
 | update_trigger | Cultivar/grade/state, processing/holding/refrigerant/channel, supplier background, actual flow, return outcome, asset life or source evidence changes |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

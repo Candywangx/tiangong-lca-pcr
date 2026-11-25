@@ -6,11 +6,11 @@ language: zh-CN
 sync_with: pcr.en-US.md
 ---
 
-# Cif Professional 柠檬含磨粒去污乳7508636原装2升瓶的到店零售增量服务
+# 原瓶硬表面含磨粒去污乳到店零售服务
 
 ## 1. 范围与适用性
 
-本候选规定原装2升含磨粒去污乳的零售服务，不规定清洁效果功能。CPC35334属于3533及62176商品范围，须验证实际含磨粒配方及零售渠道后才适用；完整SERVICE必须具备所有真实原子来源和身份。
+本候选规定原装密封瓶装硬表面含磨粒去污乳的零售服务，不规定清洁效果功能。CPC35334属于3533及62176商品范围，须验证实际含磨粒配方及零售渠道后才适用；完整SERVICE必须具备所有真实原子来源和身份。
 
 ## 2. 产品类别识别
 
@@ -18,9 +18,9 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-cleaning-materials |
 | classification_refs | CPC3.0 62176; 映射权威在外部accepted mapping/ADR；建议narrower，不是接受决定。 |
-| covered_products | Cif Professional 柠檬含磨粒去污乳7508636原装2升瓶的到店零售增量服务 |
-| excluded_products | 其他SKU/浓度/状态；专门店；线上/向客户送货；灌装；商品使用/制造 |
-| representative_product | Cif Professional Cream Cleaner Lemon 7508636；原装2升瓶，硬表面含磨粒去污乳；实际批次完整制剂/包装BOM另核。 |
+| covered_products | 原密封瓶装硬表面含磨粒去污乳的到店零售增量服务；每个同质池固定实际完整配方及包装配置。 |
+| excluded_products | 不含磨粒的溶解表面活性剂洗涤制剂、其他物态、专门店、线上/配送、灌装及商品使用/制造。 |
+| representative_product | 原瓶硬表面含磨粒去污乳到店零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 混合商品实体超市到店/常温/原封柜台交付 |
 | market_state | 原装完整瓶内含磨粒乳状悬浮制剂；不是纯表面活性剂、餐具洗洁精、纯水、干粉或仅磨粒质量。 |
 
@@ -37,7 +37,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Cif Professional 柠檬含磨粒去污乳2升原瓶的到店零售增量服务 |
+| 参考产品流 | 硬表面含磨粒去污乳原密封瓶的到店零售增量服务 |
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
@@ -66,7 +66,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | retail; hygiene | 仅准Diversey/Pro Formula Cif Professional Cream Cleaner Lemon 7508636原装2升瓶，按实际批次完整乳状制剂与盖/标签/内衬BOM分池。厂家页面确认去除硬表面污垢的清洁微粒；页面所链2021-09-19 v05.2 SDS列碳酸钙但不是现批完整配方，必须以现批标签/SDS及供应方BOM验证确有去污磨粒，不能套旧SDS比例或名义密度。无磨粒或只有溶解表活的洗涤制剂不属于本路线，须另审分类。标称2升、成分范围、宣传和推荐用量不当实测kg/投料或合规限值。仅当实际门店、完整原包、当前用途和分类证据吻合才应用。 | un-cpc62176; un-cpc35334; cif-product; cif-sds |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
+| scope_gate | retail; hygiene | 仅准硬表面含磨粒去污乳原装密封瓶，按实际批次完整乳状制剂与盖/标签/内衬BOM分池。厂家页面确认去除硬表面污垢的清洁微粒；页面所链2021-09-19 v05.2 SDS列碳酸钙但不是现批完整配方，必须以现批标签/SDS及供应方BOM验证确有去污磨粒，不能套旧SDS比例或名义密度。无磨粒或只有溶解表活的洗涤制剂不属于本路线，须另审分类。标称2升、成分范围、宣传和推荐用量不当实测kg/投料或合规限值。仅当实际门店、完整原包、当前用途和分类证据吻合才应用。 | un-cpc62176; un-cpc35334; cif-product; cif-sds |
 | channel_gate | retail | 须有该SKU实际混合商品实体超市平面陈列图、门店地址和带时间收据。厂家页面及经销链接仅证明真实产品，不能证明合格混业实体分店、当地库存、实际购入或客户使用。仅含到店选购、常温完整储存与柜台交付；线上履约、补充灌装/分装、演示、为销售稀释、向客户送货和制剂制造不属于本路线。须核实专用路线无燃烧或含制冷剂设备；共享设施空调仍是强制补齐模块。路线证据未知则阻断适用性。 | cif-sds; cif-product |
 | core_boundary | retail; hygiene | 本规则为从门店验收收货门到合格实体柜台验收的部分增量核心，含重复处理、逆向事件、专用计量电力、失败原商品背景和指定接漏托盘清洁。成功商品制造及其上游运输属于下游GOODS，排除于SERVICE。必须按module_completion补齐必要的设施、ICT、网络、支付、安防、行政、其他清洁、资本和运输模块，方可声称完整零售SERVICE。实际Waste输出始终需要处理；仅customer_pack、supplier_pack、transfer_pack和external_pack为不表征的实物保管卫星。failed_original为实际表征Product输入。 | jrc-retail; ghg-product |
 | source_ownership | failed_original; customer_pack; supplier_pack; transfer_pack; external_pack | 对收货门每个同质整包制造加上游运输来源向量V_s，按原单元ID精确守恒S/F/T/O：S为最终验收客户商品；F为本SERVICE承担的失败来源；T为具名持续承担方；O为未解决/在库。重复处理/再售不重复V_s。实物退供须有实际签收责任方和背景延续，否则保留O。失窃、确认遗失和未开封外部失败由原来源F承担，除非有记录证明持续T接受责任。无实物退回的验收撤销把原事件从S移至F或有证T；仅财务调整且验收有效仍为S。整包来源F只随原来源计一次，即使后来产生多项实物废物载体也不逐载体重复原背景。组件责任不同时，须用经核实组件数量Product卡及供应商组件向量替换整包输入并守恒V_s；质量比例不可拆分环境向量。 |  |
@@ -107,13 +108,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_energy`
 - 来源：
 
-###### Cif Professional柠檬含磨粒去污乳含磨粒去污乳7508636完整2L原装满瓶 (`failed_original`)
+###### 硬表面含磨粒去污乳完整原装密封满瓶 (`failed_original`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 按failed_source采用N_F/Q；整来源制造加收货门运输，绝不含成功S。
 
-- 选定流：Cif Professional柠檬含磨粒去污乳含磨粒去污乳7508636完整2L原装满瓶
+- 选定流：硬表面含磨粒去污乳完整原装密封满瓶
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：N_F/Q
 - 数值来源模式：`calculated_value`
@@ -128,13 +129,13 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### Cif Professional 柠檬含磨粒去污乳2升原瓶的到店零售增量服务 (`service_output`)
+###### 硬表面含磨粒去污乳原密封瓶的到店零售增量服务 (`service_output`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 1 件参考流；Q按service_count。
 
-- 选定流：Cif Professional 柠檬含磨粒去污乳2升原瓶的到店零售增量服务
+- 选定流：硬表面含磨粒去污乳原密封瓶的到店零售增量服务
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：1 Item(s)
 - 数值来源模式：`fixed_value`
@@ -145,13 +146,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_goods`
 - 来源：
 
-###### 交付时初步验收的完整Cif Professional7508636 2L原装满瓶 (`customer_pack`)
+###### 交付时初步验收的完整硬表面含磨粒去污乳 2L原装满瓶 (`customer_pack`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际完整瓶初步验收客户毛交付事件件数/Q；与external_pack互斥；仅为保管卫星，遵循physical_ledgers。
 
-- 选定流：交付时初步验收的完整Cif Professional7508636 2L原装满瓶
+- 选定流：交付时初步验收的完整硬表面含磨粒去污乳 2L原装满瓶
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：X_customer_pack/Q
 - 数值来源模式：`calculated_value`
@@ -162,13 +163,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_goods`
 - 来源：
 
-###### 实物退供的完整Cif Professional7508636 2L原装满瓶 (`supplier_pack`)
+###### 实物退供的完整硬表面含磨粒去污乳 2L原装满瓶 (`supplier_pack`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际完整瓶退供件数/Q；来源责任另按source_ownership。
 
-- 选定流：实物退供的完整Cif Professional7508636 2L原装满瓶
+- 选定流：实物退供的完整硬表面含磨粒去污乳 2L原装满瓶
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：X_supplier_pack/Q
 - 数值来源模式：`calculated_value`
@@ -179,13 +180,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_goods`
 - 来源：
 
-###### 交另一门店的完整Cif Professional7508636 2L原装满瓶 (`transfer_pack`)
+###### 交另一门店的完整硬表面含磨粒去污乳 2L原装满瓶 (`transfer_pack`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际完整瓶店间交付件数/Q；保留具名责任方及原来源。
 
-- 选定流：交另一门店的完整Cif Professional7508636 2L原装满瓶
+- 选定流：交另一门店的完整硬表面含磨粒去污乳 2L原装满瓶
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：X_transfer_pack/Q
 - 数值来源模式：`calculated_value`
@@ -196,13 +197,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_goods`
 - 来源：
 
-###### 交外部接收方时未经初步合格验收的完整Cif Professional7508636 2L原装满瓶 (`external_pack`)
+###### 交外部接收方时未经初步合格验收的完整硬表面含磨粒去污乳 2L原装满瓶 (`external_pack`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际完整瓶交付时缺初步合格验收的毛交付事件件数/Q；与customer_pack互斥。没有新移动的验收撤销不新增实物输出；保留实际接收方及后续状态历史。
 
-- 选定流：交外部接收方时未经初步合格验收的完整Cif Professional7508636 2L原装满瓶
+- 选定流：交外部接收方时未经初步合格验收的完整硬表面含磨粒去污乳 2L原装满瓶
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：X_external_pack/Q
 - 数值来源模式：`calculated_value`
@@ -215,13 +216,13 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 含残液及原封盖的破损Cif Professional7508636原2L瓶 (`failed_bottle`)
+###### 含残液及原封盖的破损硬表面含磨粒去污乳原2L瓶 (`failed_bottle`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 按direct_quantities和state_gate取实际直接出运整个湿载体净kg/Q；由匹配接收处理数据集覆盖处理。
 
-- 选定流：含残液及原封盖的破损Cif Professional7508636原2L瓶
+- 选定流：含残液及原封盖的破损硬表面含磨粒去污乳原2L瓶
 - 流属性/单位：质量 / kg
 - 数量规则：X_failed_bottle/Q
 - 数值来源模式：`calculated_value`
@@ -238,13 +239,13 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### Cif Professional柠檬含磨粒去污乳含磨粒去污乳7508636完整2L原装满瓶 (`cleaner_pack`)
+###### 硬表面含磨粒去污乳完整原装密封满瓶 (`cleaner_pack`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 按cleaning_origin取归属自用首次开封整包数/Q；实际采购ID与failed_original不同。
 
-- 选定流：Cif Professional柠檬含磨粒去污乳含磨粒去污乳7508636完整2L原装满瓶
+- 选定流：硬表面含磨粒去污乳完整原装密封满瓶
 - 流属性/单位：物品数量 / Item(s)
 - 数量规则：X_cleaner_pack/Q
 - 数值来源模式：`calculated_value`
@@ -293,13 +294,13 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 含Cif Professional配方及实测污物的公用清洗槽接漏托盘水性冲洗液 (`rinsate`)
+###### 含硬表面含磨粒去污乳配方及实测污物的公用清洗槽接漏托盘水性冲洗液 (`rinsate`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际直接排出整液净kg/Q；原配方kg为独立来源平衡，不是本量的乘数。
 
-- 选定流：含Cif Professional配方及实测污物的公用清洗槽接漏托盘水性冲洗液
+- 选定流：含硬表面含磨粒去污乳配方及实测污物的公用清洗槽接漏托盘水性冲洗液
 - 流属性/单位：质量 / kg
 - 数量规则：X_rinsate/Q
 - 数值来源模式：`calculated_value`
@@ -310,13 +311,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_hygiene`
 - 来源：
 
-###### 含Cif Professional配方的用后湿纤维素吸液擦布 (`wet_wipe`)
+###### 含硬表面含磨粒去污乳配方的用后湿纤维素吸液擦布 (`wet_wipe`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际出运完整湿擦布净kg/Q；按state_gate保留实际水/污物/配方组成。
 
-- 选定流：含Cif Professional配方的用后湿纤维素吸液擦布
+- 选定流：含硬表面含磨粒去污乳配方的用后湿纤维素吸液擦布
 - 流属性/单位：质量 / kg
 - 数量规则：X_wet_wipe/Q
 - 数值来源模式：`calculated_value`
@@ -327,13 +328,13 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_hygiene`
 - 来源：
 
-###### 含封盖及残液的用后Cif Professional7508636 2L自用原瓶 (`used_bottle`)
+###### 含封盖及残液的用后硬表面含磨粒去污乳 2L自用原瓶 (`used_bottle`)
 
 本卡仅含上述一个实际交换，原始量、归属及最终归一化按所链协议与规则；发生/缺席必须有证。
 
 实际出运整个用后瓶及封盖净kg/Q，含实测残液；无另计重复残液输出。
 
-- 选定流：含封盖及残液的用后Cif Professional7508636 2L自用原瓶
+- 选定流：含封盖及残液的用后硬表面含磨粒去污乳 2L自用原瓶
 - 流属性/单位：质量 / kg
 - 数量规则：X_used_bottle/Q
 - 数值来源模式：`calculated_value`
@@ -372,7 +373,7 @@ sync_with: pcr.en-US.md
 | service_count | service_output | Q=截止日最终有效合格验收原ID的去重数量，已做关联晚退/验收撤销替换；再售仍每ID仅计一次，不从最终有效集合再次扣撤销。实物毛交付、退款、实物退回、重复处理与最终有效性分别记录。仅正确SKU/批次、完整闭合瓶、正确实体柜台接收方及认可数量/状态合格；仅客户占有不算验收。晚退按实际事件日期修订原池分子、分母及S/F/T/O版本；新池不重复归属。 | original_id; final_acceptance; cutoff; return_link; prior_version; pool_id | Q |  |
 | physical_ledgers | customer_pack; supplier_pack; transfer_pack; external_pack; failed_bottle | 仅商品Count平衡：G_close=G_open+receipts+physical_customer_returns-gross_customer_handover-supplier_handover-internal_handover-condemnation_count-confirmed_missing_count+signed_goods_residual。gross_customer_handover=initially_accepted_handover_count+never_accepted_at_handover_count，两者为互斥且不变的实际事件ID。customer_pack记录前者，external_pack记录后者，绝不是两行重复同一子集。后续验收/撤销或退回改变最终服务/来源责任，不改变原实物事件方向或初次交付类别。无移动的验收撤销仅重新分类原事件。报废是在内部把商品转为暂存废物。独立暂存废物kg：W_close=W_open+condemned_actual_kg+other_waste_received_kg-dispatched_actual_kg-confirmed_missing_waste_kg+signed_waste_residual。Count不是kg。报废ID关联另称整载体kg；出运直接用实测货批净kg，不再扣期初/期末或滞留库存。有符号未知残差须调查且阻断完整性。 | G_open; receipts; physical_customer_returns; gross_customer_handover; initially_accepted_handover_count; never_accepted_at_handover_count; supplier_handover; internal_handover; condemnation_count; confirmed_missing_count; signed_goods_residual; W_open; condemned_actual_kg; other_waste_received_kg; dispatched_actual_kg; confirmed_missing_waste_kg; signed_waste_residual | G_close; W_close |  |
 | failed_source | failed_original | N_F=sum_s最终归F的原整瓶单元；输入量=N_F/Q。每原单元仅关联一次实际供应商完整配方/完整容器V_s，并按transport_ownership含原收货门上游运输。不可用纯表活或净液kg代理整包。成功S排除于SERVICE；下游GOODS可另加N_S*V_s/Q一次；T保留具名责任，O保留开放来源。失败原来源不可因卫星排除而消失。 | original_id; V_s; N_F; N_S; Q; attribution_level; owner_id; pool_id; version | failed_original |  |
-| cleaning_origin | cleaner_pack; wash_water; dry_wipe; rinsate; wet_wipe; used_bottle | 逐个原来源j分别保留source_class=goods_F或janitorial；洒漏商品来源保留其相同failed_original父级，不再承担第二个cleaner_pack背景。门店自用清洁剂采用区别于商品的另购原ID，即使托盘在公用清洗槽清洗也选择同一7508636配方。该路线不把零售商品转自用库存。完整自用原包制造加上游运输来源仅归首次开封事件池一次；共享首次开封事件采用该批实测润湿托盘面积份额并合计1。后续领用/再用沿同一来源不重计制造/上游运输。未开封库存/退回/转移携未分配来源。逐来源独立将原液m_src_j kg归实际互斥最终去向；goods_F的dispatched_bottle_residue关联failed_bottle，janitorial关联used_bottle：未用滞留、留在湿擦布、留在瓶中、随瓶出运残液、随湿擦布出运、随冲洗液出运、经核实外部物种转移。在cutoff按来源ID和实测来源份额唯一分类：retained_unused仅为从未启用、无破损且原厂封口完整的原瓶中原液库存；retained_bottle仅为已开封或已破损原瓶在场留存的原液残余（无论是否已投料），排除retained_unused。逐瓶记录初始封口/首次开封/破损与截止状态及原来源测量ID；同一实测来源份额只能进入一个截止状态。封口/状态未知阻断完整性；状态转移以相同来源及测量份额替换旧状态，不同时保留旧新两桶。used是中间态：转rinsed时替换状态，不新增第二去向。逐来源采用截止日累计账：m_src_j=retained_unused+retained_wipe+retained_bottle+dispatched_bottle_residue+dispatched_wipe_origin+dispatched_rinsate_origin+verified_species_transfer+source_residual，保留原始数量和全部历史去向/版本更正；后续期间领用不新建原来源。新加冲洗水/污物/干擦布不是m_src_j。须有来源质量分析/示踪/经验证实际投料转移记录；不可由整个湿载体kg或标签活性%推断原配方kg。不可隐藏有符号来源残差。实际湿载体kg、来源kg和整包Count不同。 | bottle_initial_seal_state; first_open_at; damaged_at; cutoff_state; state_transition_id; source_measurement_id; measured_source_portion_id; retained_origin_kg; source_class; source_original_id; janitorial_original_id; first_open_id; m_src_j; retained_unused; retained_wipe; retained_bottle; dispatched_bottle_residue; dispatched_wipe_origin; dispatched_rinsate_origin; verified_species_transfer; source_residual; Q | source_origin_balance |  |
+| cleaning_origin | cleaner_pack; wash_water; dry_wipe; rinsate; wet_wipe; used_bottle | 逐个原来源j分别保留source_class=goods_F或janitorial；洒漏商品来源保留其相同failed_original父级，不再承担第二个cleaner_pack背景。门店自用清洁剂采用区别于商品的另购原ID，即使托盘在公用清洗槽清洗也选择同一配方。该路线不把零售商品转自用库存。完整自用原包制造加上游运输来源仅归首次开封事件池一次；共享首次开封事件采用该批实测润湿托盘面积份额并合计1。后续领用/再用沿同一来源不重计制造/上游运输。未开封库存/退回/转移携未分配来源。逐来源独立将原液m_src_j kg归实际互斥最终去向；goods_F的dispatched_bottle_residue关联failed_bottle，janitorial关联used_bottle：未用滞留、留在湿擦布、留在瓶中、随瓶出运残液、随湿擦布出运、随冲洗液出运、经核实外部物种转移。在cutoff按来源ID和实测来源份额唯一分类：retained_unused仅为从未启用、无破损且原厂封口完整的原瓶中原液库存；retained_bottle仅为已开封或已破损原瓶在场留存的原液残余（无论是否已投料），排除retained_unused。逐瓶记录初始封口/首次开封/破损与截止状态及原来源测量ID；同一实测来源份额只能进入一个截止状态。封口/状态未知阻断完整性；状态转移以相同来源及测量份额替换旧状态，不同时保留旧新两桶。used是中间态：转rinsed时替换状态，不新增第二去向。逐来源采用截止日累计账：m_src_j=retained_unused+retained_wipe+retained_bottle+dispatched_bottle_residue+dispatched_wipe_origin+dispatched_rinsate_origin+verified_species_transfer+source_residual，保留原始数量和全部历史去向/版本更正；后续期间领用不新建原来源。新加冲洗水/污物/干擦布不是m_src_j。须有来源质量分析/示踪/经验证实际投料转移记录；不可由整个湿载体kg或标签活性%推断原配方kg。不可隐藏有符号来源残差。实际湿载体kg、来源kg和整包Count不同。 | bottle_initial_seal_state; first_open_at; damaged_at; cutoff_state; state_transition_id; source_measurement_id; measured_source_portion_id; retained_origin_kg; source_class; source_original_id; janitorial_original_id; first_open_id; m_src_j; retained_unused; retained_wipe; retained_bottle; dispatched_bottle_residue; dispatched_wipe_origin; dispatched_rinsate_origin; verified_species_transfer; source_residual; Q | source_origin_balance |  |
 | direct_quantities | core_electricity; wash_water; dry_wipe; failed_bottle; rinsate; wet_wipe; used_bottle | 先保留实际原始/已归属分子X_r。电力为kWh期末表减期初表，必要时按3.6MJ/kWh仅换算一次；清洗供水为实测入口m3*rho_actual kg/m3，不二次扣内部回用水。rinsate为排出口直接整液净质量kg（或互斥的直接排液体积乘实测温度下密度），不得用供水平衡重建。failed_bottle、wet_wipe和used_bottle为直接出运整载体净kg；不再次施加库存或来源组成比例。干擦布原质量按首次使用称重并排除独立外包装；未用库存/退回携原来源，再用擦布不重计制造。外部标签/密度/活性百分比不可替代实际校准测量。各最终卡量=X_r/Q仅一次。 | meter_start; meter_end; meter_boundary; water_volume; rho_actual; temperature; discharge_mode; direct_net_kg; first_use_mass; source_id; pool_id; Q | X_r/Q |  |
 | completion_aggregation | all inventory rows | 对每个兼容交换身份/属性/单位/边界r及原来源/池/版本，N_complete_r=N_core_raw_r+sum互斥N_external_raw_r+sum互斥z_external_r*D_original_r。原始外模块分子直接保留；仅已归一化z乘其有证原D以还原原始量。按实际来源层级先实施pool_allocation、digital_events、asset_lifetime和transport_ownership再汇总。N_core_raw含failed_original的N_F及core_electricity原分子，不是其已展示/Q卡量。跨来源ID比较实际组成/事件/时间/资产/阶段以去重；不同提供方ID本身不证明互斥。仅换算兼容单位，不得kg+MJ或原始量+归一化量；最终amount=N_complete_r/Q一次。遗漏/未绑定实际模块阻止完整经营声明。 | N_core_raw_r; N_external_raw_r; z_external_r; D_original_r; exchange_identity; property; unit; boundary; source_id; owner_id; pool_id; version; Q | N_complete_r/Q |  |
 | card_numerators | all inventory rows | X_core_electricity=归属表计kWh；failed_original原分子=N_F；X_customer_pack=initially_accepted_handover_count；X_supplier_pack=实际完整瓶退供件数；X_transfer_pack=实际完整瓶店间交付件数；X_external_pack=never_accepted_at_handover_count；X_failed_bottle=直接出运破损整瓶kg。X_cleaner_pack=归属首次开封自用整包件数；X_wash_water=归属入口供水kg；X_dry_wipe=归属首次用干纤维素kg；X_rinsate=归属实际整液排放kg；X_wet_wipe=归属出运整个湿擦布kg；X_used_bottle=归属出运整个用后自用瓶kg。先记录直接原量，再按source_allocation归属；每个展示X的最终量为X/Q，failed_original为N_F/Q，service_output精确为1Item(s)。直接终端kg不再次乘来源组成或库存更正。 | gross_customer_handover; supplier_handover; internal_handover; initially_accepted_handover_count; never_accepted_at_handover_count; dispatched_actual_kg; first_open_count; water_volume; rho_actual; first_use_mass; raw_X_r; attributed_X_r; N_F; Q | card_raw_and_final_amounts |  |
@@ -407,6 +408,8 @@ sync_with: pcr.en-US.md
 | update_trigger | 实际配置/来源/路线/验收/寿命/向量/后期退回变化，替换全部相关历史版本 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Use |
 | --- | --- | --- | --- |

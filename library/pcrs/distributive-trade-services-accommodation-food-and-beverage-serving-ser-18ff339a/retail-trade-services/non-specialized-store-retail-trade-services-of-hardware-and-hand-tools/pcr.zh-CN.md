@@ -7,7 +7,7 @@ content_maturity: authored_methodology
 translation_status: aligned
 ---
 
-# 混合商品门店柜台交付单件原厂包装 BAHCO 2101G-180 手动侧切钳的零售服务
+# 原包装手动斜口钳柜台零售服务
 
 ## 1. 范围与适用性
 
@@ -19,9 +19,9 @@ translation_status: aligned
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-hardware-and-hand-tools |
 | classification_refs | CPC 3.0:62165；4292手工具中的较窄子集；不覆盖442机床 |
-| covered_products | 完整全新 BAHCO 2101G-180 手动侧切钳的零售服务，EAN 7314150106493、180mm、黑色防腐表面、ERGO手柄，原厂未拆封且同构的零售包装；核验实际批次和完整包装配置。 |
-| excluded_products | 排除其他型号及IP/IPD变体、单售钳口/手柄/弹簧、混合套件、动力工具、机床、安装、刃磨、维修、演示、客户使用、无店铺订单及送货。已拆封、已用、受污染、拆解或不完整包装必须先编写状态特定扩展才能完整建模；不得删除其既有源池记录。 |
-| representative_product | 一件完整2101G-180工具及其实际原厂包装，而不是230g通用钢。目录质量和剪切能力是名义规格，不是现场量、材料比例、合规限值或供应商LCI。 |
+| covered_products | 原厂未拆封零售包装内完整全新手动斜口钳；每个同质池分别核验实际长度、表面处理、手柄、供应批次及完整包装BOM。 |
+| excluded_products | 单售钳口/手柄/弹簧、混合套件、动力工具、机床、安装、刃磨、维修、演示、客户使用、无店铺订单及配送；开封、已用、受污染、拆解或缺件包装须先作具体状态扩展并保留全部原批群记录。 |
+| representative_product | 原包装手动斜口钳柜台零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 非专门混合商品门店的实体柜台购买及客户自提；保留商品组合证据。仅销售多个品牌不能证明非专门零售。核心路线不含零售商拆封或重包、额外购物袋、纸质小票或实际操作工具。 |
 | market_state | 原厂未拆封包装内的完整全新干燥固态手动工具。钢制本体、铰接、回位弹簧功能和复合手柄保持为一个真实完整工具；目录系列描述须经批次/型号确认，不得臆造质量比例。 |
 
@@ -38,7 +38,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | 单件原厂包装 BAHCO 2101G-180 手动侧切钳柜台零售服务 |
+| 参考产品流 | 单件原厂包装 手动斜口钳柜台零售服务 |
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
@@ -70,6 +70,7 @@ translation_status: aligned
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
 | route_gate | all inventory rows | 仅纳入有证据的混合商品门店、密封同构原包装及声明的柜台路线。记录发票、照片、商品组合、包装质量/BOM及配置版本。实际额外包装、打印、清洁、动力演示、送货、燃烧或制冷设备不得假定不存在：cp_modules确定覆盖并按complete_modules加入强制具体卡片/协议。存在性未知阻止数据集完整。若库存商品变为永久演示品，将同一原V_s转入具名内部资产T，不得同时计完整F和新资产制造；须在完整前编写实际拆封工具/包装状态及模块。 | un-cpc3-62165; bahco-pliers-catalogue; jrc-retail-2013 |
 | source_ownership | failed_original; retail_service | 对每个原包装源s固定N_s及同一收货门匹配的完整供应向量V_s。按原商品等价完整ID分为最终有效S_s、服务负责的失败F_s、具名继续转移T_s和未解决/未闭合O_s，满足N_s=S_s+F_s+T_s+O_s。不得用任意材料质量份额拆分环境向量。本路线保持完整包装，每个原ID仅有一个完整最终责任。N_F=sum_s F_s。经证实责任的客户未退回失败商品及确认遗失商品仍为F；去向未知的有符号差额留为O并阻止闭合。供应商退回只有具名继续责任时才归T，不自动给信用。 | ghg-product-2011 |
 | acceptance_custody | retail_service; failed_pack_waste; rejected_external; supplier_handoff | 商品库存和暂存废物分别记账。G_close=G_open+receipts+physical_customer_returns-ALL_gross_customer_handovers-physical_supplier_handoffs-internal_asset_transfers-condemnations-confirmed_goods_missing+signed_unresolved_goods_residual。ALL交付已包含成功和从未验收的离场，不得再减一次未验收集合。报废把商品转入暂存废物；W_close=W_open+condemnations-waste_dispatch-confirmed_waste_missing+signed_unresolved_waste_residual。废物外运不再扣商品库存。Q为最终有效验收的不同原ID数；无实物退回的撤销重分类旧验收，不构成新移动或对Q再扣一次。单纯退款/折扣不自行撤销验收。 | ghg-product-2011 |
@@ -93,13 +94,13 @@ translation_status: aligned
 
 ##### 产品流
 
-###### 收货门处完整全新原厂包装 BAHCO 2101G-180 手动侧切钳 (`failed_original`)
+###### 收货门处完整全新原厂包装 手动斜口钳 (`failed_original`)
 
 按source_ownership承接失败商品的实际完整原源产品输入；保留完整工具及其实际原厂包装。
 
 n_failed=N_F/Q；failed_background；cp_goods。匹配各实际完整源向量；本产品输入承接F制造及收货门运输一次。
 
-- 选定流: 收货门处完整全新原厂包装 BAHCO 2101G-180 手动侧切钳
+- 选定流: 收货门处完整全新原厂包装 手动斜口钳
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_F / Q
 - 数值来源模式: `calculated_value`
@@ -131,13 +132,13 @@ n_failed=N_F/Q；failed_background；cp_goods。匹配各实际完整源向量�
 
 ##### 产品流
 
-###### 单件原厂包装 BAHCO 2101G-180 手动侧切钳柜台零售服务 (`retail_service`)
+###### 单件原厂包装 手动斜口钳柜台零售服务 (`retail_service`)
 
 唯一参考产品输出为最终验收服务；实物保管另记账。
 
 1 件；final_service；cp_goods。参考是最终验收零售服务，不是商品生产、实物交付总量或工具名义kg。
 
-- 选定流: 单件原厂包装 BAHCO 2101G-180 手动侧切钳柜台零售服务
+- 选定流: 单件原厂包装 手动斜口钳柜台零售服务
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: 1 Item(s)
 - 数值来源模式: `fixed_value`
@@ -154,13 +155,13 @@ n_failed=N_F/Q；failed_background；cp_goods。匹配各实际完整源向量�
 
 ##### 产品流
 
-###### 外部接收方留存的未拆封完整不合格原厂包装 BAHCO 2101G-180 (`rejected_external`)
+###### 外部接收方留存的未拆封完整不合格原厂包装 手动斜口钳 (`rejected_external`)
 
 记录外部接收方实际转移/留存的未拆封不合格包装，不隐含零售商废物。
 
 N_external_rejected/Q 件；terminal_carriers；cp_terminal。仅作不表征实物附属输出；原F/T/O责任仍按source_ownership，不推定废物或避免产品信用。
 
-- 选定流: 外部接收方留存的未拆封完整不合格原厂包装 BAHCO 2101G-180
+- 选定流: 外部接收方留存的未拆封完整不合格原厂包装 手动斜口钳
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_external_rejected / Q
 - 数值来源模式: `calculated_value`
@@ -171,13 +172,13 @@ N_external_rejected/Q 件；terminal_carriers；cp_terminal。仅作不表征实
 - 采集协议: `cp_terminal`
 - 来源: `ghg-product-2011`
 
-###### 实际交回供应商的未拆封完整原厂包装 BAHCO 2101G-180 (`supplier_handoff`)
+###### 实际交回供应商的未拆封完整原厂包装 手动斜口钳 (`supplier_handoff`)
 
 实际完整包装交回供应商的记录独立于源责任及验收状态。
 
 N_supplier_handoff/Q 件；terminal_carriers；cp_terminal。附属保管转移，不自动归T或避免制造；记录实际接收方及继续源责任。
 
-- 选定流: 实际交回供应商的未拆封完整原厂包装 BAHCO 2101G-180
+- 选定流: 实际交回供应商的未拆封完整原厂包装 手动斜口钳
 - 流属性/单位: 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - 数量规则: N_supplier_handoff / Q
 - 数值来源模式: `calculated_value`
@@ -190,13 +191,13 @@ N_supplier_handoff/Q 件；terminal_carriers；cp_terminal。附属保管转移�
 
 ##### 废物流
 
-###### 供合同处理的完整未拆封失败原厂包装 BAHCO 2101G-180 手动侧切钳 (`failed_pack_waste`)
+###### 供合同处理的完整未拆封失败原厂包装 手动斜口钳 (`failed_pack_waste`)
 
 记录实测实际完整失败包装，由合同明确接收其全部组分和状态的接收方接收。
 
 sum dispatch_net_kg/Q；terminal_carriers；cp_terminal。含完整工具和实际原包装的干燥完整混合载体；接收方必须接收确切组成/状态并有完整处理边界。
 
-- 选定流: 供合同处理的完整未拆封失败原厂包装 BAHCO 2101G-180 手动侧切钳
+- 选定流: 供合同处理的完整未拆封失败原厂包装 手动斜口钳
 - 流属性/单位: 质量 / kg
 - 数量规则: sum dispatch_net_kg / Q
 - 数值来源模式: `calculated_value`
@@ -272,6 +273,8 @@ sum dispatch_net_kg/Q；terminal_carriers；cp_terminal。含完整工具和实�
 | update_trigger | 任何实际配置、包装、路线、验收/去向、供应边界、寿命/BOM、驱动量或源修订；替换全部受影响旧版本。 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

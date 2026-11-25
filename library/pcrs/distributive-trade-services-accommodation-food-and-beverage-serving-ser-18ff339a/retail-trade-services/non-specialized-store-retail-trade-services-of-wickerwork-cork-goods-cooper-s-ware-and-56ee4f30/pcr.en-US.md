@@ -5,11 +5,11 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Ambient store retail of complete SNIDAD lacquered-rattan baskets with customer takeaway
+# Customer-pickup retail services for complete lacquered rattan baskets
 
 ## 1. Scope and Applicability
 
-This PCR defines the incremental receiving, ambient floor display, manual sale and customer-takeaway service in a non-specialized store for one homogeneous original IKEA SNIDAD 303.949.44 basket configuration, nominal diameter 54cm and height 39cm. It is a narrower subset of CPC 3.0:62146, whose explanatory note points to group319 wood/cork/plaiting/straw articles. Household furniture, cooperage, cork articles, basket sets, other sizes, other materials, retailer delivery, wet processing, repainting, repairs, powered demonstrations and retailer-added wrapping are excluded. Do not average these routes into this reference. A basket is one complete object including binding and feet, never one kilogram of rattan or one set. Applicability additionally requires the verified naturally ventilated, unconditioned whole-store/shared-support route specified by support_operation; combustion, refrigeration/heat pumps, purchased heat/cold or unknown status make this route inapplicable.
+This PCR defines incremental receiving, ambient floor display, manual sale and customer-pickup services for complete lacquered-rattan baskets in non-specialized stores. Any manufacturer and basket dimensions within this material/function family are eligible in separately evidenced homogeneous supplier/BOM pools. A basket includes its actual bindings and feet as one complete object, not one kg of rattan or a set. Exclude furniture, cooperage/cork goods, bamboo or other material substitutions, sets, retailer delivery, wet treatment, relacquering, repair, powered demonstrations and retail-added packaging. Retain the verified whole-store/shared-support natural-ventilation/no-conditioning route under support_operation; combustion, refrigerants, heat pumps, purchased heating/cooling or unknown equipment coverage blocks this route. The association remains narrower than the wood/cork/plaiting/straw goods retail category.
 
 This is a partial incremental method with fixed completion duties; omitted store support, goods production and travel impacts cannot be implied zero.
 
@@ -19,9 +19,9 @@ This is a partial incremental method with fixed completion duties; omitted store
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-wickerwork-cork-goods-cooper-s-ware-and-56ee4f30 |
 | classification_refs | CPC 3.0:62146; proposed narrower relationship only, not an accepted mapping |
-| covered_products | Complete single SNIDAD 303.949.44 baskets physically confirmed as the lacquered-rattan material route |
+| covered_products | Complete individual lacquered-rattan baskets, verified by actual material and lot evidence. |
 | excluded_products | Furniture; bamboo substitution; lining additions; sets; modified baskets; retailer delivery; manufacturing |
-| representative_product | SNIDAD 303.949.44; nominal 54cm diameter39cm height; actual lot/BOM governs |
+| representative_product | Customer-pickup retail services for complete lacquered rattan baskets; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Manual receiving, ambient display, customer takeaway; no added wrapping or product treatment |
 | market_state | Finished coated basket, complete with binding and feet; actual moisture and packaging state recorded |
 
@@ -38,7 +38,7 @@ This is a partial incremental method with fixed completion duties; omitted store
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Ambient store retail of complete SNIDAD lacquered-rattan baskets with customer takeaway |
+| Reference product flow | Ambient store retail of complete lacquered-rattan lacquered-rattan baskets with customer takeaway |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -67,6 +67,7 @@ This is a partial incremental method with fixed completion duties; omitted store
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | material_gate | custody | The manufacturer material table specifies rattan with clear lacquer for basket/binding and polyethylene with galvanized steel for feet, but bamboo appears in same-source descriptive/image wording. This conflict is not resolved by the catalog. At receiving obtain lot-linked supplier BOM and physical material identification; retain botanical species/provenance or explicitly unresolved identity, lacquer formulation/dry coating mass, complete binding/feet and any liner/adhesive/label, wet/dry basis and moisture test conditions. Confirm the actual route before use; unknown material/composition blocks complete modelling. Do not treat bamboo and rattan as environmentally equivalent. The package weight 0.96kg is not measured net basket mass or a composition fraction. | ikea-snidad |
 | partial_boundary | retail; residual | The assessed core includes only attributable point-of-use electricity and actual whole-basket/original-carton/PE-film waste handoff plus service-attributable original-goods failure background. basket_receipt is the characterized responsibility input for F original receiving-gate goods background. basket_handover, basket_supplier_return and basket_external_retention are mandatory physical satellite outputs excluded from characterized environmental summation and upstream linking. This is a partial incremental module: whole-store occupancy/building, lighting fixtures, checkout equipment/software, cleaning, heating/cooling/ventilation, staff travel and customer travel remain outside this core; required support completion is fixed by complete_support and asset_lifetime. A core result must retain these gaps and cannot be called complete retail service. Supplier production and inbound transport to the same receiving gate for finally accepted goods attach downstream through B_S/Q, never through the F responsibility input or satellite outputs. |  |
 | route_gate | retail | Use observed manual floor-display and customer-takeaway records. Retailer-added bags, receipts on paper, tape, treatment chemicals, cleaning of baskets, electric handling equipment, repairs, stripping, replacement feet or other actual added exchanges require specifically named atomic cards, linked protocols and aligned bilingual projection before completeness. They do not become zero by this route definition. Absence must be evidenced by site inspection, purchasing/stock records and staff confirmation for the entire pool; unknown presence blocks route applicability or remains a disclosed partial gap. Consumer dry-cloth care and possible recycling/energy recovery are not evidence of retailer cleaning, actual treatment or an avoided-burden credit. | ikea-snidad |
@@ -91,11 +92,11 @@ This is a partial incremental method with fixed completion duties; omitted store
 
 ##### Product flows
 
-###### Complete SNIDAD 303.949.44 basket in actual original receiving packaging assigned to service failure (`basket_receipt`)
+###### Complete lacquered-rattan basket in actual original receiving packaging assigned to service failure (`basket_receipt`)
 
 N_F/Q Item(s), where N_F counts each distinct original assigned F once, linked to its actual original receiving-gate basket-plus-packaging B_j inventory. This is a characterized product responsibility input carrying B_F/Q once, not all physical receipts, not new manufacture upon return and not a mass share. Preserve physical supplier receipts and customer re-receipts only in the separate cp_custody ledger. Actual original pack BOM, original supplier source and transport-to-gate boundary are mandatory; no assumed packaging. No separate addition of B_F may duplicate this input.
 
-- Selected flow: Complete SNIDAD 303.949.44 basket in actual original receiving packaging assigned to service failure
+- Selected flow: Complete lacquered-rattan basket in actual original receiving packaging assigned to service failure
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q Item(s), where N_F counts each distinct original assigned F once, linked to its actual original receiving-gate basket-plus-packaging B_j inventory. This is a characterized product responsibility input carrying B_F/Q once, not all physical receipts, not new manufacture upon return and not a mass share. Preserve physical supplier receipts and customer re-receipts only in the separate cp_custody ledger. Actual original pack BOM, original supplier source and transport-to-gate boundary are mandatory; no assumed packaging. No separate addition of B_F may duplicate this input.
 - Value mode: `calculated_value`
@@ -110,11 +111,11 @@ N_F/Q Item(s), where N_F counts each distinct original assigned F once, linked t
 
 ##### Product flows
 
-###### Complete SNIDAD 303.949.44 basket physically handed to customer (`basket_handover`)
+###### Complete lacquered-rattan basket physically handed to customer (`basket_handover`)
 
 Gross actual initially accepted complete-basket physical handover events / Q; custody satellite only. Includes later revoked physical handovers; never replace this numerator with final-valid Q. Physical returns are separate ledger entries, not negative new manufacture.
 
-- Selected flow: Complete SNIDAD 303.949.44 basket physically handed to customer
+- Selected flow: Complete lacquered-rattan basket physically handed to customer
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Gross actual initially accepted complete-basket physical handover events / Q; custody satellite only. Includes later revoked physical handovers; never replace this numerator with final-valid Q. Physical returns are separate ledger entries, not negative new manufacture.
 - Value mode: `calculated_value`
@@ -125,11 +126,11 @@ Gross actual initially accepted complete-basket physical handover events / Q; cu
 - Collection protocol: `cp_custody`
 - Sources:
 
-###### Intact complete SNIDAD 303.949.44 basket returned to supplier custody (`basket_supplier_return`)
+###### Intact complete lacquered-rattan basket returned to supplier custody (`basket_supplier_return`)
 
 Actual intact complete-basket supplier physical handoffs / Q; conditional on documented handoff. Custody satellite only, with recipient/name/state and continuing B_j owner. Damaged/open-component returns require a separate state-specific card, not this intact exchange.
 
-- Selected flow: Intact complete SNIDAD 303.949.44 basket returned to supplier custody
+- Selected flow: Intact complete lacquered-rattan basket returned to supplier custody
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Actual intact complete-basket supplier physical handoffs / Q; conditional on documented handoff. Custody satellite only, with recipient/name/state and continuing B_j owner. Damaged/open-component returns require a separate state-specific card, not this intact exchange.
 - Value mode: `calculated_value`
@@ -140,11 +141,11 @@ Actual intact complete-basket supplier physical handoffs / Q; conditional on doc
 - Collection protocol: `cp_custody`
 - Sources:
 
-###### Complete nonaccepted SNIDAD 303.949.44 basket retained externally (`basket_external_retention`)
+###### Complete nonaccepted lacquered-rattan basket retained externally (`basket_external_retention`)
 
 Actual initially nonaccepted whole-basket external physical exits / Q, conditional on observed event and disjoint from basket_handover. State includes intact/damaged lacquered basket with all original components still present; record actual damage and recipient. Custody satellite only; no service output or automatic waste label. A later acceptance revocation without new movement updates its original handover state only and is not another exit in this card. Assign B_j to F/O/T by evidenced responsibility. Missing components require new specific cards.
 
-- Selected flow: Complete nonaccepted SNIDAD 303.949.44 basket retained externally
+- Selected flow: Complete nonaccepted lacquered-rattan basket retained externally
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: Actual initially nonaccepted whole-basket external physical exits / Q, conditional on observed event and disjoint from basket_handover. State includes intact/damaged lacquered basket with all original components still present; record actual damage and recipient. Custody satellite only; no service output or automatic waste label. A later acceptance revocation without new movement updates its original handover state only and is not another exit in this card. Assign B_j to F/O/T by evidenced responsibility. Missing components require new specific cards.
 - Value mode: `calculated_value`
@@ -182,11 +183,11 @@ The selected flow uses the single Net calorific value energy property. The inven
 
 ##### Product flows
 
-###### Ambient store retail of complete SNIDAD lacquered-rattan baskets with customer takeaway (`retail_service`)
+###### Ambient store retail of complete lacquered-rattan lacquered-rattan baskets with customer takeaway (`retail_service`)
 
 1 item per reference flow; Q/Q for Q>0, using final_service and cp_acceptance. This is one accepted-original service, not the merchandise manufacturing flow.
 
-- Selected flow: Ambient store retail of complete SNIDAD lacquered-rattan baskets with customer takeaway
+- Selected flow: Ambient store retail of complete lacquered-rattan lacquered-rattan baskets with customer takeaway
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -205,11 +206,11 @@ The selected flow uses the single Net calorific value energy property. The inven
 
 ##### Waste flows
 
-###### Whole condemned lacquered SNIDAD basket with binding and feet (`whole_basket_waste`)
+###### Whole condemned lacquered lacquered-rattan basket with binding and feet (`whole_basket_waste`)
 
 Actual directly weighed net whole-basket waste consignment kg / Q; conditional on actual dispatch to named accepting provider. Include physically present coating/binding/feet once. Hold-undispatched waste is not dispatch. Use state_carriers and cp_waste; environmental treatment/collection source covers this complete carrier once.
 
-- Selected flow: Whole condemned lacquered SNIDAD basket with binding and feet
+- Selected flow: Whole condemned lacquered lacquered-rattan basket with binding and feet
 - Flow property / unit: Mass / kg
 - Amount rule: Actual directly weighed net whole-basket waste consignment kg / Q; conditional on actual dispatch to named accepting provider. Include physically present coating/binding/feet once. Hold-undispatched waste is not dispatch. Use state_carriers and cp_waste; environmental treatment/collection source covers this complete carrier once.
 - Value mode: `calculated_value`
@@ -315,6 +316,8 @@ Actual directly weighed net original polyethylene-film waste kg / Q, only if act
 | update_trigger | Material/configuration/packaging/site/route/acceptance/background ownership/lifetime/provider-boundary changes and late returns |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

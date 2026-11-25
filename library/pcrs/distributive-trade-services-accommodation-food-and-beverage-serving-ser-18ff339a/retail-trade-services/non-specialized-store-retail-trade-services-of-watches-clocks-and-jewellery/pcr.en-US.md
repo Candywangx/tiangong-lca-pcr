@@ -6,11 +6,11 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Incremental secure-counter retail service for a boxed Tiffany 1837 narrow silver ring, size 6
+# Secure-counter retail services for original-box sterling-silver band rings
 
 ## 1. Scope and Applicability
 
-This partial incremental rule concerns secure custody and final-valid counter retail handover of ONE specified original boxed silver ring configuration. It does not characterize the ring as the reference service, nor cover all jewellery/watches/clocks. The fixed completion duties remain binding before any complete-store claim.
+This partial incremental rule concerns secure custody and final-valid counter retail handover of the declared original-box sterling-silver band-ring family, with one actual homogeneous configuration per data pool. It does not characterize the ring as the reference service, nor cover all jewellery/watches/clocks. The fixed completion duties remain binding before any complete-store claim.
 
 ## 2. Product Category Identity
 
@@ -18,9 +18,9 @@ This partial incremental rule concerns secure custody and final-valid counter re
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-watches-clocks-and-jewellery |
 | classification_refs | CPC 3.0 62154 — Non-specialized store retail trade services, of watches, clocks and jewellery; narrower / 较窄 |
-| covered_products | One original closed-box Tiffany 1837 narrow sterling-silver ring SKU 22993771, size 6, no gemstone or personalization; one actual verified complete packaging revision; non-specialized walk-in store counter service only |
-| excluded_products | Other rings/sizes/alloys, gemstones, watches/clocks/parts, specialist brand stores, opening/try-on/polishing/resizing, repaired/used products, delivery/home travel, altered packaging |
-| representative_product | SKU 22993771, selected size 6; supplier actual ring and original pack BOM required |
+| covered_products | Original closed-box sterling-silver band rings without gemstones or personalization, in the non-specialized walk-in secure-counter route; actual size, alloy, finish and packaging revision fixed separately per pool. |
+| excluded_products | Other alloys or gem-set jewellery; watches/clocks/parts; specialist brand stores; opening, try-on, polishing or resizing; used/repaired goods; delivery/home travel; altered packaging. |
+| representative_product | Secure-counter retail services for original-box sterling-silver band rings; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receiving gate; identified closed-packet secure storage; wired display cabinet; attended counter acceptance; electronic receipt; no added packaging |
 | market_state | New, dry ambient, closed original boxed configuration; actual lot/state verified |
 
@@ -37,11 +37,11 @@ This partial incremental rule concerns secure custody and final-valid counter re
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Incremental secure-counter retail service for a boxed Tiffany 1837 narrow silver ring, size 6 |
+| Reference product flow | Incremental secure-counter retail service for a boxed sterling-silver band ring of the actual declared size |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
-| Required qualifiers | non-specialized assortment/channel; site/counter; SKU22993771; size6; no gemstone; no personalization; actual alloy/plating/solder; original complete pack revision/BOM; ambient dry state; observation cutoff; final-valid acceptance rule; S/F/O/T source owners; partial core/modules; supplier receiving gate; original inbound; cabinet model; all-electric support gate; meter/provider geography/voltage |
+| Required qualifiers | non-specialized assortment/channel; site/counter; actual_SKU; actual_size; no gemstone; no personalization; actual alloy/plating/solder; original complete pack revision/BOM; ambient dry state; observation cutoff; final-valid acceptance rule; S/F/O/T source owners; partial core/modules; supplier receiving gate; original inbound; cabinet model; all-electric support gate; meter/provider geography/voltage |
 
 ## 4. Measurement and Unit Rules
 
@@ -66,7 +66,8 @@ This partial incremental rule concerns secure custody and final-valid counter re
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
-| b_scope | all inventory rows | Admit only a documented non-specialized store selling mixed product categories; retain its assortment, business/channel declaration and floor plan. A Tiffany brand store does not qualify merely because this representative ring is branded. The one configuration is Tiffany 1837 narrow sterling-silver ring SKU 22993771, size 6, no gemstone, no personalization, in one unchanged original closed ring-box/pouch configuration identified by actual packaging revision. Verify actual lot, alloy purity, plating, solder, certificates and every box/pouch/liner/label/adhesive component; sterling silver does not prove a complete Ag925 recipe or package BOM. The official page establishes specification only, never a quantitative LCI. | un-cpc-62154; tiffany-ring-spec |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| b_scope | all inventory rows | Admit documented non-specialized mixed-assortment stores, not specialist jewellery/brand boutiques. The product family is original closed-box sterling-silver band rings without gemstones or personalization; different brands and ring sizes are eligible in separate homogeneous pools. Verify actual lot, size, alloy purity, plating, solder and every box/pouch/liner/label/adhesive component. A sterling-silver name does not establish a complete Ag925 recipe or packaging BOM. Retained official commercial examples establish real products, not quantitative LCI or class-wide defaults. | un-cpc-62154; tiffany-ring-spec |
 | b_gates | counter | Start at the store receiving gate with counted individually identified complete packets; end at the final-valid customer counter acceptance for that original ID. No retailer opening, try-on, polishing, tarnish removal, resizing, engraving, battery operation, added bag or new gift wrap is admitted. Incoming transport packaging removal is outside this incremental counter but mandatory in completion. Record intactness and packaging revision on every movement; a damaged/opened configuration requires concrete state-specific cards and bilingual sync before completeness. Customer travel/use/end-of-life are excluded; no delivery-to-home service output is claimed. | tiffany-ring-spec |
 | b_acceptance | retail_service | cp_custody keeps gross physical movements and a separate acceptance-state history. Q is the count of distinct original packet IDs with one final-valid qualified counter handover at the stated observation cutoff. Refused/unaccepted handovers, revoked acceptance without physical return, internal transfers, missing packets and open stock do not enter Q. A financial refund/discount with still-valid acceptance does not remove Q. Physical return alone does not prove revocation. Repeated sale/return/resale before cutoff retains the same original ID and at most one final-valid service. Late revocation replaces the original pool denominator AND all its attributed numerators/fates, with actual event dates and version links; never subtract revocations again from an already final-state count. | ghg-product-2011 |
 | b_ownership | failed_original_packet | At the SAME store receiving gate bind each original packet to one complete supplier vector U_i including ring plus evidenced complete original packaging and original supplier-to-store inbound transport exactly once. Partition original IDs into disjoint S (final-valid accepted), F (irrecoverable retail failure, discarded, genuinely lost or externally retained without acceptance), O (open stock) and T (named supplier/internal successor retaining the original background). N_received = N_S + N_F + N_O + N_T for the declared receipt cohort, including opening-stock source IDs. failed_original_packet is an actual characterized Product input N_F/Q of that complete receiving-gate packet, linking each F source once; it is not a custody satellite. Original production for S/O/T is outside this incremental service and stays with named merchandise/successor ledgers. Supplier return does not erase U_i; resale uses the same U_i. F recipients, physical condition and treatment/continuing responsibility must be known; lost is an investigation status, not an air emission or automatic waste dispatch. | ghg-product-2011 |
@@ -97,7 +98,7 @@ This partial incremental rule concerns secure custody and final-valid counter re
 
 Characterized upstream responsibility input, not a second physical receipt. Its provider is the exact ring plus complete original pack manufacturing and original inbound transport U_i; no retailer operation or disposal.
 
-- Selected flow: Complete original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6 at store receiving gate
+- Selected flow: Complete original boxed sterling-silver band ring of the actual declared size at store receiving gate
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F / Q Item(s)
 - Value mode: `calculated_value`
@@ -142,7 +143,7 @@ One actual model-specific complete installed package measured by unit count and 
 
 Physical custody satellite from supplier only; original background is assigned by b_ownership, not attached here. Opening stock is a ledger balance, never a new receipt.
 
-- Selected flow: Intact closed original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6
+- Selected flow: Intact closed original boxed sterling-silver band ring of the actual declared size
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_new_receipt / Q Item(s)
 - Value mode: `calculated_value`
@@ -157,7 +158,7 @@ Physical custody satellite from supplier only; original background is assigned b
 
 Physical return satellite of an existing original ID, including returns with still-valid acceptance. No second original production or automatic second service.
 
-- Selected flow: Customer-returned intact closed original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6
+- Selected flow: Customer-returned intact closed original boxed sterling-silver band ring of the actual declared size
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_customer_return / Q Item(s)
 - Value mode: `calculated_value`
@@ -176,7 +177,7 @@ Physical return satellite of an existing original ID, including returns with sti
 
 The service is counted; the original ring is the serviced merchandise, not this service identity.
 
-- Selected flow: Incremental secure-counter retail service for a boxed Tiffany 1837 narrow silver ring, size 6
+- Selected flow: Incremental secure-counter retail service for a boxed sterling-silver band ring of the actual declared size
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -191,7 +192,7 @@ The service is counted; the original ring is the serviced merchandise, not this 
 
 Non-characterized physical satellite includes all accepted and never-accepted gross handovers once. Final unaccepted external retention records named recipient/state and F background; no automatic waste.
 
-- Selected flow: Intact closed original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6 handed to customer
+- Selected flow: Intact closed original boxed sterling-silver band ring of the actual declared size handed to customer
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_customer_handover / Q Item(s)
 - Value mode: `calculated_value`
@@ -206,7 +207,7 @@ Non-characterized physical satellite includes all accepted and never-accepted gr
 
 Non-characterized physical satellite; named supplier retains original U_i under T. Actual return logistics is M_freight, not original inbound repeated.
 
-- Selected flow: Intact closed original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6 returned to supplier
+- Selected flow: Intact closed original boxed sterling-silver band ring of the actual declared size returned to supplier
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_supplier_handoff / Q Item(s)
 - Value mode: `calculated_value`
@@ -221,7 +222,7 @@ Non-characterized physical satellite; named supplier retains original U_i under 
 
 Non-characterized physical satellite to a named successor, never a retail output. T retains the same U_i; demonstrator conversion is outside scope and requires explicit asset-source transfer, not F plus new manufacture.
 
-- Selected flow: Intact closed original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6 transferred to internal successor
+- Selected flow: Intact closed original boxed sterling-silver band ring of the actual declared size transferred to internal successor
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_successor_handoff / Q Item(s)
 - Value mode: `calculated_value`
@@ -238,7 +239,7 @@ Non-characterized physical satellite to a named successor, never a retail output
 
 One actual complete ring-plus-box/pouch mixed waste carrier sent to a named permitted receiver with an evidenced whole-package sorting/treatment contract. Use actual net consignment kg; do not split and also count silver/box kg. Treatment is M_treat, excluded from this transfer. If any component is removed the state differs and this card cannot cover it.
 
-- Selected flow: Discarded complete dry closed original boxed Tiffany 1837 narrow silver ring SKU 22993771 size 6
+- Selected flow: Discarded complete dry closed original boxed sterling-silver band ring of the actual declared size
 - Flow property / unit: Mass / kg
 - Amount rule: m_packet_dispatch_kg / Q kg
 - Value mode: `calculated_value`
@@ -346,6 +347,8 @@ Actual dry whole cabinet net carrier including retained LED/lock/wiring, no batt
 | update_trigger | Actual SKU/pack/channel/route/provider change, late acceptance reversal, source revision, asset lifetime/retirement, new support activity |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

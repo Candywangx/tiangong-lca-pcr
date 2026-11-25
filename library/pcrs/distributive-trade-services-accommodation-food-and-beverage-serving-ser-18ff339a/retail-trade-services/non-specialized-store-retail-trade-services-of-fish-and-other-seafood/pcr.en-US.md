@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Incremental pickup retail service for supplier-packed chilled raw Atlantic salmon fillets
+# Pickup retail services for supplier-packed chilled raw skinless boneless Atlantic salmon fillets
 
 ## 1. Scope and Applicability
 
@@ -21,7 +21,7 @@ This candidate covers only the explicit route below, not the whole 62124 leaf, a
 | classification_refs | CPC 3.0 62124; narrower; Non-specialized store retail trade services, of fish and other seafood (official broad scope) |
 | covered_products | Only non-specialized-store pickup service for supplier-sealed, raw, chilled, never-frozen, skinless boneless Salmo salar fillets in ordinary air packs. Record farm/wild origin, species, cut, pack formulation, net-drained-mass procedure and acceptance criteria before pooling. Exclude whole fish, live organisms, molluscs, frozen/thawed, cooked, smoked, salted, vacuum/MAP, filleting, repacking and delivery routes. |
 | excluded_products | whole fish; live organisms; other species; frozen or thawed; cooked; vacuum/MAP; onsite processing; delivery |
-| representative_product | Pickup service for ordinary-air-packed skinless boneless raw chilled Salmo salar fillets |
+| representative_product | Pickup retail services for supplier-packed chilled raw skinless boneless Atlantic salmon fillets; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | receiving; cabinet chilling; shelf rotation; qualified customer pickup acceptance; returns and final disposition closure |
 | market_state | non-live; raw; never frozen; skinless boneless fillets; supplier-sealed consumer pack; continuously chilled |
 
@@ -68,6 +68,7 @@ This candidate covers only the explicit route below, not the whole 62124 leaf, a
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_gate | retail_service | Only non-specialized-store pickup service for supplier-sealed, raw, chilled, never-frozen, skinless boneless Salmo salar fillets in ordinary air packs. Record farm/wild origin, species, cut, pack formulation, net-drained-mass procedure and acceptance criteria before pooling. Exclude whole fish, live organisms, molluscs, frozen/thawed, cooked, smoked, salted, vacuum/MAP, filleting, repacking and delivery routes. | fao-fish-2013 |
 | partial_completion | retail_service | This is a partial incremental cabinet-service dataset. Before claiming total retail service, join measured common building shell and fit-out, building maintenance and end-of-life, room HVAC, general lighting, shelves outside the cabinet, checkout hardware and power, trolley/pallet-jack handling, shared toilets and cleaning, staff/administrative equipment and customer carrier-bag end-of-life modules on the same cohort/D. Require a scope matrix assigning manufacture/installation, operation, maintenance, terminal and transport to exactly one module; subtract a cabinet submeter only from a parent that actually contains it. Missing join is incomplete, never zero. | jrc-retail-2013 |
 | gate_background | failed_goods_background | Goods production, supplier consumer/outer packaging and inbound transport to the identical retail receiving gate are excluded for finally accepted goods and continuing reusable goods. Couple B for service-caused irrecoverable fish loss and nonaccepted external retention at that exact gate. Keep customer/supplier continuation responsibility and final fate for all F; unresolved F stays provisionally charged in B and blocks final completeness. Release the provisional charge only through evidenced reassignment, never disappearance. No automatic avoided-product credit. | jrc-retail-2013 |
@@ -469,6 +470,8 @@ Measured final transfer to outside air only; internal cabinet/store release is a
 | update_trigger | species/cut/fresh-frozen/pack change; icing; refrigerant or cabinet change; acceptance/return revision; lifetime change; provider scope change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

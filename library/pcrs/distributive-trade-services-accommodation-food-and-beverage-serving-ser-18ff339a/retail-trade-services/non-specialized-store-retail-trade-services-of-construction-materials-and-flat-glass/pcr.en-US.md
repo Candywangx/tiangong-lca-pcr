@@ -6,7 +6,7 @@ status: candidate
 content_maturity: authored_methodology
 ---
 
-# Non-specialized store retail service for uncut clear annealed float-glass sheets: customer collection
+# Pickup retail services for original-size clear annealed float-glass panes
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ Applies to a prospectively defined manual rack and customer-collection route in 
 | classification_refs | CPC 3.0 62161; narrower |
 | covered_products | Same-SKU uncut clear uncoated annealed monolithic float-glass retail service |
 | excluded_products | Other building materials; processed glass; retailer cutting/delivery/installation |
-| representative_product | Actual documented supplier stock sheet; dimensions/thickness/net kg measured, no nominal mass |
+| representative_product | Pickup retail services for original-size clear annealed float-glass panes; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receipt; manual dry rack holding; intact pickup; final acceptance and fate reconciliation |
 | market_state | Solid glass sheet, ambient dry state, edge/packaging specification declared |
 
@@ -64,6 +64,7 @@ Applies to a prospectively defined manual rack and customer-collection route in 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_gate | glass_service | Admit one actual homogeneous SKU per pool: clear uncoated monolithic annealed float glass, supplier-cut rectangular stock sheets at original receiving dimensions, unchanged through sale. Record manufacturer/lot, composition declaration, measured net kg and length/width/thickness, edges, packaging and acceptance specification. Different thicknesses, sizes or treatments require separate pools. Non-specialized means evidenced mixed merchandise assortment; brand licensing is irrelevant. Other construction materials, mirrors, glass fibre, coated/toughened/laminated/insulating glass, cutting, grinding, installation and retailer delivery are outside this route. | un-cpc30-62161; guardian-clear-2021; guardian-types-2019 |
 | service_gate | glass_service | Start at physical retailer receiving gate; end at documented customer collection and final valid acceptance of intact specified sheets. This is incremental retail service per 1 kg finally accepted glass, not glass production. The customer owns use/installation and post-handover transport. Record defects, failed pickup and acceptance revocation even without physical return. Discount/refund alone does not revoke acceptance. Repeated handovers of the same original sheet cannot create duplicate final-valid service. | jrc-retail-2013 |
 | goods_responsibility | failed_original_glass | For each original source lot partition receiving-gate-equivalent glass kg B = B_S+B_F+B_T+B_O with unique source IDs. S finally accepted retains goods production plus inbound transport for downstream addition B_S/Q. F irrecoverably failed/lost and without continuing named owner is included as failed_original_glass B_F/Q with its original production and inbound transport vector. T transfers the SAME original vector to a signed supplier/external owner or internal use; O remains open inventory. A refund alone cannot move responsibility. Revise original pool on late returns; replace prior vectors, never add production again for resale. Only supplier_glass_transfer, external_damaged_glass and customer_kraft are non-characterized custody satellites. glass_cullet and waste_kraft are treatment-only waste outputs with actual collection/transport/treatment responsibility; never remove their treatment as satellites. None gives a new manufacture burden or avoided-production credit. | jrc-retail-2013 |
@@ -321,6 +322,8 @@ P_waste/Q; measured net consignment, treatment only
 | update_trigger | SKU/pack/route/provider/lifetime/acceptance change or late return |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

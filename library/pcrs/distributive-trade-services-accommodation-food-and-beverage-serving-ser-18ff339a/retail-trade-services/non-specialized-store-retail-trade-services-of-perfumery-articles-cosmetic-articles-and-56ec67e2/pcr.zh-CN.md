@@ -5,7 +5,7 @@ language: zh-CN
 sync_with: pcr.en-US.md
 ---
 
-# 原装纸包Dr. Bronner无香5盎司皂条的实体店零售增量服务
+# 原纸包装无香皂条店内零售服务
 
 ## 1. 范围与适用性
 
@@ -17,9 +17,9 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-perfumery-articles-cosmetic-articles-and-56ec67e2 |
 | classification_refs | CPC 3.0 62175；香水、化妆品及盥洗皂的非专营商店零售服务；UN解释注释指向货物类3532；建议narrower适用关系，另行经过映射接受程序。 |
-| covered_products | 实体非专营混合品类商店中，对同一原厂批次/配置的Dr. Bronner Baby Unscented Pure-Castile Magic Bar Soap皂条OBBA05、UPC018787782057提供有人收银及库存操作增量服务；每条标称5oz/140g，保留原纸包。 |
+| covered_products | 混合品类非专门实体店完整原纸包装无香皂条的有人收银及库存操作增量服务；每个同质池固定实际供应商配方、皂净重及纸包BOM。 |
 | excluded_products | 排除液体皂、补充灌装洗涤剂、香水、气雾剂、试用品、分装、已开封或破损皂条、顾客使用、网上履约、送货到家和专营渠道；不声称覆盖全部3532货物。 |
-| representative_product | 原厂现行OBBA05商品规格及历史BSBA05US7-02标签证明真实皂产品，不是供应商LCI，也不是零售现场实测；首个数据包须取得实物批号标签并与供应商BOM/版本对账。 |
+| representative_product | 原纸包装无香皂条店内零售服务；按同质分层分别核验实际供应商、SKU/配置、批次及原始完整BOM。 |
 | production_route | 门店收货门槛→常温原包货架库存→有人电子收银→实物交付顾客→确认最终验收；追踪原事件的退货及拒收。 |
 | market_state | 固体皂化配方加完整印刷纸包；原包不等于气密密封或水分/挥发物损失为零；准入路线不进行开封、试用或洗涤。 |
 
@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 参考流属性 | 物品数量 `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | 参考单位组 | 数量 `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | 参考单位 | Item(s) |
-| 必需限定信息 | store_id; 实体非专营渠道; OBBA05; UPC018787782057; 原厂批次; 配方版本; 纸包BOM版本; 收货门槛; pool_id; pool_version; 观察期间; 验收关闭; 配套模块完成状态 |
+| 必需限定信息 | store_id; 实体非专营渠道; 原纸包装无香皂条; 实际UPC; 原厂批次; 配方版本; 纸包BOM版本; 收货门槛; pool_id; pool_version; 观察期间; 验收关闭; 配套模块完成状态 |
 
 ## 4. 计量与单位规则
 
@@ -65,7 +65,8 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| scope_gate | all inventory rows | 仅准入实体核实的OBBA05/UPC018787782057、原纸包且完好的皂条及指定非专营路线。记录批号标签、实际皂净重和整包质量、纸包组成/印刷/胶及供应商完整成品配方/BOM。现行网页列的是投料成分并说明氢氧化钠反应消耗，不得把成品皂条建模为纯油或氢氧化钠。历史标签与当前网页属于不同版本；使用背景前核对实际批次，包括霍霍巴油/蜡命名。不得从成分排序、标称5oz/140g或网上运输重量推算成分质量分数或包材皮重。 | bronner-product; bronner-label; un-cpc62175 |
+| b_product_family | all inventory rows | 本PCR跨制造商及品牌适用于已声明产品类别。品牌、型号、目录货号、SKU及商品名用于识别实际研究数据，不是排他性准入条件。下述材质/功能、产品状态、明确规定的固定规格、工艺/渠道及门口条件仍须满足。不同供应商、配置、版次或包装BOM须分别建立同质分层及其匹配的原始背景向量，不得将混合SKU个数乘以一个标本向量。使用实际测量数量及有依据的换算。厂家案例中的质量、尺寸、额定参数、配方及包装声明仅作示例，绝不是全类别默认值或完整BOM/LCI。实际存在不同部件、支持清洁剂、包装或载体时，须在声明完整前提供具体原子卡、匹配属性/单位、采集方法及不重叠来源边界；超出已声明类别的实际状态或路线须另行审查扩展。适用性、身份或证据未知仍为未解决。本候选类别扩展不构成独立科学或翻译审核批准。 |  |
+| scope_gate | all inventory rows | 仅准入实体核实的原纸包装无香皂条、原纸包且完好的皂条及指定非专营路线。记录批号标签、实际皂净重和整包质量、纸包组成/印刷/胶及供应商完整成品配方/BOM。现行网页列的是投料成分并说明氢氧化钠反应消耗，不得把成品皂条建模为纯油或氢氧化钠。历史标签与当前网页属于不同版本；使用背景前核对实际批次，包括霍霍巴油/蜡命名。不得从成分排序、标称5oz/140g或网上运输重量推算成分质量分数或包材皮重。 | bronner-product; bronner-label; un-cpc62175 |
 | state_gate | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock逐门槛记录实际完整性、水分变化、污染、缺失及事故历史。原纸包不能作为零排放假设。发生开封、纸包破损、断裂、洒漏、可测损失、疑似泄漏/挥发、试用或接水即暂停本路线完整性。纳入前须双语新增真实状态的原子载体及物种卡、单过程协议、质量/状态对账、最终接收方及完整处理/背景责任；物种、外排路径或状态未解决即阻断完整结果。进入店内空气不自动等于向室外环境的基本流排放。不得把开封皂强填为完好载体，也不能从无事故记录推断零。 | bronner-product |
 | goods_responsibility | failed_original_bar; customer_pack; supplier_return; condemned_pack | cp_stock保留从收货到全部转售/退货事件的原源ID。将每个原整件源向量划分为最终S（验收货物）、F（服务失败/损失）、T（具名内部资产或供应商/其他接收方责任）、O（未结责任），份额和为1且互斥。本完好同质路线每个原皂条只有一个最终所有者，不按质量拆环境向量。failed_original_bar仅计实际N_F源等价完整皂条，供应商V及入场源仅一次。S只在另行声明的下游GOODS系统中增加一次。T保留具名接收责任方/源/版本；移交不产生新制造。O保持未解决并阻断完整表征。真实供应商退回实物流动与T责任互相独立。若组件有不同所有者，必须取得供应商已验证组件清单向量，新增真实组件输入卡并守恒原边界/源ID；这些部分从整包F排除。 |  |
 | carrier_boundary | customer_pack; supplier_return; condemned_pack | 仅customer_pack和supplier_return是非表征实物保管卫星，并保留实际完好状态/接收方。condemned_pack是真实废物输出：直接计量完好皂条与原印刷纸包的托运净kg；仅在接收方签署接受精确皂/包材组成及状态、且处理数据集已验证覆盖完整载体时使用。许可证/照片本身不足。不得把已接受完整载体再次拆成皂及纸，也不得重复增加处理服务已含公用工程/运输。缺处理或拒收须实际去向并阻断完成；财务退款或在外保留的未验收皂条从不自动成为零售商废物。 |  |
@@ -131,7 +132,7 @@ sync_with: pcr.en-US.md
 
 收货门槛完整配方及原纸包源向量最终分配给F，按N_F/Q作为服务输入一次；本行不是保管卫星。
 
-- 选定流: 收货门槛Dr. Bronner OBBA05无香完整皂条及原印刷纸包
+- 选定流: 收货门槛无香完整皂条及原印刷纸包
 - 流属性/单位: 物品数量 / Item(s)
 - 数量规则: N_F/Q
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -150,7 +151,7 @@ sync_with: pcr.en-US.md
 
 向顾客总实物交付的完好原纸包皂条，包括后来拒收或冲销事件，作为非表征保管卫星计数；它们不定义Q。
 
-- 选定流: 向顾客交付的完好原纸包Dr. Bronner OBBA05皂条
+- 选定流: 向顾客交付的完好原纸包装无香皂条
 - 流属性/单位: 物品数量 / Item(s)
 - 数量规则: H_customer/Q
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -165,7 +166,7 @@ sync_with: pcr.en-US.md
 
 向具名供应商实际实物交付的完好原纸包皂条是非表征保管卫星；数量不自动指定T责任。
 
-- 选定流: 向供应商退回的完好原纸包Dr. Bronner OBBA05皂条
+- 选定流: 向供应商退回的完好原纸包装无香皂条
 - 流属性/单位: 物品数量 / Item(s)
 - 数量规则: H_supplier/Q
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -182,7 +183,7 @@ sync_with: pcr.en-US.md
 
 运出的完好整皂及原印刷纸包直接净kg，排除托运外包装；carrier_boundary要求签署接收接受及匹配完整处理，不再次扣库存。
 
-- 选定流: 接收方接受完整处理的判废完好Dr. Bronner OBBA05皂条及原印刷纸包
+- 选定流: 接收方接受完整处理的判废完好原纸包装无香皂条皂条及原印刷纸包
 - 流属性/单位: 质量 / kg
 - 数量规则: W_dispatch/Q
 - 数值来源模式: 计算值 (`calculated_value`)
@@ -244,13 +245,15 @@ sync_with: pcr.en-US.md
 | --- | --- |
 | dataset_role | 部分零售增量前景 |
 | downstream_use | secondary_dataset；全部补全及身份门槛满足后方可作background_dataset |
-| allowed_use | 同一实体店原纸包OBBA05配置及门槛，披露池/版本特定补全。 |
+| allowed_use | 同一实体店原纸包原纸包装无香皂条配置及门槛，披露池/版本特定补全。 |
 | excluded_use | 本候选不支持完整经营、全3532、香水/分装/试用、安全/合规、供应商LCI或顾客使用声明。 |
 | required_metadata | 全部必需限定信息、Q、原供应商/源版本、S/F/T/O、实际场所/渠道、完整配套范围、校准及责任更正。 |
 | required_quality_disclosure | 候选未验证行身份；缺失前景/BOM/供应商/处理证据；部分范围、不确定性、零产出池及历史替换。 |
 | update_trigger | 批次/配方/纸包、路线/状态、门店/供应商、源责任、验收结果、资产寿命/退役或新增实际交换变化。 |
 
 ## 11. 数据源
+
+保留的厂家及零售商来源说明本产品类别的案例和明确引用的技术区别，不将适用性限定于所列品牌/型号，也不为其他配置提供数值清单默认值。实际产品与供应商证据仍须按b_product_family取得。
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

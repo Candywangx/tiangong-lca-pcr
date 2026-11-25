@@ -7,11 +7,11 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Mixed-store counter retail service for sealed single rolls of self-adhesive vinyl wallpaper
+# Counter retail services for original sealed single rolls of self-adhesive vinyl wallpaper
 
 ## 1. Scope and Applicability
 
-This method covers ambient receiving, upright roll storage/display, original-seal inspection, payment and counter handover of one homogeneous single-roll SKU of removable self-adhesive vinyl wallpaper in a physical non-specialized mixed-assortment store. The representative is Tempaper Moire Dots Black and White MD10642, UPC651784106428, SINGLE ROLL, nominal20.5in ×16.5ft. A dataset fixes this SKU, colour, supplier BOM/version, lot configuration and actual store. The manufacturer distinguishes double rolls and samples and requests matching lot numbers. Its vinyl and self-adhesive description does not disclose the complete facing/adhesive/release-liner/core/wrapping BOM or quantified LCI. Obtain that actual supplier record; do not assume pure PVC mass, nominal density, catalog shipping weight or nominal28/28.18sqft equals measured content.
+This method covers ambient receiving, upright storage/display, sealed-pack checks, payment and counter handover of original single rolls of removable self-adhesive vinyl wallpaper in mixed-assortment non-specialized stores. Any brand, colour/pattern and roll dimensions within this technical family may qualify, with actual supplier/SKU/BOM version, lot and full package configuration fixed separately per pool. Verify batch matching and the actual face, adhesive, release liner, core and outer packaging. The retained manufacturer/retailer single-roll examples and nominal dimensions do not establish complete BOM/LCI, pure-PVC mass, density, measured coverage or local availability.
 
 Exclude paper-only wallpaper, textile carpets, plastic floor tiles/sheet flooring, double rolls, samples, cut-to-length retail, store unrolling/cutting/pasting, installation, wall preparation and downstream use/removal. Installation pattern-match losses belong downstream and cannot be applied as a retail loss factor. A genuine mixed assortment requires store activity/assortment evidence; non-exclusive branding or a wallpaper specialist does not establish this channel. The Target listing corroborates a real retail product, not a particular in-store route or inventory. This restricted route has manual handling, natural ventilation, no refrigerant or combustion plant serving this pool and no purchased heat; verify these conditions from equipment/utility inspections. Unknown or contrary facts require a reviewed route extension before completeness.
 
@@ -21,9 +21,9 @@ Exclude paper-only wallpaper, textile carpets, plastic floor tiles/sheet floorin
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-wallpaper-and-floor-coverings |
 | classification_refs | CPC3.0 62163; narrower proposal; classifications/mappings/cpc-3.0-to-pcr.yaml and its accepted ADRs govern actual mapping, not this manifest. |
-| covered_products | Sealed SINGLE ROLL MD10642 self-adhesive vinyl wallpaper counter service in actual mixed-assortment store |
+| covered_products | Counter retail services for original sealed single rolls of self-adhesive vinyl wallpaper in actual mixed-assortment stores. |
 | excluded_products | Exclude paper-only wallpaper, textile carpets, plastic floor tiles/sheet flooring, double rolls, samples, cut-to-length retail, store unrolling/cutting/pasting, installation, wall preparation and downstream use/removal. Installation pattern-match losses belong downstream and cannot be applied as a retail loss factor. A genuine mixed assortment requires store activity/assortment evidence; non-exclusive branding or a wallpaper specialist does not establish this channel. The Target listing corroborates a real retail product, not a particular in-store route or inventory. This restricted route has manual handling, natural ventilation, no refrigerant or combustion plant serving this pool and no purchased heat; verify these conditions from equipment/utility inspections. Unknown or contrary facts require a reviewed route extension before completeness. |
-| representative_product | MD10642 Black and White; actual supplier facing/adhesive/release-liner/core/wrap BOM and lot required |
+| representative_product | Counter retail services for original sealed single rolls of self-adhesive vinyl wallpaper; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Receipt → upright original-roll storage/display → seal/lot inspection → counter/payment → final qualified handover; separate failures, returns, support and waste |
 | market_state | Original sealed dry-to-handle single roll; uninstalled, uncut, unused |
 
@@ -40,7 +40,7 @@ Exclude paper-only wallpaper, textile carpets, plastic floor tiles/sheet floorin
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter retail service for one sealed MD10642 single roll |
+| Reference product flow | Counter retail service for one sealed self-adhesive vinyl wallpaper single roll |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -71,6 +71,7 @@ Exclude paper-only wallpaper, textile carpets, plastic floor tiles/sheet floorin
 
 | rule_id | applies_to | rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_gate | all | Apply only the sealed single-roll route in section1. Any opened/part-used customer return is a distinct actual state, never a qualifying sealed sale. Quarantine it by original ID, measured whole-carrier kg, remaining face/liner/core/wrap quantities and recipient; complete its state-specific card/provider before dataset completeness. A full original package remains one exchange while all of its components share the same final source responsibility. | un-cpc62163; tempaper-moire |
 | service_gate | service | Q is the count of distinct original roll IDs with final valid acceptance in the prospective same-store/SKU/configuration pool. Customer retention without qualified acceptance, refusal, repeat attempts, refund alone, internal transfer and lost stock are not extra service. Revocation removes the original ID from Q even without movement; a financial adjustment with valid acceptance leaves Q unchanged. Count each final-valid ID once; do not subtract revocations again. A later resale of the same roll corrects that original history, not another manufactured roll. | ghg-product-2011 |
 | goods_responsibility | failed_original; service | At the same store receiving gate retain each original supplier vector V_s including complete facing/adhesive/liner/core/original wrap and upstream transport, with received quantity q_s in its native unit. Partition original responsibility S/F/T/O, sum fractions1 per original source: S final-valid customer goods; F irreversible retail failure including confirmed loss or retained external unaccepted goods; T named continuing supplier/internal custodian; O open stock. The incremental retail service excludes S production/inbound vector. failed_original includes F once; T/O carry the unassigned same source to their named future owner, never a zero or deleted burden. A downstream GOODS system may add S once separately. Receiving all goods is raw custody QA, not a second purchase input beside F. | ghg-product-2011 |
@@ -102,11 +103,11 @@ Exclude paper-only wallpaper, textile carpets, plastic floor tiles/sheet floorin
 
 ##### Product flows
 
-###### Original sealed MD10642 single-roll wallpaper retail package (`failed_original`)
+###### Original sealed single-roll self-adhesive vinyl wallpaper retail package (`failed_original`)
 
 Only U_whole homogeneous whole-original-source F packages use N_F_whole; B_F_whole contains no component-split background. Bind the complete actual supplier inventory and receiving transport vector to each original package ID. Component-divergent portions are excluded and replaced under component_gate. This is a background source-equivalent product input, not a second physical receipt.
 
-- Selected flow: Original sealed MD10642 single-roll wallpaper retail package
+- Selected flow: Original sealed single-roll self-adhesive vinyl wallpaper retail package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_F_whole / Q
 - Value mode: `calculated_value`
@@ -166,11 +167,11 @@ Conditional actual retail-added LDPE bag only. Weigh complete bag including actu
 
 ##### Product flows
 
-###### Counter retail service for one sealed MD10642 single roll (`service`)
+###### Counter retail service for one sealed self-adhesive vinyl wallpaper single roll (`service`)
 
 Exactly one final-valid original sealed roll counter service; physical wallpaper production is not the service output vector. Apply service_gate and return_replacement.
 
-- Selected flow: Counter retail service for one sealed MD10642 single roll
+- Selected flow: Counter retail service for one sealed self-adhesive vinyl wallpaper single roll
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -187,11 +188,11 @@ Exactly one final-valid original sealed roll counter service; physical wallpaper
 
 ##### Product flows
 
-###### Sealed MD10642 single roll physically handed back to supplier (`supplier_return`)
+###### Sealed self-adhesive vinyl wallpaper single roll physically handed back to supplier (`supplier_return`)
 
 Non-characterized physical custody satellite only. Actual signed supplier handoff and continuing T/F source responsibility are separate; T cannot generate this movement. Opened returns need a state-specific extension.
 
-- Selected flow: Sealed MD10642 single roll physically handed back to supplier
+- Selected flow: Sealed self-adhesive vinyl wallpaper single roll physically handed back to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_supplier_handoff / Q
 - Value mode: `calculated_value`
@@ -202,11 +203,11 @@ Non-characterized physical custody satellite only. Actual signed supplier handof
 - Collection protocol: `cp_custody`
 - Sources: `tempaper-moire`
 
-###### Damaged unaccepted MD10642 roll retained by named external recipient (`external_damaged`)
+###### Damaged unaccepted self-adhesive vinyl wallpaper roll retained by named external recipient (`external_damaged`)
 
 Actual remaining whole roll carrier at external recipient, documented state and full remaining constituent quantities; not qualified service, not automatically waste dispatch. Bind its original F/T vector and recipient obligation; opened/part-used state requires its separate real card before completeness.
 
-- Selected flow: Damaged unaccepted MD10642 roll retained by named external recipient
+- Selected flow: Damaged unaccepted self-adhesive vinyl wallpaper roll retained by named external recipient
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: M_external / Q
 - Value mode: `calculated_value`
@@ -695,6 +696,8 @@ Whole residual broom after prior removed parts; measured terminal net mass uses 
 | update_trigger | SKU/BOM/lot/channel/route/provider/model changes; new sources; final acceptance returns; asset lifetime/retirement revisions |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

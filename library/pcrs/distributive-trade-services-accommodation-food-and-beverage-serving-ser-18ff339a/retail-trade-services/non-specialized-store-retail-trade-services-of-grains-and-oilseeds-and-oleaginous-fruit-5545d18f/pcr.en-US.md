@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized physical-store retail service for sealed food wheat
+# Retail services for sealed dry whole food wheat
 
 ## 1. Scope and Applicability
 
@@ -19,7 +19,7 @@ This PCR is a narrower service methodology associated with CPC 3.0 62111, retain
 | classification_refs | CPC 3.0 62111; narrower |
 | covered_products | Incremental non-specialized physical-store retail service for dry whole food wheat, accepted in sealed supplier packs and handed to the customer in those packs; stratify food grade, wheat species, pack specification and store route. |
 | excluded_products | Seed for sowing, feed, oilseeds, oleaginous fruits, other cereal species, flour, cooked grain, bulk dispensing, repacking, processing, chilled storage, online fulfilment, wholesale and independent delivery. |
-| representative_product | Retail service for 1 kg net whole food wheat delivered to the buyer; this is a mass-throughput service, not a wheat production product. |
+| representative_product | Retail services for sealed dry whole food wheat; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Store receipt and acceptance; sealed ambient holding and display; manual handling; checkout and buyer handover. No grain opening or fumigation. Store utilities are metered electricity and water; any additional actual route requires completed exchange expansion before dataset use. |
 | market_state | Completed buyer handover of intact, accepted supplier-packed food wheat, preserving the declared moisture and quality specification. Retailer retains responsibility for its rejects, stock losses and returns. |
 
@@ -63,6 +63,7 @@ This PCR is a narrower service methodology associated with CPC 3.0 62111, retain
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_scope | retail | Only the declared sealed dry whole-food-wheat physical-store route is covered. Keep each quality/specification stratum separate; neither the shared CPC label nor equal kg makes food wheat equivalent to seeds, feed or oilseeds. The classification association is narrower. | un-cpc3-62111 |
 | b_gates | retail | Start at retailer receipt, including unloading/acceptance effort, quarantine, sealed storage/display, checkout, cleaning, stock administration, buyer handover, returns attributable to that service, and downstream treatment of retailer waste. End at buyer handover for qualified goods and verified treatment boundaries for waste. Supplier delivery up to receipt is outside foreground and is in the matched goods background; exclude buyer travel, consumption and buyer packaging disposal. | jrc-retail-2013 |
 | b_goods_loss | wheat_loss_input | Qualified goods production and their original packs remain in the downstream goods system. Within this service, include only L/Q kg of packaged wheat background for irreversible retailer losses L, at the same delivered-receipt gate, including the lost share of original packaging and supplier transport. Do not include all incoming goods here. A downstream product-plus-service result adds 1 kg of the matched delivered-receipt goods background plus this service, so lost goods production is included once. Supplier returns with documented recovery remain transferred stock; unrecovered or unknown disposition is not assumed recovered. |  |
@@ -423,6 +424,8 @@ Terminal provision for the same complete asset cohort as broom_input; use cp_ass
 | update_trigger | Update on grade/pack, store route, supply gate, assets, energy, returns, life/treatment, measurement or classification evidence change |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

@@ -6,7 +6,7 @@ content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Walk-in retail service for one specified new white cotton knitted T-shirt: garment-department incremental module
+# In-store retail services for new white cotton knitted T-shirts
 
 ## 1. Scope and Applicability
 
@@ -20,7 +20,7 @@ This is a candidate methodology for a partial incremental garment-department ser
 | classification_refs | CPC3.0:62133; narrower |
 | covered_products | Same-SKU/size new white cotton fine-knit T-shirt department service only |
 | excluded_products | Fur/artificial fur; other apparel/accessories; garment production for successful sales; excluded processing and common modules until completed |
-| representative_product | One actual declared new white cotton fine-knit crew-neck SKU/size/full receiving BOM satisfying this fixed route and state; Original T0610820 is an illustrative specification source only. Any other actual SKU requires its own verified BOM and actual receiving background; no environmental-burden equivalence or substitution of the specimen background is implied. |
+| representative_product | In-store retail services for new white cotton knitted T-shirts; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Walk-in non-specialized store; receive→manual hang/restock→fit/re-hang→POS→qualified carry-out |
 | market_state | Complete new dry saleable garment with recorded actual conditioning/labels; not a measured mass default |
 
@@ -68,6 +68,7 @@ This is a candidate methodology for a partial incremental garment-department ser
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope | all | This candidate module covers one actual homogeneous new white crew-neck cotton fine-knit T-shirt SKU, size and unaltered receiving BOM in a walk-in non-specialized store; a feasible specimen is manufacturer Original T0610820 white. Its fabric label is not a complete garment/packaging BOM: record sewing thread, neck/brand/care labels, print/finishes, tags and actual receiving packaging. The manufacturer fabric areal weight is not garment net mass. Fur, artificial fur, other apparel/accessories, used garments, online delivery, cutting, alterations, printing, washing, steaming and ironing are outside this fixed route. cp_completion requires positive occurrence/absence evidence; if any excluded processing occurs or is unknown, this route cannot support a complete dataset without explicit bilingual atomic-card/protocol/background extension. | un-cpc-62133; fotl-original-t |
 | gate | garment | Start at the recorded store receiving gate, then inspect/count/weigh, manually move/restock, hang/display, fit/re-hang, checkout and customer carry-out. Acceptance requires correct recorded SKU/size, complete new saleable garment without unacceptable defect/soiling, intact required original labels and completed handover for the buyer own use, with all subsequent acceptance revocations adjudicated by the declared cutoff. Rejection, repeated fitting and restoration to the same saleable state consume resources but create no extra service. Personal customer travel and post-final-acceptance garment use/disposal remain outside. | ghg-product-2011 |
 | goods_responsibility | garment | Retail service excludes successful garment production/receiving packaging/inbound carriage B_s but includes final retailer-responsible failed-goods background B_f at the identical gate. calc_goods assigns each original garment background once among successful S, retailer failure F, continuing supplier/internal transfer T, and open unresolved O, regardless of physical carrier fate. Returned stock retains its source ID; resale does not create new production. A failed garment retained outside has recipient/state and continuing responsibility, not automatically a retailer waste exchange. Supplier return does not erase background or grant credit. | ghg-product-2011 |
@@ -729,6 +730,8 @@ Real empty trips have positive vehicle-distance although loaded tonne-kilometres
 | update_trigger | Changed SKU/BOM/route/formulation/asset/provider/life estimate, return adjudication, measured state or new source evidence |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

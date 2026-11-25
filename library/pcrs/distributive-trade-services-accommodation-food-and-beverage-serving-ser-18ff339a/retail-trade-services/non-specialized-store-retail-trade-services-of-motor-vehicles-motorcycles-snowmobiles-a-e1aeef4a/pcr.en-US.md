@@ -7,11 +7,11 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# Mixed-assortment store retail service for new complete CURT 45036 loaded ball-mount units
+# In-store retail services for new complete preassembled trailer-ball mount units
 
 ## 1. Scope and Applicability
 
-This candidate covers attended physical-store sale and store pickup of one homogeneous, new and unused, complete CURT 45036 original supply configuration. The original assembled ball mount has a factory-torqued 2-inch ball, 2-inch receiver shank, 2-inch drop, and original pin and clip. The actual supplier-lot packaging, closure, included instructions and all attached components define the indivisible original unit. This is a vehicle towing accessory of goods group 491, interpreted under 4912/49129, not a motorcycle, snowmobile, generic metal fitting or entire vehicle. UNSD 62181 expressly names goods groups 491 and 492; its broad title alone does not admit other goods. Runnings lists the same manufacturer SKU and UPC with store pickup and documents clothing, tools, pets and automotive departments: mixed assortment, not merely multiple brands. Applicability requires records for the actual physical store, not a website-wide assumption.
+This candidate covers attended mixed-store retail and customer pickup of new unused complete original preassembled trailer-ball mount units. Any manufacturer and actual receiver/ball geometry within this functional family may qualify; each pool fixes one actual homogeneous supplier configuration, complete original packaging/closure, instructions and supplied ball, pin and clip BOM. Nominal sizes, load ratings and the retained branded example are identification context, never class-wide parameters or safety approval. This is a motor-vehicle towing accessory within the stated 491/4912/49129 interpretation, not an entire vehicle, motorcycle, snowmobile or generic metal joint. The retailer source demonstrates a mixed-assortment example only; actual physical-store assortment and transaction records must establish site eligibility.
 
 Route gates: start at identified supplier dispatch of the actual received units (upstream responsibility is preserved below); retailer custody begins at receiving inspection. Record identity, completeness, unused condition, actual pack mass and configuration; quarantine mismatches. Hold on the actual shelf, pick, scan, authorize payment and hand over the complete original unit. End at final valid customer acceptance after the prospectively declared return-observation window, with later corrections retained. Refusal, payment failure, returned/reversed handover, confirmed loss, supplier return and internal transfer are distinct histories. No assembly, installation, retorque, trial towing, demonstration, resale of used units, opened/repacked component sales, delivery to home or customer driving is covered. Manufacturer capacities identify the model only; this PCR grants no compatibility, safety, regulatory or conformity approval. Manufacturer 7-1/2-inch length differs from the retailer 8-1/4-inch description; lot drawing, actual markings and measured geometry must resolve identity before use. Shipping weight is not measured product or waste mass.
 
@@ -21,9 +21,9 @@ Route gates: start at identified supplier dispatch of the actual received units 
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-motor-vehicles-motorcycles-snowmobiles-a-e1aeef4a |
 | classification_refs | CPC 3.0 62181; narrower |
-| covered_products | New complete original CURT 45036 loaded ball-mount unit; original actual supply configuration only |
-| excluded_products | Other SKUs; used or opened units; installation/repair/demo/trial towing; home delivery; entire vehicles; loose ball/pin sales |
-| representative_product | CURT 45036; UPC612314005345; Runnings10350258 |
+| covered_products | New complete original preassembled trailer-ball mount units; actual receiver/ball/pin configuration and supplier BOM fixed per homogeneous pool. |
+| excluded_products | Used/opened units; installation, repair, demonstration or trial towing; home delivery; entire vehicles; separately sold balls or pins. |
+| representative_product | In-store retail services for new complete preassembled trailer-ball mount units; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier dispatch -> physical mixed-store receiving/holding -> attended checkout/store pickup -> final acceptance |
 | market_state | New unused complete original unit, no installation or use; actual lot-pack verification required |
 
@@ -31,7 +31,7 @@ Route gates: start at identified supplier dispatch of the actual received units 
 
 | Field | Value |
 | --- | --- |
-| What | Retail service for one new complete CURT 45036 original unit |
+| What | Retail service for one new complete preassembled trailer-ball mount original unit |
 | How much | 1 Item(s) |
 | How well | Exact actual supplier configuration accepted complete, unused and identity-matched by the customer |
 | How long or cycle | One original-unit first retail ownership cycle, with observation window and later corrections |
@@ -40,7 +40,7 @@ Route gates: start at identified supplier dispatch of the actual received units 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Retail service for one new complete CURT 45036 original unit |
+| Reference product flow | Retail service for one new complete preassembled trailer-ball mount original unit |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -69,11 +69,12 @@ Route gates: start at identified supplier dispatch of the actual received units 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | scope_gate | retail | Admit only the scope and gates above. Receiving, complete-unit holding and counter handover are the core. Record prospectively the same configuration, site and period pool; retain closed, failed and zero-sale periods. Q is distinct final-valid original-unit IDs, at most one service per original unit; physical returns and resale do not create new original IDs. Revocation removes final validity even without physical movement; financial-only adjustment does not. Q=0 is unnormalizable and cannot be deleted or replaced by a successful period. | un-cpc-62181; un-goods-49129; runnings-channel |
 | original_source | failed_original; retail_service; customer_handover; supplier_handover; internal_handover; damaged_unit_waste | At the original supplier dispatch gate retain one actual whole-unit supplier manufacturing vector V_s and a separate inbound transport source. V_s is strictly manufacture and original supply packaging through supplier dispatch and EXCLUDES inbound transport. The core failed_original input carries only that dispatch-gate vector; F inbound transport is a mandatory omitted module under partial_completion and transport_ownership. An already transport-inclusive vector is inadmissible unless supplier inventory evidence separates those exact source stages; never add it beside the same independent inbound module. Original components, coatings, fasteners, instructions and lot packaging belong to that vector; the product webpage is not LCI or complete BOM. Partition each original source exactly once into S final-valid customer ownership, F failed service responsibility (destroyed, confirmed missing or failed externally retained), T named transferred responsibility, and O continuing original stock/unresolved ownership, with S+F+T+O=1. Service excludes S manufacturing and its inbound transport; a separate GOODS system may add S once. failed_original is an actual Product input N_F/Q of whole original units carrying their matching F vectors, not a custody satellite; include confirmed lost units despite no waste. Supplier returns carry named continuing T/O ownership and actual physical handover separately. Never infer F from cash refunds. An actual component divergence requires supplier component vectors and separate atomic input cards; exclude those exact source portions from the whole-unit vector, never split environmental vectors by mass. Prohibit completeness until resolved. | curt-model |
 | physical_fates | customer_handover; supplier_handover; internal_handover; damaged_unit_waste | customer_handover, supplier_handover and internal_handover are exclusively named non-characterized physical Product custody satellites; no new manufacturing background is attached there. All gross external customer handovers H include accepted and never-accepted handovers once; a later no-movement revocation only changes the original event status. Goods-count balance is G_close=G_open+R_receive+R_customer-H-R_supplier-J_internal-C_condemned-L_missing+epsilon_goods. Condemnation is goods to held-waste conversion linked by event IDs and measured kg, not waste dispatch. Held-waste balance W_close=W_open+W_generated-W_dispatch-W_transfer-W_missing_confirmed+epsilon_waste in kg. W_dispatch is directly measured consignment net carrier kg without subtracting closing stock again. W_missing_confirmed is independently confirmed missing held-waste kg; epsilon_waste is a distinct signed unexplained residual. Both require incident IDs and fate investigation; unknown receiver/treatment remains incomplete and cannot create fictional dispatch/treatment. Count cannot be inserted into kg. Failed external retention retains recipient/state and F responsibility, never fictional retailer waste. Late returns replace the original pool numerator, Q, source ownership and fates with actual event dates; do not charge a new pool again. |  |
 | partial_completion | all inventory rows | These core cards are a declared partial incremental inventory, not complete store operation. Before any complete-service claim, cp_completion must activate named atomic cards with actual process/direction/Product-Waste-elementary identity, state, medium, property/unit, measured numerator, protocol, background scope and bilingual sync for every actual omitted exchange. Required closure register: building/fixed fixtures/shelf/lighting/fan/HVAC capital and operation; receiving equipment; checkout/payment hardware; ICT/network; camera/security; administration; cleaning and imported water/effluent; mastercase/receipt/bag materials and wastes; goods/asset/material/waste transport. Evidence absence by site walk, circuit/asset plans, contracts, purchase/dispatch records and responsible signoff for the full period. The admitted facility route is electric receiving/checkout with ordinary unconditioned shelf holding; only electric-resistance/fan ventilation facility support may be completed here. Verify absence of combustion and refrigerant equipment serving this beneficiary by full-period equipment/contract/maintenance records and site inspection, including forklifts, backup generators and HVAC. Presence is outside this facility route, not zero; unknown absence blocks closure. Actual leakage, broken coating or opened packaging cannot default zero: add actual state-specific material/waste/species-path cards and measured carrier balances before completeness. |  |
-| waste_boundary | damaged_unit_waste | Only an actually complete, unused condemned 45036 unit with its same actual supply packaging and all original pieces may use damaged_unit_waste. Measure the whole carrier, not nominal steel or the manufacturer shipping weight. Signed receiver acceptance must cover its actual steel, plating, coating, plastic/paper packaging and state, with a matching complete collection/treatment boundary. Do not also dispatch its components on other cards. Opened, partly missing, leaking or separately dispatched packaging requires distinct atomic extensions and measured disjoint carriers. Actual Waste output is characterized by treatment; it is not a physical Product satellite and has no automatic avoided-product credit. | curt-model |
+| waste_boundary | damaged_unit_waste | Only an actually complete, unused condemned complete preassembled trailer-ball mount unit with its same actual supply packaging and all original pieces may use damaged_unit_waste. Measure the whole carrier, not nominal steel or the manufacturer shipping weight. Signed receiver acceptance must cover its actual steel, plating, coating, plastic/paper packaging and state, with a matching complete collection/treatment boundary. Do not also dispatch its components on other cards. Opened, partly missing, leaking or separately dispatched packaging requires distinct atomic extensions and measured disjoint carriers. Actual Waste output is characterized by treatment; it is not a physical Product satellite and has no automatic avoided-product credit. | curt-model |
 
 ## 6. Process Inventory Structure
 
@@ -93,7 +94,7 @@ Route gates: start at identified supplier dispatch of the actual received units 
 
 N_F/Q; apply source_f and original_source. Actual dispatch-gate manufacturing/original-package vector only for F complete units; excludes inbound transport and all S/T/O portions; F inbound is mandatory completion.
 
-- Selected flow: New complete CURT 45036 original supply unit
+- Selected flow: New complete preassembled trailer-ball mount original supply unit
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -127,7 +128,7 @@ N_AC/Q; apply energy_pool and subdivide_sources. AC at point of use; actual supp
 
 1 Item(s); Q/Q=1 per reference flow, using service_count.
 
-- Selected flow: Retail service for one new complete CURT 45036 original unit
+- Selected flow: Retail service for one new complete preassembled trailer-ball mount original unit
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Fixed value (`fixed_value`)
@@ -142,7 +143,7 @@ N_AC/Q; apply energy_pool and subdivide_sources. AC at point of use; actual supp
 
 N_H/Q; all gross customer handovers once; physical_fates and custody_count; non-characterized custody only.
 
-- Selected flow: New complete CURT 45036 original supply unit
+- Selected flow: New complete preassembled trailer-ball mount original supply unit
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_H/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -157,7 +158,7 @@ N_H/Q; all gross customer handovers once; physical_fates and custody_count; non-
 
 N_R/Q; actual complete unused returned units; physical_fates and custody_count; T/O background continues, non-characterized custody only.
 
-- Selected flow: New complete CURT 45036 original supply unit
+- Selected flow: New complete preassembled trailer-ball mount original supply unit
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_R/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -172,7 +173,7 @@ N_R/Q; actual complete unused returned units; physical_fates and custody_count; 
 
 N_J/Q; actual complete unused units transferred out; physical_fates and custody_count; named T owner, non-characterized custody only.
 
-- Selected flow: New complete CURT 45036 original supply unit
+- Selected flow: New complete preassembled trailer-ball mount original supply unit
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_J/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -189,7 +190,7 @@ N_J/Q; actual complete unused units transferred out; physical_fates and custody_
 
 N_W/Q; apply waste_dispatch and waste_boundary. Actual solid complete mixed carrier to accepted treatment; no nominal mass or avoided credit.
 
-- Selected flow: Complete unused condemned CURT 45036 unit with original supply packaging
+- Selected flow: Complete unused condemned preassembled trailer-ball mount unit with original supply packaging
 - Flow property / unit: Mass / kg
 - Amount rule: N_W/Q
 - Value mode: Calculated value (`calculated_value`)
@@ -262,6 +263,8 @@ N_W/Q; apply waste_dispatch and waste_boundary. Actual solid complete mixed carr
 | update_trigger | SKU/pack/route change; late return; supplier background or asset lifetime revision; calibration/identity correction |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

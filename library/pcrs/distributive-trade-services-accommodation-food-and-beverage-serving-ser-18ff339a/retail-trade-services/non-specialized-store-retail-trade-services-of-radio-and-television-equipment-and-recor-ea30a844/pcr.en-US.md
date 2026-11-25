@@ -5,7 +5,7 @@ status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Counter collection retail service for boxed Philips TAR1506/00 radios in non-specialized stores
+# Counter-pickup retail services for boxed analogue FM/MW portable radios
 
 ## 1. Scope and Applicability
 
@@ -17,9 +17,9 @@ This PCR specifies a narrow retail-service route for one actual radio SKU, with 
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-radio-and-television-equipment-and-recor-ea30a844 |
 | classification_refs | CPC 3.0 62142; narrower |
-| covered_products | One homogeneous manufacturer-boxed TAR1506/00 radio EAN 4895229116627 collected at a non-specialized store counter; actual supplier pack revision fixed per pool |
-| excluded_products | Other radio models, televisions, transmission/camera equipment, parts, recorded media, online/delivery retail, installation, repairs, separate battery sales and ex-demonstrator sales |
-| representative_product | Philips TAR1506/00 analogue FM/MW mono portable radio; manufacturer 2024-10-14 v5.2.7 identifies one-product box, AAA LR3 power and printed guide/warranty; actual received BOM controls completeness |
+| covered_products | Manufacturer-boxed analogue FM/MW portable radios collected at a non-specialized store counter; actual supplier/version/BOM fixed separately per pool. |
+| excluded_products | Products outside the declared radio family; televisions; transmission/camera equipment; parts; recorded media; online/delivery retail; installation; repairs; separate battery sales; ex-demonstrator sales. |
+| representative_product | Counter-pickup retail services for boxed analogue FM/MW portable radios; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Store receiving, ambient boxed holding, optional permanent battery-powered demonstrator, checkout and physical counter handover; electronic receipt; no added carry bag; naturally ventilated store with verified absence of fuel combustion and refrigerant-containing equipment within the store service boundary |
 | market_state | New complete original sale pack; retail service rather than radio manufacturing or listening service |
 
@@ -36,7 +36,7 @@ This PCR specifies a narrow retail-service route for one actual radio SKU, with 
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Counter collection retail service for one boxed Philips TAR1506/00 radio |
+| Reference product flow | Counter collection retail service for one boxed analogue FM/MW portable radio |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -54,6 +54,7 @@ This PCR specifies a narrow retail-service route for one actual radio SKU, with 
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | b_scope | service | Start at documented store receiving gate after inbound delivery, finish at qualified physical counter handover. This is a partial incremental service. Customer travel, post-handover use and product end of life belong to the downstream goods system; record this handoff explicitly. Necessary store and logistics modules remain mandatory under c_modules before any complete service claim. Common network/IT, security and administration are expressly excluded business functions of this partial boundary. Completing the current module matrix establishes only the declared route-module inventory, not whole-store or all-business retail coverage; these exclusions remain disclosed and prevent any such full-coverage claim. | `ghg-product-2011` |
 | b_package | goods | Fix actual supplier, model, EAN, pack revision and item-level receiving evidence. Obtain supplier full product and packaging BOM or a complete model-specific lifecycle provider with signed exact coverage. Include radio electronics/enclosure/speaker/antenna, supplied documents, all actual factory accessories, factory batteries if any, box/liners/labels/adhesives and inbound gate. The specification alone proves neither battery inclusion nor absence. Factory-included objects occur once in the pack; separately bought demo cells are disjoint. Unknown composition/coverage blocks completeness, never becomes zero. | `philips-tar1506-2024` |
 | b_background | goods | Maintain unique original-pack source IDs through opening, return, resale, failure and transfers. Supplier production plus inbound logistics at the same receiving gate is partitioned into S finally accepted goods, F retailer-responsible failure/loss, T explicit continuing named internal-demo or external responsibility and O unresolved/open stock. S is handed downstream once; add F/Q to service, retain T with actual recipient and signed continuing responsibility, carry O without erasure. A failed external handover is not waste by default. Losing identity or supplier return does not erase production. Background responsibility changes create no physical exchange or avoided-burden credit. A stock-to-demonstrator assignment transfers its original source to named internal T asset and cell IDs at the actual event date; it is not F and not a new physical purchase. Before separating factory cells from the battery-free radio/box/documents package, obtain supplier-verifiable component inventory vectors with identical receiving-gate coverage, so original package vector V_pack = V_battery_free_package + sum V_factory_cell + other evidenced component vectors. Unknown component coverage blocks completeness. Do not divide environmental vectors by arbitrary mass, price or item fractions. Reuse those exact original component source IDs/providers in demo_package/demo_cell and remove their old goods allocation; newly bought cells have separate source IDs. | `ghg-product-2011` |
@@ -102,11 +103,11 @@ Actual counter AC at point of use; voltage/provider unspecified by flow identity
 - Collection protocol: `cp_counter`
 - Sources: `philips-tar1506-2024`; `ghg-product-2011`
 
-###### Complete original boxed Philips TAR1506/00 radio package at store receiving gate (`failure_pack`)
+###### Complete original boxed analogue FM/MW portable radio package at store receiving gate (`failure_pack`)
 
 Conditional F responsibility; package includes actual factory accessories/batteries once; full supplier coverage required
 
-- Selected flow: Complete original boxed Philips TAR1506/00 radio package at store receiving gate
+- Selected flow: Complete original boxed analogue FM/MW portable radio package at store receiving gate
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: B_F / Q; only retailer-responsible failed original-pack equivalents, no S/T/O burden here
 - Value mode: `calculated_value`
@@ -121,11 +122,11 @@ Conditional F responsibility; package includes actual factory accessories/batter
 
 ##### Product flows
 
-###### Counter collection retail service for one boxed Philips TAR1506/00 radio (`service`)
+###### Counter collection retail service for one boxed analogue FM/MW portable radio (`service`)
 
 Required final qualified handover only; Q>0
 
-- Selected flow: Counter collection retail service for one boxed Philips TAR1506/00 radio
+- Selected flow: Counter collection retail service for one boxed analogue FM/MW portable radio
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `calculated_value`
@@ -136,11 +137,11 @@ Required final qualified handover only; Q>0
 - Collection protocol: `cp_counter`
 - Sources: `philips-tar1506-2024`; `ghg-product-2011`
 
-###### Complete original boxed Philips TAR1506/00 radio package physically returned to supplier (`supplier_return`)
+###### Complete original boxed analogue FM/MW portable radio package physically returned to supplier (`supplier_return`)
 
 Conditional intact supplier return; opened, damaged or incomplete packages require distinct state-specific extension before completeness
 
-- Selected flow: Complete original boxed Philips TAR1506/00 radio package physically returned to supplier
+- Selected flow: Complete original boxed analogue FM/MW portable radio package physically returned to supplier
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: N_supplier_intact / Q; actual intact original packs only, no background credit
 - Value mode: `calculated_value`
@@ -157,11 +158,11 @@ Conditional intact supplier return; opened, damaged or incomplete packages requi
 
 ##### Product flows
 
-###### Battery-free complete Philips TAR1506/00 radio with original box assembly and supplied documents manufacture and installation package (`demo_package`)
+###### Battery-free complete analogue FM/MW portable radio with original box assembly and supplied documents manufacture and installation package (`demo_package`)
 
 Conditional permanent demo asset; signed model-specific provider/BOM required; original factory cells if included are explicitly removed from manufacture provider and handled once under cell ledger
 
-- Selected flow: Battery-free complete Philips TAR1506/00 radio with original box assembly and supplied documents manufacture and installation package
+- Selected flow: Battery-free complete analogue FM/MW portable radio with original box assembly and supplied documents manufacture and installation package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: sum_a(e_p_a / L_v_a) / Q; defined complete battery-free radio/box/documents packages, excluding cell manufacture and all operation, maintenance and treatment
 - Value mode: `calculated_value`
@@ -193,11 +194,11 @@ Conditional demo primary-cell use; actual manufacturer/model and source IDs dist
 
 ##### Waste flows
 
-###### Discarded complete battery-free Philips TAR1506/00 radio (`radio_waste`)
+###### Discarded complete battery-free analogue FM/MW portable radio (`radio_waste`)
 
 Actual radio consignment; device retains enclosure/electronics/speaker/antenna, excludes removed cells and packaging; unknown missing parts need state-specific card
 
-- Selected flow: Discarded complete battery-free Philips TAR1506/00 radio
+- Selected flow: Discarded complete battery-free analogue FM/MW portable radio
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_radio_attr_kg / Q; sold-stock failure mass plus terminal demo mass times final lifetime responsibility once
 - Value mode: `calculated_value`
@@ -223,11 +224,11 @@ Only actually exhausted complete LR03 cells separately collected; preserve measu
 - Collection protocol: `cp_residual`
 - Sources: `philips-tar1506-2024`; `ghg-product-2011`
 
-###### Discarded complete original TAR1506/00 sales-box assembly (`box_waste`)
+###### Discarded complete original analogue FM/MW portable sales-box assembly (`box_waste`)
 
 Actual box assembly dispatch with evidenced whole box/liner/label/adhesive BOM and treatment; no pure-polymer or nominal tare substitution
 
-- Selected flow: Discarded complete original TAR1506/00 sales-box assembly
+- Selected flow: Discarded complete original analogue FM/MW portable sales-box assembly
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_box_attr_kg / Q; intact full assembly net mass excluding radio/cells/documents; stock-origin sources use their original pool ownership, demo-origin sources use that named source asset final lifetime f once
 - Value mode: `calculated_value`
@@ -238,11 +239,11 @@ Actual box assembly dispatch with evidenced whole box/liner/label/adhesive BOM a
 - Collection protocol: `cp_residual`
 - Sources: `philips-tar1506-2024`; `ghg-product-2011`
 
-###### Discarded dry printed paper carrier of TAR1506/00 guides and warranty certificates (`paper_waste`)
+###### Discarded dry printed paper carrier of analogue FM/MW portable guides and warranty certificates (`paper_waste`)
 
 Actual mixed printed-paper consignment; excludes complete box assembly, plastic films, battery wrappers and transport container; other carriers require extension
 
-- Selected flow: Discarded dry printed paper carrier of TAR1506/00 guides and warranty certificates
+- Selected flow: Discarded dry printed paper carrier of analogue FM/MW portable guides and warranty certificates
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: W_paper_attr_kg / Q; directly weighed separately dispatched dry printed-paper carrier; stock-origin sources and demo-origin source-asset final lifetime f are separate ledgers, multiply f once only for demo
 - Value mode: `calculated_value`
@@ -319,6 +320,8 @@ Actual mixed printed-paper consignment; excludes complete box assembly, plastic 
 | update_trigger | Any BOM/route/provider/cell-model change, returns/revocations, corrected raw total, lifetime revision or retirement |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

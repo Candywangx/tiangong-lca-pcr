@@ -6,11 +6,11 @@ language: en-US
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store pickup retail service for a factory-packed Kushlan 350DD concrete mixer
+# Pickup retail services for factory-packed unassembled portable drum concrete mixers
 
 ## 1. Scope and Applicability
 
-This candidate covers the retail service of handing over one complete new factory-packed unassembled Kushlan 350DD concrete/mortar mixer at a mixed physical store. It is a deliberately narrower subset of machinery retail associated with CPC group444. Method choices below are PCR design and declared foreground protocols, not manufacturer mandates or a claim of complete GHG-standard conformity. The core is explicitly partial until the prescribed completion modules and unbound identities are resolved.
+This candidate covers the retail service of handing over one complete new factory-packed unassembled portable drum concrete/mortar mixer at a mixed physical store. It is a deliberately narrower subset of machinery retail associated with CPC group444. Method choices below are PCR design and declared foreground protocols, not manufacturer mandates or a claim of complete GHG-standard conformity. The core is explicitly partial until the prescribed completion modules and unbound identities are resolved.
 
 ## 2. Product Category Identity
 
@@ -18,9 +18,9 @@ This candidate covers the retail service of handing over one complete new factor
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-mining-construction-and-civil-engineerin-f6674dc9 |
 | classification_refs | CPC3.0:62187; narrower subset of goods444/44440 retail |
-| covered_products | Pickup retail service for complete new original-pack unassembled350DD without optional tripod |
-| excluded_products | Other mixers; accessories sold separately; replacement parts; rentals; specialized stores; online-only/dropship; assembly/testing/installation/mixing/delivery |
-| representative_product | Kushlan350DD corded wheelbarrow concrete mixer; actual batch/nameplate/BOM controls, not nominal horsepower |
+| covered_products | Complete new original-pack unassembled portable corded drum concrete mixers without optional tripods, for store pickup; actual capacity, supply region and complete BOM fixed per pool. |
+| excluded_products | Mixers outside this technical family; separately sold accessories or replacement parts; rentals; specialist stores; online-only/dropship; assembly, testing, installation, mixing or delivery. |
+| representative_product | Pickup retail services for factory-packed unassembled portable drum concrete mixers; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Mixed physical store receiving, unopened holding, paperless checkout and customer pickup; intact supplier return |
 | market_state | New complete unassembled original package; no optional stand or separately supplied consumables; unopened at handover |
 
@@ -28,7 +28,7 @@ This candidate covers the retail service of handing over one complete new factor
 
 | Field | Value |
 | --- | --- |
-| What | Provide correct original-pack350DD pickup retail service |
+| What | Provide correct original-packportable drum pickup retail service |
 | How much | One final-valid original complete package transaction, counted once |
 | How well | Correct configuration, complete signed original packing control, undamaged unopened package and documented customer acceptance; no performance test |
 | How long or cycle | One prospective site/configuration observation pool including unsuccessful attempts and late acceptance corrections |
@@ -37,7 +37,7 @@ This candidate covers the retail service of handing over one complete new factor
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | Pickup retail service for one factory-packed Kushlan 350DD concrete mixer |
+| Reference product flow | Pickup retail service for one factory-packed portable drum concrete mixer |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -57,7 +57,7 @@ This candidate covers the retail service of handing over one complete new factor
 
 | Field | Value |
 | --- | --- |
-| declared_starting_condition | Actual store-receiving gate after separate upstream consignment; factory complete unopened unassembled350DD package |
+| declared_starting_condition | Actual store-receiving gate after separate upstream consignment; factory complete unopened unassembled portable drum package |
 | starting_condition_role | incremental retail-service foreground; failed-goods dispatch manufacture and F inbound coupled explicitly |
 | product_classification_scope | Only this goods44440 mixing-machine retail subset within62187; no whole-leaf equivalence |
 | recursive_input_rule | Do not recurse into another retail service for the same transaction; failed_original remains an explicit supplier manufacturing input, never excluded by this rule |
@@ -66,9 +66,10 @@ This candidate covers the retail service of handing over one complete new factor
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `b_scope` | retail; failure; custody | Use only a non-specialized physical store selling mixed product families to final users and the original complete unassembled 350DD without optional tripod stand. Keep original lot/serial, supplier order, motor/gearbox revision, the actual steel frame, polyethylene drum, motor/gearbox, mixing blades, wheel/axle/handle/hardware assembly, manual, contained factory lubricant and shrink wrap plus actual outer/protective packaging as one homogeneous configuration. Manufacturer manual pages12–13 and18–19 establish a complete machine requiring assembly, not a separate drum, motor or retailer assembly service. The Home Depot exact product listing demonstrates the model in a mixed retail channel; it does not establish local availability or this site's sealed stock. A site manager must verify the actual mixed-store route and supplier signed packing list before use. | un62187; un444; kushlan350; kushlanmanual; hd350 |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| `b_scope` | retail; failure; custody | Use only a non-specialized physical store selling mixed product families to final users and the original complete unassembled portable drum without optional tripod stand. Keep original lot/serial, supplier order, motor/gearbox revision, the actual steel frame, polyethylene drum, motor/gearbox, mixing blades, wheel/axle/handle/hardware assembly, manual, contained factory lubricant and shrink wrap plus actual outer/protective packaging as one homogeneous configuration. Manufacturer manual pages12–13 and18–19 establish a complete machine requiring assembly, not a separate drum, motor or retailer assembly service. The Home Depot exact product listing demonstrates the model in a mixed retail channel; it does not establish local availability or this site's sealed stock. A site manager must verify the actual mixed-store route and supplier signed packing list before use. | un62187; un444; kushlan350; kushlanmanual; hd350 |
 | `b_gate` | retail; failure; custody | Start at the store receiving gate after the separate upstream consignment ends. End with documented customer acceptance and physical pickup of the correct undamaged unopened complete package. Completeness at acceptance requires supplier original packing control plus external package/label/lot inspection; this is not an operating or safety test. Use one prospective pool per site/configuration and declared observation period, retaining failure-only days and closed/idle reservations. Subsequent return or acceptance revocation replaces the original record and original pool numerator/denominator; an intact resale uses the same original ID and never earns a second final-valid service. Financial refund or discount alone does not revoke acceptance. | kushlanmanual |
-| `b_exclusions` | retail; failure; custody | Do not open, unpack, assemble, install, energize, demonstrate, mix, lubricate, repair, inflate, repackage, rent, or deliver the merchandise on this route. No retail-added bags, straps, labels or receipt paper: use the verified original package and electronic receipt. Factory lubricant identity and quantity must be evidenced for the actual motor/gearbox batch; the manual contains permanent-grease language and separate assembly oil-leak language, which do not establish this batch. Factory lubrication, component state and factory testing belong to the actual original goods vector; no on-site activity does not mean factory absence. Verify the actual 350DD motor/gearbox revision because manufacturer webpage values and manual lubrication passages conflict; do not adopt catalog power, mass, voltage or packaging defaults. Any opened/damaged-content/partly missing returned unit, leakage or site waste requires a concrete state-specific card, raw protocol and bilingual revision before completeness. | kushlan350; kushlanmanual |
+| `b_exclusions` | retail; failure; custody | Do not open, unpack, assemble, install, energize, demonstrate, mix, lubricate, repair, inflate, repackage, rent, or deliver the merchandise on this route. No retail-added bags, straps, labels or receipt paper: use the verified original package and electronic receipt. Factory lubricant identity and quantity must be evidenced for the actual motor/gearbox batch; the manual contains permanent-grease language and separate assembly oil-leak language, which do not establish this batch. Factory lubrication, component state and factory testing belong to the actual original goods vector; no on-site activity does not mean factory absence. Verify the actual portable drum motor/gearbox revision because manufacturer webpage values and manual lubrication passages conflict; do not adopt catalog power, mass, voltage or packaging defaults. Any opened/damaged-content/partly missing returned unit, leakage or site waste requires a concrete state-specific card, raw protocol and bilingual revision before completeness. | kushlan350; kushlanmanual |
 | `b_partial` | retail; failure; custody | The supplied core is a partial incremental service inventory: metered retail electricity, failed-original manufacture responsibility, service output and two physical custody audit satellites. It is not a complete retail footprint. The dataset producer must complete b_transport, b_assets, b_digital and b_clean with all actual atomic exchanges and matching providers, then apply c_merge. Unknown module activity or identity blocks complete status. Do not silently treat known facility, handling, ICT, network, payment, administration, security, cleaning or asset lifecycles as zero. | ghg2011 |
 | `b_goods` | failed_original; supplier_handover; failed_retention | Each original whole package has one signed manufacture/original-packing vector V at supplier dispatch, excluding inbound transport. Apply the cumulative final responsibility F once through failed_original. S is the final-valid customer-goods owner and is excluded from the retail-service vector; T is an identified continuing recipient that signed acceptance of background responsibility; O remains open with the original vector. Per original ID S+F+T+O=1 with no unknown share renormalized. A merely financial supplier refund is not T. Goods eventually resold never repeat manufacture. Confirmed lost original packages have F with the investigation record even without a physical waste output. A supplier vector bundling inbound transport requires verified stage separation; unknown separation is incomplete. A downstream GOODS study may add S manufacture and S inbound once, separately disclosed. | ghg2011 |
 | `b_custody` | supplier_handover; failed_retention | These two outputs are measured physical package handovers, independent of S/F/T/O. Keep their recipient, location, date, intact unopened state and actual original source IDs. supplier_handover is the gross dispatch to a supplier, whether its continuing background is T or remains O/F; failed_retention is the gross handover whose final acceptance is invalid while the recipient retains the intact unopened package. Neither creates a second manufacture demand, waste treatment, recycling credit or environmental credit. Keep them in a separately labelled audit satellite, excluded from environmental aggregation c_merge. A physical package later returned changes custody but not by itself the service or responsibility decision. | ghg2011 |
@@ -117,7 +118,7 @@ This candidate covers the retail service of handing over one complete new factor
 
 1 Item(s) per declared reference flow when Q>0; c_pool defines the final-valid unique IDs. This is a retail service, not the mixer commodity or a mixing/assembly operation.
 
-- Selected flow: Pickup retail service for one factory-packed Kushlan 350DD concrete mixer
+- Selected flow: Pickup retail service for one factory-packed portable drum concrete mixer
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: `fixed_value`
@@ -138,7 +139,7 @@ This candidate covers the retail service of handing over one complete new factor
 
 F_count/Q Item(s) under c_goods, only matching complete homogeneous supplier-dispatch manufacture/original-packing vector. Count is original whole packages, not replacement parts, measured machine kg or all receipts. Actual inbound F is a separate mandatory completion. Missing full BOM/vector/identity blocks binding and complete use.
 
-- Selected flow: Complete unassembled Kushlan 350DD mixer in its original factory package
+- Selected flow: Complete unassembled portable drum mixer in its original factory package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: F_count/Q Item(s)
 - Value mode: `calculated_value`
@@ -159,7 +160,7 @@ F_count/Q Item(s) under c_goods, only matching complete homogeneous supplier-dis
 
 gross_supplier_dispatch/Q Item(s) only when actual intact unopened package handover is evidenced. Audit satellite under b_custody and c_satellites; not T or F and no manufacture/treatment credit. Recipient and background continuity must be separately signed.
 
-- Selected flow: Complete unassembled Kushlan 350DD mixer in its original factory package
+- Selected flow: Complete unassembled portable drum mixer in its original factory package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: gross_supplier_dispatch/Q Item(s)
 - Value mode: `calculated_value`
@@ -174,7 +175,7 @@ gross_supplier_dispatch/Q Item(s) only when actual intact unopened package hando
 
 gross invalid-acceptance pickup with evidenced intact_external_retention/Q Item(s); actual original ID, recipient/state/date are mandatory. Audit satellite under b_custody, not automatic retailer waste. Opened/used/partial goods require a state-specific extension before completeness.
 
-- Selected flow: Complete unassembled Kushlan 350DD mixer in its original factory package
+- Selected flow: Complete unassembled portable drum mixer in its original factory package
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: gross_invalid_retained/Q Item(s)
 - Value mode: `calculated_value`
@@ -231,7 +232,7 @@ gross invalid-acceptance pickup with evidenced intact_external_retention/Q Item(
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| q_route | retail; failure; custody | Verify actual mixed physical retail, exact 350DD revision, no stand, complete original pack, unopened state, no site merchandise assembly/power/consumables, full-period b_facility_gate absence and actual receipt/pickup. Manufacturer nominal data is identity evidence only; uncertainty in packing or lubrication is not zero. | cp_goods; site-manager signed route, original packing list, revision/nameplate and seal evidence |
+| q_route | retail; failure; custody | Verify actual mixed physical retail, exact portable drum revision, no stand, complete original pack, unopened state, no site merchandise assembly/power/consumables, full-period b_facility_gate absence and actual receipt/pickup. Manufacturer nominal data is identity evidence only; uncertainty in packing or lubrication is not zero. | cp_goods; site-manager signed route, original packing list, revision/nameplate and seal evidence |
 | q_identity | all inventory rows | Bind each currently unbound row only after direct official product-flow UUID read with official EN/ZH names, public state, exact package/service gate and reference property/unit chain; a catalog model or count property cannot bind an actual package/service. Electricity UUID is historical identity only and supplies no grid mix/voltage/provider impact data. | Official direct response and hash receipt; explicit per-row binding/quantity/provider conditions |
 | q_balance | retail; failure; custody | Reconcile independent goods count, held-waste kg, final-valid Q and whole-source S/F/T/O. Keep confirmed missing separate from signed unexplained residual; never suppress a zero-output/failure cohort. Unknown state, recipients or driver totals block completion. | cp_goods; cp_failure; cp_custody; c_pool; c_stock; c_goods |
 | q_measurement | all inventory rows | Retain raw values, physical units, timestamp/timezone, calibrated instrument ID/accuracy and responsible recorder; quantify uncertainty and coverage. Missing values and negative residuals require investigation and remain unresolved, never zero clamp or invented credits. No empirical ranges are supported for this candidate; future range claims require compatible independent evidence. | All collection protocols; meter/test-weight certificates; complete interval audit and uncertainty register |
@@ -260,6 +261,8 @@ gross invalid-acceptance pickup with evidenced intact_external_retention/Q Item(
 | update_trigger | Any configuration, route, package state, acceptance, original responsibility, supplier scope, lifetime, provider or calibration revision |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |

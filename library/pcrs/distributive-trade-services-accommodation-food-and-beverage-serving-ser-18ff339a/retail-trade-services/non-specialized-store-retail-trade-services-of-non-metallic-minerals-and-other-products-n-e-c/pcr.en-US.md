@@ -7,7 +7,7 @@ translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
-# In-store retail service for original 40 lb Solar Naturals solar salt bags in a non-specialized store
+# In-store retail services for original bags of solar-evaporated water-softener salt
 
 ## 1. Scope and Applicability
 
@@ -19,9 +19,9 @@ This PCR defines a narrow original-bag salt retail service in an evidenced non-s
 | --- | --- |
 | canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-non-metallic-minerals-and-other-products-n-e-c |
 | classification_refs | CPC 3.0 62199; narrower subset of goods group162 salt, conditional on non-specialized physical store retail evidence. |
-| covered_products | One homogeneous actual lot/configuration of unopened Diamond Crystal Solar Naturals 40 lb poly bags, item100012411, UPC013600769406; white opaque solar-evaporated water-softener salt crystals; the service, not salt manufacture, is the reference product. |
-| excluded_products | Other weights, pallet variants without lot matching, loose salt sales, pellets, rock salt, potassium chloride, treated formulations, food/pool/deicing salt, online/order-led pickup/delivery, specialized shops, wholesale and customer softener regeneration. Actual accidental damage remains a failure of this route and must be accounted for. |
-| representative_product | Manufacturer Salt-3201 (1-26), 40 lb PE bag item100012411. Typical dry sodium chloride content is descriptive, not a lot assay, moisture value, bag tare or LCI default. |
+| covered_products | Unopened original PE bags of white solar-evaporated water-softener salt crystals, with actual fill mass, formulation, supplier lot and full package BOM fixed per homogeneous pool; the service, not salt manufacture, is the reference. |
+| excluded_products | Unverified pallet/lot configurations, loose salt, pellets, rock salt, potassium chloride, treated formulations, food/pool/deicing salt, online/order-led pickup/delivery, specialist stores, wholesale and customer softener regeneration. Accidental damage remains a route failure and must be counted. |
+| representative_product | In-store retail services for original bags of solar-evaporated water-softener salt; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
 | production_route | Supplier solar evaporation and original packing precede the retail gate. Store receives, dry-stores and displays intact bags, permits in-store selection, then performs cashier checkout and physical handover; The customer sales route has no intentional opening, dosing, dissolving, repacking or customer demonstration/product testing. Independent sacrificial QC originals required by calc_kf do not become qualified service; retain their actual F/held/sample records under calc_stock and calc_ownership, without excluding them under the customer-route restriction. Only the proved no-plant operating configuration in boundary_no_plant is applicable. |
 | market_state | Factory-packed crystalline mineral salt in its complete actual original bag. Supplier confirmation of lot, production/packing site, bag body, seams/closure, handle, print/label/adhesive and any liner is mandatory; PE text does not prove a pure single-polymer package or absolute moisture barrier. |
 
@@ -38,7 +38,7 @@ This PCR defines a narrow original-bag salt retail service in an evidenced non-s
 | Field | Value |
 | --- | --- |
 | Reference amount | 1 |
-| Reference product flow | In-store retail service for one original 40 lb Solar Naturals solar salt bag |
+| Reference product flow | In-store retail service for one original 40 lb solar-evaporated water-softener solar salt bag |
 | Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
 | Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
 | Reference unit | Item(s) |
@@ -69,6 +69,7 @@ All Required qualifiers must be declared in the actual data package. Missing qua
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
 | boundary_scope | all processes | Apply only after cp_applicability proves an actual mixed-assortment physical store, shelf selection and cashier handover for this SKU/lot. Manufacturer catalogue, store locator, price, pickup or delivery pages alone do not prove branch stock or CPC621 channel; online/order-led and wholesale cases fail this scope gate. | un-cpc62199; cargill-salt3201-2026 |
 | boundary_goods | failed_original; retail_service | Manufacture W is fixed at supplier dispatch including actual salt and every original bag manufacturing/packing component, excluding inbound I. F is represented by failed_original with actual N_F and complete W_F/N_F, plus independent I_F. T keeps a named recipient/source responsibility and O remains open. If a provider bundles stages, separate exact evidenced stages before adding another source; unknown separation blocks completion. Complete incremental retail requires all actual retail support modules and F manufacture W_F plus independent I_F, with no duplicate source/stage. S manufacture W_S and inbound I_S are excluded from the incremental retail result. Only a separately named accepted-GOODS system adds W_S/Q and I_S/Q once, with its own system label and source manifest; this optional GOODS coupling is not a retail-completeness condition. S/F/T/O history is retained to conserve original responsibility without adding S burden here. | cargill-salt3201-2026; jrc-retail-2013 |
 | boundary_failure | residual | Unopened intended retail route does not waive actual failure accounting. Track whole sealed bag waste, swept crystalline salt residue, emptied original bag and saline cleaning effluent as distinct states. A complete failed bag is not duplicated as salt plus bag. Internal condemnation changes goods to held waste; dispatch occurs later. Salt inside brine or a bag carrier is not another salt output. Internal floor/room salt movement is not an elementary emission to outdoor air, soil or water. | cargill-salt3201-2026 |
@@ -108,11 +109,11 @@ Point-of-use AC for actual disjoint store operations; upstream grid/provider ide
 - Collection protocol: `cp_power`
 - Sources:
 
-###### Unopened original Solar Naturals 40 lb solar-salt bag (`supplier_in`)
+###### Unopened original solar-evaporated water-softener salt bag (`supplier_in`)
 
 Only actual physical supplier return back to store of an intact complete original bag. No service/credit from this physical transfer and no inferred W/I ownership. Mandatory quantity method: N_sup_in/Q by calc_transfers; cp_transfers
 
-- Selected flow: Unopened original Solar Naturals 40 lb solar-salt bag
+- Selected flow: Unopened original solar-evaporated water-softener salt bag
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_sup_in/Q, actual physical original-bag movements divided once by Q
 - Value mode: Calculated value (`calculated_value`)
@@ -123,11 +124,11 @@ Only actual physical supplier return back to store of an intact complete origina
 - Collection protocol: `cp_transfers`
 - Sources:
 
-###### Unopened original Solar Naturals 40 lb solar-salt bag (`retained_in`)
+###### Unopened original solar-evaporated water-softener salt bag (`retained_in`)
 
 Only actual physical external return of an intact complete original bag. No service/credit from this physical transfer and no inferred W/I ownership. Mandatory quantity method: N_ext_in/Q by calc_transfers; cp_transfers
 
-- Selected flow: Unopened original Solar Naturals 40 lb solar-salt bag
+- Selected flow: Unopened original solar-evaporated water-softener salt bag
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_ext_in/Q, actual physical original-bag movements divided once by Q
 - Value mode: Calculated value (`calculated_value`)
@@ -146,11 +147,11 @@ Only actual physical external return of an intact complete original bag. No serv
 
 ##### Product flows
 
-###### In-store retail service for one original 40 lb Solar Naturals solar salt bag (`retail_service`)
+###### In-store retail service for one original 40 lb solar-evaporated water-softener solar salt bag (`retail_service`)
 
 Service output for final-valid intact original bag IDs; this is not salt manufacture or gross physical handover count. Mandatory quantity method: 1 Item(s); calc_acceptance; cp_custody
 
-- Selected flow: In-store retail service for one original 40 lb Solar Naturals solar salt bag
+- Selected flow: In-store retail service for one original 40 lb solar-evaporated water-softener solar salt bag
 - Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
 - Amount rule: 1 Item(s)
 - Value mode: Fixed value (`fixed_value`)
@@ -161,11 +162,11 @@ Service output for final-valid intact original bag IDs; this is not salt manufac
 - Collection protocol: `cp_custody`
 - Sources:
 
-###### Unopened original Solar Naturals 40 lb solar-salt bag (`supplier_out`)
+###### Unopened original solar-evaporated water-softener salt bag (`supplier_out`)
 
 Only actual outbound supplier return of an intact complete original bag. No service/credit from this physical transfer and no inferred W/I ownership. Mandatory quantity method: N_sup_out/Q by calc_transfers; cp_transfers
 
-- Selected flow: Unopened original Solar Naturals 40 lb solar-salt bag
+- Selected flow: Unopened original solar-evaporated water-softener salt bag
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_sup_out/Q, actual physical original-bag movements divided once by Q
 - Value mode: Calculated value (`calculated_value`)
@@ -176,11 +177,11 @@ Only actual outbound supplier return of an intact complete original bag. No serv
 - Collection protocol: `cp_transfers`
 - Sources:
 
-###### Unopened original Solar Naturals 40 lb solar-salt bag (`retained_out`)
+###### Unopened original solar-evaporated water-softener salt bag (`retained_out`)
 
 Only actual unaccepted external retention of an intact complete original bag. No service/credit from this physical transfer and no inferred W/I ownership. Mandatory quantity method: N_ext_out/Q by calc_transfers; cp_transfers
 
-- Selected flow: Unopened original Solar Naturals 40 lb solar-salt bag
+- Selected flow: Unopened original solar-evaporated water-softener salt bag
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_ext_out/Q, actual physical original-bag movements divided once by Q
 - Value mode: Calculated value (`calculated_value`)
@@ -201,11 +202,11 @@ Only actual unaccepted external retention of an intact complete original bag. No
 
 ##### Product flows
 
-###### Complete original Solar Naturals 40 lb solar-salt bag at supplier dispatch (`failed_original`)
+###### Complete original solar-evaporated water-softener salt bag at supplier dispatch (`failed_original`)
 
 Background provision for irreversible failed original goods. Includes actual salt and complete bag manufacturing/packing; it is neither pure NaCl nor PE kg, and never all incoming merchandise fixed at1. Mandatory quantity method: N_F/Q with complete W_F/N_F provider by calc_ownership; cp_failure; independent I_F via calc_transport and calc_completion
 
-- Selected flow: Complete original Solar Naturals 40 lb solar-salt bag at supplier dispatch
+- Selected flow: Complete original solar-evaporated water-softener salt bag at supplier dispatch
 - Flow property / unit: Number of items / Item(s)
 - Amount rule: N_F/Q, original failed-bag count with the verified complete W_F/N_F provider; independently complete I_F once
 - Value mode: Calculated value (`calculated_value`)
@@ -520,6 +521,8 @@ Actual whole liquid containing salt, cleaning formulation and water; same-carrie
 | update_trigger | SKU/lot/BOM/route/branch/provider change, late return, source revision, equipment lifetime/retirement, new state or newly observed support exchange. |
 
 ## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
