@@ -1,8 +1,741 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-articles-of-clothing-articles-of-fur-and-aba3e1ef
 language: en-US
-status: scaffold
+status: candidate
+content_maturity: authored_methodology
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail trade services, of articles of clothing, articles of fur and clothing accessories
+# In-store retail services for new white cotton knitted T-shirts
+
+## 1. Scope and Applicability
+
+This is a candidate methodology for a partial incremental garment-department service, from accepted store receipt through manual hanging/display, repeated customer fitting, checkout and final qualified carry-out of one actual homogeneous new white fine-knit crew-neck cotton T-shirt SKU/size/receiving BOM. One same-configuration dataset does not represent all apparel in CPC62133. The route has no garment modification; dedicated electricity, actual cleaning, packaging, complete reusable department assets, failed-goods responsibility and conditional retailer truck routes are covered below. Common building/HVAC/IT/security modules are mandatory completion obligations with fixed methods, not assumed zero. Every real additional material, repair, processing step or emission needs a specific bilingual card and protocol before completeness. The method does not assert a current actual supplier quantity, Tiangong identity for unbound rows, certification or full-standard conformity.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-articles-of-clothing-articles-of-fur-and-aba3e1ef |
+| classification_refs | CPC3.0:62133; narrower |
+| covered_products | Same-SKU/size new white cotton fine-knit T-shirt department service only |
+| excluded_products | Fur/artificial fur; other apparel/accessories; garment production for successful sales; excluded processing and common modules until completed |
+| representative_product | In-store retail services for new white cotton knitted T-shirts; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
+| production_route | Walk-in non-specialized store; receive→manual hang/restock→fit/re-hang→POS→qualified carry-out |
+| market_state | Complete new dry saleable garment with recorded actual conditioning/labels; not a measured mass default |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Walk-in retail service for one specified new white cotton knitted T-shirt |
+| How much | One distinct original garment with final valid qualified acceptance at cutoff; N is corrected final distinct count |
+| How well | Same actual SKU/size, complete/new/unchanged BOM, correct condition and labels at qualified handover; repeated fitting not another output |
+| How long or cycle | Declared receipt-to-final-adjudication pool and linked corrections; actual duration recorded, no default |
+| reference_flow_link | retail_service |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Walk-in retail service for one specified new white cotton knitted T-shirt |
+| Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| Reference unit | Item(s) |
+| Required qualifiers | actual site and period; SKU size colour fabric construction; complete garment/trim/label/receiving-pack BOM and lot; actual conditioned net mass measurement; receiving gate and supplier background scope; acceptance and return cutoff; garment event/source IDs; physical count and S/F/T/O ownership; N and correction version; actual cleaning formulation and water/effluent state; all asset models/exposures/lifetime; actual packaging and residual recipients; conditional occurrence evidence; partial completion matrix; unresolved identities |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| count_basis | retail_service; failed_background; rack; hanger; mirror; pos; luminaire; mop; supplier_return; internal_transfer; failed_retention; cleaner_container | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` | Item(s) | Count each defined complete object/service; N counts accepted service only. A garment count never fixes its mass; actual same-lot conditioned garment/label and packaging masses are separate records. |
+| mass_state | failed_garment; water; cleaner; effluent; paper_bag; receipt; hangtag; corrugated_waste; paper_waste; sweepings; rack_waste; hanger_waste; mirror_waste; pos_waste; luminaire_waste; mop_waste; receipt_waste; bag_waste; cleaner_container_waste | Mass | kg | Measure actual complete carrier/product net kg at declared moisture/composition/temperature; kg from count uses measured same-batch unit mass. Fabric g/m2 is not whole-garment kg. Volume conversion requires actual density and state. |
+| energy_basis | electricity | Net calorific value | MJ | 1kWh=3.6MJ; raw point-of-use kWh converted once after attribution. |
+| one_denominator | all inventory rows |  |  | All rows are per reference flow; use the attributable raw pool numerator / N once. Input numerator units may differ from the count reference. Entirely N=0 has no normalized result. |
+| selected_freight_identity | truck_loaded | Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` | t*km | The selected road-freight identity uses the official goods-transport property/unit.1kg*km=0.001t*km; preserve the declared original quantity/attribution mode and convert only once. Actual vehicle, cargo conditions and provider stages remain independent applicability gates, with no assumed background or extra loaded share. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Complete same-SKU/size new saleable garments accepted at the recorded store receiving gate |
+| starting_condition_role | foreground_start |
+| product_classification_scope | Narrower subset of CPC62133; official leaf includes group282, class2832 and class2833 |
+| recursive_input_rule | No retail-service recursion; one same-gate homogeneous failed-goods background only |
+| upstream_dataset_requirement | Compatible complete garment/receiving-pack/inbound supply at identical gate; B_f here and B_s downstream disjoint |
+| disclosure | Partial incremental department scope; common modules, raw/normalized bases, identity/activity/provider gaps and corrections explicit |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| scope | all | This candidate module covers one actual homogeneous new white crew-neck cotton fine-knit T-shirt SKU, size and unaltered receiving BOM in a walk-in non-specialized store; a feasible specimen is manufacturer Original T0610820 white. Its fabric label is not a complete garment/packaging BOM: record sewing thread, neck/brand/care labels, print/finishes, tags and actual receiving packaging. The manufacturer fabric areal weight is not garment net mass. Fur, artificial fur, other apparel/accessories, used garments, online delivery, cutting, alterations, printing, washing, steaming and ironing are outside this fixed route. cp_completion requires positive occurrence/absence evidence; if any excluded processing occurs or is unknown, this route cannot support a complete dataset without explicit bilingual atomic-card/protocol/background extension. | un-cpc-62133; fotl-original-t |
+| gate | garment | Start at the recorded store receiving gate, then inspect/count/weigh, manually move/restock, hang/display, fit/re-hang, checkout and customer carry-out. Acceptance requires correct recorded SKU/size, complete new saleable garment without unacceptable defect/soiling, intact required original labels and completed handover for the buyer own use, with all subsequent acceptance revocations adjudicated by the declared cutoff. Rejection, repeated fitting and restoration to the same saleable state consume resources but create no extra service. Personal customer travel and post-final-acceptance garment use/disposal remain outside. | ghg-product-2011 |
+| goods_responsibility | garment | Retail service excludes successful garment production/receiving packaging/inbound carriage B_s but includes final retailer-responsible failed-goods background B_f at the identical gate. calc_goods assigns each original garment background once among successful S, retailer failure F, continuing supplier/internal transfer T, and open unresolved O, regardless of physical carrier fate. Returned stock retains its source ID; resale does not create new production. A failed garment retained outside has recipient/state and continuing responsibility, not automatically a retailer waste exchange. Supplier return does not erase background or grant credit. | ghg-product-2011 |
+| partial_completion | all | This is an incremental department module, not a complete store LCA. Known excluded common modules are building shell/site works/fixed wiring, common HVAC and general/security lighting, shared IT/payment networks/security, common toilet/cleaning, staff travel and common handling/transport assets. cp_completion and calc_completion prescribe exact raw collection, ownership, drivers, lifetime and aggregation for each. Each actual common utility/material/asset/waste/emission needs a named atomic extension with its own property/unit and protocol, or specific evidenced absence; unknown is not zero. Common-module burden and successful-goods bridge B_s/N must be supplied before any completed retail-plus-merchandise result. | jrc-retail-2013; ghg-product-2011 |
+| carriers | all | Complete garments/devices and a real mixed sweepings/effluent carrier remain whole measurable exchanges; never mechanically duplicate their contained materials. Original packaging in the garment supply background, retailer-added bags/receipt/tags, retained original labels, removed tags and actual terminal wastes use unique source-component IDs and disjoint scopes. Hangers remain reusable assets when retained; a hanger transferred with a sale is a separately measured actual transfer with its residual lifetime responsibility, not both an asset fraction and new whole item for the same exposure. | ghg-product-2011 |
+| air | clean | Screen actual lint/cleaner releases, spills and refrigeration in cp_completion. Captured lint in sweepings or wastewater is not another elementary air output; room sources are not exterior environmental transfers. Actual species emissions require named substance/receiving-medium cards and measured final exterior balance, storage change, capture and carrier export; no automatic zero, generic dust factor or unexplained negative output. | jrc-retail-2013 |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| garment | Garment receiving, fitting, acceptance and custody | required | Declared route; every event-specific card requires occurrence/absence evidence | delivery | retail_service |
+| energy | Department lighting and checkout electricity | required | Declared route; every event-specific card requires occurrence/absence evidence | support | per reference flow |
+| clean | Department and fitting-area cleaning | required | Declared route; every event-specific card requires occurrence/absence evidence | support | per reference flow |
+| pack | Retail packaging and actual paper residuals | required | Declared route; every event-specific card requires occurrence/absence evidence | support | per reference flow |
+| assets | Department complete reusable assets and retirement | required | Declared route; every event-specific card requires occurrence/absence evidence | support | per reference flow |
+| route | Conditional post-receiving retailer-controlled truck routes | conditional | Declared route; every event-specific card requires occurrence/absence evidence | support | per reference flow |
+
+### Process: Garment receiving, fitting, acceptance and custody (`garment`)
+
+#### Inputs
+
+##### Product flows
+
+###### Production and inbound supply of one complete specified white cotton knitted T-shirt to the store receiving gate (`failed_background`)
+
+One same-SKU complete supply service includes the actual garment, its evidenced receiving packaging and inbound carriage to the same gate. This is an unresolved homogeneous supply service, not a cotton-fibre substitute. Successful-goods background B_s stays outside this incremental module; source-parent background follows all descendants once.
+
+- Selected flow: Production and inbound supply of one complete specified white cotton knitted T-shirt to the store receiving gate
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: B_f/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_goods`
+- Sources: ghg-product-2011
+
+#### Outputs
+
+##### Product flows
+
+###### Walk-in retail service for one specified new white cotton knitted T-shirt (`retail_service`)
+
+Only an individually identified, complete, new, unchanged-specification garment finally accepted by the customer counts. Repeated fitting, financial adjustments and internal moves are not additional services.
+
+- Selected flow: Walk-in retail service for one specified new white cotton knitted T-shirt
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_goods`
+- Sources: ghg-product-2011
+
+###### Complete specified white cotton knitted T-shirt physically returned to supplier (`supplier_return`)
+
+A physical custody handoff only, with original garment ID, actual defect/label/packaging state, recipient and continuing background responsibility. No extra service output, negative background credit or automatic waste designation. An opened/damaged/part-missing state outside this exact complete-object card needs its own concrete extension before completeness.
+
+- Selected flow: Complete specified white cotton knitted T-shirt physically returned to supplier
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: T_supplier_phys/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_goods`
+- Sources: ghg-product-2011
+
+###### Complete specified white cotton knitted T-shirt physically transferred to another retailer stock location (`internal_transfer`)
+
+A physical custody handoff only, with original garment ID, actual defect/label/packaging state, recipient and continuing background responsibility. No extra service output, negative background credit or automatic waste designation. An opened/damaged/part-missing state outside this exact complete-object card needs its own concrete extension before completeness.
+
+- Selected flow: Complete specified white cotton knitted T-shirt physically transferred to another retailer stock location
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: T_internal_phys/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_goods`
+- Sources: ghg-product-2011
+
+###### Defective complete specified white cotton knitted T-shirt retained by an external recipient without qualified acceptance (`failed_retention`)
+
+A physical custody handoff only, with original garment ID, actual defect/label/packaging state, recipient and continuing background responsibility. No extra service output, negative background credit or automatic waste designation. An opened/damaged/part-missing state outside this exact complete-object card needs its own concrete extension before completeness.
+
+- Selected flow: Defective complete specified white cotton knitted T-shirt retained by an external recipient without qualified acceptance
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_external_phys/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_goods`
+- Sources: ghg-product-2011
+
+##### Waste flows
+
+###### Discarded complete white cotton knitted T-shirt with retained original sewn labels (`failed_garment`)
+
+Only actual retailer waste dispatched to the documented textile-waste recipient. Record moisture/soiling, retained tags and all removed components. Customer-retained failed goods and supplier returns are not this waste. Weigh the complete carrier; do not add contained fibres, threads or labels again.
+
+- Selected flow: Discarded complete white cotton knitted T-shirt with retained original sewn labels
+- Flow property / unit: Mass / kg
+- Amount rule: D_g/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_goods`
+- Sources: ghg-product-2011
+
+### Process: Department lighting and checkout electricity (`energy`)
+
+#### Inputs
+
+##### Product flows
+
+###### Alternating current (`electricity`)
+
+Point-of-use electricity for department/fitting lighting and POS operation in this module; supplier and voltage are not specified by this flow. Meter dedicated circuits or use causal shared drivers with full-pool reconciliation; common HVAC/general lighting are completion modules.
+
+- Selected flow: Electricity, alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
+- Amount rule: 3.6*E_att/N MJ
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy`
+- Sources: jrc-retail-2013; ghg-product-2011
+
+### Process: Department and fitting-area cleaning (`clean`)
+
+#### Inputs
+
+##### Product flows
+
+###### Potable mains water delivered to the department cleaning point (`water`)
+
+Imported cleaning water as supplied, measured at the actual import point. Internal reuse is not another import and is not subtracted again from an import meter. Record density and temperature for volume conversion.
+
+- Selected flow: Water, tap `c6fb2442-d527-4e3d-bf01-4c94ea2b71ec`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: W_att/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_clean`
+- Sources: jrc-retail-2013
+
+###### Aqueous sodium dodecyl sulfate floor-cleaning formulation (`cleaner`)
+
+One actual declared SDS-cleaner formulation, including its water and evidenced additives; declare supplier, CAS, concentrations and batch. The selected route uses this product only if verified; unknown detergent composition blocks completion. Do not add contained active ingredient or formulation water as separate inputs.
+
+- Selected flow: Aqueous sodium dodecyl sulfate floor-cleaning formulation
+- Flow property / unit: Mass / kg
+- Amount rule: C_att/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_clean`
+- Sources: jrc-retail-2013
+
+###### Complete single-use original supplier container for the specified aqueous sodium dodecyl sulfate cleaning formulation (`cleaner_container`)
+
+One actual supplier/model/lot-specific complete original container with its original closure, label and dispensing parts, actual material/BOM and net mass recorded; no bottle shape/material is presumed. This fixed supply route uses evidenced single-use packaging, not a reusable-container lifetime default. Manufacturing/initial transport is added by this card only to the exact extent demonstrably excluded from the formulation supply background. The actual formulation remains the separate kg input.
+
+- Selected flow: Complete single-use original supplier container for the specified aqueous sodium dodecyl sulfate cleaning formulation
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: Y_container_att/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_clean`
+- Sources: ghg-product-2011
+
+#### Outputs
+
+##### Waste flows
+
+###### Collected aqueous department floor-cleaning effluent containing the used cleaning formulation (`effluent`)
+
+Actual entire liquid carrier delivered to the documented sewer/treatment recipient, including dissolved cleaner and dirt. It is a waste exchange, not elementary water emission. Use direct net weighing or measured discharge volume times contemporaneous density; no supply-volume reconstruction is allowed.
+
+- Selected flow: Collected aqueous department floor-cleaning effluent containing the used cleaning formulation
+- Flow property / unit: Mass / kg
+- Amount rule: L_att/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_clean`
+- Sources: jrc-retail-2013
+
+###### Collected mixed department floor sweepings (`sweepings`)
+
+Actual collected mixed floor sweepings with measured whole-carrier mass, moisture, source-origin portions and recipient. Lint from identified garments is separately reconciled to garment mass loss but is not emitted again as air dust. Dirt brought from outside is not counted as lost garment mass. No duplicate contained-component waste outputs.
+
+- Selected flow: Collected mixed department floor sweepings
+- Flow property / unit: Mass / kg
+- Amount rule: D_sweepings/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_clean`
+- Sources: ghg-product-2011
+
+###### Emptied original supplier cleaning-formulation container with actual retained formulation residue and retained original components (`cleaner_container_waste`)
+
+One actual whole terminal carrier: the identified original single-use supplier container, its actually retained closure/label/dispensing parts and measured remaining cleaning formulation. Record exact remaining composition, residual amount, state, recipient and collection/treatment contract. Weigh the complete carrier net of outside collection sacks only; do not subtract its retained residue or output it again as effluent/cleaner waste. Removed original components and rinsate are disjoint actual carriers with their own concrete cards before completion.
+
+- Selected flow: Emptied original supplier cleaning-formulation container with actual retained formulation residue and retained original components
+- Flow property / unit: Mass / kg
+- Amount rule: D_cleaner_container_att/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_clean`
+- Sources: ghg-product-2011
+
+### Process: Retail packaging and actual paper residuals (`pack`)
+
+#### Inputs
+
+##### Product flows
+
+###### Uncoated kraft paper customer carry bag (`paper_bag`)
+
+Actual homogeneous component with measured original specification, unit net mass and stock/issue ledger. Record whether added by the retailer, retained by the customer, returned or discarded; original supplier components already in B_s/B_f are not purchased again.
+
+- Selected flow: Uncoated kraft paper customer carry bag
+- Flow property / unit: Mass / kg
+- Amount rule: X_paper_bag/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+###### Thermal paper checkout receipt (`receipt`)
+
+Actual homogeneous component with measured original specification, unit net mass and stock/issue ledger. Record whether added by the retailer, retained by the customer, returned or discarded; original supplier components already in B_s/B_f are not purchased again.
+
+- Selected flow: Thermal paper checkout receipt
+- Flow property / unit: Mass / kg
+- Amount rule: X_receipt/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+###### One-piece self-locking paperboard retail price hangtag with integral tab (`hangtag`)
+
+Actual homogeneous component with measured original specification, unit net mass and stock/issue ledger. Record whether added by the retailer, retained by the customer, returned or discarded; original supplier components already in B_s/B_f are not purchased again. The fixed tag is a single paperboard piece secured by its integral self-locking tab/slot, with no separate string, plastic fastener or adhesive. Verify this actual construction; any different attachment requires its own named material/component card and measured mass before completion.
+
+- Selected flow: One-piece self-locking paperboard retail price hangtag with integral tab
+- Flow property / unit: Mass / kg
+- Amount rule: X_hangtag/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+#### Outputs
+
+##### Waste flows
+
+###### Discarded dry corrugated cardboard receiving case (`corrugated_waste`)
+
+Only actual dry corrugated receiving cases dispatched after goods removal, with measured net consignment kg, moisture/contamination, source IDs and recipient. Original packaging manufacture already in goods background is not added again; this row adds actual retailer treatment only.
+
+- Selected flow: Discarded dry corrugated cardboard receiving case
+- Flow property / unit: Mass / kg
+- Amount rule: D_corrugated_waste/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+###### Discarded one-piece self-locking paperboard retail price hangtag (`paper_waste`)
+
+Actual removed/discarded single-piece paperboard price tags with integral tab only; measured net consignment kg and receiver. The tag no longer belongs to a garment carrier weighed after its removal. Thermal receipts and kraft bags are distinct waste cards, not hidden in this carrier.
+
+- Selected flow: Discarded one-piece self-locking paperboard retail price hangtag
+- Flow property / unit: Mass / kg
+- Amount rule: D_paper_waste/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+###### Discarded thermal paper checkout receipt (`receipt_waste`)
+
+Actual spoiled, returned or unused-but-discarded specified carrier dispatched by the retailer, net consignment mass under calc_dispatch. Exclude copies/bags retained by customers after final acceptance, and do not output a discarded input twice. Record exact coating/composition/moisture and receiver; different physical carriers require concrete extension.
+
+- Selected flow: Discarded thermal paper checkout receipt
+- Flow property / unit: Mass / kg
+- Amount rule: D_receipt_waste/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+###### Discarded uncoated kraft paper customer carry bag (`bag_waste`)
+
+Actual spoiled, returned or unused-but-discarded specified carrier dispatched by the retailer, net consignment mass under calc_dispatch. Exclude copies/bags retained by customers after final acceptance, and do not output a discarded input twice. Record exact coating/composition/moisture and receiver; different physical carriers require concrete extension.
+
+- Selected flow: Discarded uncoated kraft paper customer carry bag
+- Flow property / unit: Mass / kg
+- Amount rule: D_bag_waste/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_pack`
+- Sources: ghg-product-2011
+
+### Process: Department complete reusable assets and retirement (`assets`)
+
+#### Inputs
+
+##### Product flows
+
+###### Complete freestanding powder-coated steel garment rack (`rack`)
+
+One whole physical model/configuration, original supplied components and installation/inbound scope evidenced by its supplier/BOM. The lifetime ledger includes every historical/current/future beneficiary and idle exposure. Operation, actual later replacements and terminal treatment are separate; do not add original parts as another asset.
+
+- Selected flow: Complete freestanding powder-coated steel garment rack
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_rack/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Complete reusable polypropylene clothes hanger (`hanger`)
+
+One whole physical model/configuration, original supplied components and installation/inbound scope evidenced by its supplier/BOM. The lifetime ledger includes every historical/current/future beneficiary and idle exposure. Operation, actual later replacements and terminal treatment are separate; do not add original parts as another asset.
+
+- Selected flow: Complete reusable polypropylene clothes hanger
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_hanger/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Complete freestanding glass fitting mirror with frame (`mirror`)
+
+One whole physical model/configuration, original supplied components and installation/inbound scope evidenced by its supplier/BOM. The lifetime ledger includes every historical/current/future beneficiary and idle exposure. Operation, actual later replacements and terminal treatment are separate; do not add original parts as another asset.
+
+- Selected flow: Complete freestanding glass fitting mirror with frame
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_mirror/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Complete electronic point-of-sale terminal with original peripherals (`pos`)
+
+One whole physical model/configuration, original supplied components and installation/inbound scope evidenced by its supplier/BOM. The lifetime ledger includes every historical/current/future beneficiary and idle exposure. Operation, actual later replacements and terminal treatment are separate; do not add original parts as another asset.
+
+- Selected flow: Complete electronic point-of-sale terminal with original peripherals
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_pos/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Complete department LED luminaire with original driver (`luminaire`)
+
+One whole physical model/configuration, original supplied components and installation/inbound scope evidenced by its supplier/BOM. The lifetime ledger includes every historical/current/future beneficiary and idle exposure. Operation, actual later replacements and terminal treatment are separate; do not add original parts as another asset.
+
+- Selected flow: Complete department LED luminaire with original driver
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_luminaire/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Complete reusable manual floor mop with original handle and head (`mop`)
+
+One whole physical model/configuration, original supplied components and installation/inbound scope evidenced by its supplier/BOM. The lifetime ledger includes every historical/current/future beneficiary and idle exposure. Operation, actual later replacements and terminal treatment are separate; do not add original parts as another asset.
+
+- Selected flow: Complete reusable manual floor mop with original handle and head
+- Flow property / unit: Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` / Item(s)
+- Amount rule: F_mop/N Item(s)
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+#### Outputs
+
+##### Waste flows
+
+###### Remaining terminal carrier of the specified steel garment rack after documented removals (`rack_waste`)
+
+Actual complete terminal carrier after any evidenced part removal. Direct net weighing already excludes removed parts; BOM reconstruction is an exclusive alternative. Reconcile actual/forecast provider treatment and update to actual retirement; no second manufacture fraction or duplicate contained-part waste.
+
+- Selected flow: Remaining terminal carrier of the specified steel garment rack after documented removals
+- Flow property / unit: Mass / kg
+- Amount rule: Z_rack/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Remaining terminal carrier of the specified polypropylene hanger after documented removals (`hanger_waste`)
+
+Actual complete terminal carrier after any evidenced part removal. Direct net weighing already excludes removed parts; BOM reconstruction is an exclusive alternative. Reconcile actual/forecast provider treatment and update to actual retirement; no second manufacture fraction or duplicate contained-part waste.
+
+- Selected flow: Remaining terminal carrier of the specified polypropylene hanger after documented removals
+- Flow property / unit: Mass / kg
+- Amount rule: Z_hanger/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Remaining terminal carrier of the specified framed fitting mirror after documented removals (`mirror_waste`)
+
+Actual complete terminal carrier after any evidenced part removal. Direct net weighing already excludes removed parts; BOM reconstruction is an exclusive alternative. Reconcile actual/forecast provider treatment and update to actual retirement; no second manufacture fraction or duplicate contained-part waste.
+
+- Selected flow: Remaining terminal carrier of the specified framed fitting mirror after documented removals
+- Flow property / unit: Mass / kg
+- Amount rule: Z_mirror/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Remaining terminal carrier of the specified point-of-sale device after documented removals (`pos_waste`)
+
+Actual complete terminal carrier after any evidenced part removal. Direct net weighing already excludes removed parts; BOM reconstruction is an exclusive alternative. Reconcile actual/forecast provider treatment and update to actual retirement; no second manufacture fraction or duplicate contained-part waste.
+
+- Selected flow: Remaining terminal carrier of the specified point-of-sale device after documented removals
+- Flow property / unit: Mass / kg
+- Amount rule: Z_pos/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Remaining terminal carrier of the specified LED luminaire after documented removals (`luminaire_waste`)
+
+Actual complete terminal carrier after any evidenced part removal. Direct net weighing already excludes removed parts; BOM reconstruction is an exclusive alternative. Reconcile actual/forecast provider treatment and update to actual retirement; no second manufacture fraction or duplicate contained-part waste.
+
+- Selected flow: Remaining terminal carrier of the specified LED luminaire after documented removals
+- Flow property / unit: Mass / kg
+- Amount rule: Z_luminaire/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+###### Remaining terminal carrier of the specified manual floor mop after documented removals (`mop_waste`)
+
+Actual complete terminal carrier after any evidenced part removal. Direct net weighing already excludes removed parts; BOM reconstruction is an exclusive alternative. Reconcile actual/forecast provider treatment and update to actual retirement; no second manufacture fraction or duplicate contained-part waste.
+
+- Selected flow: Remaining terminal carrier of the specified manual floor mop after documented removals
+- Flow property / unit: Mass / kg
+- Amount rule: Z_mop/N kg
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_assets`
+- Sources: ghg-product-2011
+
+### Process: Conditional post-receiving retailer-controlled truck routes (`route`)
+
+#### Inputs
+
+##### Product flows
+
+###### Loaded road freight transport service by enclosed diesel rigid truck (`truck_loaded`)
+
+Conditional retailer-controlled post-receiving supplier-return or waste transfer route. Actual loaded leg mass and distance, contract and included vehicle manufacture/operation/empty travel recorded. Supplier inbound already in garment background and waste-provider carriage already included in treatment are excluded from this row.
+
+The selected identity denotes road-freight activity, not an actual vehicle or LCI provider. Retain this card's stated cargo/vehicle, original mass basis and complete disjoint loaded-stage requirements. The official unit group uses1t*km=1000kg*km; apply any needed unit conversion once without another consignment/owner share. Empty and powered-idle sources keep their separate actual vehicle-km/vehicle-hour identities.
+
+- Selected flow: freight transport `4f1a3f30-7b3b-11dd-ad8b-0800200c9a66`
+- Flow property / unit: Goods transport (mass*distance) `838aaa20-0117-11db-92e3-0800200c9a66` / t*km
+- Amount rule: K_att/N t*km
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_route`
+- Sources: ghg-product-2011
+
+###### Empty road freight vehicle operation by enclosed diesel rigid truck (`truck_empty`)
+
+Real empty trips have positive vehicle-distance although loaded tonne-kilometres are zero. Use a compatible vehicle-distance service including actual operation and declared asset scope, only if not already in the loaded-service provider. Unknown coverage blocks completeness.
+
+- Selected flow: Empty road freight vehicle operation by enclosed diesel rigid truck
+- Flow property / unit: Length / km
+- Amount rule: J_att/N km
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_route`
+- Sources: ghg-product-2011
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| pool | all | Declare one site/SKU/size/BOM/route configuration, start/end dates, opening stock, final-return adjudication cutoff and revision schedule prospectively. Keep failed, closed/idle and zero-sale periods in the same configuration pool. Entirely N=0 pools remain reported as raw totals and are unnormalizable. Late returns and acceptance revocations replace the original N, background ownership and every affected raw numerator using actual event dates; do not allocate them again to a new pool. Pure refunds/discounts with valid acceptance do not alter N. | ghg-product-2011 |
+| shared | all | Prefer dedicated measurement/subdivision. Shared electricity uses measured equipment kW*time including standby; cleaning uses actual treated area*frequency; racks/hangers use occupied positions*time; mirror/fitting uses observed fitting occupancy*time; POS uses measured task active time and evidenced reserved standby capacity. Assign retained idle/closed capacity across all reserved actual beneficiaries by positive known capacity-hours. Sum allocated raw amounts to the complete parent total; subtract a submeter only if included in that parent. Revenue, a default percentage and a zero driver are not substitutes. | ghg-product-2011 |
+| asset_lifetime | assets | Use calc_asset across the whole asset life and every beneficiary, including historical allocations, remaining exposure, idle and terminal residual. Manufacture/initial installation/initial delivery are one defined input scope; operation, actual later repairs and retirement are disjoint. Lifetime changes replace historical allocation versions by signed corrections instead of restarting manufacture. A transferred whole asset carries the unassigned residual to the next owner; cumulative fractions never exceed1. Final residual must be allocated once across the actual lifetime beneficiaries. | ghg-product-2011 |
+| no_credit | all | No coproduct substitution or avoided virgin-production credit is assigned to garments, tags, cardboard, sweepings or recovered equipment. Record actual treatment and transfer responsibility. Failed-goods production B_f is not subtracted when the waste treatment is added; credits from a separate consequential study cannot enter this attributional module. | ghg-product-2011 |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_goods | garment | garment custody; acceptance; background; waste | Measured foreground ledger with supporting records | original_id; event_id; SKU; size; supplier_lot; complete_BOM; label_and_tag_state; actual_net_mass; mass_state; received; opening; closing; gross_handovers; physical_customer_returns; supplier_handoffs; internal_transfers; recipient; event_date; acceptance_status; defect; fitting_event; failed_retention; actual_waste_gross; container_tare; moisture; B_s; B_f; B_t; B_open; receiving_background_scope; inbound_route; return_cutoff; correction_version; final_valid_acceptance; ordered_event_history; goods_to_residue_event; goods_to_residue_parent_count; closing_goods; source_garment_kg; signed_environmental_moisture_kg; removed_source_component_kg; captured_source_lint_kg; opening_residue; generated_source_portions; measured_external_added_material; actual_dispatch; closing_residue; T_supplier_phys; T_internal_phys; F_external_phys; opening_goods_kg; receipts_kg; physical_returns_kg; internal_in_kg; gross_handoffs_kg; supplier_handoffs_kg; internal_out_kg; goods_to_residue_source_kg; closing_goods_kg; investigated_mass_difference | Scan unique garment/source-lot IDs at receiving, each fitting/restock, checkout, return and final fate; count complete garments and weigh a traceable same-lot sample on a calibrated balance excluding packaging, with actual moisture/conditioning and sampling uncertainty. Supplier BOM/receipts independently identify label/trim/pack components; audit POS against physical counts and customer acceptance/return records. Weigh dispatched waste, record recipient manifests and scope. Record goods-to-residue source parent, actual source-kg and timestamp at generation; count closing goods including quarantine until that transfer, and separately census waiting-for-dispatch residue stock. Measure removed source components/lint and actual moisture/environmental mass changes by calibrated paired condition/weighing records; record observed signed kg and uncertainty, not a default dry-matter correction. Determine final valid acceptance over the ordered whole original-ID history before distinct counting. Aggregation duty: calc_goods, calc_transfers and calc_dispatch; retain raw count/kg and S/F/T/O separately; normalize attributable numerator by N once | Item(s); kg | Each receipt/event; stock census at both boundaries and cutoff; every late correction | Complete declared pool plus linked historic sources and post-pool return adjudication | One actual store/SKU/size/BOM; all failed and zero-sale lots | per reference flow | Timestamped scans; scale calibration/tare/sample log; manufacturer and actual supplier BOM; POS/acceptance audit; signed recipient/return responsibility; reconciled stock count and kg; unknown gaps block completeness |
+| cp_energy | energy | electricity | Measured foreground ledger with supporting records | meter_id; meter_boundary; start_kWh; end_kWh; timestamp; dedicated_or_shared; equipment_kW; operating_hours; standby_hours; circuit_overlap; target_driver; all_beneficiary_drivers; outage; calibration; N | Read sealed calibrated import/submeters at circuit boundary; log lighting/fitting/POS load and standby using calibrated power logger. Map each submeter to parent wiring; reserve-capacity/time observations include closed hours. Incomplete equipment load coverage requires measured residual reconciliation, not nameplate-only extrapolation. Aggregation duty: calc_energy; sum raw driver shares to parent, then MJ/N once | kWh; kW; h | Continuous logger or each meter interval, boundary reads and outage events | Entire pool including idle/closed intervals | Department lighting/POS circuits and complete shared parent beneficiaries | per reference flow | Meter calibration; wiring/circuit map; interval invoices; logger calibration; driver observations; no missing interval recorded as zero |
+| cp_clean | clean | water; cleaner; effluent; sweepings | Measured foreground ledger with supporting records | event_id; location; treated_area; frequency; all_beneficiaries; import_mode; imported_kg_or_m3; rho_water; temperature; cleaner_supplier; composition_CAS; concentration; formulation_opening_purchase_closing; effluent_mode; discharge_kg_or_m3; rho_effluent; effluent_composition; effluent_temperature; evaporation; storage_change; captured_cloth_liquid; foreign_solids; sweepings_gross_tare; recipient; source_ID; N; container_id; supplier; batch; exact_model; actual_BOM; single_use_evidence; net_container_mass; closure_label_dispensing_state; formulation_source_kg; used_kg; spill_kg; rinsate_kg; terminal_retained_kg; unused_closing_or_returned_kg; provider_manufacturing_inclusion; included_transport_scope; source_beneficiaries; remaining_stock_responsibility; Y_container_att; dispatch_gross; outside_sack_tare; D_cleaner_container_att; generation; opening_terminal_stock; closing_terminal_stock; recipient; treatment_scope; uncertainty; N; original_formulation_source_kg; paired_weighing; actual_rinsate_composition; source_component_ledger; source_fraction_uncertainty; new_rinse_water_kg; foreign_dirt_kg; source_destination_reclassification; whole_actual_rinsate_kg | Measure each cleaning batch at department boundary: calibrated import/discharge meter or net balance, density sample at actual state, detergent weighed as supplied and supplier specification. Log actual treated surfaces, spills and reusable-mop recovery. Measure whole actual effluent and sweepings at dispatch; separately reconcile import/formulation/stock/carrier liquid. Do not infer drain flow from water supply. Inspect and photograph each actual formulation container/closure/label/dispensing model and supplier batch/BOM; weigh net formulation and complete empty/residue-bearing carrier on a calibrated balance at use/end/dispatch. Measure retained residue with a traceable paired empty-container or analytical material balance while preserving complete-carrier dispatch net mass. Record supplier manufacturing/transport inclusion explicitly, source-beneficiary allocations, actual residual/rinsate split, sealed terminal-stock census and signed collector/treatment contract. No container material/shape or absence is inferred from formulation kg. Apply calc_clean_container explicitly to container count/manufacturing coverage and original-formulation source portions. Measure each original container count in Item(s); obtain original-formulation rinsate kg from paired actual weighing/composition or verified source-component records, excluding new rinse water and foreign dirt. Keep used/spilled/rinsed/retained/unused source portions mutually exclusive with original source IDs, reclassifying any later fate without counting used formulation again. Whole actual rinsate is separately directly measured as effluent once, without another source-fraction multiplication. Aggregation duty: calc_clean and calc_dispatch, per-row raw state units and attribution then /N once | kg; m3; kg/m3; m2; h; Item(s) | Each cleaning/spill and discharge; inventory at pool boundaries | All department/fitting cleaning over the pool, including unsold-garment attempts | Department and actual shared cleaning beneficiaries only; common facilities via cp_completion | per reference flow | Balance/meter/density calibration; cleaner batch/SDS composition; cleaning logs; receiver manifest; documented absence or unresolved unknown for every conditional exchange |
+| cp_pack | pack | bag; receipt; hangtag; carton and removed paper waste | Measured foreground ledger with supporting records | source_component_id; SKU; material; dimensions; coating; composition; supplier; batch; opening; purchases; recovered_returns; closing_unused; closing_printed; transfers; supplied_original_or_retail_added; same_batch_unit_mass; gross; tare; retained_or_removed; moisture; receiver; treatment_transport_scope; N; opening_unprinted_net_paper; new_net_paper; returned_unused_net_paper; closing_unprinted_net_paper; unused_returns_out; unused_transfers_out; printed_WIP_source_ID; printed_WIP_net_paper; original_printing_energy; final_beneficiary_pool; signed_revision; actual_core_present; core_material; core_net_mass; core_original_BOM; core_provider_inclusion; core_final_carrier; core_recipient | Trace purchase/issue/stock records to each component source ID and actual garment. Calibrated weigh same-batch components or measured stock net mass; record printing/reuse history and all beneficiaries. Weigh actual waste consignments and moisture/contamination with recipient records. Manufacturer plastic-free/zero-waste claims do not replace actual receiving BOM or residual measurements. Census unused unprinted rolls separately from printed WIP, and weigh net paper excluding actual cores/packaging. Track original receipt-paper and printing-electricity responsibility through WIP source IDs across periods; no repeat virgin paper input or repeat printing energy for prior WIP. Inspect actual supplier roll BOM and weigh each core/tube/carrier; do not assume a core exists or is absent. If a core is present, bind its actual composition and source-background inclusion, quantify its manufacturing responsibility once (separate named atomic product card if excluded from supplier paper background) and its actual complete dispatch carrier/net mass/recipient under calc_dispatch; another material/state needs its actual named card before completion. Aggregation duty: calc_material/calc_dispatch; component attribution once; measured kg/N | kg; Item(s) | Each purchase/issue/return/waste consignment; opening/closing census | All stock history feeding the pool and its returns | Department and common packing beneficiaries as mapped by component ID | per reference flow | Supplier composition and BOM; calibrated batch mass sample; stock reconciliation; original-vs-retail added deduplication; dispatch manifests |
+| cp_assets | assets | whole assets; terminal carriers; repair events | Measured foreground ledger with supporting records | asset_id; actual_model; whole_original_BOM; acquisition; original_installation_delivery_scope; operating_exclusions; all_historical_beneficiary_exposures; old_allocations; remaining_expected_exposures; idle_exposure; driver_unit; version; current_beneficiary_exposure; transfer; actual_or_forecast_retirement; terminal_mode; direct_net_mass; reconstructed_BOM_mass; removed_components; f_life; recipient; provider_scope; actual_repair_event; N | Inspect and identify each actual rack/hanger/mirror/POS/luminaire/mop model, original parts and supplier scope. Observe position/area/occupancy/reserved exposure over use and idle intervals, retain lifetime history and evidence remaining-life estimate. Weigh whole terminal equipment net after actual removals or reconstruct verified BOM exclusively. Record each later repair/replacement event, its real component, acquisition and removed carrier for named-card extension. Aggregation duty: calc_asset and calc_asset_terminal; version corrections reconcile whole burden; one /N | Item(s); kg; position*h; m2*h; capacity*h | Acquisition; representative continuous exposure logs; each repair/transfer/retirement; each life revision | Full historical lifetime plus remaining and final residual, not only this sales period | All beneficiaries across owners/sites/periods including reserved idle capacity | per reference flow | Asset register/BOM/supplier receipt; calibrated scales; life-estimate basis and observation logs; prior allocation versions; retirement manifest; fraction sum<=1; unknown history blocks complete allocation |
+| cp_route | route | loaded and empty truck legs | Measured foreground ledger with supporting records | trip_id; leg_id; carrier; vehicle_model; leg_mass; loaded_distance; empty_distance; GPS; actual_idle_hours; actual_fuel; capacity; all_beneficiary_reserved_capacity; provider_operation_asset_empty_idle_scope; source_ID; recipient; N loaded_attribution_mode; target_gross_kg; vehicle_total_gross_kg; target_payload_kg; all_other_payload_kg; provider_reference_unit; provider_attribution_level | Read actual consignment weights and GPS/odometer leg logs, engine idle/fuel and signed carrier scope for supplier returns and residuals after receiving. Match actual truck state and capacity; verify inbound/background and waste-provider exclusions. Absence requires route/contract audit, not zero sales. Aggregation duty: calc_route; raw K_att and J_att divided by N once; no duplicate provider-covered leg Tag every scale reading as whole vehicle or target consignment before calculation; check both modes against the same full manifest, provider basis and actual segment. An already target-attributed kg/t*km quantity receives no second allocation. | kg; km; t*km; h | Every leg/idle interval and carrier contract revision | Entire pool plus linked correction trips and empty returns | Every actual route beneficiary and reserved capacity | per reference flow | Weighing/GPS calibration; logs/receipts; signed scope for vehicle manufacture, fuel, empty and idle; missing coverage remains unresolved |
+| cp_completion | garment | common-module completion; route applicability and emissions screening | Measured foreground ledger with supporting records | module_id; original_source_ID; raw_unit; raw_total; actual_meter_boundary; actual_asset_BOM; provider_scope; all_beneficiary_driver; reserved_idle; historical_lifetime; N; external_normalized_value; original_denominator; original_version; receiving_state; actual_processing_presence; steaming_ironing_alteration_print_wash_evidence; lint_cleaner_species; interior_exterior_capture_storage_carriers; quantity_gap; binding_gap; correction_version; species_measurement_group; species_measurement_group; species_measurement_group; all species/circuit/bottle/factory/makeup/recovery/contained-transfer quantities; absolute_or_differential_or_blank_corrected_rates; capture; source_carrier_export; indoor_storage; measured_state; all historical and remaining beneficiaries; module_id; actual_building_BOM; historical_area_h; remaining_area_h; complete_device_ID; capacity_h; carrier_meter; equipment_load; standby; actual_fuel_kg; composition; NCV; heat_MJ; treated_area; cleaning_frequency; employee_journey_id; travel_mode; vehicle_occupancy; passenger_km; idle_hours; employee_working_reserved_hours; all_beneficiaries; provider_scope; N; species; circuit_id; mode_A_or_B; opening_charge; closing_charge; opening_bottle_store; closing_bottle_store; factory_charge; makeup_import; contained_device_import_export; recovered_import_export; internal_recovery_reuse; capture_destruction_export; direct_exterior_release; actual_release_pathway; uncertainty; provider_boundary; HVAC_load_standby; all_beneficiaries; lifetime_exposures; N; species; particle_fraction; physical_state; indoor_volume; exterior_medium; exclusive_measurement_mode; inlet_kg_h; outlet_kg_h; differential_kg_h; blank_corrected_kg_h; duration_h; concentration; actual_airflow; wet_dry_basis; temperature; pressure; laboratory_conversion; matched_background_control; already_removed_background; source_attribution; internal_generation; capture; source_carrier_export; indoor_storage_change; uncertainty; N; module_id; actual_building_BOM; historical_area_h; remaining_area_h; complete_device_ID; capacity_h; carrier_meter; equipment_load; standby; actual_fuel_kg; composition; NCV; heat_MJ; treated_area; cleaning_frequency; employee_journey_id; travel_mode; vehicle_occupancy; passenger_km; idle_hours; employee_working_reserved_hours; all_beneficiaries; provider_scope; N; species; circuit_id; exclusive_mode_A_or_B; circuit_open; circuit_close; bottle_open; bottle_close; air_open; air_close; capture_open; capture_close; I_factory_newdevice; I_other_contained_device; I_external_cylinder; I_external_recovered; original_source_ID; internal_makeup_recovery_reuse; contained_device_export; recovered_export; captured_export; other_disjoint_species_export; transformed_species; direct_exterior_flux; actual_exterior_path; uncertainty; residual; opening_external_source_stock; external_purchases; closing_external_source_stock; unused_external_returns; transfers_to_other_beneficiaries; all_beneficiary_HVAC_load_standby; asset_lifetime; N; species; particle_fraction; state; indoor_air_control_volume; exterior_medium; exclusive_sublot_mode; absolute_inlet_kg_h; absolute_outlet_kg_h; differential_kg_h; blank_corrected_kg_h; already_removed_inlet_background; duration_h; concentration; actual_airflow; wet_dry_basis; temperature; pressure; laboratory_conversion; independent_control; source_attribution; internal_source_generation; contained_species_import; captured_export; other_disjoint_contained_export; transformed_species; A_open; A_close; K_open; K_close; source_carrier_portions; uncertainty; N | Walk through receiving/display/fitting/POS/cleaning and inspect equipment, meters, maintenance and supplier contracts; retain timestamped occurrence/absence evidence for each route/process. For each common module collect original raw records and all beneficiary drivers by the fixed methods in calc_completion; verify full boundary and shared asset history. Independently sample/audit actual external species pathway when relevant; record unknowns instead of absent claims. Mandatory raw-field expansions are exactly the Inputs listed in calc_common_services, calc_common_refrigerant and calc_exterior_flux. Collect each actual circuit/species at import/export and pool boundaries from calibrated weighing/service recovery logs, factory charge documentation and physical stock census; direct release/flux uses calibrated instruments, matched inlet/outlet/control sample times, lab species/state conversions and actual duration. Preserve all mutually exclusive mode flags and already-corrected status. Measure staff-mode/occupancy/GPS and employee-hour beneficiary logs per journey. These records and all common-module events cover every interval and all lifetime beneficiaries; quantities/provider coverage missing remain incomplete. Use paired boundary indoor-air species sampling and calibrated capture-store/net-carrier weighing for A/K opening/closing, circuit/bottle scale stock censuses and source-ID import/export logs. Capture internal transfers and later carrier exports retain the same species/source IDs and cannot both be external deductions. Direct/differential/blank-corrected instrument certificates state which corrections are already applied. External refrigerant source inventory includes unused returns and beneficiary transfers; verify no new-device factory/import duplication. Aggregation duty: calc_completion restores raw denominators and sums compatible disjoint numerators by exact source IDs before one /N | original row-specific units; Item(s); kg; MJ; h | Initial site route audit, all pool intervals/events and every change | Complete pool and all raw-source/asset histories required for N | All known common store modules and actual uncovered route additions | per reference flow | Signed completion matrix; original meters/BOM/contracts/versions; sample/calibration logs; quantified uncertainty; named bilingual cards/protocols and actual matching UUID evidence before complete claims |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| calc_goods | garment | N = count_distinct(original_id with one valid final qualified customer acceptance at cutoff). Resolve the complete ordered acceptance/revocation/physical-return/resale history first; a revoked then resold garment with valid final acceptance contributes1, never2, and one already-final N is not reduced by revocations again. Physical goods count: opening_goods + receipts + customer_physical_returns + internal_in = gross_customer_handoffs + supplier_physical_handoffs + internal_out + goods_to_residue_parent_count + closing_goods + investigated_count_difference. closing_goods includes all saleable, refused/damaged and quarantined goods still in goods custody, but excludes goods already transferred at a recorded goods_to_residue event. Separate source-garment kg balance adds measured signed environmental/moisture uptake or loss and subtracts source-garment portions transferred to residues, removed components and captured lint; whole outside dirt/cleaner/containers are not garment kg. Residue stock separately: opening_residue + generated_source_portions + measured_external_added_material = actual_dispatch + closing_residue + investigated_difference. Generation removes goods and enters residue stock at the same timestamp; dispatch does not remove goods a second time. B_total=B_s+B_f+B_t+B_open assigns each original receiving-gate background once, independent of these physical fates; failed_background=B_f/N and successful downstream background=B_s/N. Explicit source-garment mass equation: opening_goods_kg + receipts_kg + physical_returns_kg + internal_in_kg + signed_environmental_moisture_kg = gross_handoffs_kg + supplier_handoffs_kg + internal_out_kg + goods_to_residue_source_kg + removed_source_component_kg + captured_source_lint_kg + closing_goods_kg + investigated_mass_difference. Every source-origin portion enters only one right-side term; a removed component still in a transferred whole carrier is not added again. | original_id; event_id; SKU; size; BOM; event_time; opening; received; returns; transfers_in; gross_handovers; supplier_handoffs; transfers_out; waste_dispatch; closing; discrepancy; acceptance_status; revocations; recipient; responsibility; B_total; B_s; B_f; B_t; B_open; N; final_valid_acceptance; ordered_event_history; goods_to_residue_event; goods_to_residue_parent_count; closing_goods; source_garment_kg; signed_environmental_moisture_kg; removed_source_component_kg; captured_source_lint_kg; opening_residue; generated_source_portions; measured_external_added_material; actual_dispatch; closing_residue; opening_goods_kg; receipts_kg; physical_returns_kg; internal_in_kg; signed_environmental_moisture_kg; gross_handoffs_kg; supplier_handoffs_kg; internal_out_kg; goods_to_residue_source_kg; removed_source_component_kg; captured_source_lint_kg; closing_goods_kg; investigated_mass_difference | N and raw responsibility ledger; one service per reference flow | ghg-product-2011 |
+| calc_energy | electricity | E_att = sum(E_dedicated + E_shared*d_target/sum(d_all)); E values are raw kWh, drivers cover all actual beneficiaries and standby/idle reserved capacity; sum target shares equals each raw shared meter total. Electricity=3.6*E_att/N MJ. Do not subtract a disjoint department circuit from a separate meter. | E_dedicated; E_shared; meter_boundary; d_target; d_all; kW; operating_hours; standby_hours; calibration; N | electricity MJ per reference flow | ghg-product-2011 |
+| calc_material | paper_bag; receipt; hangtag | For paper_bag and hangtag only, X_r = opening_r + purchases_r + recovered_returns_r - closing_r - unused_supplier_returns_r - transfers_out_r, using net component kg; verify against issued/damaged/retained records. Purchase counts convert using measured same-batch unit net mass, not nominal fabric areal weight. Track printed intermediates in the separate receipt WIP ledger below. Once attributed to all beneficiaries, row quantity=X_r_att/N. For receipt specifically, input is net unprinted thermal paper, excluding actual core/tube/outer packaging. Unused-roll balance: R_new = opening_unprinted_net_paper + new_net_paper + returned_unused_net_paper - closing_unprinted_net_paper - unused_returns_out - unused_transfers_out. Already printed receipt/intermediate stock is not an unused roll and is never subtracted in that balance. Keep a separate printed-WIP count/net-paper/source-ID and embodied printing-electricity ledger. Assign source paper and printing energy once to their final beneficiary pool; newly printed WIP carries unassigned original responsibility forward, prior WIP released carries its same original paper/energy responsibility in, without new paper consumption or new printing energy. Printing scrap/rejects remain attributed to the same configuration pool. Current pool shares are drawn from these original batch histories with signed revisions; raw roll consumption is not normalized then added again. | component_id; batch; opening_r; purchases_r; recovered_returns_r; closing_r; unused_supplier_returns_r; transfers_out_r; unit_mass; attribution_driver; N; opening_unprinted_net_paper; new_net_paper; returned_unused_net_paper; closing_unprinted_net_paper; unused_returns_out; unused_transfers_out; R_new; printed_WIP_source_ID; printed_WIP_net_paper; original_printing_energy; final_beneficiary_pool; signed_revision; core_BOM; core_net_mass; core_provider_inclusion | X_r_att/N kg per reference flow | ghg-product-2011 |
+| calc_clean | water; cleaner; effluent; sweepings | W_att = sum(actual imported water kg * cleaning attribution once), measured kg or imported m3*rho_water(T); C_att = actual formulation consumption kg attributed once. For L_att use either direct net discharge weighing or actual discharge m3*rho_effluent(T,composition), never both; no evaporation/storage/cleaner subtraction from directly measured liquid. Imported water, formulation-contained water, evaporation, captured cloth liquid, external solids and storage are separate supply-balance checks, not a second correction to discharge. Metered reuse is not subtracted from import again. Use calc_dispatch for sweepings. | water_mode; imported_kg; imported_m3; rho_water; water_temperature; formulation_consumption; composition; concentration; cleaning_area; cleaning_frequency; all_beneficiaries; discharge_mode; discharge_kg; discharge_m3; rho_effluent; effluent_temperature; storage_change; evaporation; captured_liquid; foreign_solids; N | W_att/N; C_att/N; L_att/N kg per reference flow | ghg-product-2011 |
+| calc_dispatch | failed_garment; corrugated_waste; paper_waste; sweepings; receipt_waste; bag_waste | D_r = sum(actual dispatched gross mass - actual consignment container tare) attributed once to its original source IDs and beneficiaries; row=D_r_att/N. Generation + opening waste stock - closing waste stock is an independent dispatch reconciliation, not an additional subtraction from measured dispatch. Document moisture and contamination at actual handoff and recipient treatment boundaries. | source_id; consignment_id; dispatch_date; gross_kg; tare_kg; moisture; contamination; recipient; treatment_scope; generated_kg; opening_waste_kg; closing_waste_kg; attribution; N | D_r_att/N kg per reference flow | ghg-product-2011 |
+| calc_asset | rack; hanger; mirror; pos; luminaire; mop | For asset a, H_a = sum(all historical beneficiary exposure) + remaining expected all-beneficiary exposure including idle; current F_a,b = e_a,b/H_a. Exposure is item-position*h for racks/hangers, reserved area*h for luminaires, observed occupancy*h plus reserved idle for mirrors/mop/POS. One fixed driver per actual asset version applies to every beneficiary. Manufacturing input=sum(F_a,b)/N complete Item(s). If H changes replace each old e/H_old by e/H_new with signed difference; never add another full asset. At retirement use actual total H_final and allocate residual1-sum(F_history) over actual beneficiary exposures, correcting former versions. Stock counts validate acquisition/retirement, not a second consumed-asset input. At retirement recompute every historical beneficiary/pool share as its actual exposure divided by H_final, replace all prior versions by signed differences, and reconcile the complete sum to1 across the complete actual lifetime beneficiaries. Only after that replacement, allocate any rounding/unassigned residual over those same actual lifetime beneficiaries by their actual exposure, never solely to the current period; unknown historic exposures prevent closure. | asset_id; model; original_BOM; installation_scope; acquisition_date; historical_e; historical_F; remaining_expected_e; idle_e; beneficiary_id; current_e; H_old; H_new; version; retirement_date; H_final; N | F_a/N complete Item(s) per reference flow | ghg-product-2011 |
+| calc_asset_terminal | rack_waste; hanger_waste; mirror_waste; pos_waste; luminaire_waste; mop_waste | Z_a = terminal_net_mass_a * f_life_a,b; f_life_a,b is this pool share of the same corrected all-beneficiary asset lifetime exposure. Apply this responsibility fraction once, not times another manufacture fraction. Direct mass after removal and original-BOM minus evidenced removed-component masses are exclusive modes; direct net weighing must not subtract those components again. Interim forecast mass/treatment must be explicit and replaced with actual retirement evidence. Actual replacement parts, their manufacture and discarded carriers need separate event-based named atomic cards before completion; included original parts are not repeated. | asset_id; terminal_mode; direct_net_mass; BOM_mass; removed_component_ids; removed_component_masses; f_life; beneficiary_exposures; forecast_status; recipient; treatment_scope; N | Z_a/N kg per reference flow | ghg-product-2011 |
+| calc_route | truck_loaded; truck_empty | Choose exactly one loaded attribution mode per source/segment. target_consignment: K_att=sum(target_gross_kg/1000*actual_km) where target_gross_kg is already the measured actual target consignment gross payload; NEVER multiply shared-load share or allocation_once. unassigned_vehicle: K_att=sum(vehicle_total_gross_kg/1000*actual_km*target_payload_kg/vehicle_total_gross_kg) only for unassigned whole-vehicle activity and a compatible actual mass-basis t*km provider. Target plus other actual gross payload kg must reconcile to the same-segment vehicle total with known positive denominator. Keep a provider already-attributed target quantity unchanged; reconstruction is QA only. Retain raw/target attribution level and provider reference unit. Do not reduce target-kg-derived t*km by another occupied-volume share; volume-capacity allocation of a whole-vehicle environmental vector needs a matching actual provider and separate atomic activity, not a correction to target kg. Retain uncovered actual empty vehicle*km, allocating once by all-beneficiary actual route-capacity reservations. Retain stationary powered idle h/fuel in matching named completion cards; never erase them by zero load/distance. Original goods inbound and treatment-contained actual legs occur once; unknown coverage blocks completeness. Normalize once by final reference denominator N. | leg_id; vehicle_model; loaded_mass_kg; actual_km; empty_leg_km; capacity; all_beneficiary_capacity_distance; idle_hours; fuel_logs; reserved_capacity_hours; provider_coverage; allocation_once; N; loaded_attribution_mode; target_gross_kg; vehicle_total_gross_kg; target_payload_kg; all_other_payload_kg; provider_reference_unit; provider_attribution_level | K_att/N t*km; J_att/N km per reference flow | ghg-product-2011 |
+| calc_completion | all | For every missing common module fix this same site/SKU/cohort/version and N. Collect raw activity: whole meters by carrier incl HVAC/general/security lighting; actual chemicals/water/effluent and solid carriers; actual shared routes/fuel/idle time; complete building/IT/security/handling asset IDs, original BOM, installation and whole-life exposures. Direct meters first; shared energy/cleaning/route use the specified calc_energy/calc_clean/calc_route drivers; buildings use occupied+reserved area*h across all historical and remaining beneficiaries; shared IT/security/handling use reserved capacity*h, retaining idle, and calc_asset and calc_asset_terminal. Add separate species/medium emissions from measured terminal flux with capture/storage/carriers reconciled. Existing normalized external result v_r with evidenced raw denominator D_old is restored to raw v_r*D_old, assigned to this pool once by its causal driver, then summed only with identical compatible flow/property/unit/boundary raw numerators, deduplicating original source IDs. Re-express all modules at the common N and divide once. Never add kg to MJ or normalized values to raw totals. If an external denominator, scope, original ID or quantity is unavailable, the total remains incomplete, not zero. | module_id; source_ID; site; SKU; pool; version; N; raw_activity; all_beneficiary_drivers; asset_history; lifetime; idle_hours; provider_scope; v_r; D_old; flow_identity; property; unit; boundary; duplicate_IDs | Compatible completed raw numerator by row; divided by N once | ghg-product-2011 |
+| calc_transfers | supplier_return; internal_transfer; failed_retention | Count actual physical handoffs T_supplier_phys, T_internal_phys and F_external_phys by original garment/event/recipient IDs; report each raw count divided by N. These are not B_t/B_f ownership amounts: a background reassignment creates no physical flow. An acceptance revocation with no physical return changes N and S/F ownership but creates no second outward handoff. A returned and later resold garment retains its original ID and production history. | original_id; event_id; recipient_id; handoff_time; garment_state; T_supplier_phys; T_internal_phys; F_external_phys; acceptance_revocation; physical_return; ownership; N | Physical transfer Item(s) per reference flow | ghg-product-2011 |
+| calc_common_services | all | Common building manufacture/installation and terminal carriers use the complete actual building/BOM, excluding separately inventoried department assets, and calc_asset with all historical+remaining occupied/reserved area*h. Common HVAC/general/security lighting use actual carrier-separated meters and measured equipment load/standby under calc_energy; actual fuel is net kg at measured composition/NCV, and purchased heat remains measured MJ, each with a named atomic card. Common water/cleaning uses actual surface-area*frequency and calc_clean with direct whole-effluent mass. Shared IT/security/payment equipment uses actual complete device models and calc_asset at reserved capacity*h, operation metered separately; repair events are disjoint. Staff travel uses each actual mode, vehicle/occupancy, measured passenger-km and idle logs; assign each employee journey once to all actual benefited work by recorded employee working+reserved idle hours, then /N. Actual shared handling/vehicle assets use capacity*h lifetime and event fuel/idle, not tonne-km0. Provider vehicle/operation/idle/manufacture/treatment scopes are checked before adding any row. No module is completed by naming it alone. | module_id; actual_building_BOM; historical_area_h; remaining_area_h; complete_device_ID; capacity_h; carrier_meter; equipment_load; standby; actual_fuel_kg; composition; NCV; heat_MJ; treated_area; cleaning_frequency; employee_journey_id; travel_mode; vehicle_occupancy; passenger_km; idle_hours; employee_working_reserved_hours; all_beneficiaries; provider_scope; N | Common module raw quantities attributed once, compatible rows aggregated then /N | ghg-product-2011 |
+| calc_common_refrigerant | all | Define one complete species control volume over actual circuits, bottles, indoor air and capture stores: S_open = circuit_open+bottle_open+air_open+capture_open and S_close likewise. External imports are disjoint I_factory_newdevice, I_other_contained_device (excluding the same new-device factory charge), I_external_cylinder and I_external_recovered; each source ID appears once. Existing factory charge already in S_open is not a period import. Internal makeup/recovery/reuse between circuit, bottle and capture is an internal transfer, never another external input or export. Recovered gas export, retained gas in exported equipment, capture-carrier export and transformed species are disjoint; a recovered export is not also subtracted as contained-equipment gas. Choose one exclusive exterior-release mode: A direct calibrated actual exterior species flux, with full species stock balance as independent check; B verified closed balance release = S_open+sum(disjoint imports)-S_close-contained_device_export-recovered_export-captured_export-other_disjoint_species_export-transformed_species, requiring actual exterior path and resolved uncertainty/residuals before any air-emission row. Capture is an internal transfer to capture stock, not a second subtraction; air/capture opening and closing must be measured, not presumed0. Negative/unresolved balance is investigated and blocks completion. The purchased makeup product numerator is actual externally sourced refrigerant consumed/lost for the pool from its original-source inventory: opening_external_source_stock+external_purchases-closing_external_source_stock-unused_external_returns-transfers_to_other_beneficiaries, with source IDs/stock history and all-beneficiary attribution once; do not use all purchases or add initial-charge manufacture/internal reuse again. Externally recovered/reclaimed supply remains a distinct actual product identity. Factory-charge production already included in the complete equipment background is not another refrigerant-production input; its terminal species responsibility follows the asset lifetime, while actual operating replenishment/release uses measured HVAC load/standby across all beneficiaries. | species; circuit_id; exclusive_mode_A_or_B; circuit_open; circuit_close; bottle_open; bottle_close; air_open; air_close; capture_open; capture_close; I_factory_newdevice; I_other_contained_device; I_external_cylinder; I_external_recovered; original_source_ID; internal_makeup_recovery_reuse; contained_device_export; recovered_export; captured_export; other_disjoint_species_export; transformed_species; direct_exterior_flux; actual_exterior_path; uncertainty; residual; opening_external_source_stock; external_purchases; closing_external_source_stock; unused_external_returns; transfers_to_other_beneficiaries; all_beneficiary_HVAC_load_standby; asset_lifetime; N | Species-specific makeup product input/air release/contained transfer raw kg with disjoint lifetime or operating attribution | ghg-product-2011 |
+| calc_exterior_flux | all | For each actual lint fraction/volatile cleaner species fix substance/state, indoor air A plus captured-material species stock K as one combined control volume, and actual exterior receiving medium. Exclusive measured sublot modes are absolute matched inlet/outlet species kg/h (net=out-in), already differential species kg/h, or already blank-corrected species kg/h. Use differential/blank-corrected values directly without subtracting their already removed inlet/background again. Integrate actual rate*duration; concentration/airflow conversion must match actual wet/dry, T and P and laboratory species conversion. An additional independent contemporaneous control is removed only when not already corrected in that mode, once. Complete species reconciliation: internal_source_generation + inlet + contained_species_import = outlet + captured_export + other_disjoint_contained_export + transformed_species + (A_close-A_open) + (K_close-K_open). Capture from indoor air into K is an internal transfer, not an additional right-side subtraction; captured material exported later is captured_export once, not also another capture deduction. Record each exported effluent/sweepings/filter carrier source portion without another elementary species output. Foreign dirt/water is not garment-source kg. Determine true garment/cleaning attribution from source-specific matched observations, not a ventilation emission factor. A room source is not automatically environmental release. Investigate signed negative or unclosed results with their uncertainty and block completion; never zero-clamp/credit. Real uptake needs separately reviewed matching input identity. | species; particle_fraction; state; indoor_air_control_volume; exterior_medium; exclusive_sublot_mode; absolute_inlet_kg_h; absolute_outlet_kg_h; differential_kg_h; blank_corrected_kg_h; already_removed_inlet_background; duration_h; concentration; actual_airflow; wet_dry_basis; temperature; pressure; laboratory_conversion; independent_control; source_attribution; internal_source_generation; contained_species_import; captured_export; other_disjoint_contained_export; transformed_species; A_open; A_close; K_open; K_close; source_carrier_portions; uncertainty; N | Reviewed species-specific exterior raw kg and separate source-garment mass reconciliation, /N once | ghg-product-2011 |
+| calc_clean_container | cleaner; cleaner_container; cleaner_container_waste; effluent | Fix the actual formulation supplier/batch and one exact original single-use container model/BOM; verify actual single-use status, closure/label/dispensing components, material and net mass with supplier receipts and physical inspection. Unknown packaging is not absent; an actual returnable/reusable route needs the existing whole-life asset method and concrete bilingual container/transfer cards, not this single-use assumption. For each original container j record net formulation supplied, unused stock/returns, formulation actually dispensed, spilled, rinsed and retained in its terminal container. Reconcile formulation_source_kg = used_kg + spill_kg + rinsate_kg + terminal_retained_kg + unused_closing_or_returned_kg, with measured uncertainty and disjoint source IDs. Attribute each j manufacturing responsibility once across all actual formulation beneficiaries and remaining unused stock by source-formulation kg; failure/spill/residue remains with the responsible same configuration pool, not erased. Y_container_att sums the attributable complete-container manufacturing equivalents only for provider-excluded scope; a documented supplier background already including that manufacture contributes no additional manufacture via this card, without deleting its actual end-of-life. If provider inclusion is unknown, quantity/background completion is blocked. D_cleaner_container_att is actual whole net dispatched carrier kg under calc_dispatch and once-only source-beneficiary attribution; generation and awaiting-dispatch stock reconcile independently. Terminal retained formulation is not also included in effluent. Only actual rinsate discharged separately enters directly measured effluent, with its source portion no longer retained in terminal carrier. Never subtract residual again from directly weighed complete container or effluent; do not mechanically output cap/label contents as duplicate wastes. In the formulation_source_kg balance, every used_kg, spill_kg, rinsate_kg, terminal_retained_kg and unused_closing_or_returned_kg term is exclusively kg originating from that same original supplied formulation, not whole diluted rinsate or newly added water/foreign dirt. Determine original-formulation kg in rinsate by actual paired weighing/composition measurements or verifiable original-source component ledger, retaining uncertainty and source IDs. These source portions are mutually exclusive final responsibility destinations: an original portion already assigned to used_kg is not added again as rinsate_kg when later washed out; reclassify its original source ledger destination if required, without increasing the source total. The actual whole rinsate carrier, including newly added water and actual dirt, enters directly measured effluent once; its measured whole kg is not multiplied by the source-composition fraction again. | container_id; supplier; batch; exact_model; actual_BOM; single_use_evidence; net_container_mass; closure_label_dispensing_state; formulation_source_kg; used_kg; spill_kg; rinsate_kg; terminal_retained_kg; unused_closing_or_returned_kg; provider_manufacturing_inclusion; included_transport_scope; source_beneficiaries; remaining_stock_responsibility; Y_container_att; dispatch_gross; outside_sack_tare; D_cleaner_container_att; generation; opening_terminal_stock; closing_terminal_stock; recipient; treatment_scope; uncertainty; N; original_formulation_source_kg; paired_weighing; actual_rinsate_composition; source_component_ledger; source_fraction_uncertainty; new_rinse_water_kg; foreign_dirt_kg; source_destination_reclassification; whole_actual_rinsate_kg | Container manufacturing Item(s)/N only if uncovered; actual whole residue-bearing container waste kg/N; formulation/effluent source portions disjoint | ghg-product-2011 |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| identity | all | Each unresolved card is a specific candidate, not adopted Tiangong identity. Bind its exact bilingual name, type/direction, state/medium, qualifiers, reference property/unit and one compatible background from an official original response plus matching integrity receipt; quantities alone do not resolve identity. Reference-service output must be independently bound before final release. | Original response hashes and direct dataset/property/unit readback, plus provider scope and foreground protocol records |
+| bilingual | all | English and Chinese must agree on each object, direction, type, unit, formula, denominator, conditional absence, ownership and mandatory duty; stable IDs and array fields remain aligned. New repair/process/common-module rows need both languages and regenerated structured output before completion. | Bilingual row/rule/protocol/calculation field audit and parser output arrays |
+| balance | garment | Resolve physical count/kg and original-background S/F/T/O independently. Investigate shrinkage, label removal, damaged external retention and discrepancies with evidence; do not force them to zero or classify every non-sale as waste. Fix sampling/census coverage and measurement uncertainty prospectively; report actual limits and calibration without unsupported tolerance defaults. | Calibrated stock/mass ledger and recipient/ownership audit with discrepancy resolution |
+| coverage | all | Every actual conditional card has occurrence evidence and a quantity, or documented site-specific absence. A missing meter, unknown composition/provider boundary, unobserved repair/steam/alteration or missing common module is unresolved and blocks completeness. Preserve partial scope and raw burdens until resolved; no numerical default is specified by this PCR. | Signed occurrence/completion matrix, quantity and binding gaps, correction version |
+| source_limits | all | The manufacturer sheet demonstrates a plausible white fine-knit cotton T-shirt and distinguishes fabric label from garment mass. Its plastic-free, certification, zero-landfill and pack-count claims are not verified lot data, current certifications, LCA factors or measured weights. JRC identifies retail energy/water/chemical/transport/waste aspects; GHG guidance supports explicit units/allocation, not approval of these design choices or whole-standard conformity. | Actual supplier lot/BOM and foreground records; scoped external source statements |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| reference | retail_service | Require final N>0 for normalization and exactly1 Item(s) service output per reference flow. Verify same configuration, declared pool and final acceptance/revocation linkage. Entirely N=0 remains raw and unnormalizable. | ghg-product-2011 |
+| raw_once | all | Every inventory numerator must have an original raw quantity, state/unit, attribution driver and exactly one /N; externally normalized values must be restored using evidenced D_old first. Check all card IDs, real single-process protocols and calculation Applies-to IDs exist; no orphan normalized IDs or duplicated source IDs. | ghg-product-2011 |
+| asset_check | assets | For every actual asset sum historical/current/residual fractions<=1 and reconcile the whole manufacture/installation burden and corrected terminal carrier. Signed historical life corrections replace prior allocations; terminal mass times lifetime responsibility once. Missing asset history or provider scope blocks full completion. | ghg-product-2011 |
+| fates | garment | Keep physical transfer and ownership quantities separate; supplier returns/internal transfers/failed external retention create no service or negative production credit. Reject double background for resale or multiple waste descendants. Reconcile received count and actual mass independently; an assumed fabric fraction cannot close missing garment mass. | ghg-product-2011 |
+| completeness | all | Report identity, activity, provider and partial-common-module coverage separately. Candidate unbound identities or unknown conditional occurrence/quantities are not zero or complete. A finished dataset requires all actual named atomic cards and documented absences, compatible backgrounds, source-ID deduplication and bilingual structured verification; the module retains its partial label until common completion is attached. | ghg-product-2011 |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | partial_incremental_retail_service |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | Same specified garment department incremental attributional inventory with explicit partial scope and documented completion bridge |
+| excluded_use | Full garment life cycle, all apparel/fur, altered/online route, current certification/compliance, substitution credits, complete store claim without common modules |
+| required_metadata | Site/route/SKU/size/full BOM/lot; actual mass states; gates/N/pool/cutoff; raw ledgers and source IDs; provider/identity bindings; partial completion matrix and corrections |
+| required_quality_disclosure | Sampling/calibration/uncertainty; unresolved UUID/activity/provider/common modules; all-beneficiary life/idle and source limits; no unknown zero |
+| update_trigger | Changed SKU/BOM/route/formulation/asset/provider/life estimate, return adjudication, measured state or new source evidence |
+
+## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| un-cpc-62133 | official_guidance | https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62133 | CPC3.0 classification scope only; narrower relation, not methodology equivalence |
+| fotl-original-t | handbook | https://www.fruitoftheloom.eu/shop/ecom_PrintableSellSheet?lang=en_GB&style=0610820 | Manufacturer Original T0610820 product sheet: feasible white cotton fine-knit crew-neck garment; actual lot/BOM/net mass and marketing claims not adopted as measurements |
+| jrc-retail-2013 | official_guidance | JRC EUR25998EN (2013), Best Environmental Management Practice in the Retail Trade Sector; https://susproc.jrc.ec.europa.eu/activities/emas/documents/RetailTradeSector.pdf | Retail input/output aspects and lighting/cleaning/transport/waste screening; no benchmark factors/defaults adopted |
+| ghg-product-2011 | standard | WRI/WBCSD Product Life Cycle Accounting and Reporting Standard (2011), chapters6,7,9; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | Explicit function/reference flow, boundary and subdivision/physical allocation principles; detailed protocols/equations are PCR design obligations, no complete-conformity claim |

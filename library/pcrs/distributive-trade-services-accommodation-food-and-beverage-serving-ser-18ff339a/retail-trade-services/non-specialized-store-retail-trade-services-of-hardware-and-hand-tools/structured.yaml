@@ -1,10 +1,999 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "62165"
-  title: "Non-specialized store retail trade services, of hardware and hand tools"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-hardware-and-hand-tools"
+  classification_refs: "CPC 3.0:62165; narrower subset of hand tools in 4292; not machine-tools 442"
+  covered_products: "Complete new manual side-cutting pliers in original unopened factory retail packages; actual length, finish, handle, supplier lot and full package BOM verified separately per homogeneous pool."
+  excluded_products: "Separate jaws, grips or springs; mixed kits; powered tools; machine-tools; installation, sharpening, repair, demonstration, customer use, non-store orders and delivery. Opened, used, contaminated, dismantled or incomplete packages require specific state extensions before completeness, retaining all original cohort records."
+  representative_product: "Counter retail services for original-pack manual side-cutting pliers; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum."
+  production_route: "Physical counter purchase and customer collection in a non-specialized mixed-assortment store; retain assortment evidence. Selling multiple brands alone does not establish non-specialized retail. No retailer unpacking or repacking, added carry bag, printed receipt or tool actuation in the core route."
+  market_state: "Complete new dry solid manual tool in its unopened original packaging. Steel frame, joint, return-spring function and composite handles remain one real complete tool; catalogue series descriptions require lot/model confirmation, not invented mass percentages."
+functional_unit:
+  what: "Counter retail service ending in finally valid customer acceptance of the specified whole original package."
+  how_much: "One final-valid original package service; Q distinct original package IDs in a prospectively fixed same-configuration source pool."
+  how_well: "Correct SKU/EAN, whole tool and package configuration, dry unmodified state and customer acceptance evidenced; catalog cutting capacities do not establish safe-use or acceptance test thresholds."
+  how_long_or_cycle: "Receiving gate to final counter acceptance and closure of linked returns/fates; late events replace the original pool version with actual event dates."
+  reference_flow_link: "retail_service"
+system_boundary:
+  rules:
+    - rule_id: b_product_family
+      applies_to: "all inventory rows"
+      rule: "This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval."
+      source_ids: []
+    - rule_id: route_gate
+      applies_to: "all inventory rows"
+      rule: "Admit only an evidenced mixed-assortment store with sealed homogeneous original packages and the declared counter route. Record invoices, photographs, assortment, package mass/BOM and configuration revision. Actual additional wrapping, printing, cleaning, powered demonstration, delivery, combustion or refrigerant equipment cannot be assumed absent: cp_modules determines coverage and adds mandatory specific cards/protocols under complete_modules. Unknown presence blocks dataset completeness. If a stock package becomes a permanent demonstrator, transfer the SAME original V_s to a named internal asset T, never charge full F plus a new asset manufacture; author the actual opened tool/packaging states and module before completeness."
+      source_ids:
+        - un-cpc3-62165
+        - bahco-pliers-catalogue
+        - jrc-retail-2013
+    - rule_id: source_ownership
+      applies_to: "failed_original; retail_service"
+      rule: "For every original package source s fix N_s and the matching whole supplier vector V_s at the same receiving gate. Partition source-equivalent whole IDs into final-valid S_s, service-responsible failed F_s, named continuing transfer T_s and unresolved/open O_s, with N_s=S_s+F_s+T_s+O_s. No arbitrary material mass shares of environmental vectors. This route keeps the complete package intact, so one original ID has one whole final responsibility. N_F=sum_s F_s. Failed unreturned customer-held goods and confirmed missing goods remain F with evidenced responsibility; unknown missing residual remains O and blocks closure. Supplier returns are T only with named continuing responsibility, never an automatic credit."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: acceptance_custody
+      applies_to: "retail_service; failed_pack_waste; rejected_external; supplier_handoff"
+      rule: "Keep goods-only stock and held-waste stock separate. G_close=G_open+receipts+physical_customer_returns-ALL_gross_customer_handovers-physical_supplier_handoffs-internal_asset_transfers-condemnations-confirmed_goods_missing+signed_unresolved_goods_residual. ALL handovers already include accepted and never-accepted exits; do not subtract a second unaccepted set. Condemnation moves goods into held waste; W_close=W_open+condemnations-waste_dispatch-confirmed_waste_missing+signed_unresolved_waste_residual. No second goods exit on waste dispatch. Q=count distinct original IDs with final-valid acceptance; revocations without return reclassify the old acceptance, not a new movement or a second subtraction from Q. A monetary refund/discount does not revoke acceptance by itself."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: failure_carriers
+      applies_to: "failed_pack_waste; rejected_external; supplier_handoff"
+      rule: "Separate ownership from physical fate: F does not create a waste shipment. Measure actual whole unopened failed package waste dispatch kg including tool, grips, spring/joint and actual packaging; retain signed receiver acceptance of actual constituents/state and matching complete treatment scope. Keep the real carrier intact, with no parallel steel, plastic or packaging constituent waste rows. Physical retained external nonconforming packages and supplier transfers use their own event IDs and are never retailer waste automatically; record recipient, state, quantities and continuing treatment/background responsibility. An opened or contaminated carrier requires a state-specific extension, not this unopened carrier identity."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: whole_source
+      applies_to: "failed_original"
+      rule: "The complete original package input uses Number of items, not tool net kg or catalogue 230 g. Bind a supplier vector for the actual tool-plus-package configuration, including all actual handle/steel/coating/joint/spring and packaging constituents. Whole-source mode excludes component inputs for the same vector. If constituents acquire different responsibilities, this route is incomplete until separate actual component product cards and verified supplier component vectors conserve the original vector; mass fractions cannot split an environmental vector. Factory packaging never receives a second full manufacture burden through terminal waste."
+      source_ids:
+        - bahco-pliers-catalogue
+        - ghg-product-2011
+    - rule_id: physical_overlap
+      applies_to: "all inventory rows"
+      rule: "Before adding providers compare physical constituents, event IDs, asset IDs, dates, sites and lifecycle stages. Distinct provider IDs do not prove disjoint activity. A complete background containing electricity, transport, repair or treatment excludes the same outside activity. No waste-treatment credit, reuse credit or negative emission is inferred. Satellite outputs rejected_external and supplier_handoff carry no avoided-production credit; their original V stays under source_ownership."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: support_coverage
+      applies_to: "all inventory rows"
+      rule: "The core covers failed_original, store_electricity, retail_service and the three actual terminal/transfer carriers only. cp_modules must cover receiving handling, storage/display, shared building, lights/fans/fixed fixtures, checkout/payment, ICT/network, security, administration, cleaning, utilities, reverse/waste/material/asset transport, maintenance and end-of-life. These are mandatory completion modules, not an optional omission list. For each actual module create a signed source/operation/capital coverage matrix, name actual atomic exchange cards and same-process protocols, collect required fields, apply complete_modules and asset_versions; each module must be complete or evidenced absent. No complete-business dataset may be delivered from the uncompleted core."
+      source_ids:
+        - jrc-retail-2013
+        - ghg-product-2011
+boundary_abstraction:
+  declared_starting_condition: "Actual complete factory packages at receiving gate, with supplier/source IDs, original tool-plus-packaging vectors and inbound transport boundary."
+  starting_condition_role: "Service foreground starting gate, not zero upstream responsibility for failed original goods."
+  product_classification_scope: "CPC 3.0:62165 narrower manual side-cutter counter service only."
+  recursive_input_rule: "Do not recursively charge all received merchandise to retail service. failed_original is an actual characterized Product input for F only. Raw receipts and accepted-sale custody records are QA, not extra background inputs. Only supplier_handoff and rejected_external are explicitly non-characterized physical satellite outputs."
+  upstream_dataset_requirement: "Each original homogeneous package source V contains actual complete tool and package manufacture and receiving-gate inbound transport once. If provider omits transport, complete V using measured source-specific transport before applying ownership. No catalog page is a quantified LCI."
+  disclosure: "Core incremental service inventory plus mandatory completed support modules. Successful S merchandise background is excluded; a separately declared GOODS system may add S once. Do not label the core alone a complete retail business or a full-standard-conformant LCA."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Counter retail service for one factory-packed manual side-cutting pliers"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "actual lot and factory package BOM/configuration"
+    - "model and EAN"
+    - "non-specialized assortment and counter channel"
+    - "site and geography"
+    - "pool ID and prospective dates"
+    - "final acceptance IDs and correction version"
+    - "receiving-gate S/F/T/O source ownership"
+    - "Q and zero-output status"
+    - "support module coverage and provider boundaries"
+    - "actual packaging and terminal receiver acceptance"
+    - "flow identity binding status"
+reference_flows:
+  []
+measurement_rules:
+  - id: service_count
+    applies_to: "retail_service"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "One Item(s) is one final-valid service for one distinct original package under final_service; physical stock and nominal tool mass cannot replace Q."
+  - id: count_sources
+    applies_to: "failed_original; rejected_external; supplier_handoff"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Complete original package count only; state and whole-source vector are verified; no count-to-kg default."
+  - id: power_unit
+    applies_to: "store_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "1 kWh = 3.6 MJ; electricity_allocate; retain meter kWh and provider boundary. Energy unit group 93a60a57-a3c8-11da-a746-0800200c9a66; no voltage/mix implied."
+  - id: carrier_mass
+    applies_to: "failed_pack_waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Actual whole mixed carrier net kg at dispatch, not catalogue tool mass; terminal_carriers."
+process_map:
+  - id: counter
+    name: "Counter retail and source responsibility"
+    inclusion: "required"
+    inclusion_condition: "All admitted pools"
+    role: "incremental service and actual source input"
+    quantitative_reference: "per reference flow"
+  - id: fates
+    name: "Actual fate and custody transfers"
+    inclusion: "required"
+    inclusion_condition: "Inspect every pool; each carrier requires actual presence/absence evidence"
+    role: "terminal physical carriers and responsibility"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: counter
+    label: "Counter retail and source responsibility"
+    inputs:
+      product:
+        - row_id: failed_original
+          role: "Complete new factory-packed manual side-cutting pliers at receiving gate"
+          name: "Complete new factory-packed manual side-cutting pliers at receiving gate"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Actual whole original-source Product input for failed goods under source_ownership; retain complete tool and its actual factory package. n_failed=N_F/Q; failed_background; cp_goods. Match each actual whole source vector; this Product input carries F manufacture and receiving-gate transport once."
+          amount:
+            expression: "N_F / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_goods
+              source_ids:
+                - bahco-pliers-catalogue
+                - ghg-product-2011
+            ranges: []
+        - row_id: store_electricity
+          role: "Alternating current 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          name: "Electricity, alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Metered attributable AC energy crosses the counter service boundary, with disjoint source pools and actual supply binding. 3.6*K_h/Q MJ; electricity_allocate; cp_energy. Product input at point of use, voltage/provider unspecified by identity; bind actual supply geography/technology/voltage and loss boundary independently."
+          amount:
+            expression: "3.6 * K_h / Q MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ghg-product-2011
+                - jrc-retail-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retail_service
+          role: "Counter retail service for one factory-packed manual side-cutting pliers"
+          name: "Counter retail service for one factory-packed manual side-cutting pliers"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "The single reference Product output is the final accepted service; keep physical custody in its separate ledger. 1 Item(s); final_service; cp_goods. The reference is the finally accepted retail service, not merchandise production, gross handover or nominal kg of tool."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_goods
+              source_ids:
+                - un-cpc3-62165
+                - ghg-product-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: fates
+    label: "Actual fate and custody transfers"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rejected_external
+          role: "Unopened complete nonconforming factory-packed manual side-cutting pliers retained by an external recipient"
+          name: "Unopened complete nonconforming factory-packed manual side-cutting pliers retained by an external recipient"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Record actual unopened nonconforming package transfer/retention by an external recipient without implying retailer waste. N_external_rejected/Q Item(s); terminal_carriers; cp_terminal. Physical non-characterized satellite only; original F/T/O responsibility remains in source_ownership, no waste or avoided-product credit inferred."
+          amount:
+            expression: "N_external_rejected / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_terminal
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+        - row_id: supplier_handoff
+          role: "Unopened complete factory-packed manual side-cutting pliers physically handed back to supplier"
+          name: "Unopened complete factory-packed manual side-cutting pliers physically handed back to supplier"
+          flow_type: "product"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Record actual complete-package supplier handoff independently of source ownership or acceptance status. N_supplier_handoff/Q Item(s); terminal_carriers; cp_terminal. Satellite custody transfer, not automatic T or avoided manufacture; record actual recipient and continuing source responsibility."
+          amount:
+            expression: "N_supplier_handoff / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_terminal
+              source_ids:
+                - ghg-product-2011
+            ranges: []
+      waste:
+        - row_id: failed_pack_waste
+          role: "Whole unopened failed factory-packed manual side-cutting pliers for contracted treatment"
+          name: "Whole unopened failed factory-packed manual side-cutting pliers for contracted treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the measured actual whole failed package sent to a receiver contractually accepting its complete constituents and state. sum dispatch_net_kg/Q; terminal_carriers; cp_terminal. Actual dry whole mixed carrier with complete tool and actual original package; receiver must accept this exact composition/state and full treatment boundary."
+          amount:
+            expression: "sum dispatch_net_kg / Q"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_terminal
+              source_ids:
+                - ghg-product-2011
+                - jrc-retail-2013
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: fixed_pool
+    applies_to: "all inventory rows"
+    rule: "Before observation fix pool ID, same SKU/package configuration, site, source dates and closure rule; include closed, idle, failed and zero-sale periods. Q is not gross stock throughput. Late returns/revocations/fate changes replace all affected original-pool numerator/source/denominator versions using actual dates; later resale of the same original ID never adds another manufacturing vector. Q=0 pools remain raw and explicitly unnormalizable; carry them within the prospectively defined same-configuration pool, never delete or silently allocate them to an unrelated successful period."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: source_drivers
+    applies_to: "store_electricity"
+    rule: "Use direct disjoint meters first. Draw the circuit tree; subtract a child only if included in its parent. Separately meter lighting/fan fixed source pools and allocate by reserved lit/fanned display footprint m2*h including idle/closed reservation; checkout active source by logged terminal active seconds; ICT/network active source by measured source-specific byte processing activity; security continuous source by protected footprint m2*h; administrative active source by recorded task seconds. Reconcile each active/idle/fixed kWh subpool to its parent; allocate terminal/network/admin idle AND fixed/closed continuous-source subpools by beneficiary reserved device seconds, never by zero active use or zero sales. Before each observation interval register every actual beneficiary cohort/pool and its device reservation share, including failed, zero-sale and closed-period reservations; retain timestamped reservation versions rather than retrospectively selecting successful sales. reserved_device_seconds_h equals measured available device seconds times the predeclared reservation share_h; shares across all actual beneficiaries sum to1 for each device interval, and reserved seconds reconcile to the full source duration. Unknown beneficiaries, unassigned reservations or missing closed-period coverage block completion. Do not sum incompatible drivers or energy with area/time/bytes. Unknown or zero all-beneficiary driver totals block allocation until measured reservation and beneficiaries reconcile."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: source_materials
+    applies_to: "all inventory rows"
+    rule: "Any additional store packaging, receipt paper, cleaning formulation or maintenance material requires actual named atomic cards and cp_modules fields. Fix source manufacture and source inbound transport to first actual use; never-used stock and transfers retain unassigned sources. Already-used reusable stock never repeats manufacture/inbound. Printed intermediate stock retains both original paper and printing-meter source IDs with historical replacement versions. For cleaning track original formulation-origin kg into mutually exclusive used-final, spilled, rinsed-final, carrier-residue-dispatched, retained and unused states; used→rinsed is replacement, not a second destination. Actual entire wet carrier kg is independently weighed, not formulation kg; added water/dirt/cloth/container is not source formulation."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: asset_versions
+    applies_to: "all inventory rows"
+    rule: "For every homogeneous actual asset/model/BOM/scope vector V and every historical beneficiary-period h collect exposure e_h in its own fixed unit: building and security protected footprint m2*h; fixed lights lit footprint m2*h; fixed fans fanned footprint m2*h; other fixed fixtures their evidenced served footprint m2*h; shelving reserved shelf-position*h; checkout/ICT/network/admin equipment reserved device*h; each actual hand trolley or manually operated handling-equipment model reserved handling-device*h; reusable cleaning cloth cleaned m2. Assign each actual fixed light/fan/fixture model and its complete vector either to an evidenced complete building package or to its own homogeneous asset module, exclusively. For handling equipment, e_h=sum_t(reserved_handling_device_hours_t*handling_reservation_share_h_t) across active, idle and closed intervals; define all receiving/handling beneficiary pools and timestamped reservation shares before observation, including failed/zero-sale cohorts. Shares sum to1 for every whole-device interval, so idle/closed exposure follows its reserved beneficiaries and never disappears with zero movements. reserved_handling_device_hours_t is the whole-device reserved interval duration before beneficiary attribution, so multiply its reservation share once. Record actual intervals, hours, shares, model/BOM/scope and matching same-unit lifetime L; unknown or unassigned capacity blocks completion. Expected lifetime exposure L has the SAME unit; f_old_h=e_h/L_old and provisional summed fractions must not exceed1. At actual retirement set E=sum_all_h actual e_h and f_new_h=e_h/E for EVERY historical h, sum=1. A life/BOM/background change replaces all historical fractions/vectors by delta_h=f_new_h*V_new-f_old_h*V_old, with signed numerator correction to each original pool. No restart or residual-only shortcut. Retirement carrier follows f_new_h once, not a second manufacture fraction. Whole-device net weighing and BOM reconstruction are exclusive; never subtract removed components twice."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: asset_transport
+    applies_to: "all inventory rows"
+    rule: "Independent asset acquisition/repair/retirement transport belongs first to that named asset source and follows the SAME complete historical f_h/version corrections as that source; never charge every retirement trip to current Q. Material first-use transport follows source_materials. Provider-already-attributed asset or period transport keeps its fraction and receives no second fraction. A complete package containing transport/maintenance/EOL excludes duplicate modules."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: transport_driver
+    applies_to: "all inventory rows"
+    rule: "For each actual vehicle segment/trip t preserve route, measured distance d_t, stationary/idle duration tau_t, load and all beneficiary reservations. Separate measured movement and idle source numerators. Allocate movement by reserved payload kg*d_t for the evidenced mass-limited vehicle; allocate empty movement by reserved payload capacity kg*d_t of the originating reservations, never zero delivered tonnes. Allocate stationary/idle source by reserved payload capacity kg*tau_t. No mixing kg*km with kg*h. Require positive known same-unit total drivers and whole-trip reconciliation. Provider consignment amounts already allocated retain that amount; segment evidence is QA, not another multiplication. Empty/idle coverage unknown blocks completeness."
+    source_ids:
+      - ghg-product-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_goods
+      process_id: "counter"
+      flow_role: "failed_original; retail_service"
+      record_type: "source/acceptance/custody ledger"
+      raw_fields: "pool_id; prospective_start/end; pool_version; original_id; source_id; actual SKU/EAN; lot; factory_package_BOM/configuration; actual_original_package_count N_s; actual gross/net kg; supplier_vector V_s; inbound_transport_scope; S_s; F_s; T_s; O_s; final_valid_acceptance; closure_date; event_id/date; all_gross_handovers; customer_returns; supplier_handoffs; internal_asset_transfers; condemnation; opening/closing_goods_count; opening/closing_held_waste_count; confirmed_missing; signed_unresolved_residual; recipient/state/responsibility"
+      collection_method: "Scan each actual complete package and lot before sale; establish persistent original IDs, count physical events independently of acceptance, calibrate scales and verify actual package/BOM against invoice and supplier signed inventory. Audit sealed state without assuming tool net mass equals complete-package mass. Obtain actual full supplier vector and separate packaging/inbound boundaries; catalogue is only product specification. Keep raw S/F/T/O and gross stock; final_service Q and failed_background n_failed per reference flow, once. Do not normalize raw audit balances."
+      unit: "Item(s); kg; event date"
+      frequency: "every receipt/event; daily stock closure"
+      temporal_coverage: "entire prospectively fixed pool plus linked historical corrections"
+      site_scope: "receiving, counter and original supplier boundary"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "signed supplier BOM/vector; scans; acceptance/revocation evidence; calibrated weights; source ownership conservation"
+    - protocol_id: cp_energy
+      process_id: "counter"
+      flow_role: "store_electricity"
+      record_type: "meter and all-beneficiary driver ledger"
+      raw_fields: "meter_id; parent_includes_child; source_subpool k; active/idle/fixed_mode; start/end kWh; K_k; beneficiary h; reserved_lit/fanned_m2; protected_m2; hours; terminal_active_seconds; network_bytes_processed; administrative_task_seconds; reserved_device_seconds_h; prospective_beneficiary_register; device_reservation_interval; available_device_seconds; reservation_share_h; reservation_version/effective_date; beneficiary_failed/zero_sale/closed_status; d_hk; K_hk; K_h; supply_geography/technology/voltage/loss_scope; calibration; Q"
+      collection_method: "Read calibrated interval meters and instrument each material active/idle/fixed component; circuit tree proves overlaps. Before observation register actual beneficiary pools, device reservation shares and effective versions; log active, idle and fixed/closed intervals, including failed/zero-sale reservations, and reconcile all device seconds under source_drivers. Collect exact fixed dimensions in source_drivers; reconcile source pools to bills and all beneficiaries. Provider-contained electricity is removed by physical source scope. electricity_allocate returns MJ per reference flow; source subpools use a single same-unit driver each, reconcile before summation."
+      unit: "kWh; m2*h; seconds; bytes separately"
+      frequency: "interval readings and every task/reservation"
+      temporal_coverage: "same entire pool including idle/closed periods"
+      site_scope: "store circuits and all connected beneficiaries"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; meter tree; raw logger/bill; component source reconciliation"
+    - protocol_id: cp_terminal
+      process_id: "fates"
+      flow_role: "rejected_external; supplier_handoff; failed_pack_waste"
+      record_type: "actual terminal/custody consignment ledger"
+      raw_fields: "pool_id; pool_version; event_id; original_id; dispatch_date; recipient; actual unopened_state; actual constituents; gross_kg; tare_kg; dispatch_net_kg; scale_calibration; N_external_rejected; N_supplier_handoff; receiver_signed_composition_acceptance; full_treatment_scope; provider_contains_transport; onward_background_responsibility; held_waste_stock; confirmed_missing; signed_unresolved_residual; Q"
+      collection_method: "Count physical transfers by unique event IDs and trace original source IDs; weigh actual whole waste consignment on a calibrated scale, deduct actual tare once. Keep supplier/customer transfers and waste disjoint; obtain signed actual mixed composition/state acceptance plus treatment contract. Forward independent transport records to cp_modules with original asset/material/source responsibility. terminal_carriers yields per reference flow once; stock is independent QA; process views retain the same original record IDs without duplicating measurement."
+      unit: "kg; Item(s)"
+      frequency: "every actual consignment and fate revision"
+      temporal_coverage: "whole pool and later original-source fate updates"
+      site_scope: "counter/store departure and named receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "signed weighbridge/net record; actual constituent acceptance; recipient/state; treatment/provider scope"
+    - protocol_id: cp_modules
+      process_id: "counter"
+      flow_role: "all inventory rows"
+      record_type: "mandatory module and source/asset completion register"
+      raw_fields: "module_id; actual_presence/absence_evidence; operation/capital_stage; actual_model/BOM/scope; source_id; original_provider_boundary; actual_exchange_card_id; protocol_id/process_id; property/unit; x_jc; D_j; pool_id/version; source_pool_active/idle/fixed; raw_total; all_beneficiaries; exact_driver/unit; prospective_handling_beneficiary_register; actual_handling_asset_model/BOM/scope; handling_reservation_interval; reserved_handling_device_hours_t; handling_reservation_share_h_t; handling_reservation_version/effective_date; handling_active/idle/closed_status; fixed_light/fan/fixture_model_and_served_footprint; e_h; e_actual_h; L_old; E; f_old_h; f_new_h; V_old; V_new; delta_h; installation/repair/retirement_event; asset_stock; actual_carrier_kg; material_receipt/unused/first_use/reuse/destination; original_formulation_kg; dispatched_container_residue; transport_trip/segment; actual_d_t; idle_tau_t; payload_kg; reserved_capacity_kg; provider_allocation; actual_water_meter; actual_effluent_meter/density; calibration; overlap_constituents/event/time/stage; Q"
+      collection_method: "Inspect the full site and contracts monthly and at change, and retain signed coverage evidence for every support_coverage module. Meter all real operation sources; apply fixed source_drivers units (direct subdivision first), preserving idle/failure periods. Obtain actual asset model/BOM vectors and same-unit exposures/lifetime across ALL past beneficiaries; register receiving/handling equipment reservations before observation and retain actual reserved handling-device hours, shares and active/idle/closed periods under asset_versions; verify fixed light/fan/fixture capital is in exactly one complete building package or its own actual-model module; recover every historical numerator version under asset_versions. For materials collect receipt/unused/used/final state and first-use sources. For reverse/waste/material/asset transport retain measured segment distance, stationary duration, reserved capacity and provider boundary, then transport_driver. Water input from the site inlet meter already excludes reuse: never subtract reuse again. Direct actual effluent is independently measured V_discharge*rho at measured state; no water-only reconstruction masquerades as full liquid mass. No combustion/refrigerant source is admitted under an absent gate; any actual source requires a separate reviewed state/species/path method and cards before completeness. complete_modules restores x_jc*D_j and compatible source numerators, applies asset_replace, and final/Q exactly once. This master register does not replace an actual single-process protocol linked from each added atomic card."
+      unit: "native exchange units; each driver/lifetime unit separate"
+      frequency: "every event; monthly coverage; every lifetime/provider revision"
+      temporal_coverage: "full source pool plus complete asset and material source history"
+      site_scope: "entire site and contracted utilities/ICT/payment/security/admin, assets and transport"
+      aggregation_rule: "complete_modules restores x_jc*D_j and compatible source numerators, applies asset_replace, and final/Q exactly once. This master register does not replace an actual single-process protocol linked from each added atomic card."
+      quality_evidence: "signed complete coverage matrix; raw meter/driver data; calibrated weighing; original denominators/source IDs; full version/asset histories; overlap audit"
+  calculation_rules:
+    - id: final_service
+      applies_to: "retail_service"
+      rule: "Q=count distinct original_id with final_valid_acceptance at closure; retail_service=1 Item(s). Version the final-valid set; do not subtract revocations after already filtering that set."
+      inputs:
+        - original_id
+        - final_valid_acceptance
+        - closure_date
+        - pool_version
+        - cp_goods
+      output: "Q; retail_service"
+      source_ids:
+        - ghg-product-2011
+    - id: failed_background
+      applies_to: "failed_original"
+      rule: "n_failed=N_F/Q; B_F=sum_s(F_s*V_s); failed_original carries each actual homogeneous whole-source supplier vector once. If supplier source vectors differ, disaggregate source-specific exchange instances under this one homogeneous package identity; never substitute scalar count for unknown vector composition. S background belongs only to downstream GOODS; T retains named continuing responsibility; O blocks closure."
+      inputs:
+        - N_F
+        - Q
+        - F_s
+        - V_s
+        - S_s
+        - T_s
+        - O_s
+        - cp_goods
+      output: "n_failed; B_F"
+      source_ids:
+        - ghg-product-2011
+    - id: electricity_allocate
+      applies_to: "store_electricity"
+      rule: "For each disjoint source subpool k and beneficiary h, K_hk=K_k*d_hk/sum_h(d_hk); K_h=sum_k K_hk; store_electricity=3.6*K_h/Q MJ. K_k is metered kWh; d_hk uses the single fixed driver for that source in source_drivers. The conversion1 kWh = 3.6 MJ changes numerator units only. Reconcile sum_h K_hk=K_k."
+      inputs:
+        - K_k
+        - d_hk
+        - K_hk
+        - K_h
+        - available_device_seconds
+        - reservation_share_h
+        - reserved_device_seconds_h
+        - Q
+        - cp_energy
+      output: "store_electricity"
+      source_ids:
+        - ghg-product-2011
+    - id: terminal_carriers
+      applies_to: "failed_pack_waste; rejected_external; supplier_handoff"
+      rule: "failed_pack_waste=sum actual dispatch consignment net kg/Q; rejected_external=N_external_rejected/Q; supplier_handoff=N_supplier_handoff/Q. The three physical event sets are disjoint at a given event; serially linked events retain the same original source without acquiring another vector. Direct waste dispatch kg is not reduced again by stock change. Goods-only and held-waste balances independently validate it."
+      inputs:
+        - dispatch_net_kg
+        - N_external_rejected
+        - N_supplier_handoff
+        - event_id
+        - original_id
+        - Q
+        - cp_goods
+        - cp_terminal
+      output: "terminal quantities per reference flow"
+      source_ids:
+        - ghg-product-2011
+    - id: complete_modules
+      applies_to: "all inventory rows"
+      rule: "For each mandatory support module j restore every normalized exchange x_jc to its evidenced raw numerator X_jc=x_jc*D_j using original denominator D_j, pool, source IDs and version. Remove overlaps using physical_overlap, not provider IDs. Split operation active/idle/fixed measured source pools; apply the EXACT source_drivers dimensions, direct subdivision first. Apply asset_versions separately for each actual model/BOM/V and actual event material/transport rules. Raw core X_core_c includes N_F actual failed_original input instances linked to their V_s (which yields B_F once, never an additional B_F exchange) and the AC numerator; completion X_total_c=X_core_c+sum_j disjoint compatible X_jc including all historical deltas. Only add identical exchange/property/unit numerators, never kg to MJ or raw to normalized values. Final x_total_c=X_total_c/Q once; do not add F or AC again. No numerical completion is allowed until actual atomic cards and same-process protocols for every added exchange have been authored in both languages and synced, or true absence evidenced."
+      inputs:
+        - x_jc
+        - D_j
+        - X_jc
+        - X_core_c
+        - X_total_c
+        - Q
+        - source_id
+        - pool_id
+        - pool_version
+        - delta_h
+        - cp_modules
+      output: "x_total_c"
+      source_ids:
+        - ghg-product-2011
+    - id: asset_replace
+      applies_to: "all inventory rows"
+      rule: "For each actual homogeneous asset vector apply asset_versions: f_old_h=e_h/L_old; at retirement E=sum_all_h e_actual_h and f_new_h=e_actual_h/E. Record delta_h=f_new_h*V_new-f_old_h*V_old to EVERY original historical pool before its own final/Q. Sum_final_f=1. Track manufacture/installation, operation, maintenance and terminal treatment disjointly; independent transport follows asset_transport, with provider allocation not repeated. Acquisitions and retirements validate asset stock, not an additional consumed-item input besides exposure/lifetime."
+      inputs:
+        - e_h
+        - e_actual_h
+        - reserved_handling_device_hours_t
+        - handling_reservation_share_h_t
+        - L_old
+        - E
+        - f_old_h
+        - f_new_h
+        - V_old
+        - V_new
+        - delta_h
+        - cp_modules
+      output: "historical raw asset numerator replacements"
+      source_ids:
+        - ghg-product-2011
+  data_quality_requirements:
+    - id: q_binding
+      applies_to: "all inventory rows"
+      requirement: "Require exact type, complete object/state, property/unit and route binding; identity alone does not supply LCI or actual quantity. Unbound cards remain pending until direct-read evidence and matching supplier/treatment protocol are complete."
+      evidence: "official direct-read receipts; supplier/receiver signed specification; protocol records"
+    - id: q_temporal
+      applies_to: "all inventory rows"
+      requirement: "Keep original source IDs, dates, denominator sets and revision histories. No unobserved period, negative residual, unknown module or zero pool can be silently deleted or clamped to zero."
+      evidence: "full signed stock/source reconciliation and corrections"
+    - id: q_completeness
+      applies_to: "all inventory rows"
+      requirement: "Actual support exchange additions must have bilingual atomic cards, correct process/direction/type, raw fields, exact formula Inputs, one reference_flow basis and full historical deduplication before claiming complete retail-service data."
+      evidence: "coverage matrix; actual parsed guidance/protocol/card audit; complete_modules outputs"
+validation_rules:
+  - rule_id: v_scope_identity
+    applies_to: "all inventory rows"
+    rule: "Verify actual model/EAN, lot, full tool-plus-package BOM, unopened state and non-specialized counter channel. Each unbound flow requires direct official binding with matching type/state/property/unit and supplier/treatment boundary, not a property UUID used as flow. Historical AC identity observation is not a live supplier/background verification."
+    source_ids:
+      - un-cpc3-62165
+      - bahco-pliers-catalogue
+  - rule_id: v_sources_counts
+    applies_to: "failed_original; retail_service"
+    rule: "Audit original IDs once, Q set and gross custody independently; reconcile S/F/T/O whole-source vectors at receiving gate. Q>0 is required for normalized dataset; zero-output and unresolved/open sources stay explicit. Acceptance revocation without return is included; price-only refunds cannot alter Q. All original failed B_F must be represented by failed_original; no loss is omitted or manufacture repeated at resale."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: v_terminal
+    applies_to: "failed_pack_waste; rejected_external; supplier_handoff"
+    rule: "Waste dispatch requires calibrated actual carrier net weighing and signed acceptance of the exact mixed tool-plus-package constituents/state with matching full treatment. Confirm missing separately from signed unresolved residual. External retention and supplier transfer need recipient/state/continuing responsibility and no automatic waste or credit. Never split the same intact waste carrier into component waste again."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: v_modules
+    applies_to: "all inventory rows"
+    rule: "Check every mandatory module in support_coverage using cp_modules and complete_modules, including complete fixed lighting/fan/fixture capital, ICT/network/payment/security/admin operation and capital. Named missing modules alone are incomplete. Added actual cards must have correct single process protocols, raw fields, units, exact calculation inputs and complete bilingual semantics before sync. Reconcile all source pools/beneficiaries including closed and failure periods."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: v_lifetime
+    applies_to: "all inventory rows"
+    rule: "Audit per-model homogeneous V, source boundaries, same-unit e/L and final e/E, all historical numerator replacements and asset/material transport history. Sum provisional f<=1 and final f=1; final residual1-sum_old_f is QA only. Complete-provider overlap and all previous versions must reconcile. No asset restart or all-current-retirement charging."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: v_normalization
+    applies_to: "all inventory rows"
+    rule: "Every final amount has Basis kind reference_flow; raw protocols retain original units and one final/Q. Unknown is never zero. No invented weight, LCI, range, UUID, component percentage, safe-use limit or scientific approval. Candidate methodology requires independent scientific and translation review before promotion."
+    source_ids:
+      - ghg-product-2011
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Review-required incremental service plus completed compatible support modules. A GOODS system can add successful S source background once, explicitly separately."
+  allowed_use: "Same evidenced homogeneous factory package and mixed-assortment counter route with complete source/asset history and final accepted denominator."
+  excluded_use: "Entire62165 coverage, manufacturing of goods, powered tool service, demonstrations, repair, opened or incomplete package routes, complete-business claims from core only, conformity or safety approval."
+  required_metadata: "All reference qualifiers; original pool/IDs; provider/source vectors and boundaries; module cards/protocols; Q; full historical replacement versions."
+  required_quality_disclosure: "Unbound identities; historical AC observation; supplier lot/BOM/LCI gaps; zero/open pools; incomplete modules; allocation/calibration uncertainty and actual coverage."
+  update_trigger: "Any actual configuration, package, route, acceptance/fate, provider boundary, lifetime/BOM, driver or source revision; replace all affected prior versions."
+data_sources:
+  - id: "un-cpc3-62165"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 explanatory note62165; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62165 ; retrieved2026-10-29"
+    used_for: "Hand-tool and machine-tool category boundaries; narrower mapping inference, no inventory factor."
+  - id: "bahco-pliers-catalogue"
+    type: "handbook"
+    reference: "BAHCO Plier Catalogue, PLIERS-ENG-20; https://media.bahco.com/media/media-download/catalogue/Bahco%20Plier%20Catalogue_UK.pdf ; pp.7-8 and14; retrieved2026-10-29"
+    used_for: "Actual2101G-180 model/EAN,180mm, black finish, complete hand tool and ERGO context. Nominal 230 g is not used for field mass; actual lot/BOM/package and LCI require supplier evidence."
+  - id: "ghg-product-2011"
+    type: "standard"
+    reference: "WRI/WBCSD Product Life Cycle Accounting and Reporting Standard2011; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf ; ch.6,7,9"
+    used_for: "Service unit, attributable boundary, allocation hierarchy and physical drivers inform the explicit PCR design. No full-standard-conformity claim or source mandate for these exact equations."
+  - id: "jrc-retail-2013"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Environmental Management Practice in the Retail Trade Sector2013, EUR25998EN; https://susproc.jrc.ec.europa.eu/activities/emas/documents/RetailTradeSector.pdf ; executive summary and lighting/waste sections"
+    used_for: "Retail energy/lighting, water/chemicals, waste and transport coverage; no benchmark copied as a site inventory/default."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c96460965386bda09912f16336f6d07b45f7f60521b37ac749c0a51e81740222"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5563"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5563
+          line: 58
+          column: 1
+        end:
+          offset: 13808
+          line: 82
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual complete factory packages at receiving gate, with supplier/source IDs, original tool-plus-packaging vectors and inbound transport boundary. |\n| starting_condition_role | Service foreground starting gate, not zero upstream responsibility for failed original goods. |\n| product_classification_scope | CPC 3.0:62165 narrower manual side-cutter counter service only. |\n| recursive_input_rule | Do not recursively charge all received merchandise to retail service. failed_original is an actual characterized Product input for F only. Raw receipts and accepted-sale custody records are QA, not extra background inputs. Only supplier_handoff and rejected_external are explicitly non-characterized physical satellite outputs. |\n| upstream_dataset_requirement | Each original homogeneous package source V contains actual complete tool and package manufacture and receiving-gate inbound transport once. If provider omits transport, complete V using measured source-specific transport before applying ownership. No catalog page is a quantified LCI. |\n| disclosure | Core incremental service inventory plus mandatory completed support modules. Successful S merchandise background is excluded; a separately declared GOODS system may add S once. Do not label the core alone a complete retail business or a full-standard-conformant LCA. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |\n| route_gate | all inventory rows | Admit only an evidenced mixed-assortment store with sealed homogeneous original packages and the declared counter route. Record invoices, photographs, assortment, package mass/BOM and configuration revision. Actual additional wrapping, printing, cleaning, powered demonstration, delivery, combustion or refrigerant equipment cannot be assumed absent: cp_modules determines coverage and adds mandatory specific cards/protocols under complete_modules. Unknown presence blocks dataset completeness. If a stock package becomes a permanent demonstrator, transfer the SAME original V_s to a named internal asset T, never charge full F plus a new asset manufacture; author the actual opened tool/packaging states and module before completeness. | un-cpc3-62165; bahco-pliers-catalogue; jrc-retail-2013 |\n| source_ownership | failed_original; retail_service | For every original package source s fix N_s and the matching whole supplier vector V_s at the same receiving gate. Partition source-equivalent whole IDs into final-valid S_s, service-responsible failed F_s, named continuing transfer T_s and unresolved/open O_s, with N_s=S_s+F_s+T_s+O_s. No arbitrary material mass shares of environmental vectors. This route keeps the complete package intact, so one original ID has one whole final responsibility. N_F=sum_s F_s. Failed unreturned customer-held goods and confirmed missing goods remain F with evidenced responsibility; unknown missing residual remains O and blocks closure. Supplier returns are T only with named continuing responsibility, never an automatic credit. | ghg-product-2011 |\n| acceptance_custody | retail_service; failed_pack_waste; rejected_external; supplier_handoff | Keep goods-only stock and held-waste stock separate. G_close=G_open+receipts+physical_customer_returns-ALL_gross_customer_handovers-physical_supplier_handoffs-internal_asset_transfers-condemnations-confirmed_goods_missing+signed_unresolved_goods_residual. ALL handovers already include accepted and never-accepted exits; do not subtract a second unaccepted set. Condemnation moves goods into held waste; W_close=W_open+condemnations-waste_dispatch-confirmed_waste_missing+signed_unresolved_waste_residual. No second goods exit on waste dispatch. Q=count distinct original IDs with final-valid acceptance; revocations without return reclassify the old acceptance, not a new movement or a second subtraction from Q. A monetary refund/discount does not revoke acceptance by itself. | ghg-product-2011 |\n| failure_carriers | failed_pack_waste; rejected_external; supplier_handoff | Separate ownership from physical fate: F does not create a waste shipment. Measure actual whole unopened failed package waste dispatch kg including tool, grips, spring/joint and actual packaging; retain signed receiver acceptance of actual constituents/state and matching complete treatment scope. Keep the real carrier intact, with no parallel steel, plastic or packaging constituent waste rows. Physical retained external nonconforming packages and supplier transfers use their own event IDs and are never retailer waste automatically; record recipient, state, quantities and continuing treatment/background responsibility. An opened or contaminated carrier requires a state-specific extension, not this unopened carrier identity. | ghg-product-2011 |\n| whole_source | failed_original | The complete original package input uses Number of items, not tool net kg or catalogue 230 g. Bind a supplier vector for the actual tool-plus-package configuration, including all actual handle/steel/coating/joint/spring and packaging constituents. Whole-source mode excludes component inputs for the same vector. If constituents acquire different responsibilities, this route is incomplete until separate actual component product cards and verified supplier component vectors conserve the original vector; mass fractions cannot split an environmental vector. Factory packaging never receives a second full manufacture burden through terminal waste. | bahco-pliers-catalogue; ghg-product-2011 |\n| physical_overlap | all inventory rows | Before adding providers compare physical constituents, event IDs, asset IDs, dates, sites and lifecycle stages. Distinct provider IDs do not prove disjoint activity. A complete background containing electricity, transport, repair or treatment excludes the same outside activity. No waste-treatment credit, reuse credit or negative emission is inferred. Satellite outputs rejected_external and supplier_handoff carry no avoided-production credit; their original V stays under source_ownership. | ghg-product-2011 |\n| support_coverage | all inventory rows | The core covers failed_original, store_electricity, retail_service and the three actual terminal/transfer carriers only. cp_modules must cover receiving handling, storage/display, shared building, lights/fans/fixed fixtures, checkout/payment, ICT/network, security, administration, cleaning, utilities, reverse/waste/material/asset transport, maintenance and end-of-life. These are mandatory completion modules, not an optional omission list. For each actual module create a signed source/operation/capital coverage matrix, name actual atomic exchange cards and same-process protocols, collect required fields, apply complete_modules and asset_versions; each module must be complete or evidenced absent. No complete-business dataset may be delivered from the uncompleted core. | jrc-retail-2013; ghg-product-2011 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 322
+              line: 10
+              column: 1
+            end:
+              offset: 392
+              line: 10
+              column: 71
+          text: "# Counter retail services for original-pack manual side-cutting pliers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5563
+              line: 58
+              column: 1
+            end:
+              offset: 5584
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_19955"
+      family: "allocation"
+      span:
+        start:
+          offset: 19955
+          line: 211
+          column: 1
+        end:
+          offset: 26633
+          line: 222
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| fixed_pool | all inventory rows | Before observation fix pool ID, same SKU/package configuration, site, source dates and closure rule; include closed, idle, failed and zero-sale periods. Q is not gross stock throughput. Late returns/revocations/fate changes replace all affected original-pool numerator/source/denominator versions using actual dates; later resale of the same original ID never adds another manufacturing vector. Q=0 pools remain raw and explicitly unnormalizable; carry them within the prospectively defined same-configuration pool, never delete or silently allocate them to an unrelated successful period. | ghg-product-2011 |\n| source_drivers | store_electricity | Use direct disjoint meters first. Draw the circuit tree; subtract a child only if included in its parent. Separately meter lighting/fan fixed source pools and allocate by reserved lit/fanned display footprint m2*h including idle/closed reservation; checkout active source by logged terminal active seconds; ICT/network active source by measured source-specific byte processing activity; security continuous source by protected footprint m2*h; administrative active source by recorded task seconds. Reconcile each active/idle/fixed kWh subpool to its parent; allocate terminal/network/admin idle AND fixed/closed continuous-source subpools by beneficiary reserved device seconds, never by zero active use or zero sales. Before each observation interval register every actual beneficiary cohort/pool and its device reservation share, including failed, zero-sale and closed-period reservations; retain timestamped reservation versions rather than retrospectively selecting successful sales. reserved_device_seconds_h equals measured available device seconds times the predeclared reservation share_h; shares across all actual beneficiaries sum to1 for each device interval, and reserved seconds reconcile to the full source duration. Unknown beneficiaries, unassigned reservations or missing closed-period coverage block completion. Do not sum incompatible drivers or energy with area/time/bytes. Unknown or zero all-beneficiary driver totals block allocation until measured reservation and beneficiaries reconcile. | ghg-product-2011 |\n| source_materials | all inventory rows | Any additional store packaging, receipt paper, cleaning formulation or maintenance material requires actual named atomic cards and cp_modules fields. Fix source manufacture and source inbound transport to first actual use; never-used stock and transfers retain unassigned sources. Already-used reusable stock never repeats manufacture/inbound. Printed intermediate stock retains both original paper and printing-meter source IDs with historical replacement versions. For cleaning track original formulation-origin kg into mutually exclusive used-final, spilled, rinsed-final, carrier-residue-dispatched, retained and unused states; used→rinsed is replacement, not a second destination. Actual entire wet carrier kg is independently weighed, not formulation kg; added water/dirt/cloth/container is not source formulation. | ghg-product-2011 |\n| asset_versions | all inventory rows | For every homogeneous actual asset/model/BOM/scope vector V and every historical beneficiary-period h collect exposure e_h in its own fixed unit: building and security protected footprint m2*h; fixed lights lit footprint m2*h; fixed fans fanned footprint m2*h; other fixed fixtures their evidenced served footprint m2*h; shelving reserved shelf-position*h; checkout/ICT/network/admin equipment reserved device*h; each actual hand trolley or manually operated handling-equipment model reserved handling-device*h; reusable cleaning cloth cleaned m2. Assign each actual fixed light/fan/fixture model and its complete vector either to an evidenced complete building package or to its own homogeneous asset module, exclusively. For handling equipment, e_h=sum_t(reserved_handling_device_hours_t*handling_reservation_share_h_t) across active, idle and closed intervals; define all receiving/handling beneficiary pools and timestamped reservation shares before observation, including failed/zero-sale cohorts. Shares sum to1 for every whole-device interval, so idle/closed exposure follows its reserved beneficiaries and never disappears with zero movements. reserved_handling_device_hours_t is the whole-device reserved interval duration before beneficiary attribution, so multiply its reservation share once. Record actual intervals, hours, shares, model/BOM/scope and matching same-unit lifetime L; unknown or unassigned capacity blocks completion. Expected lifetime exposure L has the SAME unit; f_old_h=e_h/L_old and provisional summed fractions must not exceed1. At actual retirement set E=sum_all_h actual e_h and f_new_h=e_h/E for EVERY historical h, sum=1. A life/BOM/background change replaces all historical fractions/vectors by delta_h=f_new_h*V_new-f_old_h*V_old, with signed numerator correction to each original pool. No restart or residual-only shortcut. Retirement carrier follows f_new_h once, not a second manufacture fraction. Whole-device net weighing and BOM reconstruction are exclusive; never subtract removed components twice. | ghg-product-2011 |\n| asset_transport | all inventory rows | Independent asset acquisition/repair/retirement transport belongs first to that named asset source and follows the SAME complete historical f_h/version corrections as that source; never charge every retirement trip to current Q. Material first-use transport follows source_materials. Provider-already-attributed asset or period transport keeps its fraction and receives no second fraction. A complete package containing transport/maintenance/EOL excludes duplicate modules. | ghg-product-2011 |\n| transport_driver | all inventory rows | For each actual vehicle segment/trip t preserve route, measured distance d_t, stationary/idle duration tau_t, load and all beneficiary reservations. Separate measured movement and idle source numerators. Allocate movement by reserved payload kg*d_t for the evidenced mass-limited vehicle; allocate empty movement by reserved payload capacity kg*d_t of the originating reservations, never zero delivered tonnes. Allocate stationary/idle source by reserved payload capacity kg*tau_t. No mixing kg*km with kg*h. Require positive known same-unit total drivers and whole-trip reconciliation. Provider consignment amounts already allocated retain that amount; segment evidence is QA, not another multiplication. Empty/idle coverage unknown blocks completeness. | ghg-product-2011 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 322
+              line: 10
+              column: 1
+            end:
+              offset: 392
+              line: 10
+              column: 71
+          text: "# Counter retail services for original-pack manual side-cutting pliers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 19955
+              line: 211
+              column: 1
+            end:
+              offset: 19995
+              line: 211
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40278"
+      family: "validation"
+      span:
+        start:
+          offset: 40278
+          line: 252
+          column: 1
+        end:
+          offset: 43142
+          line: 263
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope_identity | all inventory rows | Verify actual model/EAN, lot, full tool-plus-package BOM, unopened state and non-specialized counter channel. Each unbound flow requires direct official binding with matching type/state/property/unit and supplier/treatment boundary, not a property UUID used as flow. Historical AC identity observation is not a live supplier/background verification. | un-cpc3-62165; bahco-pliers-catalogue |\n| v_sources_counts | failed_original; retail_service | Audit original IDs once, Q set and gross custody independently; reconcile S/F/T/O whole-source vectors at receiving gate. Q>0 is required for normalized dataset; zero-output and unresolved/open sources stay explicit. Acceptance revocation without return is included; price-only refunds cannot alter Q. All original failed B_F must be represented by failed_original; no loss is omitted or manufacture repeated at resale. | ghg-product-2011 |\n| v_terminal | failed_pack_waste; rejected_external; supplier_handoff | Waste dispatch requires calibrated actual carrier net weighing and signed acceptance of the exact mixed tool-plus-package constituents/state with matching full treatment. Confirm missing separately from signed unresolved residual. External retention and supplier transfer need recipient/state/continuing responsibility and no automatic waste or credit. Never split the same intact waste carrier into component waste again. | ghg-product-2011 |\n| v_modules | all inventory rows | Check every mandatory module in support_coverage using cp_modules and complete_modules, including complete fixed lighting/fan/fixture capital, ICT/network/payment/security/admin operation and capital. Named missing modules alone are incomplete. Added actual cards must have correct single process protocols, raw fields, units, exact calculation inputs and complete bilingual semantics before sync. Reconcile all source pools/beneficiaries including closed and failure periods. | ghg-product-2011 |\n| v_lifetime | all inventory rows | Audit per-model homogeneous V, source boundaries, same-unit e/L and final e/E, all historical numerator replacements and asset/material transport history. Sum provisional f<=1 and final f=1; final residual1-sum_old_f is QA only. Complete-provider overlap and all previous versions must reconcile. No asset restart or all-current-retirement charging. | ghg-product-2011 |\n| v_normalization | all inventory rows | Every final amount has Basis kind reference_flow; raw protocols retain original units and one final/Q. Unknown is never zero. No invented weight, LCI, range, UUID, component percentage, safe-use limit or scientific approval. Candidate methodology requires independent scientific and translation review before promotion. | ghg-product-2011 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 322
+              line: 10
+              column: 1
+            end:
+              offset: 392
+              line: 10
+              column: 71
+          text: "# Counter retail services for original-pack manual side-cutting pliers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40278
+              line: 252
+              column: 1
+            end:
+              offset: 40300
+              line: 252
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_product_family"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 7079
+          line: 73
+          column: 1
+        end:
+          offset: 8309
+          line: 73
+          column: 1231
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "route_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 8310
+          line: 74
+          column: 1
+        end:
+          offset: 9142
+          line: 74
+          column: 833
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "source_ownership"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 9143
+          line: 75
+          column: 1
+        end:
+          offset: 9936
+          line: 75
+          column: 794
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "acceptance_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 9937
+          line: 76
+          column: 1
+        end:
+          offset: 10832
+          line: 76
+          column: 896
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "failure_carriers"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 10833
+          line: 77
+          column: 1
+        end:
+          offset: 11664
+          line: 77
+          column: 832
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "whole_source"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 11665
+          line: 78
+          column: 1
+        end:
+          offset: 12393
+          line: 78
+          column: 729
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "physical_overlap"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 12394
+          line: 79
+          column: 1
+        end:
+          offset: 12949
+          line: 79
+          column: 556
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "support_coverage"
+      identity_kind: "explicit"
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 12950
+          line: 80
+          column: 1
+        end:
+          offset: 13806
+          line: 80
+          column: 857
+    - pointer: "/allocation_rules/0"
+      rule_id: "fixed_pool"
+      identity_kind: "explicit"
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 20068
+          line: 215
+          column: 1
+        end:
+          offset: 20714
+          line: 215
+          column: 647
+    - pointer: "/allocation_rules/1"
+      rule_id: "source_drivers"
+      identity_kind: "explicit"
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 20715
+          line: 216
+          column: 1
+        end:
+          offset: 22287
+          line: 216
+          column: 1573
+    - pointer: "/allocation_rules/2"
+      rule_id: "source_materials"
+      identity_kind: "explicit"
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 22288
+          line: 217
+          column: 1
+        end:
+          offset: 23171
+          line: 217
+          column: 884
+    - pointer: "/allocation_rules/3"
+      rule_id: "asset_versions"
+      identity_kind: "explicit"
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 23172
+          line: 218
+          column: 1
+        end:
+          offset: 25277
+          line: 218
+          column: 2106
+    - pointer: "/allocation_rules/4"
+      rule_id: "asset_transport"
+      identity_kind: "explicit"
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 25278
+          line: 219
+          column: 1
+        end:
+          offset: 25813
+          line: 219
+          column: 536
+    - pointer: "/allocation_rules/5"
+      rule_id: "transport_driver"
+      identity_kind: "explicit"
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 25814
+          line: 220
+          column: 1
+        end:
+          offset: 26631
+          line: 220
+          column: 818
+    - pointer: "/validation_rules/0"
+      rule_id: "v_scope_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 40373
+          line: 256
+          column: 1
+        end:
+          offset: 40806
+          line: 256
+          column: 434
+    - pointer: "/validation_rules/1"
+      rule_id: "v_sources_counts"
+      identity_kind: "explicit"
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 40807
+          line: 257
+          column: 1
+        end:
+          offset: 41302
+          line: 257
+          column: 496
+    - pointer: "/validation_rules/2"
+      rule_id: "v_terminal"
+      identity_kind: "explicit"
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 41303
+          line: 258
+          column: 1
+        end:
+          offset: 41818
+          line: 258
+          column: 516
+    - pointer: "/validation_rules/3"
+      rule_id: "v_modules"
+      identity_kind: "explicit"
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 41819
+          line: 259
+          column: 1
+        end:
+          offset: 42351
+          line: 259
+          column: 533
+    - pointer: "/validation_rules/4"
+      rule_id: "v_lifetime"
+      identity_kind: "explicit"
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 42352
+          line: 260
+          column: 1
+        end:
+          offset: 42758
+          line: 260
+          column: 407
+    - pointer: "/validation_rules/5"
+      rule_id: "v_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 42759
+          line: 261
+          column: 1
+        end:
+          offset: 43140
+          line: 261
+          column: 382
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 5563
+          line: 58
+          column: 1
+        end:
+          offset: 5584
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5563"
+      source_span:
+        start:
+          offset: 5612
+          line: 62
+          column: 1
+        end:
+          offset: 7006
+          line: 69
+          column: 284
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_19955"
+      source_span:
+        start:
+          offset: 19955
+          line: 211
+          column: 1
+        end:
+          offset: 19995
+          line: 211
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40278"
+      source_span:
+        start:
+          offset: 40278
+          line: 252
+          column: 1
+        end:
+          offset: 40300
+          line: 252
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c96460965386bda09912f16336f6d07b45f7f60521b37ac749c0a51e81740222"
+  generated_content_sha256: "sha256:312f0961a3b63f7bd6bd080f2786d0a612d08583ce50ef4413a0bbe713a5dbaa"

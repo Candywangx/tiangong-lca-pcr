@@ -1,8 +1,308 @@
 ---
 pcr_id: pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-games-and-toys
 language: en-US
-status: scaffold
+status: candidate
 sync_with: pcr.zh-CN.md
 ---
 
-# Non-specialized store retail trade services, of games and toys
+# Custody and checkout retail services for sealed wooden toy-train sets
+
+## 1. Scope and Applicability
+
+This PCR defines partial incremental custody and checkout services for complete factory-sealed wooden toy-train sets in non-specialized physical stores. Any brand and set design within this family may qualify; separately verify each actual set piece count, materials, couplings, supplier version and complete original packaging/BOM, without adopting the three-piece manufacturer example as a default. The boundary runs from actual store receiving to evidenced customer handover, supplier/internal transfer or waste dispatch, with later acceptance corrections retained. The reference is retail service, not toy manufacture or play time. Exclude separately sold parts, mixed/recombined sets, battery-powered trains, online/delivery, repair, assembly, functional demonstration and repacking. Inspect actual configurations and sign occurrence/absence records; a webpage is insufficient. The partial core cannot represent complete retail before boundary_completion and completion_sum.
+
+The manufacturer’s damp-cloth care instruction is not evidence of actual store cleaning. The premises route is naturally ventilated, with no combustion, refrigerant-containing equipment, HVAC or purchased heat/cold in any store or landlord service supporting this pool. Require full store/landlord equipment and utility registers, contracts and inspection evidence. Unknown or present excluded equipment makes this route inapplicable; no default zero or deferred fuel/refrigerant method is permitted. No numerical mass, composition, efficiency or emission factor is prescribed. These records must be collected for the actual pool.
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.retail-trade-services.non-specialized-store-retail-trade-services-of-games-and-toys |
+| classification_refs | CPC3.0 62153; Non-specialized store retail trade services, of games and toys; narrower subset of group385 goods |
+| covered_products | Factory-sealed complete wooden toy-train sets, with actual set contents, couplings and original packaging verified separately per supplier configuration. |
+| excluded_products | Toy production; tracks or accessories not in this original set; other toys; used/opened retail offers; demonstration and delivery routes |
+| representative_product | Custody and checkout retail services for sealed wooden toy-train sets; actual supplier, SKU/configuration, lot and complete original BOM verified separately for each homogeneous stratum. |
+| production_route | Store receipt; ambient sealed holding; visual package/label check; digital checkout; customer collection; reconciliation of returns and failures |
+| market_state | Complete original sealed set, actual country/lot/age label; no operating cells, motor or electrical demo allowed without inspected evidence and route revision |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | Retail custody/checkout of one complete sealed original toy set |
+| How much | One final-valid accepted originalID; one complete three-vehicle set is one service, never three services |
+| How well | Actual complete sealed configuration, traceable originalID and qualified acceptance criterion; financial settlement alone is insufficient |
+| How long or cycle | One prospectively fixed pool with acceptance cutoff and versioned late corrections; no assumed toy service life |
+| reference_flow_link | accepted_service |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | In-store retail custody and checkout of one finally accepted sealed wooden toy-train set |
+| Reference flow property | Number of items `01846770-4cfe-4a25-8ad9-919d8d378345` |
+| Reference unit group | Units of items `5beb6eed-33a9-47b8-9ede-1dfe8f679159` |
+| Reference unit | Item(s) |
+| Required qualifiers | actual article and lot; complete supplier BOM revision and package component masses; magnetic coupling composition; absence of cells and motor inspection; originalID register; country and actual age/warning label; receiving gate and original sourceIDs; pool dates and correction cutoff; final acceptance evidence; channel and site; meter hierarchy; partial module exclusions and completion versions |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| service_count | accepted_service | Number of items | Item(s) | One complete sealed original set corresponds to1 Item(s) accepted service. Q is final-valid unique originalID count; gross custody count is independent. All final cards are per1 Item(s) reference flow. |
+| mass_carrier | toy_waste | Mass | kg | Measure actual complete dispatched carrier net kg excluding outside container; count-to-mass checks use matched originalID measured kg, never package catalog shipping weight. |
+| electricity_energy | checkout_ac | Net calorific value | MJ | 1 kWh=3.6 MJ; preserve raw kWh, attribution and one final /Q; do not use toy power ratings. |
+
+## 5. System Boundary
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | Original complete sealed goods at actual first store receiving gate; partial service includes G_F separately via failed_supply |
+| starting_condition_role | Incremental service with satellite physical goods and separately coupled failure supply |
+| product_classification_scope | Narrower than CPC3.0 62153; group385 toy train subset |
+| recursive_input_rule | Do not feed this retail service back as its own input; original item resale keeps one source; provider source vectors must be nonoverlapping |
+| upstream_dataset_requirement | Actual G_i toy/package/inbound source per originalID; F bound once; S/O/T continuing responsibility explicit |
+| disclosure | Partial custody/checkout and failure-supply module; fixed missing modules in boundary_completion; unverified identities and data gaps |
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| b_product_family | all inventory rows | This PCR applies to the declared product family across manufacturers and brands. Brand, model, catalogue article, SKU and trade name identify actual study data, not an exclusive eligibility condition. The material/function, product state, fixed format where specified, process/channel and gate conditions below still apply. Establish separate homogeneous supplier/configuration/edition/package-BOM strata and their matching original background vectors; do not multiply a mixed-SKU count by one specimen vector. Use actual measured quantities and supported conversions. Manufacturer examples and their masses, dimensions, ratings, formulation or packaging claims are illustrative only, never class-wide defaults or complete BOM/LCI. Any actually different component, support chemical, package or carrier requires its concrete atomic card, matched property/unit, collection and nonoverlapping source boundary before completeness; an actual state or route outside the declared family requires a separately reviewed extension. Unknown applicability, identity or evidence remains unresolved. This candidate generalization does not establish independent scientific or translation approval. |  |
+| route_gate | all inventory rows | Require a complete real set including all three vehicles, detachable parts, magnets, coatings/adhesives/fasteners and original package body, closure, insert, label and printing. Supplier records plus inspection/weighing must resolve each material/state and net mass; website package shipping weight is not toy or package tare. Never use pure beech kg for the complete toy. Manufacturer age3+ and CE statements are descriptive statements only: retain actual labels and jurisdiction evidence, do not claim verified compliance or prescribe a safety limit. Any opening, missing piece, battery, assembly, testing, demo or added bag/receipt/pallet requires a concrete state-specific atomic card/protocol in both languages before dataset completeness. | ikea-lillabo-spec |
+| custody_boundary | receipt; customer_return; customer_handover; supplier_transfer; internal_transfer; external_retention; toy_waste | Use goods-only stock G separately from held waste W. Gross event balance: G_open+N_receipt+N_return=G_close+N_handover+N_supplier+N_internal+N_external+C_condemned+L_missing. N_handover is an initially qualified customer handover; N_external is an initially never-accepted external handover. Their eventID sets are disjoint and each physical exit appears once. A later acceptance revocation without return changes no physical count. Count every physical return/handover event even for the same originalID. Condemnation moves goods to held waste once; W_open+kg_condemned+kg_other_admitted=W_close+kg_dispatch. Actual dispatch is weighed net carrier kg, never subtracted from goods again. L_missing is a discrepancy requiring investigation, not an environmental emission or waste exchange; unresolved recipient/state blocks completeness. External retention without qualified acceptance remains a failed event and uses its actual recipient/state transfer, not retailer waste. |  |
+| source_responsibility | all inventory rows | At first store receiving bind each originalID to its full supplier source vector G_i, in original complete-set units, containing toy, original package and supplier-to-store transport exactly once with separate component/source locators. Partition original source responsibility into disjoint S (final accepted), F (retailer failed/lost responsibility), O (open inventory), T (named supplier/internal/external continuing owner); G_total=G_S+G_F+G_O+G_T, component by component. These are environmental source ownership ledgers, not extra physical exchanges. The partial service includes G_F exactly once through failed_supply; it excludes G_S, G_O and G_T. Each originalID has one whole final responsibility; partial component ownership requires a supplier-inventory-vector extension before completeness. Downstream sold product couples G_S/Q separately; O and T carry their sources forward by signed ownership. Supplier return never deletes burden. A retained failed item, stolen/lost item or acceptance revoked without return keeps its same original source; F unless evidenced continuing T owner accepts it. No new production on resale; demo conversion transfers the same source to an asset T and is outside this route. |  |
+| boundary_completion | all inventory rows | This is explicitly a partial custody/checkout module, including gross goods movements, service, dedicated local checkout AC, actual whole toy-waste dispatch and G_F background through failed_supply. Complete retail requires disjoint modules for (1) premises operation: storage/lighting/natural ventilation fans and cleaning water/formulation/wipe/effluent carriers, under the evidenced no-combustion/no-refrigerant/no-HVAC/no-purchased-heat/cold route; (2) ICT/network and digital receipt service, separating measured local AC; (3) full capital: building including fixed luminaires/fan, shelves, checkout hardware and handling equipment, installation, actual maintenance and terminal carriers; (4) all post-gate supplier/internal/waste transport and actual empty/idle trips; (5) waste treatment after this dispatch gate. G_F is already included and must not be added again. Supplier-to-store freight stays solely in G_i and is excluded from module4. Source BOMS and package identity are mandatory for G_i even though sold-G_S manufacture is outside incremental service. Execute completion_collect, lifetime_share, transport_complete and completion_sum with the same pool/version and Q. No claim of complete business, whole-product LCA or standard conformity is allowed for this module alone. | ghg-product2011 |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| retail | Sealed toy-set custody and checkout | required | Actual homogeneous sealed original route; conditional flows need presence/absence evidence | foreground | 1 Item(s) final accepted_service; Q final-valid originalIDs |
+
+### Process: Sealed toy-set custody and checkout (`retail`)
+
+#### Inputs
+
+##### Product flows
+
+###### Complete sealed wooden toy-train original retail pack (`receipt`)
+
+First store receiving of complete original packs counted by originalID; retain actual toy/package masses and source ownership separately.
+
+- Selected flow: Complete sealed wooden toy-train original retail pack
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_receipt / Q; physical throughput only; no G_i background attached in this module
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+
+###### Complete sealed wooden toy-train pack physically returned by customer (`customer_return`)
+
+Returning the same pack does not create new manufacture. An opened/incomplete return needs its own state card before completeness.
+
+- Selected flow: Complete sealed wooden toy-train pack physically returned by customer
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_return / Q; every actual intact sealed return event
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+
+###### Alternating current (`checkout_ac`)
+
+Actual local checkout, scanner and local receipt-processing AC within the measured dedicated circuit; no assumed operating wattage, no toy charging or demonstration. Provider electricity background remains to be bound.
+
+- Selected flow: Electricity, alternating current `455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca`
+- Flow property / unit: Net calorific value / MJ
+- Amount rule: 3.6 * E_checkout_attributed_kWh / Q
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_power`
+
+###### Cradle-to-store supply of one complete sealed wooden toy-train original pack (`failed_supply`)
+
+Background-coupled input for retailer-responsible failed originalIDs, expressed as original complete-pack equivalents. Bind each actual provider inventory G_i including full toy, original package and supplier-to-store transport. It is separate from satellite gross receipt: never attach production to receipt as well. No arbitrary mass/count splitting of G_i.
+
+- Selected flow: Cradle-to-store supply of one complete sealed wooden toy-train original pack
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_F / Q; each original source G_i once
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_supply`
+
+#### Outputs
+
+##### Product flows
+
+###### In-store retail custody and checkout of one finally accepted sealed wooden toy-train set (`accepted_service`)
+
+One final-valid unique originalID service after all cutoff corrections, distinct from gross product handover.
+
+- Selected flow: In-store retail custody and checkout of one finally accepted sealed wooden toy-train set
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: 1 Item(s)
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_acceptance`
+
+###### Complete sealed wooden toy-train pack handed to customer (`customer_handover`)
+
+Count every initially qualified gross customer handover including a later-reversed sale; eventIDs are disjoint from initially unaccepted external_retention; acceptance ledger determines final service.
+
+- Selected flow: Complete sealed wooden toy-train pack handed to customer
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_handover / Q
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+
+###### Complete sealed wooden toy-train pack handed back to supplier (`supplier_transfer`)
+
+A signed supplier handover is a physical product transfer; preserve named T or F original background responsibility independently.
+
+- Selected flow: Complete sealed wooden toy-train pack handed back to supplier
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_supplier / Q
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+
+###### Complete sealed wooden toy-train pack transferred to another store (`internal_transfer`)
+
+Transfer to a named store keeps the same originalID and T source ownership; not a retail service or new production.
+
+- Selected flow: Complete sealed wooden toy-train pack transferred to another store
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_internal / Q
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+
+###### Complete sealed wooden toy-train pack retained by external recipient without acceptance (`external_retention`)
+
+Use only actual documented gross external transfer events distinct from customer_handover. A revocation without return is an ownership/acceptance correction, never a second physical transfer. Retained failed pack has actual recipient/state and F or evidenced continuing T responsibility.
+
+- Selected flow: Complete sealed wooden toy-train pack retained by external recipient without acceptance
+- Flow property / unit: Number of items / Item(s)
+- Amount rule: N_external / Q
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_custody`
+
+##### Waste flows
+
+###### Damaged complete wooden toy-train toy-and-original-package waste carrier (`toy_waste`)
+
+Actual dispatched dry composite of the complete original set and its own damaged retail package, without cells or added disposal container. Measure whole consignment net kg with actual carrier composition and receiver acceptance. Separately removed components, opened/incomplete sets, wet contamination and outside containers need separate specific cards; never also report constituents of this same carrier. Waste treatment is outside this dispatch gate and completed separately.
+
+- Selected flow: Damaged complete wooden toy-train toy-and-original-package waste carrier
+- Flow property / unit: Mass / kg
+- Amount rule: kg_dispatch / Q
+- Value mode: `foreground_record`
+- Specificity: `site_specific`
+- Normalization basis: per reference flow
+- Basis kind: `reference_flow`
+- Evidence kind: `calculated_from_collection`
+- Collection protocol: `cp_waste`
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| pool_acceptance | accepted_service | Prospectively fix one site/channel/article/BOM/operational configuration pool with start/end dates and correction cutoff, retaining all failed, refused, idle and zero-sale cohorts. Q is the count of distinct originalIDs with final-valid qualified complete sealed-set acceptance at cutoff; do not subtract revoked IDs a second time. Financial refunds/discounts with valid acceptance do not change Q. Revocation without physical return removes acceptance. Repeated handover or resale of the same ID yields at most one final service; record all attempts. Late events replace original pool numerator, Q, stock/fates and S/F/O/T version using actual dates; do not charge a new period again. Q=0 is unnormalizable, carried visibly into the predeclared same-configuration pool, never dropped. |  |
+| shared_subdivision | checkout_ac; all completion modules | Use dedicated meters/subdivision first. For a shared electricity parent split measured active, idle and fixed source-numerator pools E_j that reconcile to parent kWh. Within each j allocate E_j*d_pj/sum_b(d_bj) using one causal driver in the same unit for every actual beneficiary: active equipment measured busy h, idle equipment reserved h, premises fixed operation occupied/reserved m2*h. Closed/zero-sale reservations remain. Never sum h with m2*h or incompatible counts. Require known positive all-beneficiary denominators or retain unresolved. Subtract a submeter once only where its physical circuit is inside that parent; an independent disjoint meter needs no subtraction. Convert attributed kWh to MJ by3.6 and divide Q once. | ghg-product2011 |
+| lifetime_share | all capital completion modules | For each actual asset retain full manufacturing/installation source vector A_a, complete object BOM and explicit operation/maintenance/end-of-life exclusions. Asset e_ap is beneficiary exposure and L_a is expected total lifetime exposure in the same unit: shelf/building reserved m2*h; checkout/handling equipment reserved device*h, including idle/closed reservations and all beneficiaries/history. f_ap=e_ap/L_a; A_ap=A_a*f_ap. After every life revision replace every historical beneficiary allocation with the new L_a, never restart full A_a. Cumulative fractions must not exceed1; at actual retirement use actual total lifetime exposure and replace all prior allocations so final fractions sum1. Actual maintenance events allocate by their evidenced beneficiary exposure, separate from manufacturing. Whole terminal carrier net kg multiplies its final lifetime fraction once, not a second manufacturing fraction; direct net weighing and BOM reconstruction excluding previously removed parts are exclusive. Provider lifecycle package requires signed model scope and sourceIDs; do not add its contained retirement again. | ghg-product2011 |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
+
+### Data Collection Protocols
+
+| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| cp_custody | retail | receipt; customer_return; customer_handover; supplier_transfer; internal_transfer; external_retention | goods-only event register | originalID; eventID; article; lot; BOMrevision; package seal/state; three vehicle/part presence; cell/motor inspection; event time; opening/closing goods; gross receipt/return/handover counts; initially qualified versus initially never-accepted disjoint exit eventIDs; condemnation count and actual kg; missing count; named recipient; physical handover signoff; owner S/F/O/T; sourceIDs | Scan originalID at each physical gate; inspect seal/parts and labels; reconcile stock counts, calibrated net weighing and signed handovers. Record financial/acceptance changes separately; do not invent a physical event. Aggregation detail: Raw gross totals by event type; apply custody_boundary; divide attributed event numerator by Q once | Item(s); kg | Each event and period close | Whole pool, including opening inventory and late corrections | Store receiving to final custody gates | per reference flow | Unique event IDs; photos; signed recipient/stock records; scale calibration; correction versions |
+| cp_acceptance | retail | accepted_service | final acceptance ledger | originalID; poolID; gross handover links; complete sealed acceptance test and evidence; accept/revoke timestamps; physical return yes/no; financial adjustment only flag; cutoff; final valid state; prior versions; Q | Join acceptance and custody by originalID without using payment as acceptance. Apply acceptance_count to distinct final-valid IDs after corrections. Aggregation detail: Q=count distinct valid IDs; output1 Item(s); Q=0 unnormalizable | Item(s) | Every acceptance/correction and cutoff | Whole pool and reopened original versions | Same article/BOM/site/channel | per reference flow | Signed/traceable acceptance criterion; correction history; gross ledger reconciliation |
+| cp_power | retail | checkout_ac | meter and causal allocation register | meterID; circuit diagram; time; start/end kWh; calibration; parent/submeter overlap; E_j active/idle/fixed kWh; all-beneficiary driver d_bj and unit; checkout attributable kWh; closed/failed/zero-sale hours; source/provider country/time; uncertainty | Use calibrated submeter for exact checkout circuit; subdivide shared parent only by measured pool and one common causal driver per pool; reconcile full parent. Aggregation detail: electricity_allocate yields attributed raw kWh then MJ/Q once | kWh; h; m2*h | Interval readings plus each configuration change | Entire pool including idle/closed | Dedicated measured checkout boundary | per reference flow | Meter calibration and diagram; all-beneficiary reconciliation; provider boundary |
+| cp_waste | retail | toy_waste | whole carrier dispatch and held-waste ledger | consignmentID; originalIDs; condemnation times and count/kg; W_open/W_close kg; actual full toy/package material/BOM; dry state; cells absent; whole gross/tare/net kg; carrier/container exclusion; removed parts; receiver; transport/treatment scope; sourceIDs | Calibrated consignment net weighing at dispatch excluding outside container. Reconcile held-waste stock independently; do not reconstruct direct dispatched kg from generation balance. Aggregation detail: waste_dispatch; sum actual nonduplicated net dispatch kg/Q | kg; Item(s) | Each condemnation, dispatch and stock close | Whole pool with opening/closing held waste | Store waste holding to signed dispatch gate | per reference flow | Scale/tare records; photographs; manifests; recipient acceptance; cells/parts audit |
+| cp_supply | retail | failed_supply | original supply and final responsibility ledger | originalID; complete article/BOM/package; supplier sourceID and version; G_i original boundary/unit; production/original packaging/inbound segment source locators; actual supply units; S/F/O/T signed owner; N_F; no-return revocations; loss recipient/state investigation; stock transfer links | Obtain complete supplier inventory or reconstruct from verified supplier component inventories and actual BOM, including magnets/coating/packaging and actual inbound freight; preserve component source conservation. Bind final whole originalID ownership before applying N_F/Q. Missing data remain unresolved. Aggregation detail: Sum G_F from unique final F IDs once; receipt and other custody rows have no background link; divide Q once | Item(s); kg; source-vector units | Each receipt, ownership change and correction | All original sources and current/historical pools | Cradle through first store receiving | per reference flow | Original provider inventories; full BOM/weighings; freight scope; ownership signatures; version conservation |
+| cp_completion | retail | boundary_completion | disjoint external completion module ledger | moduleID; sourceID/version; actual atomic flow identity/type/state/medium/property/unit; provider boundary; original denominator D_m; original raw numerator or normalized z_m; pool dates/site/configuration; all-beneficiary meters/drivers; capital A_a/e_ap/L_a/history/final carriers; complete store/landlord no-combustion/no-refrigerant/no-HVAC/no-purchased-heat/cold evidence; actual cleaning formulation final origin-destination kg and exclusive container retained/dispatch/wet carriers; formulation lot and complete source composition; disjoint component/element basis and units; outside molecular species q_out_s kg; molecular composition w_c_s; directly measured source-resolved c kg; source_fraction_c_s and source-fraction basis; source_attribution_mode; correction_mode; source attribution/composition/blank evidence; water/effluent meters; species identity/medium and external-boundary interval start/end, inlet/outlet F kg/h, dt h, correction mode, integrated net kg/capture/storage; actual trip/segment all-beneficiary reserved payload kg/reservation h/operator unused/empty/idle data and signed complete consignment inventory; dedup links; Q | Collect signed complete inventories for the fixed boundary_completion list. Verify measured species molecular composition and original formulation-lot source attribution against laboratory/source records; preserve component/element units and independent source_attribution_mode/correction_mode, excluding outside reaction atoms and avoiding repeated fractions or blank subtraction. Use prescribed completion_collect/lifetime_share/transport_complete; retain actual absence evidence. Add actual named atomic cards and bilingual protocols for each present exchange before a completed dataset is claimed. Aggregation detail: Restore compatible raw module numerators, attribute then completion_sum; no mixed-unit scalar | original module units | Each source event/version, meter interval and pool close | Same full pool plus complete asset history | Each explicitly excluded module with nonoverlapping gates | per reference flow | Signed provider inventory/scope; source hashes; meters/calibration; full driver denominators; asset correction ledger; receiver records |
+
+### Calculation Rules
+
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
+| --- | --- | --- | --- | --- | --- |
+| acceptance_count | accepted_service | Q = count(distinct originalID with final valid qualified acceptance at cutoff); output=Q/Q=1 Item(s). Revoked IDs are absent from the final set, not subtracted again. Late changes replace original numerator and denominator together. | originalID; final valid state; accept/revoke timestamps; cutoff; cp_acceptance | Q; 1 Item(s) accepted_service |  |
+| custody_normalize | receipt; customer_return; customer_handover; supplier_transfer; internal_transfer; external_retention | For each event type r, q_r = N_r/Q using the gross actual physical event count once. Validate custody_boundary first; source ownership or no-return revocation creates no additional physical N_r. | N_receipt; N_return; N_handover; N_supplier; N_internal; N_external; disjoint exit eventID sets; initial acceptance state; G_open; G_close; C_condemned; L_missing; Q; cp_custody | six distinct count/Q exchanges |  |
+| electricity_allocate | checkout_ac | E_checkout_attributed_kWh=sum_j(E_j*d_pj/sum_b d_bj); direct dedicated mode uses measured E_checkout unchanged. Modes are exclusive. q_AC=3.6*E_checkout_attributed_kWh/Q MJ. Meter overlaps removed only once using shared_subdivision. | E_j; d_pj; all d_bj and same unit; meter mode/overlap; direct E_checkout; Q; cp_power | checkout_ac MJ/Q | ghg-product2011 |
+| waste_dispatch | toy_waste | kg_dispatch=sum actual (gross_kg-tare_kg) over unique dispatched consignments; q_waste=kg_dispatch/Q. Held-waste balance is an independent check, not another correction. No constituent kg duplicated beside the admitted whole carrier. | unique consignmentID; gross_kg; tare_kg; W_open; W_close; kg_condemned; kg_other_admitted; Q; cp_waste | toy_waste kg/Q |  |
+| source_responsibility | failed_supply | N_F=count distinct final whole F originalIDs; q_F=N_F/Q original complete-pack equivalents. Couple each ID actual G_i once, not a generic average if suppliers differ; conserve G_total=G_S+G_F+G_O+G_T by original sourceID/version. G_S/Q belongs only to the separate sold-product downstream coupling. | all originalID; G_i supplier/component/package/inbound vectors; S/F/O/T final whole ownership; N_F; sourceID/version; Q; cp_supply | failed_supply Item(s)/Q with actual source links |  |
+| completion_collect | boundary_completion | Restore each provider module to its original pool raw exchange vector R_m=z_m*D_m only when z_m is normalized and D_m is its evidenced original denominator; raw inventories remain unchanged. Subdivide source pools and attribute to this pool by shared_subdivision. For premises cleaning retain each actual purchased formulation kg with mutually exclusive final formulation-origin destinations: unused closing stock, used solution/wipe/container-residue closing stock, dispatched liquid/wipe/container, actual product carryout and measured original-formulation component/element mass transferred outside. Keep actual outside molecular species kg separate from original-formulation component/element kg. Source-origin mass excludes atoms acquired from outside reactants, added water or dirt. Use one evidenced disjoint component or element accounting basis across destinations; never add component totals to their constituent element totals or substitute partial elemental kg for whole formulation kg. For species s and source component/element c, retain actual molecular composition w_c_s (kg of c per kg of molecular species), source_attribution_mode and its evidence. In source_resolved mode use the directly measured original-source c kg unchanged. In source_fraction mode apply one evidenced source_fraction_c_s to the measured c mass once: g_origin_c_s=q_out_s*w_c_s*source_fraction_c_s, where q_out_s is outside molecular species s kg and g_origin_c_s is formulation-origin component/element c kg for that species; source_fraction is the share of that measured c mass from the identified formulation lot, not formulation concentration. Do not apply it again to source-resolved data. Never divide each species kg by formulation concentration to reconstruct whole formulation kg and then sum those reconstructed values across species. Complete source composition and conservation are required before reconstructing any whole-formulation source-mass total; otherwise retain the unresolved component/element vector. correction_mode and source_attribution_mode are independent recorded states: already blank-corrected data receive no further background subtraction, and already source-resolved data receive no further source-fraction multiplication. Used is an intermediate state replaced by its final destination, never an additional destination; retained and dispatched portions of the same container are disjoint; added rinse water/dirt is excluded from formulation-origin kg. Actual whole wet liquid/wipe/container kg is separate, never multiplied again by formulation fractions. Imported metered water is already net of internal reuse: no reuse subtraction. Direct effluent is actual V_discharge*rho of whole liquid; no evaporation/storage deductions; supply/stock balance is independent. Require measured full-liquid composition including dissolved formulation/dirt; do not turn water-only volume into whole carrier by an unrelated density. On-site fuel/refrigerant/HVAC and purchased heat/cold are prohibited by this route; verify complete store/landlord equipment and utility evidence or stop applicability. Transport fuel/species remain inside the complete transport provider inventory. Species emissions require actual species kg crossing the outside air/water/soil boundary from inlet/outlet mass flux, reconciled air/capture/storage changes; internal room generation is not outside release. Use either raw absolute inlet/outlet flux minus one background or already differential/blank-corrected data unchanged; never subtract blank twice. Retain capture/condensate in its actual whole carrier once; any discovered refrigerant equipment makes this route inapplicable. For each species and measured external-boundary interval t, integrate q_out_raw=sum_t((F_out,t-F_in,t)*dt) in kg, with measured F in kg/h and dt in h. In raw absolute mode remove the matched measured background/blank once; differential mode uses the observed net rate unchanged; already blank-corrected mode removes nothing further. Direct external flux is not reduced again by capture or storage; measured internal air/capture/storage is an independent mass-conservation check and each actual captured export is a disjoint carrier. Negative/unknown outside flux requires investigation, not clamp/credit. | moduleID; z_m; D_m; raw R_m; sourceID/version; source pool drivers; actual formulation-origin kg by exclusive final destinations; formulation lot and complete source composition; disjoint component/element mass basis; outside molecular species q_out_s kg; molecular composition w_c_s; measured source-resolved c kg; source_fraction_c_s and measured-c-mass basis; source_attribution_mode; independent correction_mode; source attribution/composition/blank evidence; container held/dispatch split; whole wet carrier kg; import/discharge meters; liquid rho/composition; supply/storage check; complete store/landlord absence evidence; species identity/medium; interval start/end; measured inlet/outlet F kg/h; dt h; integrated net kg; correction mode; background/blank; air/capture/storage/carryout; cp_completion | Compatible attributed raw atomic exchange numerators; completion gaps | ghg-product2011 |
+| lifetime_share | boundary_completion | For each actual asset and beneficiary p use f_ap=e_ap/L_a and vector A_ap=A_a*f_ap with same-unit lifetime exposure and full historical replacement-version correction under allocation rule lifetime_share. Use actual terminal net kg*f_ap once, with final retirement denominator; maintenance source vectors are separate events. | assetID; full A_a source vector and BOM; e_ap; all beneficiary history; L_a expected/revised/actual unit; old/new versions; actual terminal net kg and mode; maintenance events; cp_completion | Attributed raw capital/maintenance/terminal vectors | ghg-product2011 |
+| transport_complete | boundary_completion | Use one signed complete actual consignment-attributed provider life-cycle inventory for every post-gate trip, including all observed loaded, empty-return and stationary-idle legs, actual fuel/species and vehicle manufacturing/maintenance/retirement. Provider allocation evidence must retain segment-specific reserved payload kg and reservation h for every actual beneficiary, including operator unused capacity and empty/idle reservations; full-trip source totals and all positive same-unit kg*h driver totals must reconcile. Preserve the already attributed consignment vector unchanged, without another driver multiplication. A provider inventory excluding actual empty/idle legs, incomplete lifecycle scope or unknown allocation is unavailable; this route has no substitute-distance or unmeasured-fuel fallback. Original supplier-to-first-store segments remain only in G_i. | trip/segmentID; signed consignment source inventory and full lifecycle/empty/idle scope; original provider denominator and allocation evidence; all beneficiary reserved payload kg; reservation h; operator unused/empty/idle reservations; positive kg*h driver totals; full-trip sources; fuel/species/vehicle sourceIDs; inbound overlap; cp_completion | Attributed raw post-gate transport exchange vector | ghg-product2011 |
+| completion_sum | all inventory rows | For each matching flow identity/type/state/compartment/property/unit r, q_complete,r=(X_core,r+sum_m X_attributed,mr)/Q. Restore normalized provider vectors by completion_collect first, then sum only compatible raw numerators with exact sourceID/version deduplication and disjoint gates. Never add count to kg, kg to MJ, raw to normalized, or satellite goods movements to represented environmental source inputs. G_F is already in failed_supply; G_S/Q remains an explicitly separate downstream product coupling. Require identical pool/configuration/version and Q across modules; retain partial status until all fixed modules and additional actual atomic cards are complete. | X_core,r; all X_attributed,mr; restored z_m/D_m; flow/property/unit matching; sourceID/version dedup ledger; Q; cp_completion | Complete per-reference atomic inventory, only after coverage acceptance |  |
+
+### Data Quality Requirements
+
+| requirement_id | Applies to | Requirement | Evidence |
+| --- | --- | --- | --- |
+| q_configuration | all inventory rows | Obtain real full supplier BOM and actual receiving toy/package/component masses; inspect cell/motor absence and complete magnets/paint/label components; actual age labels and signed no-demo/no-assembly/no-repack route evidence are required, not assumed. | Supplier revision; inspection photos; calibrated scale; labels; gate/event records |
+| q_coverage | all inventory rows | Cover full prospective pool including refused/failed/closed/idle events, opening/closing stocks, no-return revocations and later corrections. Retain sampling/uncertainty/calibration and raw originals; unexplained missing events or source ownership remain gaps. | Event completeness and stock/source reconciliation; version ledger |
+| q_partial | all inventory rows | Core custody rows receipt, customer_return, customer_handover, supplier_transfer, internal_transfer and external_retention are explicitly satellite physical flows without production links. failed_supply alone represents G_F. Disclose each excluded completion module, actual present/absent evidence, unbound identities and fixed completion results; partial core cannot be substituted for full retail. | Module coverage matrix; provider contracts; sourceID deduplication; actual atomic extensions |
+
+## 9. Validation Rules
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| v_identity | all inventory rows | Unbound flow identities block database binding and publication, not a license to invent UUIDs. Before complete dataset use, direct-read each selected type, state, compartment and property/unit chain; retain original exact-byte hash and matching receipt. AC UUID is a point-of-use identity only and does not select grid/provider/voltage/loss. Require the actual upstream electricity source and country/time. |  |
+| v_balances | all inventory rows | Reconcile gross physical event balance, goods-to-waste count/mass conversion by originalID and actual mass, held-waste balance, final acceptance ledger and G_i source ownership independently. Weigh toy, package and mixed complete waste carriers separately; no nominal webpage mass, unknown-zero or mass fraction split of an environmental vector. S/F/O/T ownership may change without physical movement. Check that every card uses reference_flow and exactly one final /Q; do not multiply source/destination or lifetime fractions twice. |  |
+| v_completeness | all inventory rows | For each conditional card/module retain site inspection, provider contract and event/meter evidence of presence or evidenced absence for the complete pool. Unknown is unresolved. Missing BOM/magnets/packaging/cell inspection, source G_i, asset history, air/liquid fate, failed external recipient or provider empty-trip coverage blocks completeness. Additional actual exchanges require named atomic cards, raw protocols, calculations and bilingual sync before completeness; do not silently omit them. Publish partial scope and skipped modules even if numeric totals are available. |  |
+| v_versions | all inventory rows | Require one source-version ledger across raw totals, attributed numerators, Q and all completion modules. Preserve original measurements; corrections replace earlier versions for every affected pool/beneficiary. Validate units before row-by-row sum, sourceID deduplication, provider boundaries and final acceptance chronology. This candidate is methodology guidance, not verified safety or environmental approval. |  |
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | partial_incremental_retail_module |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | Custody/checkout and G_F contribution for this exact sealed-set route; complete-retail use only after fixed module completion and acceptance |
+| excluded_use | Whole toy environmental claim; safety/legal compliance; whole leaf or products outside the declared toy-train family; online delivery; uncompleted total retail |
+| required_metadata | All reference qualifiers; source and provider boundaries; original denominators; pool/Q versions; S/F/O/T; full module coverage |
+| required_quality_disclosure | Partial coverage; unbound identities; BOM/quantity/provider gaps; measurement uncertainty; source age and historical identity observation; all skipped work |
+| update_trigger | BOM/package/label/channel/gate change; new actual exchange; acceptance revision; asset life/provider/source change |
+
+## 11. Data Sources
+
+The retained manufacturer and retailer sources document examples of this product family and the explicitly cited technical distinctions. They do not restrict eligibility to those brands/models or supply default numerical inventory for other configurations. Actual product and supplier evidence remains required under b_product_family.
+
+| Source id | Type | Reference | Used for |
+| --- | --- | --- | --- |
+| un-cpc3-62153 | official_guidance | https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/62153 | Official explanatory note: trade related to group385 goods; classification context only |
+| ikea-lillabo-spec | handbook | https://www.ikea.com/us/en/p/lillabo-3-piece-train-set-60320094/ | Actual manufacturer set identity, named parts/materials, magnetic coupling and label statements; not complete mass BOM, cell absence, retail activity evidence or independent compliance |
+| ghg-product2011 | standard | GHG Protocol Product Life Cycle Accounting and Reporting Standard (2011), chapter9, printed page63; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf | General subdivision/physical relationship allocation support only. Specific pools, drivers, lifetime ledgers and completion formulas are explicit PCR design and collection rules, not claims that the source mandates this toy-retail method or grants conformity. |

@@ -3,6 +3,7 @@ const zh: Readonly<Record<string,string>> = {
   "rental-services-of-transport-vehicles-with-operators": "带操作人员的运输工具租赁服务",
   "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
   "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
+  "retail-trade-services": "零售贸易服务",
   "accommodation-food-and-beverage-services": "住宿和餐饮服务",
   "passenger-transport-services": "旅客运输服务",
   "freight-transport-services": "货物运输服务",
