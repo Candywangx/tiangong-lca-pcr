@@ -91,6 +91,12 @@ Rules:
 - Do not use CPC, HS, ISIC, NAICS, or another external classification system as the canonical PCR directory tree.
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
+- The 149 existing methods reviewed for PR #167 reuse their retained original IDs and directories where
+  classification acceptance is supported. The 139 accepted restorations, ten held drafts (eleven codes),
+  source snapshots and item decisions are recorded in
+  `docs/reviews/pcr149-original-ids-20261127/README.md`. Do not recreate the removed candidate IDs or
+  count a held `classification_refs` entry as an accepted mapping. Website URL compatibility is separate
+  from PCR identity and cannot turn a retired candidate URL into another canonical PCR.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.

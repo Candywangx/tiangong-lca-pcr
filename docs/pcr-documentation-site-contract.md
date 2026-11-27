@@ -213,6 +213,25 @@ PCR document slugs retain semantic domain/subdomain/record identity under
 `docs/pcr/`. Exceptionally long documents may have stable subpages with a complete
 chapter inventory. All normative content remains in the HTML of those pages.
 
+An explicitly reviewed restoration of an existing PCR ID may move a candidate's
+document root. Provider proof version 2 binds a bounded, one-to-one `identityMoves`
+list inside the same source-owned `published-chapters.json` import closure. Each
+move is an exact same-language PCR document-root pair; only its root and immediate
+chapter URLs may target the declared restored root or its immediate chapters.
+Root routes are mandatory. Foreign roots, language changes, duplicate targets,
+chains, cycles and nested arbitrary paths fail qualification. The existing route,
+file-size and full-site budgets are unchanged. Version 1 sealed products retain
+their original same-record chapter contract.
+
+The original-ID review in `docs/reviews/pcr149-original-ids-20261127/` binds the
+139 source methods to their restored identities and preserves 278 bilingual
+document URLs plus all prior chapter aliases and their anchor requirements.
+The exporter and sealer check actual destination HTML, not merely route metadata;
+browser qualification checks query/fragment and navigation behavior. These are
+website compatibility routes, not accepted classification edges or PCR aliases.
+Current raw downloads expose the restored source files; historical draft bytes
+remain reconstructible from the review's pinned Git source and four-file hashes.
+
 Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
