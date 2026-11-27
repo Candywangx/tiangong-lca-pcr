@@ -9,6 +9,8 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
+For classification, verify the complete three-strand man-made-fibre rope has linear density strictly greater than 10,000 dtex and is not one of the yarn exceptions in HS Section XI Note 3(B). Exactly 10,000 dtex does not meet this selected cordage threshold. Record actual delivered linear density and strand construction. Any constituent plastic monofilament must have no cross-sectional dimension greater than 1 mm; strip inputs are outside this filament-yarn route. A trade name rope does not establish these conditions. Source: `wco-hs2022-section-xi`.
+
 The existing PCR ID is retained and its existing methodology upgraded in place. The scoped CPC mapping is accepted; scientific approval, translation review and publication retain their separately recorded states. Classification review and acceptance: docs/adr/2026-11-27-review-149-existing-methods-original-ids.md.
 
 This method covers purchased, spun and drawn PP filament yarn of declared composition, dry preparation/strand formation and three-strand laying at the rope plant, followed by mechanical cutting, inspection and coil dispatch. The representative product is general-purpose three-strand PP rope without newly applied on-site coating. Actual orders and acceptance records establish dimensions, linear mass, strength and lay length. Supplier-added pigment, stabilizer and spin finish remain part of incoming yarn composition and upstream burdens.
@@ -394,6 +396,7 @@ Conditional: weigh cardboard packing trim/rejects generated on site; collect dis
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | For classification, verify the complete three-strand man-made-fibre rope has linear density strictly greater than 10,000 dtex and is not one of the yarn exceptions in HS Section XI Note 3(B). Exactly 10,000 dtex does not meet this selected cordage threshold. Record actual delivered linear density and strand construction. Any constituent plastic monofilament must have no cross-sectional dimension greater than 1 mm; strip inputs are outside this filament-yarn route. A trade name rope does not establish these conditions. | `wco-hs2022-section-xi` |
 | validation_reference | finished_rope_output | Check 1 kg accepted net rope output, all required qualifiers, same-lot weighing and packaging tare; align bilingual names and row_id. Blank reference UUID is a declared candidate identity gap, not full identity resolution. |  |
 | validation_stage_links | strand_output; strand_input; laid_rope_output; laid_rope_input | Check sequence, lots and quantities, explain stock/rework differences and avoid duplicate upstream burdens on internal links. Purchased strand/rope requires disclosure of omitted stages. | meera-pp-twisting |
 | validation_quantities | all inventory rows | Normalize each row by same-batch accepted net mass; preserve electricity Net calorific value, MJ and kWh conversion. Verify actual occurrence and collection evidence row by row. Quantities must be finite/nonnegative and accepted output positive; explain residual against measured uncertainty, with no universal loss threshold. | si-units |
@@ -415,6 +418,7 @@ Conditional: weigh cardboard packing trim/rejects generated on site; collect dis
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Notes 1(g) and 3(A)(b)/3(B), PDF pages 1–2. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | Textile classification thresholds and equality boundaries; not manufacturing defaults |
 | `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |
 | unsd-cpc-notes | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, p. 128. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 27310 category and adjacent netting; no specific process explanation |
 | deyuan-pp-rope | literature | Deyuan Marine, 3-Strand PP Rope, Product Introduction. https://www.deyuanmarine.com/3-Strand-PP-Rope-pd129282238.html | Existence/construction of three-strand PP multifilament rope; no adoption of promotional certification/performance/tolerance values |

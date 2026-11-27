@@ -9,6 +9,8 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
+分类时须记录实际涤纶经纬纱的强度及单纱或多股／缆线计量基准。HS 高强力定义要求单纱严格大于 60 cN/tex，多股或缆线严格大于 53 cN/tex；分别恰好等于 60 或 53 时不符合该定义。商品“高强”名称不能替代供应商等级与测试证据。这些是分类门槛，不是虚构的织物性能或工艺配方。 来源: `wco-hs2022-section-xi`.
+
 保留原 PCR ID 并复用现有方法原地升级。已接受限定范围的 CPC 映射；科学审批、翻译审阅和发布分别按各自状态记录。 分类审阅与接受记录：docs/adr/2026-11-27-review-149-existing-methods-original-ids.md。
 
 本方法覆盖采购已牵伸高强 PET 连续长丝经纬纱，经整经、穿综穿筘、机械引纬织造、检验和卷装形成的本色、未上浆、未涂覆机织坯布。纺织纤维组成为全 PET，供后续工业用布加工。此为 CPC 26710 的收窄代表路线，不代表整个分类已经覆盖 [unsd-cpc-2025]。制造商原件证明高强聚酯坯布和未处理机织物的商业存在，但不证明任何厂家均采用本路线或没有上浆 [ulong-greige]; [mehler-company-2025]。
@@ -403,6 +405,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | 分类时须记录实际涤纶经纬纱的强度及单纱或多股／缆线计量基准。HS 高强力定义要求单纱严格大于 60 cN/tex，多股或缆线严格大于 53 cN/tex；分别恰好等于 60 或 53 时不符合该定义。商品“高强”名称不能替代供应商等级与测试证据。这些是分类门槛，不是虚构的织物性能或工艺配方。 | `wco-hs2022-section-xi` |
 | `validate_applicability` | 产品与路线 | 核对全 PET 高强经纬纱及未上浆、机械织造、未整理坯布终点；含未覆盖工序则此方法不适用，分类码不能替代验证。 | `unsd-cpc-2025`; `mehler-company-2025` |
 | `validate_measurement` | 参考与清单 | 参考成品行须为 1 kg 合格净布且匹配参考名称；所有行链接协议、匹配批次 kg 分母；面积需实测换算，电力保留能量属性。 |  |
 | `validate_completeness` | 数据集 | 逐工序核对投入、输出、内部转移、废物、公用工程和条件项，记录真实缺口；缺监测或边界不清为不确定，非完整通过。 |  |
@@ -424,6 +427,7 @@ sync_with: pcr.en-US.md
 
 | 来源编号 | 类型 | 参考资料 | 用途 |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Note 6, PDF page 3. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | 纺织分类门槛及临界值；不是工艺默认值 |
 | `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26710, PDF pages 361. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | `unsd-cpc-2025` | official_guidance | UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, PDF及印刷第123页; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 26710 多路线分类边界，非工艺或环保因子 |
 | `ulong-greige` | handbook | U-LONG, Industrial Polyester 500D High Tenacity Greige Fabric TA5136A; https://www.u-long.com/en/product/TA5136A.html | Specification和产品说明证明高强聚酯坯布存在；名义规格不作工厂转换或质量阈值 |

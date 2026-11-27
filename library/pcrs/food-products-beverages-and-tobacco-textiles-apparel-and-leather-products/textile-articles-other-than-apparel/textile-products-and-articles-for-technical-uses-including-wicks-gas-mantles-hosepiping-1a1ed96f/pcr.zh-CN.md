@@ -9,6 +9,8 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
+按技术用纺织滤布分类时，须核实交付滤布中 PET 单丝的任一截面尺寸均不超过 1 mm，保留经纬单丝直径或非圆截面最大尺寸的实测记录及供应规格。恰好 1 mm 不被本尺寸条件排除；任一尺寸大于 1 mm 则不能通过本 PCR 映射。仍须符合纺织技术用滤布身份及其余适用条件；商品“滤网”名称本身不足以证明归类。 来源: `wco-hs2022-section-xi`.
+
 保留原 PCR ID 并复用现有方法原地升级。已接受限定范围的 CPC 映射；科学审批、翻译审阅和发布分别按各自状态记录。 分类审阅与接受记录：docs/adr/2026-11-27-review-149-existing-methods-original-ids.md。
 
 本方法涵盖外购已拉伸、未染色、未上浆的原生 PET 单丝，经整经、机械织造、电热定型、检验、卷绕至未染色且未涂覆的工业筛分或过滤网布；仅在实际发生时纳入纯去离子水漂洗和电驱电热压光。代表产品为具有订单规定网孔结构的全幅卷装单丝网布，而非成型过滤装置 [saati-pet-mesh]；[saati-ecofiltra-2022]。定型是此参考终点的明确路线条件，不推定为所有滤布的必需工序 [bolian-heat-setting]。
@@ -512,6 +514,7 @@ CPC 27998 同时列举灯芯、气罩、软管和传动/输送带等不同产品
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | 按技术用纺织滤布分类时，须核实交付滤布中 PET 单丝的任一截面尺寸均不超过 1 mm，保留经纬单丝直径或非圆截面最大尺寸的实测记录及供应规格。恰好 1 mm 不被本尺寸条件排除；任一尺寸大于 1 mm 则不能通过本 PCR 映射。仍须符合纺织技术用滤布身份及其余适用条件；商品“滤网”名称本身不足以证明归类。 | `wco-hs2022-section-xi` |
 | `validate_reference` | 参考产品 | 参考产品名称须与 finished_mesh 一致；参考输出为1千克相同状态验收净网布；必需限定齐全。不把质量声明单位宣称为等效筛分功能。 |  |
 | `validate_route` | 实际工艺 | 核验机械引纬、电热定型及真实可选工序；存在染整化学品、燃料供热或厂内废水处理时本窄路线不完整，必须扩展后使用。 |  |
 | `validate_atomic` | 所有交换 | 每行仅一个物理/化学明确交换；公开UUID属性、单位组、材料来源、来料态及介质子介质必须匹配；未解决身份不能强配或宣称已核实。 |  |
@@ -534,6 +537,7 @@ CPC 27998 同时列举灯芯、气罩、软管和传动/输送带等不同产品
 
 | 来源标识 | 类型 | 参考文献 | 用途 |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Note 1(g), PDF page 1. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | 纺织分类门槛及临界值；不是工艺默认值 |
 | `unsd-cpc-2025` | official_guidance | 联合国统计司，CPC 3.0 解释说明，2025年6月30日，PDF及印刷页130，27998。同一官方链接。 https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 仅用于宽泛分类语境，不提供工厂配方或覆盖接受决定。 |
 | `saati-pet-mesh` | handbook | SAATI，聚酯机织网布，未标发布日期制造商页面，2026-10-06访问，Explore Our Polyester Woven Meshes 与 SAATIfil 段。同一制造商链接。 https://www.saati.com/products/filtration/filter-meshes-fabrics/pet/ | 当前商业 PET 机织过滤产品及网孔语境；不采用合规、寿命或数字默认值。 |
 | `saati-ecofiltra-2022` | handbook | SAATI，Ecofiltra 手册，2022年3月，PDF页5/印刷页6–7的 Monofilament Mesh；PDF页6/印刷页8–9的组织区别。同一制造商 PDF 链接。 https://www.saati.com/media/wc5dcx45/emea_ecofiltra_brochure_mar-2022_eng_v5.pdf | 历史单丝、复丝和短纤结构与织造区别，以及条件性压光语境。不将历史规格数值或性能宣称移用于当前生产。 |

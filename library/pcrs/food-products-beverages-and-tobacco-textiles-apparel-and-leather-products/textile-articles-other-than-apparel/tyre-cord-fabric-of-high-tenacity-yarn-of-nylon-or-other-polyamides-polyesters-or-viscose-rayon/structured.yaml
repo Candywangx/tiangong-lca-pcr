@@ -710,6 +710,11 @@ dataset_production:
       requirement: "Declare site, technology, full campaign, seasonal humidity, meter calibration and uncertainty. Missing measurements remain missing; do not fill with this PCR as a default recipe."
       evidence: "cp_energy; cp_water; cp_releases"
 validation_rules:
+  - rule_id: validate_textile_classification_threshold
+    applies_to: "reference product"
+    rule: "For classification, retain actual nylon warp-cord tenacity and its single versus multiple/cabled construction. The HS high-tenacity definition requires strictly more than 60 cN/tex for single polyamide yarn, or strictly more than 53 cN/tex for multiple/cabled polyamide yarn; equality fails the respective threshold. The supplied high-tenacity claim must be supported by grade and test records for the actual cord, not inferred from polymer name or intended tyre use. This does not set a tyre-performance or production-process target."
+    source_ids:
+      - wco-hs2022-section-xi
   - rule_id: val_scope
     applies_to: "dataset"
     rule: "Reject claimed whole-classification, dipped, PET/rayon/nylon66 or cradle-to-gate completeness on this foreground-only method. Qualifiers and actual included stages are required."
@@ -737,6 +742,10 @@ published_dataset_profile:
   required_quality_disclosure: "Missing identities/measurements, unmonitored releases, numerator/denominator uncertainty, shared-meter allocation, supplier representativeness and omitted upstream/end-of-life stages"
   update_trigger: "Change of polymer, weft, finish, cord specification, supply voltage, site route, acceptance, controls, allocation or primary evidence"
 data_sources:
+  - id: "wco-hs2022-section-xi"
+    type: "official_guidance"
+    reference: "WCO HS 2022, Section XI, Note 6, PDF page 3. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf"
+    used_for: "Textile classification thresholds and equality boundaries; not manufacturing defaults"
   - id: "un-cpc-2025"
     type: "official_guidance"
     reference: "UN Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, p.129, 27996. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
@@ -751,19 +760,19 @@ data_sources:
     used_for: "Scoped product classification boundary; no scientific, study or publication approval"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:07685191e58a2030929f0a6d7e2aa7c60ddbfd42e55ef0720be70364bf3d660a"
+  source_sha256: "sha256:e84bf20f30f345f92f55ab109b9d42876f9f44e47800072f8a075c40ff83234a"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5411"
+    - unit_id: "normative_5980"
       family: "system_boundary"
       span:
         start:
-          offset: 5411
-          line: 58
+          offset: 5980
+          line: 60
           column: 1
         end:
-          offset: 7416
-          line: 77
+          offset: 7985
+          line: 79
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased fully spun/drawn nylon 6 high-tenacity yarn and ready-to-weave cotton yarn received; no polymer chips in foreground |\n| starting_condition_role | upstream product input |\n| product_classification_scope | Only the stated nylon 6/cotton greige subset within tyre cord classification |\n| recursive_input_rule | A same-category fabric input crossing the site gate is one upstream product input; do not recursively regenerate embedded production. Such a purchased-fabric-only route is outside this method. Internal cord/cloth transfers cancel at aggregate site level. |\n| upstream_dataset_requirement | Link representative supplier yarn, cotton spinning, electricity, water, packaging and off-site waste treatment datasets for expanded models. Cotton agriculture and polymer synthesis are upstream, not weaving activity. |\n| disclosure | Declare operations, supplied grades, inherited finish, omitted routes, internal transfer, conditioning, utilities, controls and waste destinations. Foreground-only output is not complete cradle-to-gate. |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| sb_route | foreground | Include cording, preparation, weaving, inspection and packing, plus actual electric air compression, extraction and humidification; exclude dip/heat-set/rubber processes from this declared greige route. | century-nylon-cord |\n| sb_accounting | all inventory rows | Measure external exchanges and internal transfers separately; add actual auxiliary chemicals, filters or packaging as separate atomic rows if consumed. No collection row can stand for an unspecified material list. |  |\n| sb_treatment | waste outputs | This route sends liquid purge and solid wastes off site. Disclose destination and upstream/background linkage; do not double count treatment. Capital equipment is separately disclosed as included or excluded by study goal. |  |\n\n"
       headings:
@@ -782,12 +791,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5411
-              line: 58
+              offset: 5980
+              line: 60
               column: 1
             end:
-              offset: 5432
-              line: 58
+              offset: 6001
+              line: 60
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -802,16 +811,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_25384"
+    - unit_id: "normative_25953"
       family: "allocation"
       span:
         start:
-          offset: 25384
-          line: 492
+          offset: 25953
+          line: 494
           column: 1
         end:
-          offset: 26244
-          line: 499
+          offset: 26813
+          line: 501
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| alloc_subdivision | shared operations | Use stage submetering and measured machine time/load records to separate products first. A shared-meter share must have factory evidence, total shares sum to one, and sensitivity disclosed; mass allocation is not assumed for unlike twisting/weaving routes. |  |\n| alloc_scrap | scrap; rejects; internal returns | Assign actual rejected-product and sampling burdens to accepted production of the campaign. Do not give scrap an avoided-virgin-material credit automatically. If sold scrap becomes a co-product, document status, subdivision and physical/economic allocation basis with measured quantities/prices and governing programme; identify the change of role. Internal return is not a co-product. |  |\n\n"
       headings:
@@ -830,12 +839,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 25384
-              line: 492
+              offset: 25953
+              line: 494
               column: 1
             end:
-              offset: 25424
-              line: 492
+              offset: 25993
+              line: 494
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -850,18 +859,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_30987"
+    - unit_id: "normative_31556"
       family: "validation"
       span:
         start:
-          offset: 30987
-          line: 526
+          offset: 31556
+          line: 528
           column: 1
         end:
-          offset: 32087
-          line: 535
+          offset: 33287
+          line: 538
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| val_scope | dataset | Reject claimed whole-classification, dipped, PET/rayon/nylon66 or cradle-to-gate completeness on this foreground-only method. Qualifiers and actual included stages are required. | un-cpc-2025; century-nylon-cord |\n| val_mass | all inventory rows | Require positive accepted net mass, consistent conditioning and same-period denominator; check nylon/cotton balance and internal transfer cancellation, packaging exclusion and no duplicate upstream yarn burdens. |  |\n| val_identity | flow identities | Unresolved UUIDs require explicit row-specific review; no silent generic substitution. Match public flow type, reference property, unit group and environmental subcompartment, including immediate versus long-term releases. |  |\n| val_quantities | foreground records | No unsupported temperature, recipe, energy, loss, yield or use-life defaults. Separate captured waste from direct release; distinguish purchased water from resource abstraction and liquid purge from vapour. |  |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_textile_classification_threshold` | reference product | For classification, retain actual nylon warp-cord tenacity and its single versus multiple/cabled construction. The HS high-tenacity definition requires strictly more than 60 cN/tex for single polyamide yarn, or strictly more than 53 cN/tex for multiple/cabled polyamide yarn; equality fails the respective threshold. The supplied high-tenacity claim must be supported by grade and test records for the actual cord, not inferred from polymer name or intended tyre use. This does not set a tyre-performance or production-process target. | `wco-hs2022-section-xi` |\n| val_scope | dataset | Reject claimed whole-classification, dipped, PET/rayon/nylon66 or cradle-to-gate completeness on this foreground-only method. Qualifiers and actual included stages are required. | un-cpc-2025; century-nylon-cord |\n| val_mass | all inventory rows | Require positive accepted net mass, consistent conditioning and same-period denominator; check nylon/cotton balance and internal transfer cancellation, packaging exclusion and no duplicate upstream yarn burdens. |  |\n| val_identity | flow identities | Unresolved UUIDs require explicit row-specific review; no silent generic substitution. Match public flow type, reference property, unit group and environmental subcompartment, including immediate versus long-term releases. |  |\n| val_quantities | foreground records | No unsupported temperature, recipe, energy, loss, yield or use-life defaults. Separate captured waste from direct release; distinguish purchased water from resource abstraction and liquid purge from vapour. |  |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -878,12 +887,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 30987
-              line: 526
+              offset: 31556
+              line: 528
               column: 1
             end:
-              offset: 31009
-              line: 526
+              offset: 31578
+              line: 528
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -902,168 +911,181 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "sb_route"
       identity_kind: "explicit"
-      unit_id: "normative_5411"
+      unit_id: "normative_5980"
       source_span:
         start:
-          offset: 6644
-          line: 73
+          offset: 7213
+          line: 75
           column: 1
         end:
-          offset: 6895
-          line: 73
+          offset: 7464
+          line: 75
           column: 252
     - pointer: "/system_boundary/rules/1"
       rule_id: "sb_accounting"
       identity_kind: "explicit"
-      unit_id: "normative_5411"
+      unit_id: "normative_5980"
       source_span:
         start:
-          offset: 6896
-          line: 74
+          offset: 7465
+          line: 76
           column: 1
         end:
-          offset: 7153
-          line: 74
+          offset: 7722
+          line: 76
           column: 258
     - pointer: "/system_boundary/rules/2"
       rule_id: "sb_treatment"
       identity_kind: "explicit"
-      unit_id: "normative_5411"
+      unit_id: "normative_5980"
       source_span:
         start:
-          offset: 7154
-          line: 75
+          offset: 7723
+          line: 77
           column: 1
         end:
-          offset: 7414
-          line: 75
+          offset: 7983
+          line: 77
           column: 261
     - pointer: "/allocation_rules/0"
       rule_id: "alloc_subdivision"
       identity_kind: "explicit"
-      unit_id: "normative_25384"
+      unit_id: "normative_25953"
       source_span:
         start:
-          offset: 25497
-          line: 496
+          offset: 26066
+          line: 498
           column: 1
         end:
-          offset: 25800
-          line: 496
+          offset: 26369
+          line: 498
           column: 304
     - pointer: "/allocation_rules/1"
       rule_id: "alloc_scrap"
       identity_kind: "explicit"
-      unit_id: "normative_25384"
+      unit_id: "normative_25953"
       source_span:
         start:
-          offset: 25801
-          line: 497
+          offset: 26370
+          line: 499
           column: 1
         end:
-          offset: 26242
-          line: 497
+          offset: 26811
+          line: 499
           column: 442
     - pointer: "/validation_rules/0"
+      rule_id: "validate_textile_classification_threshold"
+      identity_kind: "explicit"
+      unit_id: "normative_31556"
+      source_span:
+        start:
+          offset: 31651
+          line: 532
+          column: 1
+        end:
+          offset: 32281
+          line: 532
+          column: 631
+    - pointer: "/validation_rules/1"
       rule_id: "val_scope"
       identity_kind: "explicit"
-      unit_id: "normative_30987"
+      unit_id: "normative_31556"
       source_span:
         start:
-          offset: 31082
-          line: 530
+          offset: 32282
+          line: 533
           column: 1
         end:
-          offset: 31319
-          line: 530
+          offset: 32519
+          line: 533
           column: 238
-    - pointer: "/validation_rules/1"
+    - pointer: "/validation_rules/2"
       rule_id: "val_mass"
       identity_kind: "explicit"
-      unit_id: "normative_30987"
+      unit_id: "normative_31556"
       source_span:
         start:
-          offset: 31320
-          line: 531
+          offset: 32520
+          line: 534
           column: 1
         end:
-          offset: 31570
-          line: 531
+          offset: 32770
+          line: 534
           column: 251
-    - pointer: "/validation_rules/2"
+    - pointer: "/validation_rules/3"
       rule_id: "val_identity"
       identity_kind: "explicit"
-      unit_id: "normative_30987"
+      unit_id: "normative_31556"
       source_span:
         start:
-          offset: 31571
-          line: 532
+          offset: 32771
+          line: 535
           column: 1
         end:
-          offset: 31833
-          line: 532
+          offset: 33033
+          line: 535
           column: 263
-    - pointer: "/validation_rules/3"
+    - pointer: "/validation_rules/4"
       rule_id: "val_quantities"
       identity_kind: "explicit"
-      unit_id: "normative_30987"
+      unit_id: "normative_31556"
       source_span:
         start:
-          offset: 31834
-          line: 533
+          offset: 33034
+          line: 536
           column: 1
         end:
-          offset: 32085
-          line: 533
+          offset: 33285
+          line: 536
           column: 252
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5411"
+      unit_id: "normative_5980"
       source_span:
         start:
-          offset: 5411
-          line: 58
+          offset: 5980
+          line: 60
           column: 1
         end:
-          offset: 5432
-          line: 58
+          offset: 6001
+          line: 60
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5411"
+      unit_id: "normative_5980"
       source_span:
         start:
-          offset: 5460
-          line: 62
+          offset: 6029
+          line: 64
           column: 1
         end:
-          offset: 6571
-          line: 69
+          offset: 7140
+          line: 71
           column: 220
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_25384"
+      unit_id: "normative_25953"
       source_span:
         start:
-          offset: 25384
-          line: 492
+          offset: 25953
+          line: 494
           column: 1
         end:
-          offset: 25424
-          line: 492
+          offset: 25993
+          line: 494
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_30987"
+      unit_id: "normative_31556"
       source_span:
         start:
-          offset: 30987
-          line: 526
+          offset: 31556
+          line: 528
           column: 1
         end:
-          offset: 31009
-          line: 526
+          offset: 31578
+          line: 528
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -1072,5 +1094,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:07685191e58a2030929f0a6d7e2aa7c60ddbfd42e55ef0720be70364bf3d660a"
-  generated_content_sha256: "sha256:23bc5bf2eca27cadd4aedf0bd4b6e42f2b5d7c8bfa2c5f9ffdb5e072d1fa0044"
+    sha256: "sha256:e84bf20f30f345f92f55ab109b9d42876f9f44e47800072f8a075c40ff83234a"
+  generated_content_sha256: "sha256:0487707fb0cf048933e49b294c702b93db8b10ce6c43d32404d79cfc55cf896e"

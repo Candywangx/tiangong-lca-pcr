@@ -9,6 +9,8 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
+For classification, document the actual polyester warp and weft yarn tenacity on its declared single or multiple/cabled basis. HS high-tenacity status requires strictly more than 60 cN/tex for single yarn, or strictly more than 53 cN/tex for multiple/cabled yarn. Exactly 60 or 53 respectively fails that definition. A commercial high-strength label alone is insufficient; retain supplier grade and test evidence. These are classification thresholds, not an invented fabric performance or process recipe. Source: `wco-hs2022-section-xi`.
+
 The existing PCR ID is retained and its existing methodology upgraded in place. The scoped CPC mapping is accepted; scientific approval, translation review and publication retain their separately recorded states. Classification review and acceptance: docs/adr/2026-11-27-review-149-existing-methods-original-ids.md.
 
 This method covers manufacture of undyed, unsized, uncoated greige woven fabric from purchased already drawn high-tenacity continuous PET filament warp and weft yarn, through warping, drawing-in/reeding, mechanical weft insertion, inspection and rolling. The textile fibre component is exclusively PET, for subsequent industrial fabric conversion. This is a narrower representative route within CPC 26710, not coverage of the entire classification [unsd-cpc-2025]. Manufacturer originals establish commercial high-tenacity polyester greige fabric and untreated woven fabric, but do not establish that every manufacturer uses this route or omits sizing [ulong-greige]; [mehler-company-2025].
@@ -403,6 +405,7 @@ Conditional on actual external discard: record segregated PET yarn remnants, sel
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | For classification, document the actual polyester warp and weft yarn tenacity on its declared single or multiple/cabled basis. HS high-tenacity status requires strictly more than 60 cN/tex for single yarn, or strictly more than 53 cN/tex for multiple/cabled yarn. Exactly 60 or 53 respectively fails that definition. A commercial high-strength label alone is insufficient; retain supplier grade and test evidence. These are classification thresholds, not an invented fabric performance or process recipe. | `wco-hs2022-section-xi` |
 | `validate_applicability` | product and route | Verify all-PET high-tenacity warp/weft, unsized mechanical weaving and untreated greige endpoint. An excluded operation makes this route inapplicable; classification code cannot substitute for validation. | `unsd-cpc-2025`; `mehler-company-2025` |
 | `validate_measurement` | reference and inventory | Finished reference row must be 1 kg accepted net cloth matching reference name. All rows require linked protocols and matched batch kg denominator; area needs measured conversion and electricity retains energy property. |  |
 | `validate_completeness` | dataset | Check inputs, outputs, internal transfers, wastes, utilities and conditions by stage, disclosing real gaps; missing monitoring or unclear boundary is inconclusive, not complete validation. |  |
@@ -424,6 +427,7 @@ Conditional on actual external discard: record segregated PET yarn remnants, sel
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Note 6, PDF page 3. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | Textile classification thresholds and equality boundaries; not manufacturing defaults |
 | `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26710, PDF pages 361. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |
 | `unsd-cpc-2025` | official_guidance | UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, PDF/printed p.123; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 26710 multi-route classification boundary; no process/environmental factor |
 | `ulong-greige` | handbook | U-LONG, Industrial Polyester 500D High Tenacity Greige Fabric TA5136A; https://www.u-long.com/en/product/TA5136A.html | Product description/Specification establishes high-tenacity polyester greige product; nominal specifications are not factory conversions or quality thresholds |

@@ -10,6 +10,8 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
+分类时须保留实际尼龙经向帘子线强度及单纱、多股／缆线结构记录。HS 高强力定义要求聚酰胺单纱严格大于 60 cN/tex，多股或缆线严格大于 53 cN/tex；恰好等于相应数值不通过门槛。实际帘子线的供应等级及测试记录必须支持高强力声明，不能从聚合物名称或轮胎用途推断。这不规定轮胎性能或生产工艺目标。 来源: `wco-hs2022-section-xi`.
+
 保留原 PCR ID 并复用现有方法原地升级。已接受限定范围的 CPC 映射；科学审批、翻译审阅和发布分别按各自状态记录。 分类审阅与接受记录：docs/adr/2026-11-27-review-149-existing-methods-original-ids.md。
 
 本方法适用于以已制成的高强尼龙 6 复丝纱线，在场内初捻/复捻成经向帘线，并与稀疏、未染色未上浆的纯棉纬纱交织的未浸胶轮胎增强坯布。代表产品为按客户规格交付、供后续粘合处理的坯布卷。捻合帘线、帘线排布和未浸胶交付态使其区别于普通高强 PET 机织布。来源：`un-cpc-2025`；`century-nylon-cord`。
@@ -527,6 +529,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | 分类时须保留实际尼龙经向帘子线强度及单纱、多股／缆线结构记录。HS 高强力定义要求聚酰胺单纱严格大于 60 cN/tex，多股或缆线严格大于 53 cN/tex；恰好等于相应数值不通过门槛。实际帘子线的供应等级及测试记录必须支持高强力声明，不能从聚合物名称或轮胎用途推断。这不规定轮胎性能或生产工艺目标。 | `wco-hs2022-section-xi` |
 | val_scope | dataset | 拒绝基于本仅前景方法声称全分类、浸胶、PET/人造丝/尼龙66或完整摇篮到大门覆盖。限定信息与实际纳入工段必填。 | un-cpc-2025; century-nylon-cord |
 | val_mass | all inventory rows | 要求正合格净质量、一致调湿和同期分母；核对尼龙/棉平衡、内部转移抵消、包装排除及无重复上游纱线负荷。 |  |
 | val_identity | flow identities | 未解决 UUID 必须逐行明确审查，不默默替换通用流。匹配公开流类型、参考属性、单位组及环境子介质，包括即时与长期排放。 |  |
@@ -548,6 +551,7 @@ sync_with: pcr.en-US.md
 
 | 来源标识 | 类型 | 参考 | 用途 |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Note 6, PDF page 3. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | 纺织分类门槛及临界值；不是工艺默认值 |
 | un-cpc-2025 | official_guidance | UN Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, p.129, 27996. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 仅分类背景；标题不是完整制造方法 |
 | century-nylon-cord | literature | Century Enka, Nylon Tyre Cord Fabric, sections Greige Fabric, Dipped Fabric, Manufacturing process. https://www.centuryenka.com/product/nylon-tyre-cord-fabric.html | 制造商原始技术说明：捻线/织造以及坯布和浸胶交付态区别；仅定性路线证据，不是通用规格或当前批准。排除无关占位文字及历史认证说法。 |
 | `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27996, PDF pages 369. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |

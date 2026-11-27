@@ -9,6 +9,8 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
+For classification as a textile technical cloth, verify that no cross-sectional dimension of the PET monofilaments exceeds 1 mm in the delivered cloth; retain measured warp/weft diameter or maximum non-circular dimension and supplier specifications. Exactly 1 mm is not excluded by this dimension rule, while any dimension greater than 1 mm fails this PCR mapping. Textile/technical straining-cloth identity and all other scope conditions must still be met; a filter-mesh trade name alone is insufficient. Source: `wco-hs2022-section-xi`.
+
 The existing PCR ID is retained and its existing methodology upgraded in place. The scoped CPC mapping is accepted; scientific approval, translation review and publication retain their separately recorded states. Classification review and acceptance: docs/adr/2026-11-27-review-149-existing-methods-original-ids.md.
 
 This method covers purchased drawn, undyed, unsized virgin PET monofilaments through warping, mechanical weaving, electric heat-setting, inspection and rolling to undyed, uncoated industrial screening or straining mesh. A water-only deionised-water rinse and electrically heated/driven calendering are included only where actually performed. The representative product is full-width roll mesh with order-specified geometry, rather than a fabricated filtration device [saati-pet-mesh]; [saati-ecofiltra-2022]. Heat-setting is an explicit condition of this reference endpoint, not an assumed necessary operation for every filter cloth [bolian-heat-setting].
@@ -512,6 +514,7 @@ Conditional clean PET trimmed edges and rejected mesh sent to treatment or recov
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | For classification as a textile technical cloth, verify that no cross-sectional dimension of the PET monofilaments exceeds 1 mm in the delivered cloth; retain measured warp/weft diameter or maximum non-circular dimension and supplier specifications. Exactly 1 mm is not excluded by this dimension rule, while any dimension greater than 1 mm fails this PCR mapping. Textile/technical straining-cloth identity and all other scope conditions must still be met; a filter-mesh trade name alone is insufficient. | `wco-hs2022-section-xi` |
 | `validate_reference` | reference product | Reference product name matches finished_mesh; reference output is 1 kg accepted net mesh in the same state with all qualifiers. Do not equate a mass declared unit with equivalent screening function. |  |
 | `validate_route` | actual route | Verify mechanical insertion, electric heat-setting and actual optional stages. Finishing chemicals, fuel heat or on-site wastewater treatment make this narrow route incomplete until extended. |  |
 | `validate_atomic` | all exchanges | Each row is one specific physical/chemical exchange; public UUID property/unit group, material origin, feed state and compartment/subcompartment must match. Do not force unresolved identities or represent them as verified. |  |
@@ -534,6 +537,7 @@ Conditional clean PET trimmed edges and rejected mesh sent to treatment or recov
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Note 1(g), PDF page 1. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | Textile classification thresholds and equality boundaries; not manufacturing defaults |
 | `unsd-cpc-2025` | official_guidance | UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, PDF/printed p. 130, 27998. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Broad classification context only; contains no factory recipe or coverage acceptance. |
 | `saati-pet-mesh` | handbook | SAATI, Polyester Woven Meshes, undated manufacturer page, accessed 2026-10-06, sections Explore Our Polyester Woven Meshes and SAATIfil. https://www.saati.com/products/filtration/filter-meshes-fabrics/pet/ | Current commercial PET woven filtration-product and aperture context; no compliance, lifetime or numeric default adopted. |
 | `saati-ecofiltra-2022` | handbook | SAATI, Ecofiltra brochure, March 2022, PDF p. 5 / printed pp. 6–7, Monofilament Mesh; PDF p. 6 / printed pp. 8–9, weave distinctions. https://www.saati.com/media/wc5dcx45/emea_ecofiltra_brochure_mar-2022_eng_v5.pdf | Historical monofilament versus multifilament/staple construction and weaving distinctions; optional calendering context. No historical specification values or performance claims transferred to current production. |

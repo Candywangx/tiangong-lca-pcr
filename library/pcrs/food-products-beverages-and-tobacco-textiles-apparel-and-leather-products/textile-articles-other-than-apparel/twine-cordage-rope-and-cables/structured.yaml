@@ -556,6 +556,11 @@ dataset_production:
       requirement: "Check actual combustion, resource withdrawal, washing, leakage, airborne fibre particulates or effluent. Zero elementary rows describe this boundary, not an emission-free plant claim; unverified conditions mean incomplete coverage."
       evidence: "cp_energy; cp_waste"
 validation_rules:
+  - rule_id: validate_textile_classification_threshold
+    applies_to: "reference product"
+    rule: "For classification, verify the complete three-strand man-made-fibre rope has linear density strictly greater than 10,000 dtex and is not one of the yarn exceptions in HS Section XI Note 3(B). Exactly 10,000 dtex does not meet this selected cordage threshold. Record actual delivered linear density and strand construction. Any constituent plastic monofilament must have no cross-sectional dimension greater than 1 mm; strip inputs are outside this filament-yarn route. A trade name rope does not establish these conditions."
+    source_ids:
+      - wco-hs2022-section-xi
   - rule_id: validation_reference
     applies_to: "finished_rope_output"
     rule: "Check 1 kg accepted net rope output, all required qualifiers, same-lot weighing and packaging tare; align bilingual names and row_id. Blank reference UUID is a declared candidate identity gap, not full identity resolution."
@@ -584,6 +589,10 @@ published_dataset_profile:
   required_quality_disclosure: "identity gaps; scientific review state; measurement/period coverage; uncertainty; uncovered processes; site verification of zero elementary rows; absence of default consumption/loss ranges"
   update_trigger: "changes in composition, incoming state, process, finishing, electricity or configuration; resolved identities or new scientific-review evidence"
 data_sources:
+  - id: "wco-hs2022-section-xi"
+    type: "official_guidance"
+    reference: "WCO HS 2022, Section XI, Notes 1(g) and 3(A)(b)/3(B), PDF pages 1–2. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf"
+    used_for: "Textile classification thresholds and equality boundaries; not manufacturing defaults"
   - id: "unsd-cpc3-white-2026"
     type: "official_guidance"
     reference: "UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf"
@@ -610,19 +619,19 @@ data_sources:
     used_for: "Exact kWh-to-MJ unit conversion, not energy-consumption factor"
 normative_context:
   normalization: "utf8-lf-v1"
-  source_sha256: "sha256:6b041499de4de73788f2d2aa1048f3f6eb036d67baed8c97eb0b8961631ebbe8"
+  source_sha256: "sha256:bc32954907879bf678e0b47955d50b1dbd85e6b6014a71b35ef4c39c43728147"
   identity_scope: "projection_snapshot"
   units:
-    - unit_id: "normative_5856"
+    - unit_id: "normative_6414"
       family: "system_boundary"
       span:
         start:
-          offset: 5856
-          line: 63
+          offset: 6414
+          line: 65
           column: 1
         end:
-          offset: 8212
-          line: 82
+          offset: 8770
+          line: 84
           column: 1
       markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Purchased processed PP filament yarn at plant receipt, with declared colour and finish state |\n| starting_condition_role | Upstream-prepared technosphere material input |\n| product_classification_scope | One narrow manufacturing route within CPC 27310 |\n| recursive_input_rule | Purchased strands or semi-finished rope require disclosure of omitted stages and upstream links; they cannot masquerade as raw yarn while claiming preparation/strand manufacture. Link internal transfers once. |\n| upstream_dataset_requirement | Match actual PP route, yarn processing state, additives, recycled share, regional electricity and packaging upstream datasets; disclose gaps |\n| disclosure | Manufacturing foreground only; polymer/fibre manufacture, inbound external transport, use and end-of-life are separately modelled; no complete cradle-to-gate claim |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_stages | manufacturing stages | Include direct exchanges of yarn preparation, strand twisting, three-strand laying/take-up, mechanical cutting/inspection and actual packing. Machine purchasing energy does not replace operating meters; integrated machines may share measurement only with stage responsibility and no double counting documented. | meera-pp-twisting; deyuan-pp-rope |\n| boundary_extensions | optional and excluded operations | Dyeing, coating, heat-setting, melt cutting and washing are not mandatory for this dry route. Actual additional operations require expansion with each chemical, water, fuel, wastewater and measured emission separately. Coated dielectric rope cannot directly use this profile. | samson-coated-counterevidence |\n| boundary_direct_emissions | elementary and technosphere exchanges | This baseline does not assume direct combustion, resource-water withdrawal, effluent or dust emission; zero elementary rows require site completeness checking. Electricity-supply emissions remain upstream. Add actual releases individually by measured substance, origin, compartment and subcompartment. Collected offcuts are not airborne particulates. Actual compressed air, cleaning agent, lubricating oil and other auxiliaries require specific additions or a documented omission scope. |  |\n\n"
       headings:
@@ -641,12 +650,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 5856
-              line: 63
+              offset: 6414
+              line: 65
               column: 1
             end:
-              offset: 5877
-              line: 63
+              offset: 6435
+              line: 65
               column: 22
           text: "## 5. System Boundary"
           depth: 2
@@ -661,16 +670,16 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_22358"
+    - unit_id: "normative_22916"
       family: "allocation"
       span:
         start:
-          offset: 22358
-          line: 356
+          offset: 22916
+          line: 358
           column: 1
         end:
-          offset: 23348
-          line: 363
+          offset: 23906
+          line: 365
           column: 1
       markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_direct | different rope products and shared machinery | Use cp_energy stage meters and orders for direct attribution, avoiding allocation first. Do not allocate by length unconditionally across different linear mass, twist and machine settings. Remaining shared use requires contemporaneously measured running time/load relationship. Mass allocation needs evidence of equivalent process settings and consumption relationship, with sensitivity disclosed. |  |\n| allocation_rework | rework and offcuts | Keep actual extra electricity for internal rework/strand transfers; cancel internal material loops in the combined system and avoid duplicate upstream burdens. Weigh exported waste separately from accepted rope; intended recycling gives no automatic substitution credit. Saleable co-products require boundary, allocation basis and reproducible quantities. |  |\n\n"
       headings:
@@ -689,12 +698,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 22358
-              line: 356
+              offset: 22916
+              line: 358
               column: 1
             end:
-              offset: 22398
-              line: 356
+              offset: 22956
+              line: 358
               column: 41
           text: "## 7. Allocation and Co-product Handling"
           depth: 2
@@ -709,18 +718,18 @@ normative_context:
               line: 2
               column: 1
           markdown: "---\n"
-    - unit_id: "normative_28699"
+    - unit_id: "normative_29257"
       family: "validation"
       span:
         start:
-          offset: 28699
-          line: 393
+          offset: 29257
+          line: 395
           column: 1
         end:
-          offset: 30145
-          line: 402
+          offset: 31323
+          line: 405
           column: 1
-      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| validation_reference | finished_rope_output | Check 1 kg accepted net rope output, all required qualifiers, same-lot weighing and packaging tare; align bilingual names and row_id. Blank reference UUID is a declared candidate identity gap, not full identity resolution. |  |\n| validation_stage_links | strand_output; strand_input; laid_rope_output; laid_rope_input | Check sequence, lots and quantities, explain stock/rework differences and avoid duplicate upstream burdens on internal links. Purchased strand/rope requires disclosure of omitted stages. | meera-pp-twisting |\n| validation_quantities | all inventory rows | Normalize each row by same-batch accepted net mass; preserve electricity Net calorific value, MJ and kWh conversion. Verify actual occurrence and collection evidence row by row. Quantities must be finite/nonnegative and accepted output positive; explain residual against measured uncertainty, with no universal loss threshold. | si-units |\n| validation_boundary | site and data package | Actual coating, wet treatment, extrusion, heat-setting or melt cutting requires boundary expansion and added flows. Verify elementary, water, waste and auxiliary coverage. Unverified scope is inconclusive, never zero by omission; this manufacturing profile does not approve dielectric or lifting safety. | samson-coated-counterevidence |\n\n"
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_textile_classification_threshold` | reference product | For classification, verify the complete three-strand man-made-fibre rope has linear density strictly greater than 10,000 dtex and is not one of the yarn exceptions in HS Section XI Note 3(B). Exactly 10,000 dtex does not meet this selected cordage threshold. Record actual delivered linear density and strand construction. Any constituent plastic monofilament must have no cross-sectional dimension greater than 1 mm; strip inputs are outside this filament-yarn route. A trade name rope does not establish these conditions. | `wco-hs2022-section-xi` |\n| validation_reference | finished_rope_output | Check 1 kg accepted net rope output, all required qualifiers, same-lot weighing and packaging tare; align bilingual names and row_id. Blank reference UUID is a declared candidate identity gap, not full identity resolution. |  |\n| validation_stage_links | strand_output; strand_input; laid_rope_output; laid_rope_input | Check sequence, lots and quantities, explain stock/rework differences and avoid duplicate upstream burdens on internal links. Purchased strand/rope requires disclosure of omitted stages. | meera-pp-twisting |\n| validation_quantities | all inventory rows | Normalize each row by same-batch accepted net mass; preserve electricity Net calorific value, MJ and kWh conversion. Verify actual occurrence and collection evidence row by row. Quantities must be finite/nonnegative and accepted output positive; explain residual against measured uncertainty, with no universal loss threshold. | si-units |\n| validation_boundary | site and data package | Actual coating, wet treatment, extrusion, heat-setting or melt cutting requires boundary expansion and added flows. Verify elementary, water, waste and auxiliary coverage. Unverified scope is inconclusive, never zero by omission; this manufacturing profile does not approve dielectric or lifting safety. | samson-coated-counterevidence |\n\n"
       headings:
         - kind: "heading"
           span:
@@ -737,12 +746,12 @@ normative_context:
         - kind: "heading"
           span:
             start:
-              offset: 28699
-              line: 393
+              offset: 29257
+              line: 395
               column: 1
             end:
-              offset: 28721
-              line: 393
+              offset: 29279
+              line: 395
               column: 23
           text: "## 9. Validation Rules"
           depth: 2
@@ -761,168 +770,181 @@ normative_context:
     - pointer: "/system_boundary/rules/0"
       rule_id: "boundary_stages"
       identity_kind: "explicit"
-      unit_id: "normative_5856"
+      unit_id: "normative_6414"
       source_span:
         start:
-          offset: 6888
-          line: 78
+          offset: 7446
+          line: 80
           column: 1
         end:
-          offset: 7279
-          line: 78
+          offset: 7837
+          line: 80
           column: 392
     - pointer: "/system_boundary/rules/1"
       rule_id: "boundary_extensions"
       identity_kind: "explicit"
-      unit_id: "normative_5856"
+      unit_id: "normative_6414"
       source_span:
         start:
-          offset: 7280
-          line: 79
+          offset: 7838
+          line: 81
           column: 1
         end:
-          offset: 7648
-          line: 79
+          offset: 8206
+          line: 81
           column: 369
     - pointer: "/system_boundary/rules/2"
       rule_id: "boundary_direct_emissions"
       identity_kind: "explicit"
-      unit_id: "normative_5856"
+      unit_id: "normative_6414"
       source_span:
         start:
-          offset: 7649
-          line: 80
+          offset: 8207
+          line: 82
           column: 1
         end:
-          offset: 8210
-          line: 80
+          offset: 8768
+          line: 82
           column: 562
     - pointer: "/allocation_rules/0"
       rule_id: "allocation_direct"
       identity_kind: "explicit"
-      unit_id: "normative_22358"
+      unit_id: "normative_22916"
       source_span:
         start:
-          offset: 22471
-          line: 360
+          offset: 23029
+          line: 362
           column: 1
         end:
-          offset: 22942
-          line: 360
+          offset: 23500
+          line: 362
           column: 472
     - pointer: "/allocation_rules/1"
       rule_id: "allocation_rework"
       identity_kind: "explicit"
-      unit_id: "normative_22358"
+      unit_id: "normative_22916"
       source_span:
         start:
-          offset: 22943
-          line: 361
+          offset: 23501
+          line: 363
           column: 1
         end:
-          offset: 23346
-          line: 361
+          offset: 23904
+          line: 363
           column: 404
     - pointer: "/validation_rules/0"
+      rule_id: "validate_textile_classification_threshold"
+      identity_kind: "explicit"
+      unit_id: "normative_29257"
+      source_span:
+        start:
+          offset: 29352
+          line: 399
+          column: 1
+        end:
+          offset: 29971
+          line: 399
+          column: 620
+    - pointer: "/validation_rules/1"
       rule_id: "validation_reference"
       identity_kind: "explicit"
-      unit_id: "normative_28699"
+      unit_id: "normative_29257"
       source_span:
         start:
-          offset: 28794
-          line: 397
+          offset: 29972
+          line: 400
           column: 1
         end:
-          offset: 29069
-          line: 397
+          offset: 30247
+          line: 400
           column: 276
-    - pointer: "/validation_rules/1"
+    - pointer: "/validation_rules/2"
       rule_id: "validation_stage_links"
       identity_kind: "explicit"
-      unit_id: "normative_28699"
+      unit_id: "normative_29257"
       source_span:
         start:
-          offset: 29070
-          line: 398
+          offset: 30248
+          line: 401
           column: 1
         end:
-          offset: 29370
-          line: 398
+          offset: 30548
+          line: 401
           column: 301
-    - pointer: "/validation_rules/2"
+    - pointer: "/validation_rules/3"
       rule_id: "validation_quantities"
       identity_kind: "explicit"
-      unit_id: "normative_28699"
+      unit_id: "normative_29257"
       source_span:
         start:
-          offset: 29371
-          line: 399
+          offset: 30549
+          line: 402
           column: 1
         end:
-          offset: 29757
-          line: 399
+          offset: 30935
+          line: 402
           column: 387
-    - pointer: "/validation_rules/3"
+    - pointer: "/validation_rules/4"
       rule_id: "validation_boundary"
       identity_kind: "explicit"
-      unit_id: "normative_28699"
+      unit_id: "normative_29257"
       source_span:
         start:
-          offset: 29758
-          line: 400
+          offset: 30936
+          line: 403
           column: 1
         end:
-          offset: 30143
-          line: 400
+          offset: 31321
+          line: 403
           column: 386
   diagnostics:
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_5856"
+      unit_id: "normative_6414"
       source_span:
         start:
-          offset: 5856
-          line: 63
+          offset: 6414
+          line: 65
           column: 1
         end:
-          offset: 5877
-          line: 63
+          offset: 6435
+          line: 65
           column: 22
     - code: "NON_RULE_TABLE"
       message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
-      unit_id: "normative_5856"
+      unit_id: "normative_6414"
       source_span:
         start:
-          offset: 5905
-          line: 67
+          offset: 6463
+          line: 69
           column: 1
         end:
-          offset: 6815
-          line: 74
+          offset: 7373
+          line: 76
           column: 181
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_22358"
+      unit_id: "normative_22916"
       source_span:
         start:
-          offset: 22358
-          line: 356
+          offset: 22916
+          line: 358
           column: 1
         end:
-          offset: 22398
-          line: 356
+          offset: 22956
+          line: 358
           column: 41
     - code: "AMBIGUOUS_PROSE_ATTACHMENT"
       message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
-      unit_id: "normative_28699"
+      unit_id: "normative_29257"
       source_span:
         start:
-          offset: 28699
-          line: 393
+          offset: 29257
+          line: 395
           column: 1
         end:
-          offset: 28721
-          line: 393
+          offset: 29279
+          line: 395
           column: 23
 projection_metadata:
   contract_version: "2"
@@ -931,5 +953,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:6b041499de4de73788f2d2aa1048f3f6eb036d67baed8c97eb0b8961631ebbe8"
-  generated_content_sha256: "sha256:045cf1b468350eb164731fed8814b77a68d041dc22527f8dd18d77df2ea83719"
+    sha256: "sha256:bc32954907879bf678e0b47955d50b1dbd85e6b6014a71b35ef4c39c43728147"
+  generated_content_sha256: "sha256:a513dfd4ddb6b27d49bae4deb1415022aaeabfc5cd6bc4d262bfa0d7b5bcf909"

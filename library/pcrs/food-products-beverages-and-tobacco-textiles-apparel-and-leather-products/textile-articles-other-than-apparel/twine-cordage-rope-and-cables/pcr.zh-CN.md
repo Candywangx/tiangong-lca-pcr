@@ -9,6 +9,8 @@ sync_with: pcr.en-US.md
 
 ## 1. 范围与适用性
 
+分类时须核实完整三股人造纤维绳的线密度严格大于 10,000 dtex，且不属于 HS 第十一类注 3(B) 的纱线例外。恰好 10,000 dtex 不满足本选定绳索门槛。记录实际交付线密度与股线结构；若含塑料单丝，其任一截面尺寸不得大于 1 mm。扁条原料不属于本长丝纱路线。商品“绳”名称不能替代这些条件。 来源: `wco-hs2022-section-xi`.
+
 保留原 PCR ID 并复用现有方法原地升级。已接受限定范围的 CPC 映射；科学审批、翻译审阅和发布分别按各自状态记录。 分类审阅与接受记录：docs/adr/2026-11-27-review-149-existing-methods-original-ids.md。
 
 本方法适用于外购已纺丝、拉伸、具明确组成的聚丙烯长丝纱，在厂内干法备纱、制股和三股合捻，随后机械裁切、检验并以绳卷出厂。代表产品为无厂内新增涂层的三股聚丙烯通用绳；尺寸、线密度、强度和捻距由真实订单及验收记录声明。供应商已加入的颜料、稳定剂和纺丝油剂仍属于来料组成及上游负担。
@@ -394,6 +396,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | 分类时须核实完整三股人造纤维绳的线密度严格大于 10,000 dtex，且不属于 HS 第十一类注 3(B) 的纱线例外。恰好 10,000 dtex 不满足本选定绳索门槛。记录实际交付线密度与股线结构；若含塑料单丝，其任一截面尺寸不得大于 1 mm。扁条原料不属于本长丝纱路线。商品“绳”名称不能替代这些条件。 | `wco-hs2022-section-xi` |
 | validation_reference | finished_rope_output | 检查 1 kg 验收净绳参考输出、全部必需限定、同批称重及包装皮重，双语名称和 row_id 一致；参考 UUID 空缺按候选身份缺口登记，不能声称全部身份已解决。 |  |
 | validation_stage_links | strand_output; strand_input; laid_rope_output; laid_rope_input | 核对工序顺序、批次与数量，解释库存及返工差额；内部连接不重复加上游。购买绳股或半成品须披露被跳过的工序。 | meera-pp-twisting |
 | validation_quantities | 所有清单行 | 每行按同批验收净质量归一化，电力保持净热值属性和 MJ 及 kWh 换算；逐行核对实际发生条件和收集凭据。数量应有限非负，参考产量须大于零；校验残差须与实测不确定度解释，无统一损耗阈值。 | si-units |
@@ -415,6 +418,7 @@ sync_with: pcr.en-US.md
 
 | 来源标识 | 类型 | 参考 | 用途 |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Notes 1(g) and 3(A)(b)/3(B), PDF pages 1–2. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | 纺织分类门槛及临界值；不是工艺默认值 |
 | `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | unsd-cpc-notes | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, p. 128. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 27310 类别与相邻网具类别；无工艺专门解释 |
 | deyuan-pp-rope | literature | Deyuan Marine, 3-Strand PP Rope, Product Introduction. https://www.deyuanmarine.com/3-Strand-PP-Rope-pd129282238.html | 聚丙烯长丝纱制三股绳的产品存在及结构；不采用宣传认证、性能和容差数值 |

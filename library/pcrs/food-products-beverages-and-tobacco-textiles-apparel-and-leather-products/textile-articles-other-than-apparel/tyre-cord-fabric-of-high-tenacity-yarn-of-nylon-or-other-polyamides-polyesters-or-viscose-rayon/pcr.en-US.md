@@ -10,6 +10,8 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
+For classification, retain actual nylon warp-cord tenacity and its single versus multiple/cabled construction. The HS high-tenacity definition requires strictly more than 60 cN/tex for single polyamide yarn, or strictly more than 53 cN/tex for multiple/cabled polyamide yarn; equality fails the respective threshold. The supplied high-tenacity claim must be supported by grade and test records for the actual cord, not inferred from polymer name or intended tyre use. This does not set a tyre-performance or production-process target. Source: `wco-hs2022-section-xi`.
+
 The existing PCR ID is retained and its existing methodology upgraded in place. The scoped CPC mapping is accepted; scientific approval, translation review and publication retain their separately recorded states. Classification review and acceptance: docs/adr/2026-11-27-review-149-existing-methods-original-ids.md.
 
 This method covers undipped greige tyre reinforcement fabric made on site from already manufactured high-tenacity nylon 6 multifilament yarn, plied/cabled into cord warp and interlaced with sparse, undyed unsized 100% cotton weft. The representative product is a buyer-specified roll of greige fabric supplied for later adhesion treatment. Cording, cord placement and the undipped endpoint distinguish it from ordinary high-tenacity woven PET fabric. Sources: `un-cpc-2025`; `century-nylon-cord`.
@@ -527,6 +529,7 @@ Conditional on quantified net immediate vapor release from humidification to uns
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
+| `validate_textile_classification_threshold` | reference product | For classification, retain actual nylon warp-cord tenacity and its single versus multiple/cabled construction. The HS high-tenacity definition requires strictly more than 60 cN/tex for single polyamide yarn, or strictly more than 53 cN/tex for multiple/cabled polyamide yarn; equality fails the respective threshold. The supplied high-tenacity claim must be supported by grade and test records for the actual cord, not inferred from polymer name or intended tyre use. This does not set a tyre-performance or production-process target. | `wco-hs2022-section-xi` |
 | val_scope | dataset | Reject claimed whole-classification, dipped, PET/rayon/nylon66 or cradle-to-gate completeness on this foreground-only method. Qualifiers and actual included stages are required. | un-cpc-2025; century-nylon-cord |
 | val_mass | all inventory rows | Require positive accepted net mass, consistent conditioning and same-period denominator; check nylon/cotton balance and internal transfer cancellation, packaging exclusion and no duplicate upstream yarn burdens. |  |
 | val_identity | flow identities | Unresolved UUIDs require explicit row-specific review; no silent generic substitution. Match public flow type, reference property, unit group and environmental subcompartment, including immediate versus long-term releases. |  |
@@ -548,6 +551,7 @@ Conditional on quantified net immediate vapor release from humidification to uns
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `wco-hs2022-section-xi` | official_guidance | WCO HS 2022, Section XI, Note 6, PDF page 3. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1100_2022e.pdf | Textile classification thresholds and equality boundaries; not manufacturing defaults |
 | un-cpc-2025 | official_guidance | UN Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, p.129, 27996. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | Classification context only; heading is not a complete manufacturing methodology |
 | century-nylon-cord | literature | Century Enka, Nylon Tyre Cord Fabric, sections Greige Fabric, Dipped Fabric, Manufacturing process. https://www.centuryenka.com/product/nylon-tyre-cord-fabric.html | Manufacturer primary technical description: cording/weaving and greige versus dipped endpoints; qualitative route evidence only, not universal specifications or current approval. Unrelated placeholder text and historical certification claims are excluded. |
 | `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27996, PDF pages 369. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |
