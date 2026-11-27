@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-27
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
 # Authoring Guide
@@ -256,3 +256,12 @@ not relax that requirement. See [TypeScript engineering](typescript-engineering.
 ## Normative projection version 2
 
 The [semantic projection contract](semantic-projection-contract.md) preserves complete normative sections and ancestor preambles. Keep explicit IDs distinct; anonymous fallbacks are snapshot-local, and duplicate explicit IDs are errors. New sync output uses projection v2. Existing published bytes stay immutable; migration of unpublished projections changes no scientific or translation approval.
+
+## Reusable method authoring
+
+Use [the material module contract](method-module-contract.md) for a common method
+whose scope spans category PCRs. Author the two localized documents and factual
+source bindings, regenerate through `module:sync`, run `module:check`, and obtain
+source, translation and semantic review on exact source hashes before verified
+export. Keep original evidence outside Git unless redistribution is established.
+Do not create a category PCR or apply PCR publication flags to package a reusable method.

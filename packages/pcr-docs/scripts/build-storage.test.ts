@@ -395,8 +395,22 @@ test("publishing replaces the export and removes its own staging directories", (
     const app = path.join(root, "app");
     write(path.join(app, "out/index.html"), "OLD");
     const scratchApp = scratchAppWithExport(path.join(root, "scratch"), { "index.html": "NEW" });
-    const published = publishOutput({ app, scratchApp, token: "test1" });
+    const diagnostics: Record<string, unknown>[] = [], snapshots: FilesystemFacts[] = [];
+    const published = publishOutput({ app, scratchApp, token: "test1",
+      facts: target => {
+        const snapshot = { ...filesystemFacts(target), availableBytes: (20 - snapshots.length) * 1024 ** 3 };
+        snapshots.push(snapshot); return snapshot;
+      },
+      log: value => diagnostics.push(JSON.parse(value)),
+    });
     assert.deepEqual(published, { files: 1, bytes: 3, staged: true });
+    assert.equal(snapshots.length, 2, "diagnostics reuse both original guard measurements");
+    assert.deepEqual(diagnostics.map(value => value.phase), ["before-staging", "after-staging"]);
+    assert.deepEqual(diagnostics.map(value => value.filesystem), snapshots);
+    const required = allocatedExportBytes(path.join(scratchApp, "out"), snapshots[0]!.blockSizeBytes!) + HEADROOM_BYTES;
+    assert.deepEqual(diagnostics.map(value => value.minimumFreeBytes), [required, HEADROOM_BYTES]);
+    assert.deepEqual(diagnostics.map(value => value.guardAvailableBytes), snapshots.map(value => value.availableBytes));
+    assert.equal(diagnostics[0]!.logicalBytes, 3); assert.equal(diagnostics[0]!.reserveBytes, HEADROOM_BYTES);
     assert.equal(fs.readFileSync(path.join(app, "out/index.html"), "utf8"), "NEW");
     assert.deepEqual(fs.readdirSync(app).sort(), ["out"]);
   } finally {
@@ -413,12 +427,19 @@ test("destination preflight includes each file's target allocation unit without 
     assert.throws(() => allocatedExportBytes(out, 0), /allocation block/u);
     assert.throws(() => allocatedExportBytes(out, Number.NaN), /allocation block/u);
     let copied = false;
+    const diagnostics: Record<string, unknown>[] = [];
     assert.throws(() => publishOutput({
       app: fixture.app, scratchApp: fixture.scratchApp, providerRoot: fixture.providerRoot,
       freeBytes: 3 + HEADROOM_BYTES,
       facts: target => ({ ...filesystemFacts(target), blockSizeBytes: unit }),
       cp: () => { copied = true; },
+      log: value => diagnostics.push(JSON.parse(value)),
     }), /allocated estimate/u);
+    assert.equal(diagnostics.length, 1);
+    assert.equal(diagnostics[0]!.phase, "before-staging");
+    assert.equal(diagnostics[0]!.allocatedBytes, 3 * unit);
+    assert.equal(diagnostics[0]!.minimumFreeBytes, 3 * unit + HEADROOM_BYTES);
+    assert.equal(diagnostics[0]!.guardAvailableBytes, 3 + HEADROOM_BYTES);
     assert.equal(copied, false, "allocation failure must precede any staging copy");
     assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
     assert.equal(fs.existsSync(path.join(fixture.providerRoot, ".edgeone")), false);
@@ -430,11 +451,17 @@ test("actual remaining destination headroom is rechecked after export and provid
   const fixture = providerFixture({ "index.html": "NEW", "nested/file.txt": "BYTES" });
   try {
     let reads = 0, swapped = false;
+    const diagnostics: Record<string, unknown>[] = [];
     assert.throws(() => publishOutput({
       app: fixture.app, scratchApp: fixture.scratchApp, providerRoot: fixture.providerRoot, token: "headroom",
       facts: target => ({ ...filesystemFacts(target), availableBytes: ++reads === 1 ? 10 * 1024 ** 3 : HEADROOM_BYTES - 1 }),
       beforeSwap: () => { swapped = true; },
+      log: value => diagnostics.push(JSON.parse(value)),
     }), /headroom after staging/u);
+    assert.equal(diagnostics.length, 2);
+    assert.equal(diagnostics[1]!.phase, "after-staging");
+    assert.equal(diagnostics[1]!.minimumFreeBytes, HEADROOM_BYTES);
+    assert.equal(diagnostics[1]!.guardAvailableBytes, HEADROOM_BYTES - 1);
     assert.equal(reads, 2); assert.equal(swapped, false);
     assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
     assert.equal(fs.existsSync(path.join(fixture.providerRoot, ".edgeone/assets")), false);

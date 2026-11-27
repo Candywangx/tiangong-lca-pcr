@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-02
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
+lastReviewedAt: 2026-11-27
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -366,6 +366,15 @@ deadline, cleanup and atomic handoff remain enforced. The export uses two static
 with at most one static page render in flight per worker. Its 4 GB Node heap
 ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap ceiling is not proof of total resident memory.
 
+The hosted web build sets `PCR_SOURCE_VERIFY_WORKERS=4` (supported values `1` through `4`) for verification of
+independent source documents. Each admitted document still undergoes the complete
+Markdown inventory, rendered-block, link, source-marker and ordering checks.
+Worker Node child processes inherit the build environment and apply a bounded per-process heap
+limit (`--max-old-space-size=2048` when more than two workers are selected). The existing process-tree RSS check includes the parent and all active children.
+The verifier waits for all assigned documents and child shutdown before continuing
+with the global export checks. It reports document validation errors in source
+order. An unset value or `1` runs the serial verification path.
+
 Each attempted stage emits `build-stage` diagnostics with its command, duration,
 sampled peak process-tree RSS, measurement availability, child exit code and
 passed/failed status. A zero-exit child that exceeds the RSS guard is a failed
@@ -374,6 +383,20 @@ handoff fails after all stages. Failed runs write
 `.generated/build-failure-metrics.json` after cleanup returns, separately from
 the last successful `.generated/build-metrics.json`; neither failure receipt
 claims a successful export or relaxes the atomic output handoff.
+
+### Build machine selection
+
+The root `edgeone.json` selects `buildMachine: enhanced`, following the
+[provider configuration contract](https://pages.edgeone.ai/document/edgeone-json).
+The provider documents this machine as eight cores and 14 GB for the Pro plan.
+Deployment acceptance still measures the final output filesystem and requires
+the complete verified export plus the existing reserve to fit. The machine
+selection alone does not prove sufficient destination capacity. The provider's
+plan entitlement and the actual selected machine must be verified for the
+deployment. The sealed importer records its native process-available CPU estimate,
+constrained/available memory and both guard-measured destination-capacity snapshots.
+The records identify raw host values separately. A machine selection or raw host
+CPU count alone cannot establish the effective allocation or final output space.
 
 ### Build workspace storage
 

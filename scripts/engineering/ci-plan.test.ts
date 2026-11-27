@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { classifyQualification, createCiPlan, isReusableContext, verifyCiPlan } from './ci-plan.ts';
 const pcr = 'library/pcrs/machinery/general/machine/pcr.en-US.md';
-const decision = (paths: readonly string[], options: Partial<{event:string;reusable:boolean;verifiedDiff:boolean}> = {}) => classifyQualification({event:'pull_request',reusable:false,verifiedDiff:true,paths,...options});
+const decision = (paths: readonly string[], options: Partial<{event:string;reusable:boolean;verifiedDiff:boolean;forceFull:boolean}> = {}) => classifyQualification({event:'pull_request',reusable:false,verifiedDiff:true,paths,...options});
 
 test('only bounded canonical data and associated derived data use the data lane', () => {
   const value = decision([pcr,pcr,pcr.replace('en-US','zh-CN'),'library/catalog.yaml','library/indexes/pcr-index.yaml',
@@ -30,13 +30,26 @@ test('unknown, mixed, shared, executable, history and optional-language changes 
   assert.equal(decision([pcr],{verifiedDiff:false}).reason,'diff-not-proven');
 });
 
-test('generated lock routing never reduces dependency, governance or unknown qualification', () => {
+test('generated lock routing never reduces dependency, engineering, web or unknown qualification', () => {
   for (const name of ['package-lock.json', 'package.json', 'packages/pcr-core/package.json',
-    'packages/pcr-docs/package-lock.json', '.docpact/config.yaml', 'docs/dependency-maintenance.md',
+    'packages/pcr-docs/package-lock.json', 'builder/lib/pcr-document-history.ts',
     'scripts/engineering/ci-workflow.test.ts', '.github/workflows/validate.yml', 'config/unregistered.json']) {
     assert.equal(decision([name]).mode, 'full', name);
     assert.equal(decision(['package-lock.json', name]).mode, 'full', `root lock plus ${name}`);
   }
+  assert.equal(decision(['package-lock.json', '.docpact/config.yaml']).mode, 'full');
+  assert.equal(decision(['package-lock.json', 'docs/dependency-maintenance.md']).mode, 'full');
+});
+
+test('PR-only docs-only and pr-code lanes stay fail-closed and never apply to push, release or ci:full', () => {
+  assert.equal(decision(['AGENTS.md', 'README.md', '.docpact/config.yaml', 'docs/dependency-maintenance.md']).mode, 'docs-only');
+  assert.equal(decision(['builder/lib/markdown-projection.ts', 'packages/tiangong-pcr-cli/bin/tiangong-pcr.ts', 'skills/tiangong-pcr/SKILL.md', 'tests/browser/viewer.browser.test.ts', 'README.md']).mode, 'pr-code');
+  assert.equal(decision(['AGENTS.md'], { event: 'push' }).mode, 'full');
+  assert.equal(decision(['builder/cli/index.ts'], { event: 'push' }).mode, 'full');
+  assert.equal(decision(['AGENTS.md'], { forceFull: true }).mode, 'full');
+  assert.equal(decision(['builder/cli/index.ts'], { forceFull: true }).mode, 'full');
+  assert.equal(decision(['AGENTS.md'], { reusable: true }).mode, 'full');
+  assert.equal(decision(['builder/lib/pcr-document-history.ts']).mode, 'full');
 });
 
 test('invalid and platform-dependent paths cannot enter a reduced plan', () => {
@@ -97,4 +110,6 @@ test('command creates once and verifies against fresh workflow context', t => {
   const plan:unknown=JSON.parse(readFileSync(output,'utf8'));assert.ok(plan);
   const forced=spawnSync(process.execPath,[script,'verify',output],{cwd:f.root,env:{...env,CI_WORKFLOW_INPUTS:'{"product_tag":""}'},encoding:'utf8'});
   assert.equal(forced.status,1);assert.match(forced.stderr,/changed/);
+  const forcedLabel=spawnSync(process.execPath,[script,'verify',output],{cwd:f.root,env:{...env,CI_FORCE_FULL:'true'},encoding:'utf8'});
+  assert.equal(forcedLabel.status,1);assert.match(forcedLabel.stderr,/changed/);
 });

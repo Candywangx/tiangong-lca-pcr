@@ -66,7 +66,7 @@ test('always-present aggregate requires the entire declared graph and trusted wo
 });
 test('full-lane tests are complete, isolated, receipt-bound and include uninstrumented corpus',()=>{
  assert.deepEqual(object(object(job('test-shards').strategy).matrix).shard,SHARD_NAMES);
- assert.equal(job('test-shards').if,"needs.plan.outputs.mode == 'full'");
+ assert.equal(job('test-shards').if,"needs.plan.outputs.mode == 'full' || needs.plan.outputs.mode == 'pr-code'");
  const command=text(step('test-shards','Execute exactly the frozen shard').run);
  assert.match(command,/if \[ "\$SHARD" = corpus \]/u);assert.match(command,/--qualification-plan .* --selection "\$SHARD" -- node/u);
  const docs=text(step('web-build','Build and verify the full static library').run);
@@ -81,6 +81,8 @@ test('data path retains global checks, exact generated content and sealed cross-
  assert.equal(object(step('contracts','Preserve content qualification evidence').with).path,'${{ runner.temp }}/pcr-content-contracts/');
  assert.match(text(step('test-shards','Bind the actual pinned npm entry for direct shard children').run),/npm_execpath=/u);
  for(const name of ['sealed-distribution','sealed-web']){assert.equal(job(name).needs,'documentation');assert.equal(job(name).if,undefined);}
+ assert.deepEqual(object(object(job('sealed-web').strategy).matrix).engine,['chromium','firefox','webkit']);
+ assert.match(text(step('sealed-web','Qualify browsers against extracted sealed bytes').run),/--engine "\$\{\{ matrix\.engine \}\}"/u);
  assert.equal(object(object(job('sealed-distribution').strategy).matrix).include instanceof Array,true);
  assert.match(text(step('sealed-distribution','Qualify real offline installation of the sealed packages').run),/--expected-source "\$\{\{ github.sha \}\}"/u);
  assert.ok(!steps('documentation').some(value=>text(value.run??'').includes('npm run product:test')));

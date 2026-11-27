@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-27
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -342,7 +342,11 @@ Full mode requires all eight fresh source-bound shard receipts, independent
 full-corpus reproducibility and authenticated coverage measurements. A proven
 current-PCR-only data lane retains whole-library contracts, changed-record
 semantic/projection checks and complete fresh sealed-product acceptance; full
-code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+code coverage is explicitly unmeasured. Pull-request-only `docs-only` and
+`pr-code` lanes run fail-closed reduced gates (contracts or contracts plus all
+eight test shards without web/product sealing) when changes stay strictly inside
+non-web, non-release documentation or builder/CLI/viewer/skill/test surfaces;
+unknown/shared/web/release changes, `ci:full`, every `main` push and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.
@@ -355,3 +359,9 @@ or methodology authority.
 Product releases use one version source (`product-release.json`), immutable `v<version>` tags,
 main-bound qualification and coordinated npm/website publication with verified retry receipts. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+Material reusable modules follow [the source/package contract](docs/method-module-contract.md).
+Use `module:sync`, `module:check` and `module:export` for their generated projection
+and portable source package; PCR lifecycle/publication commands do not apply.
+Independent document-review records, scientific approval and study qualification
+remain separate, and consumers independently pin eligible Main provenance.

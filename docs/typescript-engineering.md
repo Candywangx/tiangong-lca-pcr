@@ -21,9 +21,9 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-27
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
+lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
 related:
   - repository-coding-guidelines.md
   - offline-distribution.md
@@ -289,12 +289,18 @@ containing changed canonical PCR records. Its allowlist covers the four current
 files (`manifest.yaml`, `structured.yaml`, `pcr.en-US.md`, `pcr.zh-CN.md`), with
 supported associated catalog/material index, CPC 3.0 mapping/coverage, alias
 registry and `docs/adr/NNNN-<slug>.md` decision evidence. An ADR-only or derived-only
-change selects full mode. Unknown paths, shared modules, classification-system
-sources, code, schemas, vocabularies, dependencies, workflows, release history,
+change selects full mode.
+
+For `pull_request` events only (never `push` to `main`, `workflow_call`, or PRs labeled `ci:full`), two additional fail-closed reduced lanes avoid unnecessary 50-minute static-site and sealed-product rebuilds:
+- `docs-only`: strictly top-level repository docs/governance files (`AGENTS.md`, `README.md`, `.docpact/config.yaml`, `docs/<name>.md`) run `plan`, `contracts` (runtime, migration, strict typechecks), and `validate`.
+- `pr-code`: strictly non-web, non-release code/test paths (`builder/cli/**`, `builder/goal-harness/**`, `builder/lib/**` excluding `pcr-document-history.ts`, `packages/tiangong-pcr-cli/**`, `packages/pcr-viewer/**`, `skills/**`, `tests/**`, optionally alongside `docs-only` files) run `plan`, full `contracts`, all eight `test-shards`, and `validate`.
+
+Unknown paths, shared modules, `packages/pcr-core/**`, `packages/pcr-docs/**`, `builder/scripts/**`, `builder/lib/pcr-document-history.ts`, classification-system
+sources, schemas, vocabularies, dependencies, workflows, engineering harnesses, release history,
 revision workspaces and optional language files select full mode. Missing,
 unproven or non-ancestral base history also selects full mode. Reusable invocation
 or declared reusable inputs always select full mode, including an empty
-`product_tag`; a tag's truthiness never reduces formal release qualification.
+`product_tag`; a tag's truthiness never reduces formal release qualification. Source-document verification in `web-build` accepts 1 to 4 bounded child workers (`PCR_SOURCE_VERIFY_WORKERS=4` in CI, keeping aggregate RSS well within the unchanged 6 GB budget).
 
 Both modes run runtime/migration/strict type checks and complete global lint,
 alias/catalog/chain freshness and source-history invariants. Changed current PCRs
@@ -408,9 +414,11 @@ JavaScript filenames. Browsers receive emitted JavaScript, never TypeScript sour
 
 The `browser` suite is an explicit part of `all`/`root`, using the existing Node
 test runner and pinned Playwright library rather than a second test-runner contract.
-Qualification currently uses exact Playwright 1.64.1; the root dependency, runtime
+Qualification currently uses exact Playwright 1.65.0; the root dependency, runtime
 preflight and receipt version remain coordinated, with fresh engine evidence when
-they change. Install its exact matching engines with `npm run browser:install`; Linux CI uses
+they change. The published 1.65.0 descriptor selects Chromium and headless shell
+revision 1254 (158.0.8127.18), Firefox 1572 (159.0), and WebKit 2388 (27.2).
+Fresh receipts retain the actual launched engine versions. Install its exact matching engines with `npm run browser:install`; Linux CI uses
 Playwright's `install --with-deps` so missing system libraries fail qualification.
 Tests exercise the actual compiled Viewer assets in Chromium, Firefox and WebKit:
 lazy detail fetch, literal filtering, language selection, escaped Markdown,
@@ -531,7 +539,7 @@ missing metadata, document/asset/navigation failures and failed HTTP responses
 remain blocking; case counts and functional assertions are unchanged.
 
 The Playwright [Request contract](https://playwright.dev/docs/api/class-request)
-and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
+and pinned [Firefox network implementation](https://github.com/microsoft/playwright/blob/v1.65.0/packages/playwright-core/src/server/firefox/ffNetworkManager.ts)
 provide request identity and engine cancellation semantics. Exact WebKit strings
 and prefetch evidence were also reproduced against the pinned browser runtime in
 [PCR #106](https://github.com/tiangong-lca/pcr/issues/106#issuecomment-6064168510).
@@ -561,9 +569,9 @@ prefetch rules are unchanged. Receipts retain all original request failures,
 separate expected disabled-script events, asset bindings and policy observations.
 A `csp` request reason alone never proves that a server policy is harmless.
 
-The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crPage.ts#L518-L519)
+The pinned [Chromium page implementation](https://github.com/microsoft/playwright/blob/v1.65.0/packages/playwright-core/src/server/chromium/crPage.ts#L563)
 disables script execution through the browser protocol; its
-[network implementation](https://github.com/microsoft/playwright/blob/v1.64.1/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L490)
+[network implementation](https://github.com/microsoft/playwright/blob/v1.65.0/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L544)
 can expose the protocol's blocked reason as failure text. Regression evidence must
 include realistic preload/modulepreload markup, positive native downloads,
 JavaScript-enabled controls and actual CSP/HTTP/hash failures in all three engines.

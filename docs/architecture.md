@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-27
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
 # PCR 资料库架构
@@ -588,3 +588,13 @@ YAML 的共享边界已迁入 `packages/pcr-core/src/yaml-lite.ts`：完整解�
 ### Typed consumer dependencies in installed Goal runtimes
 
 Verified Goal runtime overlays include the consumer core TypeScript modules, its compiler/generated dependencies and schemas. Installing a new runtime on an older task baseline must transfer the complete approved dependency graph; a file extension change must not silently omit a module. Canonical PCR content remains outside the runtime overlay and comes from the selected task/integration baseline.
+
+## Material method module packages
+
+Localized material modules use [the source/package contract](method-module-contract.md).
+Canonical English and aligned Chinese preserve complete requirement/context units;
+`source-bindings.json` owns factual source metadata and `review.json` records actual
+review identities and dimensions. The generated projection and portable package
+are distinct from PCR catalog, category identity and publication history. Consumers
+independently pin the delivered artifact and reviewed Main source; package conformance
+is not scientific approval or study qualification.

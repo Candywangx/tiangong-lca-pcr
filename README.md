@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-02
-lastReviewedCommit: ba81bd0091f6c8fe8bfc911c654af6d4dbb2423d
-lastReviewedNote: "PCR #164: independently reviewed the anchor refinement from ba81bd00. Apparent ids in attributes, comments, raw/inert content and consumed declarative shadow templates cannot satisfy ordinary-document anchor gates. All 112 focused checks and 3,318 authenticated incoming HTML pages pass; the independent shadow-root finding was reproduced in Chromium and narrowly repaired. Candidate content, additive mappings, runtime pins and source/resource guards remain unchanged. Fresh final-source hosted qualification and exact workspace integration remain required; no publication or scientific approval."
+lastReviewedAt: 2026-11-27
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
 # TianGong LCA PCR Library
@@ -123,10 +123,8 @@ the complete coverage targets from fresh report paths.
 CI retains the stable `validate` aggregate check and separates full source tests
 into eight complete, source-bound shards. Full-corpus reproducibility remains a
 mandatory separate gate; `npm run test:offline:portable` runs compact real offline
-contracts on supported platforms. Proven current-PCR-only changes can select a
-reduced data lane with full global contracts and complete fresh sealed-product
-acceptance; its full code coverage is explicitly unmeasured. Every reusable
-release qualification selects full mode, even with an empty product tag. See
+contracts on supported platforms. Proven current-PCR-only changes can select a reduced `data` lane with full global contracts and complete fresh sealed-product
+acceptance; its full code coverage is explicitly unmeasured. Pull requests touching only governance/documentation files can select the fail-closed `docs-only` lane, and code-only PRs outside documentation-site/core/release/workflow boundaries can select the `pr-code` lane (`full` tests and coverage without rebuilding the full static site); pushes to `main`, `ci:full`-labeled PRs, and every reusable release qualification always select `full` mode, even with an empty product tag. See
 [CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
 for allowed changes, evidence binding and complete-attempt retry requirements.
 The required `web-build` and `documentation` jobs separate the complete instrumented
@@ -427,3 +425,8 @@ for setup, first publication and retries. Npm release does not approve PCR metho
 TianGong LCA code and authored methodology content are licensed under the
 [MIT License](LICENSE). Bundled dependencies and referenced third-party material
 retain their own licenses and notices.
+
+Material reusable method modules have a separate [source/package contract](docs/method-module-contract.md).
+Run `npm run module:check` for local conformance; export carries full bilingual
+source context and independently review-bound identities. This does not publish
+a PCR or qualify a product study.
