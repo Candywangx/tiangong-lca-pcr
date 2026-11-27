@@ -50,6 +50,13 @@ export async function runSourceVerificationPool(context: SourceVerificationRun, 
   const workerFile = options.workerFile ?? new URL(import.meta.url.endsWith(".js") ? "./verify-source-worker.js" : "./verify-source-worker.ts", import.meta.url);
   const createChild = options.createChild ?? fork;
   const pages = context.manifest.pages.map(page => ({url: page.url, sourcePath: page.sourcePath, sourceNodeIds: page.sourceNodeIds}));
+  const pageUrlsBySourcePath = new Map<string, string[]>();
+  for (const page of context.manifest.pages) {
+    if (!page.sourcePath) continue;
+    const urls = pageUrlsBySourcePath.get(page.sourcePath);
+    if (urls) urls.push(page.url);
+    else pageUrlsBySourcePath.set(page.sourcePath, [page.url]);
+  }
   const links = context.report.links.map(link => ({source: link.source, original: link.original, target: link.target}));
   const children: ChildState[] = [];
   const outcomes = new Map<number, Error | undefined>();
@@ -88,7 +95,7 @@ export async function runSourceVerificationPool(context: SourceVerificationRun, 
     while (state.ready && state.index === undefined && next < context.documents.length && next <= firstFailure && !infrastructureFailure) {
       const index = next++;
       const source = context.documents[index]!;
-      if (context.manifest.pages.some(page => page.sourcePath === source.sourcePath && context.parsed.has(page.url))) {
+      if ((pageUrlsBySourcePath.get(source.sourcePath) ?? []).some(url => context.parsed.has(url))) {
         try { verifySourceDocument(source, context); complete(index); }
         catch (error) { complete(index, error instanceof Error ? error : new Error(String(error))); }
       } else {

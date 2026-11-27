@@ -764,10 +764,21 @@ async function generate() {
   }
   // Resolve source-relative links after every destination and split-page anchor is known.
   for (const page of manifest.pages.filter((p) => p.sourcePath)) {
-    const file = path.join(stage, page.htmlPath!),
-      document = parseHTML(
-        "<html><body>" + fs.readFileSync(file, "utf8") + "</body></html>",
-      ).document;
+    const file = path.join(stage, page.htmlPath!);
+    const rawHtml = fs.readFileSync(file, "utf8");
+    let hasRelativeAttr = false;
+    for (const match of rawHtml.matchAll(/\b(?:href|src)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/giu)) {
+      const candidate = match[1] ?? match[2] ?? match[3] ?? "";
+      if (candidate && !/^(?:[a-z][a-z0-9+.-]*:|\/|#)/iu.test(candidate)) {
+        hasRelativeAttr = true;
+        break;
+      }
+    }
+    if (!hasRelativeAttr) continue;
+    const document = parseHTML(
+      "<html><body>" + rawHtml + "</body></html>",
+    ).document;
+    let mutated = false;
     for (const node of document.querySelectorAll("a[href],img[src]")) {
       const attr = node.localName === "img" ? "src" : "href",
         value = node.getAttribute(attr)!;
@@ -799,8 +810,9 @@ async function generate() {
       }
       node.setAttribute(attr, target);
       report.links.push({ source: page.sourcePath!, original: value, target });
+      mutated = true;
     }
-    fs.writeFileSync(file, document.body.innerHTML);
+    if (mutated) fs.writeFileSync(file, document.body.innerHTML);
   }
   const searchBudgetFailures: string[] = [];
   for (const [language, docs] of searches) {
@@ -882,17 +894,19 @@ async function generate() {
     json("search-budget-diagnostics.json", {sourceCommit: commit, search: report.search});
     throw new Error(searchBudgetFailures.join("; "));
   }
+  const indexableByKindSlug = new Map<string, DocPage[]>();
+  for (const page of manifest.pages) {
+    if (!page.indexable) continue;
+    const key = page.kind + "\0" + page.slugs.join("/");
+    const group = indexableByKindSlug.get(key);
+    if (group) group.push(page);
+    else indexableByKindSlug.set(key, [page]);
+  }
   for (const page of manifest.pages) {
     if (!page.indexable || page.kind === "pcr") continue;
+    const peers = indexableByKindSlug.get(page.kind + "\0" + page.slugs.join("/")) ?? [];
     page.alternates = Object.fromEntries(
-      manifest.pages
-        .filter(
-          (other) =>
-            other.indexable &&
-            other.kind === page.kind &&
-            other.slugs.join("/") === page.slugs.join("/"),
-        )
-        .map((other) => [other.language, other.canonical]),
+      peers.map((other) => [other.language, other.canonical]),
     );
   }
   const urls = new Set();

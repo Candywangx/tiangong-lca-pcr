@@ -78,10 +78,99 @@ interface Entry {
 const MAX_SOURCE_CODE_UNITS = 8_000_000;
 const MAX_NODES = 250_000;
 const MAX_DEPTH = 256;
+const markdownParser = unified().use(remarkParse).use(remarkGfm).freeze();
 
 /** Pure parse/index operation. Resource bounds fail explicitly, never truncate. */
 export function compileMarkdownSourceContext(input: string): MarkdownSourceContextIndex {
   return compileMarkdownSourceDocument(input).index;
+}
+
+function stripNonNormativeH2Bodies(
+  source: string,
+  isNormativeHeading: (title: string) => boolean,
+): { readonly stripped: string; readonly remapped: boolean } {
+  const lines = source.split('\n');
+  let fenceChar = '';
+  let fenceLen = 0;
+  let skipping = false;
+  let skipStart = -1;
+  let hasRisk = false;
+  const skipRanges: [number, number][] = [];
+  const flushSkip = (endIndex: number): void => {
+    if (skipping && !hasRisk && endIndex > skipStart) skipRanges.push([skipStart, endIndex]);
+    skipping = false;
+    hasRisk = false;
+  };
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index] ?? '';
+    if (fenceChar) {
+      const close = /^ {0,3}(`{3,}|~{3,})[ \t]*$/u.exec(line);
+      if (close?.[1] && close[1][0] === fenceChar && close[1].length >= fenceLen) {
+        fenceChar = '';
+        fenceLen = 0;
+      }
+      continue;
+    }
+    const open = /^ {0,3}(`{3,}|~{3,})/u.exec(line);
+    if (open?.[1]) {
+      const marker = open[1];
+      if (marker[0] === '~' || !line.slice(open[0].length).includes('`')) {
+        fenceChar = marker[0] ?? '';
+        fenceLen = marker.length;
+        continue;
+      }
+    }
+    const heading = /^ {0,3}(#{1,2})(?:[ \t]+(.*?))?(?:[ \t]+#+)?[ \t]*$/u.exec(line);
+    if (heading?.[1]) {
+      flushSkip(index);
+      if (heading[1].length === 2) {
+        const title = heading[2] ?? '';
+        // Conservatively fall back to full parsing when heading text contains escapes or HTML/entities.
+        if (!/[\\<&]/u.test(title)) {
+          const stripped = title.replace(/[*_`~[\]()]/gu, '');
+          if (!isNormativeHeading(title) && !isNormativeHeading(stripped)) {
+            skipping = true;
+            skipStart = index + 1;
+            hasRisk = false;
+          }
+        }
+      }
+      continue;
+    }
+    if (skipping) {
+      // Bail on Setext underlines, link/footnote definitions, or HTML blocks that could affect outer structure.
+      if (
+        /^ {0,3}(?:=+|-+)[ \t]*$/u.test(line)
+        || /^ {0,3}\[[^\]]+\]:/u.test(line)
+        || /^ {0,3}</u.test(line)
+      ) {
+        hasRisk = true;
+      }
+    }
+  }
+  if (!fenceChar) flushSkip(lines.length);
+  if (skipRanges.length === 0) return { stripped: source, remapped: false };
+  const output = lines.slice();
+  for (const [startIndex, endIndex] of skipRanges) {
+    for (let index = startIndex; index < endIndex; index += 1) output[index] = '';
+  }
+  return { stripped: output.join('\n'), remapped: true };
+}
+
+function remapAstOffsetsToSource(node: Nodes, lineStarts: readonly number[]): void {
+  if (node.position) {
+    const start = node.position.start;
+    const end = node.position.end;
+    if (start.line >= 1 && start.line <= lineStarts.length) {
+      start.offset = lineStarts[start.line - 1]! + (start.column - 1);
+    }
+    if (end.line >= 1 && end.line <= lineStarts.length) {
+      end.offset = lineStarts[end.line - 1]! + (end.column - 1);
+    }
+  }
+  if ('children' in node) {
+    for (const child of node.children) remapAstOffsetsToSource(child, lineStarts);
+  }
 }
 
 /** One newly parsed, operation-owned source and AST. Production compilers call
@@ -92,12 +181,47 @@ export function compileMarkdownSourceDocument(input: string): {
   readonly tree: Root;
   readonly index: MarkdownSourceContextIndex;
 } {
+  return compileMarkdownSourceDocumentInternal(input, null);
+}
+
+/** Exact-offset normative compiler entrypoint. Conservatively skips parsing
+ * bodies of clearly non-normative ATX H2 sections while preserving every exact
+ * source offset, line, column, heading boundary, preamble, and normative AST. */
+export function compileNormativeMarkdownDocument(
+  input: string,
+  isNormativeHeading: (title: string) => boolean,
+): {
+  readonly tree: Root;
+  readonly index: MarkdownSourceContextIndex;
+} {
+  return compileMarkdownSourceDocumentInternal(input, isNormativeHeading);
+}
+
+function compileMarkdownSourceDocumentInternal(
+  input: string,
+  isNormativeHeading: ((title: string) => boolean) | null,
+): {
+  readonly tree: Root;
+  readonly index: MarkdownSourceContextIndex;
+} {
   const source = input.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
   if (source.length > MAX_SOURCE_CODE_UNITS) throw new RangeError('Markdown exceeds source-context source limit');
-  const tree = unified().use(remarkParse).use(remarkGfm).parse(source);
   const lineStarts = [0];
   for (let offset = 0; offset < source.length; offset += 1) {
     if (source[offset] === '\n') lineStarts.push(offset + 1);
+  }
+  const prepared = isNormativeHeading ? stripNonNormativeH2Bodies(source, isNormativeHeading) : { stripped: source, remapped: false };
+  const tree = markdownParser.parse(prepared.stripped);
+  if (prepared.remapped) {
+    remapAstOffsetsToSource(tree, lineStarts);
+    if (tree.position) {
+      const lastLine = lineStarts.length;
+      tree.position.end = {
+        line: lastLine,
+        column: source.length - lineStarts[lastLine - 1]! + 1,
+        offset: source.length,
+      };
+    }
   }
   let count = 0;
   function indexNode(node: Nodes, parent: Entry | null, depth: number): Entry {
