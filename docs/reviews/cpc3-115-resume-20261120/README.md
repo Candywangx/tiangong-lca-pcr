@@ -17,6 +17,8 @@ lastReviewedAt: 2026-11-22
 
 修订记录补充 32141 最终交付尺寸、中英文映射状态一致性及修订文件指纹。[PR #38 正文修订证据](pr38-content-followup.json) · [31422 和 31423 的维护者采纳](https://github.com/Candywangx/tiangong-lca-pcr/pull/38#issuecomment-7100729143)
 
+2026-11-27 逐项复核：115 项均使用既有 CPC 3.0 叶级代码和原有正式映射；未新增分类、未覆盖上游已有映射。补齐 33390、33429 的 manifest 分类引用，使页面元数据与已接受映射一致。[逐项映射核对及修订摘要](cpc-mapping-audit-20261127.json)。
+
 | CPC 代码 | PCR 产品及方法范围 | 映射关系 | 验收来源 | 证据 |
 | --- | --- | --- | --- | --- |
 | 31310 | [CCA 防腐辐射松粗原木](../../../library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md) | narrower | 历史验收 | [审阅](../cpc3-115-20261106/31310-review.json) · [映射决定](../../adr/2026-11-06-accept-scoped-cpc3-115-batch-01.md) |
