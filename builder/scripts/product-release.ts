@@ -190,7 +190,7 @@ export async function writeProductWebArchive(root: string, filename: string) {
     }
     yield Buffer.alloc(1024);
   }
-  await pipeline(Readable.from(chunks()), createGzip({ level: 9 }), createWriteStream(filename, { flags: "wx" }));
+  await pipeline(Readable.from(chunks()), createGzip({ level: 1 }), createWriteStream(filename, { flags: "wx" }));
   const after = regularTree(root);
   if (JSON.stringify(after.files) !== JSON.stringify(tree.files.map(({ path, bytes }) => ({ path, bytes })))) throw new Error("Web export tree changed during archive construction.");
   return { files: tree.files.length, uncompressedBytes: tree.files.reduce((bytes, file) => bytes + file.bytes, 0), treeSha256: productTreeSha256(tree.files) };

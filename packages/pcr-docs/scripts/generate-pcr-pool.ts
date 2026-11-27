@@ -15,7 +15,7 @@ export interface GeneratePcrPoolContext {
   readonly onEntry: (index: number, result: PcrEntryResult) => void;
 }
 export interface GeneratePcrPoolOptions {
-  readonly workers?: 1 | 2;
+  readonly workers?: 1 | 2 | 3 | 4;
   readonly workerFile?: URL;
   readonly createChild?: typeof fork;
 }
@@ -28,14 +28,16 @@ interface ChildState {
   closed: boolean;
 }
 
-export function parseGenerateWorkers(raw: string | undefined): 1 | 2 {
+export function parseGenerateWorkers(raw: string | undefined): 1 | 2 | 3 | 4 {
   if (raw === undefined || raw === "1") return 1;
   if (raw === "2") return 2;
-  throw new Error("PCR_DOCS_GENERATE_WORKERS must be 1 or 2");
+  if (raw === "3") return 3;
+  if (raw === "4") return 4;
+  throw new Error("PCR_DOCS_GENERATE_WORKERS must be an integer between 1 and 4");
 }
 
-/** Retain ordinary serial generation unless the caller explicitly selects two child workers. */
-export async function generatePcrEntries(context: GeneratePcrPoolContext, workers: 1 | 2): Promise<void> {
+/** Retain ordinary serial generation unless the caller explicitly selects bounded child workers. */
+export async function generatePcrEntries(context: GeneratePcrPoolContext, workers: 1 | 2 | 3 | 4): Promise<void> {
   if (workers === 1 || context.pcrs.length <= 1) {
     const readContext = createPcrReadContext({ root: context.root });
     withPcrReadContextSession({
@@ -55,7 +57,7 @@ export async function generatePcrEntries(context: GeneratePcrPoolContext, worker
 
 export async function runGeneratePcrPool(context: GeneratePcrPoolContext, options: GeneratePcrPoolOptions = {}): Promise<void> {
   const workerCount = options.workers ?? 2;
-  if (workerCount !== 1 && workerCount !== 2) throw new Error("Invalid PCR generation pool size");
+  if (!Number.isInteger(workerCount) || workerCount < 1 || workerCount > 4) throw new Error("Invalid PCR generation pool size");
   if (!context.pcrs.length) return;
   const workerFile =
     options.workerFile ??
