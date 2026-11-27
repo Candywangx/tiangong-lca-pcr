@@ -27,10 +27,12 @@ function assertClosed(children: readonly ChildProcess[]) {
   }
 }
 
-test('only the default one or explicit two source workers are admitted', () => {
+test('only the default one or explicit two to four source workers are admitted', () => {
   for (const value of [undefined, '1']) assert.equal(parseSourceVerifyWorkers(value), 1);
   assert.equal(parseSourceVerifyWorkers('2'), 2);
-  for (const value of ['', '0', '3', '-1', '2.0', '02', ' 2', '2 ', 'true']) {
+  assert.equal(parseSourceVerifyWorkers('3'), 3);
+  assert.equal(parseSourceVerifyWorkers('4'), 4);
+  for (const value of ['', '0', '5', '-1', '2.0', '02', ' 2', '2 ', 'true']) {
     assert.throws(() => parseSourceVerifyWorkers(value));
   }
 });
@@ -39,7 +41,7 @@ test('real child processes verify the same original source corpus as serial mode
   const fixture = sourceFixture();
   t.after(() => fixture.close());
   const originalBytes = fixture.documents.map((_, index) => fixture.html(index));
-  for (const workers of [1, 2] as const) {
+  for (const workers of [1, 2, 4] as const) {
     const context = fixture.context();
     const cached = context.readPage('/document-0/');
     await verifySourceDocuments(context, workers);

@@ -43,7 +43,8 @@ function binding(options:Options):Binding {
   const env=options.env??process.env,root=realpathSync(options.root),identity=readProductIdentity(root),runId=env.GITHUB_RUN_ID??'',attempt=env.GITHUB_RUN_ATTEMPT??'';
   if(!/^[1-9][0-9]*$/u.test(runId)||!/^[1-9][0-9]*$/u.test(attempt)||env.GITHUB_SHA!==identity.sourceCommit||env.CI_HEAD_SHA!==identity.sourceCommit)throw new Error('Handoff source or CI invocation differs from the checkout.');
   const planFile=path.join(options.planDirectory,'ci.json');regular(planFile);
-  const plan=verifyCiPlan(root,JSON.parse(readFileSync(planFile,'utf8')) as unknown,{event:env.CI_EVENT_NAME??'',reusable:isReusableContext(env.CI_WORKFLOW_INPUTS),head:identity.sourceCommit,...(env.CI_BASE_SHA?{base:env.CI_BASE_SHA}:{})});
+  const plan=verifyCiPlan(root,JSON.parse(readFileSync(planFile,'utf8')) as unknown,{event:env.CI_EVENT_NAME??'',reusable:isReusableContext(env.CI_WORKFLOW_INPUTS),...(env.CI_FORCE_FULL==='true'?{forceFull:true}:{}),head:identity.sourceCommit,...(env.CI_BASE_SHA?{base:env.CI_BASE_SHA}:{})});
+  if(plan.mode!=='full'&&plan.mode!=='data')throw new Error('Web handoff requires full or data qualification.');
   const q=plan.mode==='full'?readCurrentQualificationPlan(root,path.join(options.planDirectory,'qualification.json')):null;
   const config=readProductVersion(root),toolchain={node:process.versions.node,npm:execFileSync('npm',['--version'],{encoding:'utf8'}).trim()};
   if(toolchain.node!==config.node||toolchain.npm!==config.npm)throw new Error('Handoff toolchain differs from source pins.');
