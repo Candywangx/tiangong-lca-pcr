@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-11-27
 lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
-lastReviewedCommit: 60971891a3cccf1dec8fb0f9825986b43192b020
+lastReviewedCommit: db60259a98f6baae72300a458e95264182303dd5
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
