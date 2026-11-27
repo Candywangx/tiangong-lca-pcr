@@ -424,7 +424,7 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   }finally{trace.stop();}
  }finally{await blocked.close();}
 }
-interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
+export interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
 export function publishedCompatibilitySamples(proof:ProviderRuntime,language:string):ProviderRuntime['routes']{
  const first=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(first,'Published compatibility requires both languages');
  const selected=[first],moves=proof.identityMoves?.filter(move=>move.from.startsWith('/'+language+'/'))??[];
@@ -433,6 +433,15 @@ export function publishedCompatibilitySamples(proof:ProviderRuntime,language:str
   const chapter=proof.routes.find(route=>moves.some(move=>route.from.startsWith(move.from+'chapters/')));if(chapter)selected.push(chapter);
  }
  return selected.filter((row,index)=>selected.findIndex(other=>other.from===row.from)===index);
+}
+export function assertPublishedCompatibilityCoverage(proof:ProviderRuntime,engines:readonly SiteBrowserEngine[],results:readonly ChapterCompatibilityEvidence[]):void {
+ const expected:string[]=[];
+ const key=(row:Pick<ChapterCompatibilityEvidence,'engine'|'language'|'oldPath'|'target'|'javascriptEnabled'|'fragment'>)=>JSON.stringify([row.engine,row.language,row.oldPath,row.target,row.javascriptEnabled,row.fragment]);
+ for(const engine of engines)for(const language of ['en','zh'])for(const row of publishedCompatibilitySamples(proof,language)){
+  for(const fragment of ['', '#'+encodeURIComponent(row.anchor)])expected.push(key({engine,language,oldPath:row.from,target:row.to,javascriptEnabled:true,fragment}));
+  expected.push(key({engine,language,oldPath:row.from,target:row.to,javascriptEnabled:false,fragment:'#'+encodeURIComponent(row.anchor)}));
+ }
+ assert.deepEqual(results.map(key).sort(),expected.sort(),'Selected engines must cover every sampled bilingual route, both JavaScript fragments and native access exactly once');
 }
 export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
  const results:ChapterCompatibilityEvidence[]=[];
@@ -497,7 +506,8 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
     await checkLanguagePreferences(browser,origin,size,documentPath,languageCodes,evidence);
    }}finally{await browser.close();}
   }
- });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;if(publishedChapterHttp.length)assert.equal(chapterCompatibility.length,selectedEngines.length*6,'Selected engines must check bilingual chapter fragments/defaults and native access');assert.equal(nativeDownloads.length,selectedEngines.length*3,'Selected engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
+  if(boundProvider)assertPublishedCompatibilityCoverage(boundProvider,selectedEngines,chapterCompatibility);
+ });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.equal(nativeDownloads.length,selectedEngines.length*3,'Selected engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
  }catch(error){receipt.status='failed';receipt.failure=message(error);throw error;}finally{receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'report.json'),JSON.stringify(receipt,null,2)+'\n');}
 }
 export async function siteBrowserMain(args:readonly string[]){const options=parseSiteBrowserArguments(args);if(options==='help'){process.stdout.write('Usage: node scripts/engineering/site-browser.ts --root <existing export> --report <new evidence directory>\n');return;}const receipt=await qualifySiteBrowser(options);process.stdout.write(JSON.stringify({status:receipt.status,sourceCommit:receipt.source.sourceCommit,report:path.join(options.report,'report.json'),cases:receipt.results.length})+'\n');}
