@@ -91,6 +91,10 @@ Rules:
 - Do not use CPC, HS, ISIC, NAICS, or another external classification system as the canonical PCR directory tree.
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
+- The frozen 115 CPC section 3 methods retain the original IDs and directories from baseline
+  `7d0a48078779e09b3ca6aadf1b0bd619505303a4` and upgrade those records in place. Preserve narrower
+  product and process boundaries in methodology and mappings; do not create replacement IDs for them.
+  See `docs/adr/2026-11-27-restore-cpc3-original-pcr-identities.md` for the audited identity restoration.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.

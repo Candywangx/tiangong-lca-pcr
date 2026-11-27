@@ -12,6 +12,12 @@ lastReviewedCommit: 51c0842c67b14ba886e2edee2846e26eefac030f
 
 # Scoped upstream intake
 
+Historical snapshot: the counts, identities and paths below describe the original 64-record intake.
+The current [115-record delivery list](../cpc3-115-resume-20261120/README.md) supersedes that inventory.
+The [27 November identity restoration](../cpc3-115-resume-20261120/original-id-restoration-20261127.json)
+connects the retained review hashes to the original PCR IDs now upgraded in place. Files at the
+temporary paths remain readable in [the pre-restoration source](https://github.com/tiangong-lca/pcr/tree/baf8f899929170c384bf43df9aca490a2e5983f2).
+
 This proposal transfers exactly the 64 substantive PCRs from merged [fork PR34](https://github.com/Candywangx/tiangong-lca-pcr/pull/34). Fork merge `63c9e20d906e09b4f27b088b58c129a83e479e0d` has the same tree as reviewed head `36cecb05d41fe567a141b22190af7b9d9fb3904d`. The upstream baseline is `51c0842c67b14ba886e2edee2846e26eefac030f`.
 
 All 256 canonical files, 338 scoped review/evidence files and 21 referenced fork decisions retain their exact reviewed bytes. The [selection](selection.json) pins each code, semantic identity, path, current review and four content hashes. Normal upstream generation was run twice for each PCR and all 64 selected `pcr:check` calls passed without changing any canonical byte.
