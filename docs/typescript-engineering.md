@@ -21,8 +21,8 @@ checkPaths:
   - tests/agent/**
   - scripts/engineering/**
   - .github/workflows/**
-lastReviewedAt: 2026-11-22
-lastReviewedCommit: d06ad563c256acd67b204b125a87794bf83d150e
+lastReviewedAt: 2026-11-24
+lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
 lastReviewedNote: "PCR #182 reviews hosted source-document concurrency, per-process heap and aggregate RSS, deterministic errors and the original publication checks."
 related:
   - repository-coding-guidelines.md

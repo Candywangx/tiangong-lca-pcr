@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-23
-lastReviewedNote: "PR172 integrates CPC 63–65 with bounded v11 search transport and retains PCR #182 source-document concurrency, heap/RSS limits, deterministic errors and publication checks."
-lastReviewedCommit: b0e9d9d6b2874c9ac516bf65481cd17de576c2b8
+lastReviewedAt: 2026-11-24
+lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -422,6 +422,20 @@ handoff fails after all stages. Failed runs write
 `.generated/build-failure-metrics.json` after cleanup returns, separately from
 the last successful `.generated/build-metrics.json`; neither failure receipt
 claims a successful export or relaxes the atomic output handoff.
+
+### Build machine selection
+
+The root `edgeone.json` selects `buildMachine: enhanced`, following the
+[provider configuration contract](https://pages.edgeone.ai/document/edgeone-json).
+The provider documents this machine as eight cores and 14 GB for the Pro plan.
+Deployment acceptance still measures the final output filesystem and requires
+the complete verified export plus the existing reserve to fit. The machine
+selection alone does not prove sufficient destination capacity. The provider's
+plan entitlement and the actual selected machine must be verified for the
+deployment. The sealed importer records its native process-available CPU estimate,
+constrained/available memory and both guard-measured destination-capacity snapshots.
+The records identify raw host values separately. A machine selection or raw host
+CPU count alone cannot establish the effective allocation or final output space.
 
 ### Build workspace storage
 
