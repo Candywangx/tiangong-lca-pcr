@@ -102,7 +102,7 @@ function stripNonNormativeH2Bodies(
     hasRisk = false;
   };
   for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index] ?? '';
+    const line = lines[index]!;
     if (fenceChar) {
       const close = /^ {0,3}(`{3,}|~{3,})[ \t]*$/u.exec(line);
       if (close?.[1] && close[1][0] === fenceChar && close[1].length >= fenceLen) {
@@ -115,7 +115,7 @@ function stripNonNormativeH2Bodies(
     if (open?.[1]) {
       const marker = open[1];
       if (marker[0] === '~' || !line.slice(open[0].length).includes('`')) {
-        fenceChar = marker[0] ?? '';
+        fenceChar = marker[0]!;
         fenceLen = marker.length;
         continue;
       }
