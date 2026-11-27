@@ -229,6 +229,26 @@ requireThat(
     ?.includes("noindex"),
   "404 must be noindex",
 );
+const pageByCanonical = new Map(manifest.pages.map((p) => [p.canonical, p]));
+const recordById = new Map(manifest.records.map((r) => [r.id, r]));
+const historicalRecordByKey = new Map(
+  (manifest.historicalRecords ?? []).map((r) => [`${r.id}\0${r.version}`, r]),
+);
+const catalogUrlsByScope = new Map<string, string[]>();
+for (const record of manifest.records) {
+  for (const [language, url] of Object.entries(record.urls)) {
+    if (!url) continue;
+    const dKey = `${language}\0${record.slug[0] ?? ""}`;
+    const dList = catalogUrlsByScope.get(dKey);
+    if (dList) dList.push(url);
+    else catalogUrlsByScope.set(dKey, [url]);
+    const sdKey = `${dKey}\0${record.slug[1] ?? ""}`;
+    const sdList = catalogUrlsByScope.get(sdKey);
+    if (sdList) sdList.push(url);
+    else catalogUrlsByScope.set(sdKey, [url]);
+  }
+}
+for (const urls of catalogUrlsByScope.values()) urls.sort();
 for (const page of manifest.pages) {
   const document = readPage(page.url);
   for (const raw of (!page.recordVersion && page.pcrId ? downloadsByRecord.get(page.pcrId) : undefined) ?? []) {
@@ -264,14 +284,17 @@ for (const page of manifest.pages) {
     );
   }
   if (page.kind === "catalog" && page.slugs.length >= 2) {
-    const expected = manifest.records
-      .filter(
-        (record) =>
-          record.urls[page.language] &&
-          page.slugs.slice(1).every((slug, index) => record.slug[index] === slug),
-      )
-      .map((record) => record.urls[page.language])
-      .sort();
+    const scopeKey = `${page.language}\0${page.slugs.slice(1).join("\0")}`;
+    const expected = page.slugs.length <= 3
+      ? (catalogUrlsByScope.get(scopeKey) ?? [])
+      : manifest.records
+          .filter(
+            (record) =>
+              record.urls[page.language] &&
+              page.slugs.slice(1).every((slug, index) => record.slug[index] === slug),
+          )
+          .map((record) => record.urls[page.language]!)
+          .sort();
     const actual = [...document.querySelectorAll(".pcr-catalog-list a[href]")]
       .map((link) => link.getAttribute("href"))
       .sort();
@@ -307,7 +330,7 @@ for (const page of manifest.pages) {
         ?.getAttribute("href") === url,
       "Missing hreflang " + page.url + " " + language,
     );
-    const counterpart = manifest.pages.find((p) => p.canonical === url);
+    const counterpart = pageByCanonical.get(url);
     requireThat(
       counterpart?.alternates[page.language] === page.canonical,
       "Nonreciprocal hreflang " + page.url,
@@ -315,11 +338,8 @@ for (const page of manifest.pages) {
   }
   if (page.pcrId && (!page.part || page.part.index === 0)) {
     const record = page.recordVersion
-      ? manifest.historicalRecords!.find(
-          (record) =>
-            record.id === page.pcrId && record.version === page.recordVersion,
-        )
-      : manifest.records.find((record) => record.id === page.pcrId);
+      ? historicalRecordByKey.get(`${page.pcrId}\0${page.recordVersion}`)
+      : recordById.get(page.pcrId);
     requireThat(record,"Missing PCR record metadata");
     const rawData: unknown = JSON.parse(
       fs.readFileSync(path.join(app, ".generated", record.dataPath), "utf8"),
@@ -400,9 +420,10 @@ const sitemap = new DOMParser().parseFromString(
 const locations = [...sitemap.querySelectorAll("url > loc")].map(
   (n) => n.textContent,
 );
+const locationSet = new Set(locations);
 for (const language of manifest.languages)
   requireThat(
-    locations.includes(canonicalHome(manifest, language)) ===
+    locationSet.has(canonicalHome(manifest, language)) ===
       publicHomes.some((home) => home.code === language.code),
     "Home sitemap availability differs " + language.code,
   );
@@ -419,16 +440,16 @@ for (const page of manifest.pages.filter((page) => page.indexable))
     "Sitemap modification date differs " + page.url,
   );
 requireThat(
-  new Set(locations).size === locations.length,
+  locationSet.size === locations.length,
   "Duplicate sitemap URL",
 );
 for (const page of manifest.pages)
   requireThat(
-    locations.includes(page.canonical) === page.indexable,
+    locationSet.has(page.canonical) === page.indexable,
     "Sitemap indexing mismatch " + page.url,
   );
 requireThat(
-  !locations.includes(manifest.origin + "/zh/"),
+  !locationSet.has(manifest.origin + "/zh/"),
   "Duplicate Chinese home in sitemap",
 );
 requireThat(fs.existsSync(path.join(out, "404.html")), "Missing static 404");
