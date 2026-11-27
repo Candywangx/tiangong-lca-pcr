@@ -15,4 +15,16 @@ The owner requested retaining the original IDs and upgrading in place. The 65 re
 
 `npm run validate` passed on the exact source commit above, with Node v24.19.0 / npm 12.2.0 on Linux ARM64: **3,640 passed, 0 failed, 5 skipped**. The run preserved a clean source worktree. [Raw complete log](validate-linux.log); its SHA-256 is recorded in `focused-manifest.json`. The five existing conditional skips are explicit in that log and distinct from the zero skipped PCR measurement checks.
 
-Fresh upstream run [46004577323 / attempt 1](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/attempts/1) is pending at this local-log snapshot. Its test merge `794df109d6de23bacb074eeea78140f0625fcf0e` combines head `64af1112180aff9e2159e74c8eb5700eb5408e45` with upstream `80c2c3a7802d02950025de038a5d74119cd2476d`, tree `83d3f6d5c4052970f3538b5dbb69af0495774333`. This differs from the local head tree; no equivalence is claimed. The upstream advance affects engineering/governance only, as recorded in the focused archive. Earlier successful hosted runs do not qualify this combination.
+## Full hosted qualification
+
+[Upstream run 46004577323 / attempt 1](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/attempts/1) completed successfully: **26/26 jobs passed**, including complete library contracts, all eight test shards, website production and sealing, four-platform sealed installation, Chromium/Firefox/WebKit acceptance, source coverage and the final aggregate.
+
+The test merge `794df109d6de23bacb074eeea78140f0625fcf0e` combines head `64af1112180aff9e2159e74c8eb5700eb5408e45` with upstream `80c2c3a7802d02950025de038a5d74119cd2476d`, tree `83d3f6d5c4052970f3538b5dbb69af0495774333`. This differs from the local head tree; no equivalence is claimed. The downloaded qualification plan confirms this exact merge source and full mode. `hosted-qualification.json` binds raw metadata, plan and build logs by SHA-256. The intervening upstream changes do not modify PCR or classification source files.
+
+Original site budgets pass: English search is 4,284,980 raw / 3,223,812 gzip bytes; Chinese is 4,447,001 raw / 3,346,456 gzip bytes. The complete site has 17,587 files. Limits remain 20,000,000 raw and 4,000,000 gzip bytes per language, and 20,000 site files. See `web-budget.json` and the raw `web-build.log`.
+
+- [Final aggregate](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/job/140558414458)
+- [Sealed product](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/artifacts/15205246412)
+- [Complete website producer artifact](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/artifacts/15203618491)
+- [Chromium report](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/artifacts/15205626593), [Firefox report](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/artifacts/15206235735), [WebKit report](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/artifacts/15206240994)
+- [Source coverage](https://github.com/tiangong-lca/pcr/actions/runs/46004577323/artifacts/15204786632)
