@@ -289,12 +289,18 @@ containing changed canonical PCR records. Its allowlist covers the four current
 files (`manifest.yaml`, `structured.yaml`, `pcr.en-US.md`, `pcr.zh-CN.md`), with
 supported associated catalog/material index, CPC 3.0 mapping/coverage, alias
 registry and `docs/adr/NNNN-<slug>.md` decision evidence. An ADR-only or derived-only
-change selects full mode. Unknown paths, shared modules, classification-system
-sources, code, schemas, vocabularies, dependencies, workflows, release history,
+change selects full mode.
+
+For `pull_request` events only (never `push` to `main`, `workflow_call`, or PRs labeled `ci:full`), two additional fail-closed reduced lanes avoid unnecessary 50-minute static-site and sealed-product rebuilds:
+- `docs-only`: strictly top-level repository docs/governance files (`AGENTS.md`, `README.md`, `.docpact/config.yaml`, `docs/<name>.md`) run `plan`, `contracts` (runtime, migration, strict typechecks), and `validate`.
+- `pr-code`: strictly non-web, non-release code/test paths (`builder/cli/**`, `builder/goal-harness/**`, `builder/lib/**` excluding `pcr-document-history.ts`, `packages/tiangong-pcr-cli/**`, `packages/pcr-viewer/**`, `skills/**`, `tests/**`, optionally alongside `docs-only` files) run `plan`, full `contracts`, all eight `test-shards`, and `validate`.
+
+Unknown paths, shared modules, `packages/pcr-core/**`, `packages/pcr-docs/**`, `builder/scripts/**`, `builder/lib/pcr-document-history.ts`, classification-system
+sources, schemas, vocabularies, dependencies, workflows, engineering harnesses, release history,
 revision workspaces and optional language files select full mode. Missing,
 unproven or non-ancestral base history also selects full mode. Reusable invocation
 or declared reusable inputs always select full mode, including an empty
-`product_tag`; a tag's truthiness never reduces formal release qualification.
+`product_tag`; a tag's truthiness never reduces formal release qualification. Source-document verification in `web-build` accepts 1 to 4 bounded child workers (`PCR_SOURCE_VERIFY_WORKERS=4` in CI, keeping aggregate RSS well within the unchanged 6 GB budget).
 
 Both modes run runtime/migration/strict type checks and complete global lint,
 alias/catalog/chain freshness and source-history invariants. Changed current PCRs

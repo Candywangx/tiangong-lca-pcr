@@ -342,7 +342,11 @@ Full mode requires all eight fresh source-bound shard receipts, independent
 full-corpus reproducibility and authenticated coverage measurements. A proven
 current-PCR-only data lane retains whole-library contracts, changed-record
 semantic/projection checks and complete fresh sealed-product acceptance; full
-code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+code coverage is explicitly unmeasured. Pull-request-only `docs-only` and
+`pr-code` lanes run fail-closed reduced gates (contracts or contracts plus all
+eight test shards without web/product sealing) when changes stay strictly inside
+non-web, non-release documentation or builder/CLI/viewer/skill/test surfaces;
+unknown/shared/web/release changes, `ci:full`, every `main` push and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.
