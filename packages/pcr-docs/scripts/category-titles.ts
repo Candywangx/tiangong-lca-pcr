@@ -9,6 +9,7 @@ const zh: Readonly<Record<string,string>> = {
   "accommodation-food-and-beverage-services": "住宿和餐饮服务",
   "passenger-transport-services": "旅客运输服务",
   "freight-transport-services": "货物运输服务",
+  "rental-services-of-transport-vehicles-with-operators": "带操作人员的运输工具租赁服务",
   "rubber-and-plastics-products": "橡胶和塑料制品",
   "pharmaceutical-ingredients": "药用成分",
   "chemicals": "化学品",
