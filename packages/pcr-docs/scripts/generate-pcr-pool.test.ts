@@ -98,13 +98,11 @@ function buildMultiPcrFixture(): { temporary: string; root: string; pcrs: Array<
   return { temporary, root, pcrs };
 }
 
-test("parseGenerateWorkers accepts 1 through 4 and rejects invalid values", () => {
+test("parseGenerateWorkers accepts 1 or 2 and rejects invalid values", () => {
   assert.equal(parseGenerateWorkers(undefined), 1);
   assert.equal(parseGenerateWorkers("1"), 1);
   assert.equal(parseGenerateWorkers("2"), 2);
-  assert.equal(parseGenerateWorkers("3"), 3);
-  assert.equal(parseGenerateWorkers("4"), 4);
-  for (const invalid of ["", "0", "5", "two"]) {
+  for (const invalid of ["", "0", "3", "two"]) {
     assert.throws(() => parseGenerateWorkers(invalid), /PCR_DOCS_GENERATE_WORKERS/u);
   }
 });
@@ -156,7 +154,7 @@ test("generate pool rejects invalid pool size, worker faults, and propagates tas
     ],
     onEntry() {},
   };
-  await assert.rejects(runGeneratePcrPool(baseContext, { workers: 5 as never }), /Invalid PCR generation pool size/u);
+  await assert.rejects(runGeneratePcrPool(baseContext, { workers: 3 as never }), /Invalid PCR generation pool size/u);
   await runGeneratePcrPool({ ...baseContext, pcrs: [] }, { workers: 2 });
 
   // Fake child that reports failure for pcr.a
