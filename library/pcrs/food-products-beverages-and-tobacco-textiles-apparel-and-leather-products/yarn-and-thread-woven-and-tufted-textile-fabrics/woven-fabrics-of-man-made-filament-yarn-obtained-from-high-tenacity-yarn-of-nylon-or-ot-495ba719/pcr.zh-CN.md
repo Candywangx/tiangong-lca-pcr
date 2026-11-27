@@ -424,6 +424,7 @@ sync_with: pcr.en-US.md
 
 | 来源编号 | 类型 | 参考资料 | 用途 |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26710, PDF pages 361. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | `unsd-cpc-2025` | official_guidance | UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, PDF及印刷第123页; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 26710 多路线分类边界，非工艺或环保因子 |
 | `ulong-greige` | handbook | U-LONG, Industrial Polyester 500D High Tenacity Greige Fabric TA5136A; https://www.u-long.com/en/product/TA5136A.html | Specification和产品说明证明高强聚酯坯布存在；名义规格不作工厂转换或质量阈值 |
 | `mehler-company-2025` | handbook | MEHLER Company & Products, May 2025 brochure, PDF第2页（无印刷页码），Engineered Fabrics栏; https://mehler-ep.com/wp-content/uploads/2025/07/MEHLER_Image_brochure_202505.pdf | 未处理织物及干/湿整理与涂层的区分，不规定本站必需配方 |
@@ -431,4 +432,3 @@ sync_with: pcr.en-US.md
 
 
 网页按 2026-10-06 查询快照使用；制造商商业说明不能替代独立科学审查或工厂实测，也不证明健康、法规符合性或寿命。所有配方、设置、能耗、损耗、产量和分配驱动由真实工厂协议采集，无默认数值。
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26710, PDF pages 361. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |

@@ -377,9 +377,9 @@ sync_with: pcr.en-US.md
 
 | 来源 id | 类型 | 参考资料 | 用途 |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26430, PDF pages 357. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | `unsd-cpc-2025` | official_guidance | 联合国统计司，CPC 3.0 解释说明，2025 年 6 月 30 日，PDF/印刷第 120 页，2643–2644 组。https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 仅分类区分；无工艺、收率或排放要求 |
 | `truetzschler-ring-preparation` | handbook | 特吕茨施勒，环锭纺，Carded cotton / Pure man-made fibers 与 Reliable processing of man-made fibers 节，未标日期的厂家网页。https://www.truetzschler.com/en/spinning/applications/ring-spinning/ | 纯化纤准备及与棉精梳的区分；不采用数值性能 |
 | `rieter-man-made-system` | handbook | 立达，Unique Solutions for Processing Man-Made Fibers，Blowroom、Card、Draw frames、Roving frame、Ring spinning machine 与 Automatic winding machine 节；未标日期厂家网页。https://www.rieter.com/products/system-applications/man-made-fiber-spinning-system | 物理工序分解及其他路线区分；不将厂家生产率、损耗、能耗或设备寿命声明作默认值 |
 
 厂家网页支持设备功能，不提供工厂定量清单或独立环境绩效证据。所有数量、配置、验收阈值、分配及条件排放须由上述前景协议采集；分类及机械资料不能补替缺失工厂数据。
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26430, PDF pages 357. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |

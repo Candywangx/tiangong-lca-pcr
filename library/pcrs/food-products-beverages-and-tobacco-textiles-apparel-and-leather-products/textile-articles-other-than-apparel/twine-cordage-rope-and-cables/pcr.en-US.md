@@ -415,6 +415,7 @@ Conditional: weigh cardboard packing trim/rejects generated on site; collect dis
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |
 | unsd-cpc-notes | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, p. 128. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 27310 category and adjacent netting; no specific process explanation |
 | deyuan-pp-rope | literature | Deyuan Marine, 3-Strand PP Rope, Product Introduction. https://www.deyuanmarine.com/3-Strand-PP-Rope-pd129282238.html | Existence/construction of three-strand PP multifilament rope; no adoption of promotional certification/performance/tolerance values |
 | meera-pp-twisting | literature | Meera Industries, Twisted PP Yarn, Webbing & Rope Manufacturing, 4 December 2025, opening ecosystem and sections 2, 6. https://meeraind.com/resources/pp-yarn-webbing-rope-manufacturing-meera-twisting-solutions | Qualitative preparation/twisting/winding decomposition; machine-supplier account establishes no universal process necessity or consumption |
@@ -422,4 +423,3 @@ Conditional: weigh cardboard packing trim/rejects generated on site; collect dis
 | si-units | official_guidance | BIPM, SI Brochure, 9th edition V4.01 (June 2026), section 2.3.4/Table 4 (p. 133, PDF p. 23), section 4/Table 8 (p. 140, PDF p. 30), W = J/s and h = 3600 s. https://www.bipm.org/en/publications/si-brochure | Exact kWh-to-MJ unit conversion, not energy-consumption factor |
 
 Web originals consulted 2026-10-06. Manufacturer originals support qualitative routes and product qualifiers only. Foreground protocols implement measurement, normalization and allocation; no default material recipe, temperature, energy, net yield or lifetime is prescribed.
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |

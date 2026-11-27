@@ -425,13 +425,22 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
  }finally{await blocked.close();}
 }
 interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
+export function publishedCompatibilitySamples(proof:ProviderRuntime,language:string):ProviderRuntime['routes']{
+ const first=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(first,'Published compatibility requires both languages');
+ const selected=[first],moves=proof.identityMoves?.filter(move=>move.from.startsWith('/'+language+'/'))??[];
+ if(moves.length){
+  const root=proof.routes.find(route=>route.from===moves[0]!.from);assert.ok(root,'Identity move requires root browser coverage');selected.push(root);
+  const chapter=proof.routes.find(route=>moves.some(move=>route.from.startsWith(move.from+'chapters/')));if(chapter)selected.push(chapter);
+ }
+ return selected.filter((row,index)=>selected.findIndex(other=>other.from===row.from)===index);
+}
 export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
  const results:ChapterCompatibilityEvidence[]=[];
  for(const language of ['en','zh']){
-  const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(row,'Published compatibility requires both languages');
+  for(const [sample,row] of publishedCompatibilitySamples(proof,language).entries()){
   for(const fragment of ['', '#'+encodeURIComponent(row.anchor)]){
    const context=await browser.newContext({viewport:{width:1440,height:1000},locale:language==='zh'?'zh-CN':'en-US'}),page=await context.newPage();const settled=currentNetworkIdle(page);
-   const evidence:BrowserEvidence={engine,engineVersion:browser.version(),viewport:'desktop',route:{kind:'pcr',locale:language==='zh'?'zh':'en',path:row.from},assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${engine}-chapter-${language}-${fragment?'fragment':'default'}.png`};
+   const evidence:BrowserEvidence={engine,engineVersion:browser.version(),viewport:'desktop',route:{kind:'pcr',locale:language==='zh'?'zh':'en',path:row.from},assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${engine}-chapter-${language}-${sample}-${fragment?'fragment':'default'}.png`};
    const consoleErrors:{text:string;url:string}[]=[],documents:string[]=[];const trace=observeSiteRequests(page,{engine,viewport:'desktop'},evidence.requestFailures,evidence.prefetchUrls);
    page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});page.on('response',response=>{if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});page.on('request',request=>{if(request.isNavigationRequest()&&request.resourceType()==='document'&&request.frame()===page.mainFrame())documents.push(request.url());});
    const query:string='?compat=%E7%AB%A0%E8%8A%82&repeat=a+b&repeat=%2F&empty=';const expected:string=origin+row.to+query+(fragment||'#'+encodeURIComponent(row.anchor));
@@ -448,7 +457,8 @@ export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserE
    }catch(error){writeFileSync(path.join(report,evidence.screenshot+'.json'),JSON.stringify({source:proof.sourceCommit,evidence,consoleErrors,documentRequests:documents,error:message(error)},null,2)+'\n');try{await page.screenshot({path:path.join(report,evidence.screenshot)});}catch{}throw error;}finally{trace.stop();await context.close();}
   }
   const native=await browser.newContext({javaScriptEnabled:false,locale:language==='zh'?'zh-CN':'en-US'});
-  try{const page=await native.newPage(),response=await page.goto(origin+row.from+'?native=1#'+encodeURIComponent(row.anchor));assert.equal(response?.status(),200);assert.equal(new URL(page.url()).pathname,row.from);assert.equal(new URL(page.url()).search,'?native=1');assert.ok(await page.evaluate(anchor=>!!document.getElementById(anchor),row.anchor),'Native rewritten content retains the published anchor');const screenshot=`${engine}-chapter-${language}-native.png`;await page.screenshot({path:path.join(report,screenshot)});results.push({javascriptEnabled:false,engine,language,oldPath:row.from,target:row.to,fragment:'#'+encodeURIComponent(row.anchor),checks:['JavaScript disabled: rewritten HTML and published explicit fragment available','query and original document URL retained; no fragment-free automatic scroll claimed'],documentRequests:[response!.url()],screenshot});}finally{await native.close();}
+  try{const page=await native.newPage(),response=await page.goto(origin+row.from+'?native=1#'+encodeURIComponent(row.anchor));assert.equal(response?.status(),200);assert.equal(new URL(page.url()).pathname,row.from);assert.equal(new URL(page.url()).search,'?native=1');assert.ok(await page.evaluate(anchor=>!!document.getElementById(anchor),row.anchor),'Native rewritten content retains the published anchor');const screenshot=`${engine}-chapter-${language}-${sample}-native.png`;await page.screenshot({path:path.join(report,screenshot)});results.push({javascriptEnabled:false,engine,language,oldPath:row.from,target:row.to,fragment:'#'+encodeURIComponent(row.anchor),checks:['JavaScript disabled: rewritten HTML and published explicit fragment available','query and original document URL retained; no fragment-free automatic scroll claimed'],documentRequests:[response!.url()],screenshot});}finally{await native.close();}
+  }
  }
  return results;
 }

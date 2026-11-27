@@ -589,9 +589,9 @@ CPC 3.0 23995 还包含其他酱汁、混合调味品、芥末粉及粗粉和其
 
 | 来源 id | 类型 | 引用 | 用途 |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 23995, PDF pages 346. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | `unsd-cpc-3-2025` | official_guidance | UNSD, CPC 3.0 Explanatory Notes, 30 June 2025, printed/PDF p.111, 23995. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 官方小类名称及与食醋的区分；不蕴含额外制造说明或完整路线覆盖 |
 | `fallot-mustard-manufacturing` | literature | Edmond Fallot, La Moutarderie Fallot, sections Raw materials / Manufacturing process / Quality (undated manufacturer page). https://www.fallot.com/en/la-moutarderie-fallot/ | 制造商对浸渍和磨制的证据；不普遍强制细滑筛皮及储存描述；不采用固定时间、芥子组成或采购占比 |
 | `charbonneaux-wholegrain-mustard` | literature | Charbonneaux-Brabant, A mustard seed rich in character, sections seed/verjuice and Whole Grain mustard (undated manufacturer page). https://www.vinaigre.com/en/expertise/the-mustard | 独立制造商对褐芥子粗粒身份和不筛皮的证据；不确定全行业配方、安全性或用电量 |
 
 所选四配料、非热路线及数据采集规则定义一个有界代表性数据集设计；实际工厂记录须证明适用性。制造商网页描述自身产品，不确定当前市场份额或默认量化因子。
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 23995, PDF pages 346. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |

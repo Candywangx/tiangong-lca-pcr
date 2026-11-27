@@ -3,10 +3,21 @@ import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync,realpathSync,exi
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import {inspectSiteExport,parseSiteBrowserArguments,prepareSiteBrowserReport,withSiteExportServer,isCancelledSitePrefetch,captureCancelledSiteRequest,emittedLanguageCodes,browserLanguageScenarios,findInlineDownload,findNativeDownloads,isNativeDownloadCancellation,bindNativeScriptPreloads,isExpectedDisabledScriptPreload,qualifySiteBrowser} from './site-browser.ts';
+import {inspectSiteExport,parseSiteBrowserArguments,prepareSiteBrowserReport,withSiteExportServer,isCancelledSitePrefetch,captureCancelledSiteRequest,emittedLanguageCodes,browserLanguageScenarios,findInlineDownload,findNativeDownloads,isNativeDownloadCancellation,bindNativeScriptPreloads,isExpectedDisabledScriptPreload,qualifySiteBrowser,publishedCompatibilitySamples} from './site-browser.ts';
 import type {CancelledRequest,SiteBrowserEngine} from './site-browser.ts';
 import {prepareStaticRouteAliases} from '../../packages/pcr-docs/scripts/static-route-aliases.ts';
 import {preferredRoute} from '../../packages/pcr-docs/lib/language-preference.ts';
+test('browser compatibility selection includes restored roots and migrated chapters in each language',async()=>{
+ const {createProviderRuntime,providerRuntimeSourceRoot}=await import('../../packages/pcr-docs/scripts/provider-runtime.ts');
+ const proof=createProviderRuntime(providerRuntimeSourceRoot(import.meta.url),'a'.repeat(40))!;
+ for(const language of ['en','zh']){
+  const samples=publishedCompatibilitySamples(proof,language);assert.equal(samples.length,3);
+  assert(samples.every(row=>row.from.startsWith('/'+language+'/')));
+  assert(samples.some(row=>proof.identityMoves!.some(move=>row.from===move.from&&row.to===move.to)));
+  assert(samples.some(row=>proof.identityMoves!.some(move=>row.from.startsWith(move.from+'chapters/')&&row.to.startsWith(move.to))));
+  const legacy={...proof,schemaVersion:1 as const};delete legacy.identityMoves;assert.equal(publishedCompatibilitySamples(legacy,language).length,1);
+ }
+});
 function fixture(){const parent=mkdtempSync(path.join(realpathSync(tmpdir()),'site-browser-contract-')),root=path.join(parent,'export');mkdirSync(root);const put=(key:string,text:string)=>{mkdirSync(path.dirname(path.join(root,key)),{recursive:true});writeFileSync(path.join(root,key),text);};
  const identity={sourceCommit:'a'.repeat(40),sourceFingerprint:'sha256:'+'b'.repeat(64)};
  for(const key of ['index.html','en/index.html','zh/index.html','en/docs/pcr/index.html','zh/docs/pcr/index.html','en/docs/pcr/a/b/c/index.html','zh/docs/pcr/a/b/c/index.html','en/docs/modules/core/unit/index.html','en/docs/getting-started/index.html','zh/docs/getting-started/index.html'])put(key,`<html lang="${key.startsWith('en/')?'en-US':'zh-CN'}"><h1>Fixture</h1></html>`);

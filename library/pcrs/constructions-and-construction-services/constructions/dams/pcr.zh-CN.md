@@ -1167,6 +1167,7 @@ status: candidate
 
 | 来源标识 | 类型 | 引用 | 用途 |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 53233, PDF pages 561. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | un-cpc-dams-2025 | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, printed/PDF p. 280, 53233 and adjacent 53232/53234. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 实体/类别边界；不提供定量清单证据。 |
 | usace-embankment-dams-2004 | official_guidance | USACE EM 1110-2-2300, General Design and Construction Considerations for Earth and Rock-Fill Dams, 30 July 2004; §§5-1, 6-1–6-3, 9-2, 9-10; PDF pp.35–36,39,63,68; printed 5-1–5-2,6-1,9-1,9-6. https://www.publications.usace.army.mil/Portals/76/Publications/EngineerManuals/EM_1110-2-2300.pdf?ver=2014-04-07-145941-947 | 历史文件中的坝基、分区填筑、防渗及现场控制/竣工记录方法；不推广设计数值或当前审批。 |
 | usace-concrete-civil-works-1994 | official_guidance | USACE EM 1110-2-2000, Standard Practice for Concrete for Civil Works Structures, 1 February 1994, publisher file includes Change 2 of 31 March 2001; §§7-6–7-8,9-1,9-4; PDF pp.68,70,80,88; printed 7-6,7-8,9-1,9-9. https://www.publications.usace.army.mil/Portals/76/Publications/EngineerManuals/EM_1110-2-2000.pdf | 历史常态水工混凝土准备、振捣养护及质量核验；原件不包括碾压混凝土、修复和喷射混凝土。不采用配比、温度或强度阈值。 |
@@ -1176,4 +1177,3 @@ status: candidate
 | ipcc-flooded-land-2019 | official_guidance | IPCC, 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, Volume 4 Chapter 7 Wetlands, §7.3, Table 7.7 and origin/pathway distinctions, PDF pp.6–7 / printed 7.6–7.7. https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch07_Wetlands.pdf | 仅支持真实验收前蓄水淹没的条件性气体来源/路径辨识及基线/归属审查；国家清单年度默认因子及20年分类不直接用于本施工事件，不借此推定寿命或排放必然性。 |
 
 历史文件仅提供已记录的工序及采集结构，不证明当前当地强制要求。全部配比、实物量、能耗、损耗、几何、水力条件、寿命/重复使用分母和排放参数须来自实际工程证据；本PCR不给默认定量范围。
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 53233, PDF pages 561. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |

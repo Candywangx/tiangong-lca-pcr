@@ -415,6 +415,7 @@ sync_with: pcr.en-US.md
 
 | 来源标识 | 类型 | 参考 | 用途 |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |
 | unsd-cpc-notes | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025, p. 128. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 27310 类别与相邻网具类别；无工艺专门解释 |
 | deyuan-pp-rope | literature | Deyuan Marine, 3-Strand PP Rope, Product Introduction. https://www.deyuanmarine.com/3-Strand-PP-Rope-pd129282238.html | 聚丙烯长丝纱制三股绳的产品存在及结构；不采用宣传认证、性能和容差数值 |
 | meera-pp-twisting | literature | Meera Industries, Twisted PP Yarn, Webbing & Rope Manufacturing, 4 December 2025, opening ecosystem and sections 2, 6. https://meeraind.com/resources/pp-yarn-webbing-rope-manufacturing-meera-twisting-solutions | 备纱、捻合、卷绕的定性分解；设备商说明不证明所有绳厂必需的工艺或耗用 |
@@ -422,4 +423,3 @@ sync_with: pcr.en-US.md
 | si-units | official_guidance | BIPM, SI Brochure, 9th edition V4.01 (June 2026), section 2.3.4/Table 4 (p. 133, PDF p. 23), section 4/Table 8 (p. 140, PDF p. 30), W = J/s and h = 3600 s. https://www.bipm.org/en/publications/si-brochure | kWh 到 MJ 的精确单位换算，非耗能因子 |
 
 网页原件检索日期：2026-10-06。上述制造商原件仅支持定性路线和产品限定；本方法的实测、归一化与分配规则由前景采集协议落实，不设定默认物料配方、温度、能耗、净产量或寿命。
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 27310, PDF pages 367. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | 限定产品分类边界；不替代科学审批、实际研究或发布 |

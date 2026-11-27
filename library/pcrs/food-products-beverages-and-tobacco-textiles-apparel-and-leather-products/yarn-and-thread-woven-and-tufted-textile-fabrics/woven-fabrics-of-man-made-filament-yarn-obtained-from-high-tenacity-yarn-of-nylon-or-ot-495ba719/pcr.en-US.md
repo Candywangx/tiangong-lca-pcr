@@ -424,6 +424,7 @@ Conditional on actual external discard: record segregated PET yarn remnants, sel
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
+| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26710, PDF pages 361. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |
 | `unsd-cpc-2025` | official_guidance | UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, PDF/printed p.123; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 26710 multi-route classification boundary; no process/environmental factor |
 | `ulong-greige` | handbook | U-LONG, Industrial Polyester 500D High Tenacity Greige Fabric TA5136A; https://www.u-long.com/en/product/TA5136A.html | Product description/Specification establishes high-tenacity polyester greige product; nominal specifications are not factory conversions or quality thresholds |
 | `mehler-company-2025` | handbook | MEHLER Company & Products, May 2025 brochure, PDF p.2 (unnumbered), Engineered Fabrics panel; https://mehler-ep.com/wp-content/uploads/2025/07/MEHLER_Image_brochure_202505.pdf | Untreated fabric and distinct dry/wet finishing/coating options; no mandatory site recipe |
@@ -431,4 +432,3 @@ Conditional on actual external discard: record segregated PET yarn remnants, sel
 
 
 Web sources use the 2026-10-06 retrieval snapshot. Manufacturer commercial descriptions do not replace independent scientific review or factory measurements and do not establish health, regulatory compliance or lifetime. All recipes, settings, energy, losses, throughput and allocation drivers require real factory protocol records; no defaults are supplied.
-| `unsd-cpc3-white-2026` | official_guidance | UNSD CPC Version 3.0, October 2026 white-cover pre-edited version, code 26710, PDF pages 361. https://unsdsna.azure-api.net/files/pages/cpc/CPC3_Ver3_Draft_Publication_2026-10-23_for_Website.pdf | Scoped product classification boundary; no scientific, study or publication approval |
