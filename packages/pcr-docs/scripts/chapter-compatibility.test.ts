@@ -11,14 +11,13 @@ import {canonicalReadingParts} from './reading-routes.ts';
 import {providerRuntimeSourceRoot,createProviderRuntime} from './provider-runtime.ts';
 import {readPcrCatalogPage} from '../../pcr-core/src/index.ts';
 
-test('restored original identities retain current logical chapter owners as well as historical URLs',()=>{
+test('all retained packed documents preserve current logical chapter owners and historical anchors',()=>{
  const root=providerRuntimeSourceRoot(import.meta.url);
  const aliases=new Map(CHAPTER_ALIASES.map(row=>[row.from,row]));
  let documents=0,retained=0;
  for(const document of packedAnchors.documents){
   const locale=document.sourcePath.endsWith('en-US.md')?'en':'zh';
   const base='/'+locale+'/docs/pcr/'+document.sourcePath.split('/').slice(2,-1).join('/')+'/';
-  if(!document.entries.some(entry=>!entry.from.startsWith(base)))continue;
   documents++;
   const source=fs.readFileSync(path.join(root,document.sourcePath));
   assert.equal(document.sourceSha256,sha256(source));
@@ -27,6 +26,7 @@ test('restored original identities retain current logical chapter owners as well
   const parts=canonicalReadingParts(rendered.parts,chapter,aliases);
   const urls=parts.map((part,index)=>index?chapter(part.slug):base);
   const owners=new Map(parts.flatMap((part,index)=>part.anchors.map(anchor=>[anchor,urls[index]!] as const)));
+  for(const entry of document.entries){assert(entry.anchors.every(anchor=>owners.get(anchor)===entry.to),entry.from+': historical anchor ownership changed');}
   for(const [index,part] of rendered.logicalParts.entries()){
    const from=index?chapter(part.slug):base;
    if(urls.includes(from))continue;
@@ -36,11 +36,11 @@ test('restored original identities retain current logical chapter owners as well
    retained++;
   }
  }
- assert.equal(documents,28);assert.equal(retained,31);
+ assert.equal(documents,packedAnchors.documents.length);assert(retained>=31);
 });
 
 test('published chapter routes restore exact query and fragment in both languages', () => {
-  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,648);assert.equal(CHAPTER_ALIASES.length,878);
+  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,648);assert.equal(CHAPTER_ALIASES.length,879);
   for (const language of ['en','zh']) {
     const entry=CHAPTER_ALIASES.find(row=>row.from.startsWith('/'+language+'/'))!;
     const query='?q=%E7%AB%A0%E8%8A%82&q=a+b&raw=%2f&empty=';
@@ -61,7 +61,7 @@ test('only exact old document paths can rewrite, without source mutation or open
   for(const pathname of ['/','/en/','/unknown/','/generated/raw/a','/_next/static/a.js',entry.from+'index.txt',entry.from+'__next._full.txt',entry.from.replace('/chapters/','/%2fchapters/'),entry.to])
     assert.equal(rewriteChapterRequest(new Request('https://example.org'+pathname)),undefined);
   assert.equal(compatibilityDestination('https://example.org'+entry.from,[]),undefined);
-  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,878);
+  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,879);
   assert.equal(published.identityMoves.length,306);
   for(const row of CHAPTER_ALIASES){const move=published.identityMoves.find(item=>row.from===item.from||row.from.startsWith(item.from+'chapters/'));assert.ok(row.to.startsWith(move?.to??row.from.split('/chapters/')[0]!+'/'));assert.ok(row.anchor);assert.ok(!CHAPTER_ALIASES.some(other=>other.from===row.to));}
 });

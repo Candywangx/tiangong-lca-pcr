@@ -1185,7 +1185,9 @@ exact-byte hashes bind the restored files; all 31 historical chapter URLs and
 their anchor ledgers remain, with explicit same-language destination moves.
 Twenty-eight root routes complete those declared moves. The combined inventory
 also retains the 31 corresponding logical chapter URLs under the restored
-identities, giving 306 identity moves and 878 routes. Identity declarations are bounded at
+identities. A complete 3,914-document scan also binds one newly packed kitchen-furniture
+chapter from the upstream restoration, giving 306 identity moves and 879 routes.
+Identity declarations are bounded at
 400 (previously 300); the existing 2,000-route bound, source-file byte limits,
 website file count, search-transfer and build-resource budgets remain unchanged.
 The provider closure includes the packed registry when present and verifies it
