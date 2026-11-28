@@ -58,7 +58,7 @@ function selectPrefetch(files:readonly NavigationInventoryFile[],sourceCommit:st
 }
 export function planNavigationTrees(root:string,sourceCommit:string,files:readonly NavigationInventoryFile[],packPrefetch=false):NavigationPlan|undefined{
  if(!files.some(file=>file.path===providerFile))return;
- const providerBody=read(root,providerFile,1000000),provider:Record<string,unknown>=JSON.parse(providerBody.toString());if(provider.schemaVersion!==2&&provider.schemaVersion!==3)return;
+ const providerBody=read(root,providerFile,1000000),provider:Record<string,unknown>=JSON.parse(providerBody.toString());if(provider.schemaVersion!==2&&provider.schemaVersion!==3)return;if(provider.schemaVersion===2&&!Object.hasOwn(provider,'navigationBinding'))return;
  const baseline:NavigationPlan['baseline']=[{path:providerFile,identity:identity(fs.lstatSync(path.join(root,providerFile))),sha256:hash(providerBody)}];
  assert.equal(provider.sourceCommit,sourceCommit);assert.equal(provider.navigationBinding,null,'Navigation preparation requires a fresh unbound profile');
  assert(!files.some(file=>file.path===NAVIGATION_BINDING_FILE||file.path.startsWith('generated/navigation/')),'Refusing existing navigation transport');
