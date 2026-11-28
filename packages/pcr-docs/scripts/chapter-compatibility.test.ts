@@ -5,7 +5,7 @@ import { CHAPTER_ALIASES, aliasesForTarget, compatibilityDestination, rewriteCha
 import published from '../compatibility/published-chapters.json' with {type:'json'};
 
 test('published chapter routes restore exact query and fragment in both languages', () => {
-  assert.equal(CHAPTER_ALIASES.length,620);
+  assert.equal(CHAPTER_ALIASES.length,626);
   for (const language of ['en','zh']) {
     const entry=CHAPTER_ALIASES.find(row=>row.from.startsWith('/'+language+'/'))!;
     const query='?q=%E7%AB%A0%E8%8A%82&q=a+b&raw=%2f&empty=';
@@ -26,8 +26,8 @@ test('only exact old document paths can rewrite, without source mutation or open
   for(const pathname of ['/','/en/','/unknown/','/generated/raw/a','/_next/static/a.js',entry.from+'index.txt',entry.from+'__next._full.txt',entry.from.replace('/chapters/','/%2fchapters/'),entry.to])
     assert.equal(rewriteChapterRequest(new Request('https://example.org'+pathname)),undefined);
   assert.equal(compatibilityDestination('https://example.org'+entry.from,[]),undefined);
-  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,620);
-  assert.equal(published.identityMoves.length,278);
+  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,626);
+  assert.equal(published.identityMoves.length,284);
   for(const row of CHAPTER_ALIASES){const move=published.identityMoves.find(item=>row.from===item.from||row.from.startsWith(item.from+'chapters/'));assert.ok(row.to.startsWith(move?.to??row.from.split('/chapters/')[0]!+'/'));assert.ok(row.anchor);assert.ok(!CHAPTER_ALIASES.some(other=>other.from===row.to));}
 });
 
