@@ -1,10 +1,1111 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "65111"
-  title: "Road transport services of freight by refrigerator vehicles"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a.freight-transport-services.road-transport-services-of-freight-by-refrigerator-vehicles"
+  classification_refs: "CPC 3.0 65111; exact"
+  covered_products: "Frozen or refrigerated goods transported by specially refrigerated road trucks and cars"
+  excluded_products: "Other modes; ambient-only freight; tanker/intermodal-container functions; standalone storage/courier; cargo or vehicle manufacture as final service"
+  representative_product: "Completed refrigerated road freight consignment leg"
+  production_route: "Road movement with bounded cold preservation and attributed full support/asset lifecycle"
+  market_state: "Accepted completed consignment leg at declared refrigerated delivery gate"
+functional_unit:
+  what: "Completed refrigerated road freight consignment leg"
+  how_much: "1 completed qualified consignment leg, cargo mass/volume and actual OD-distance mandatory"
+  how_well: "Declared cargo-specific temperature/time, delivery acceptance and condition"
+  how_long_or_cycle: "Actual acceptance-to-delivery interval plus causally attributed failed/empty/support and lifecycle period"
+  reference_flow_link: "completed_refrigerated_road_leg"
+system_boundary:
+  rules:
+    - rule_id: full_road_refrigeration
+      applies_to: "all nodes"
+      rule: "Include frozen and refrigerated goods in specially refrigerated road trucks and cars; no diesel-only, food-only, single-temperature or one-size restriction. Distinguish intermodal-container service 65113, tanker 65112, rail 65121, warehousing and courier retail delivery by actual contract/function; do not classify solely because goods are cold."
+      source_ids:
+        - unsd-cpc3-65111
+    - rule_id: full_duties
+      applies_to: "all nodes"
+      rule: "Include attributed loading, acceptance inspection, pre-cooling, loaded running, multi-stop doors-open, waiting, defrost, empty return, positioning, failed/rejected/rescue and wash duties; physically shared propulsion/refrigeration inputs have one owner across nodes. No positive completed N means no finite per-completion result."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: cold_state
+      applies_to: "all nodes"
+      rule: "The preservation intervention starts at actual cargo acceptance temperature/state and ends at documented delivery temperature, elapsed time, excursions and acceptance decision. Parent activity is road freight; mechanical diesel, engine-driven/electric compression, eutectic/ice and cryogenic alternatives retain actual topology, energy/cryogen supply, venting, leaks, recovery and asset obligations. Coexistence is allowed only when evidenced; alternative supplies are not all assumed present. ATP is applicable only to its actual legal/cargo scope; it supplies no universal temperature setpoint here."
+      source_ids:
+        - unece-atp-current
+    - rule_id: cargo_boundary
+      applies_to: "all nodes"
+      rule: "Cargo is the object carried, not consumed transport input and not the freight-service output. Maintain custody mass/count/condition balances at every handover and receiver. Do not add original cargo production to the service; separately disclose production/replacement implications of actual loss for downstream cargo LCA. Transfer packaging/container ownership and reuse duties require explicit coverage."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: asset_provider
+      applies_to: "all nodes"
+      rule: "PCR lifecycle choice includes actual vehicle/body/refrigerator/charging/battery/tyre/road/depot/terminal manufacture, installation, maintenance, replacement and retirement. Each native supplier result replaces only its documented covered cells; complete assembly and included initial components cannot both be counted. Useful life is an allocation denominator, not proof that operation or end-of-life is included."
+      source_ids:
+        - ghg-product-2011
+    - rule_id: atomic_expansion
+      applies_to: "all nodes"
+      rule: "For every actual unrepresented material, supply, asset, provider result, direct pollutant, waste or fate, add a separate row_id under one real node with one actual identity/state/type/direction, native property/unit/quantity, source and same-node protocol. Species, carbon origin, PM size, air/water/soil/collected fate and receiver remain distinct. Broad residual labels are expansion obligations and cannot become final unverified exchanges. Missing evidence is incomplete, never zero."
+      source_ids:
+        - ghg-product-2011
+boundary_abstraction:
+  declared_starting_condition: "Actual cargo acceptance state, fleet/cooling topology and upstream supply/provider/asset gates"
+  starting_condition_role: "Foreground starting facts do not erase earlier asset/supply burdens"
+  product_classification_scope: "Full refrigerated road freight function of 65111"
+  recursive_input_rule: "Exact subcontracted stages replace covered foreground cells once with native unit and gate"
+  upstream_dataset_requirement: "Compatible real technology, quality, geography, period, gate and lifecycle coverage"
+  disclosure: "All loaded/empty/failed/cooling/site/asset duties, cargo custody, allocation, missing data and uncertainty"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Completed refrigerated road freight consignment leg"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - cargo_identity
+    - cargo_mass_volume
+    - acceptance_delivery_gates
+    - actual_route_distance
+    - period
+    - N
+    - refrigerated_or_frozen_state
+    - actual_temperature_trace
+    - accepted_quality
+    - vehicle_refrigeration_technology
+    - propulsion_supply
+    - multi_stop_compartments
+    - empty_failed_return_duties
+    - allocation_method
+    - supplier_coverage
+    - same_asset_all_user_life
+    - cargo_loss_receiver
+    - species_medium
+    - uncertainty
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: ""
+    required_unit: "Item(s)"
+    rule: "Keep actual completed service count distinct from tonne-km, vehicle-km, cargo tonnes, packages and planned capacity; N>0 and actual OD/distance/cargo/cold quality are mandatory."
+  - id: native_unit
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual native compatible property"
+      uuid: ""
+    required_unit: "Actual native unit"
+    rule: "Preserve native provider property/unit; verified kWh to MJ uses 3.6 MJ/kWh. Volume-mass requires actual density/state; cargo tonnes exclude vehicle/container tare according to declared basis."
+process_map:
+  - id: road_movement
+    name: "Road movement and final freight handover"
+    inclusion: "required"
+    inclusion_condition: "Actual occurrence and documented ownership; no assumed absent duty"
+    role: "foreground"
+    quantitative_reference: "completed_refrigerated_road_leg"
+  - id: cold_control
+    name: "Refrigeration and cold preservation intervention"
+    inclusion: "required"
+    inclusion_condition: "Actual occurrence and documented ownership; no assumed absent duty"
+    role: "foreground"
+    quantitative_reference: "completed_refrigerated_road_leg"
+  - id: support_lifecycle
+    name: "Loading, cleaning and transport asset lifecycle"
+    inclusion: "required"
+    inclusion_condition: "Actual occurrence and documented ownership; no assumed absent duty"
+    role: "foreground"
+    quantitative_reference: "completed_refrigerated_road_leg"
+process_inventory:
+  - id: road_movement
+    label: "Road movement and final freight handover"
+    inputs:
+      product:
+        - row_id: traction_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Only actual diesel propulsion at documented supply gate. Record blend, stock, supplied, transferred, recovered, spilled and actually burned quantities separately. A purchased blend and its included components are mutually exclusive."
+          amount:
+            expression: "attributed_traction_diesel_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+        - row_id: traction_ac
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Only actual externally supplied AC at charger input; retain charger/battery/network losses inside that gate. Delivered DC or provider-inclusive traction replaces exact covered cells; it does not add duplicate AC. Electric propulsion is conditional, not a required diesel-truck assumption."
+          amount:
+            expression: "attributed_external_traction_AC_MJ / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: completed_refrigerated_road_leg
+          role: "Completed refrigerated road freight consignment leg"
+          name: "Completed refrigerated road freight consignment leg"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Actual qualified frozen or refrigerated consignment moved by specially refrigerated truck or road car from declared acceptance to delivery gate. N counts completed eligible consignment legs in a homogeneous cohort; split delivery is linked to the original manifest without multiplying the same completed service. Failed or rejected transport remains in causal duties and is not counted as an accepted output."
+          amount:
+            expression: "1 Item(s)"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_movement
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: traction_fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Actual fossil CO2 exhaust to air only, measured or calculated from actual burned fuel fossil-carbon fraction, oxidation/retention and documented compound conversion. Not all supplied diesel is burned; biogenic carbon is separate. Air subcompartment must be documented before final exchange selection."
+          amount:
+            expression: "attributed_traction_fossil_CO2_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+  - id: cold_control
+    label: "Refrigeration and cold preservation intervention"
+    inputs:
+      product:
+        - row_id: refrigeration_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Only separately metered compatible diesel supplied for refrigeration engine duties. If the main engine drives cooling, partition the one real fuel pool using metered/validated actual duty evidence; do not sum a second assumed fuel input."
+          amount:
+            expression: "attributed_refrigeration_diesel_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+        - row_id: refrigeration_ac
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Actual shore, depot or plug-in refrigeration AC at stated gate including pre-cooling, waiting, defrost and held/rejected cargo duties. Shared vehicle energy partition must close against master meter."
+          amount:
+            expression: "attributed_external_refrigeration_AC_MJ / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+        - row_id: r134a_makeup
+          role: "Refrigerant, R134a"
+          name: "Refrigerant, R134a"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b33b6abf-6a88-4ec1-ab79-6aa5aac69e8a"
+          property_unit: "Mass / kg"
+          description: "Conditional actual single R134a formulation/purity makeup only. Do not apply to other refrigerants or blends. Initial fill already in a supplied assembly is not supplied again. Every actual alternative refrigerant, cryogen or ice supply gets its own native row and real stock/fate record."
+          amount:
+            expression: "attributed_R134a_supply_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: r134a_air
+          role: "HFC-134a"
+          name: "HFC-134a"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a6d2-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual R134a leakage to air only, from measured charge/recovery and same-equipment stock reconciliation; recharge is not leakage. Keep recovered refrigerant, stock changes and air release distinct; other compounds are independent rows."
+          amount:
+            expression: "attributed_actual_R134a_air_release_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+        - row_id: refrigeration_fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional actual refrigeration-engine fossil CO2 to air; preserve one fuel owner and same-equipment carbon balance. Main-engine cooling allocation cannot duplicate exhaust already assigned to road movement."
+          amount:
+            expression: "attributed_refrigeration_fossil_CO2_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+  - id: support_lifecycle
+    label: "Loading, cleaning and transport asset lifecycle"
+    inputs:
+      product:
+        - row_id: refrigerated_vehicle_assembly_manufacture
+          role: "Complete refrigerated road freight vehicle assembly at delivery"
+          name: "Complete refrigerated road freight vehicle assembly at delivery"
+          flow_type: "product"
+          property_unit: "Count / Item(s)"
+          description: "One actual complete physical assembly of one documented model/configuration per instantiated row at its manufacturing delivery gate. Different configurations require separate instances and quantities. Activate only when this assembly serves the declared node outside complete-provider coverage. The initial-component inclusion list is part of this identity; do not add included initial components again. Keep actual uncovered maintenance, replacements and end-of-life separately.  Actual complete truck or road-car assembly, specification, initial cooling equipment/battery/tyres/body inclusion and manufacturing gate required. This is manufacturing supply, not a whole-life transport service. Record actual additions, replacements, maintenance and retirement separately without duplicating initial included components."
+          amount:
+            expression: "For each exact same-model assembly cohort: manufactured items * target-attributable useful duty / all-user full-life useful duty / N. Both duty terms use the same compatible basis and cohort; denominators must be evidenced and positive. Apply the target share and final reference normalization once. Initial components covered by this assembly are nonadditive."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assets
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+        - row_id: wash_tap_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Conditional actual tap-water supply at documented municipal production/supply gate for vehicle/body cleaning. Actual distribution from that gate must be covered separately if absent. No substitution for raw, recycled or deionized water."
+          amount:
+            expression: "attributed_tap_water_supply_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: used_lubricating_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass / kg"
+          description: "Actual collected used lubricant generated by attributed maintenance only, at generation gate. Identify receiver, composition, storage and treatment service separately; waste mass is not an automatic recycling credit or direct soil emission."
+          amount:
+            expression: "attributed_used_lubricating_oil_kg / N"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_support
+              source_ids:
+                - unsd-cpc3-65111
+                - ghg-product-2011
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_precedence
+    applies_to: "all nodes"
+    rule: "Avoid allocation by direct metering and process/compartment subdivision first. For unavoidable joint legs, allocate actual shared propulsion/site burdens using documented causal physical load, distance and capacity constraint evidence across all consignments/users; mass-distance is allowed only when it represents actual service causation, not a universal default. Sum shares to one over the same event. Cooling is separately attributed using actual thermal/compartment-time evidence; price allocation requires inability to establish physical causation and a sensitivity disclosure."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: failed_stock_period
+    applies_to: "all nodes"
+    rule: "Retain attributed failed/empty/returned duties in causal service pool before dividing once by positive eligible completed N. Count returned or redelivered consignment only at the declared accepted completion, maintaining original/return leg IDs. Preserve stocks, fuel/charge/refrigerant/cargo transfers and year-end unfinished duties across periods; do not move burdens or completion counts to a convenient year."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: asset_lifetime
+    applies_to: "all nodes"
+    rule: "Allocate native asset manufacture and each distinct lifecycle event by actual same-cohort duty consumed divided by positive supported same-cohort total all-user useful duty, then by N. Record installation, refurbishment, replacement and retirement dates and all users/periods; no universal truck kilometres, road life, refrigeration leakage or empty-running percentage. Shared depot/charger/road consumers are indexed once."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: provider_no_recursion
+    applies_to: "all nodes"
+    rule: "A subcontracted eligible freight leg is a provider input with actual native service unit and explicit gates, replacing matching own-operated stage cells. Do not recursively consume the same finished reference output or duplicate supplier energy/emissions/assets; cargo ownership does not determine physical burden ownership."
+    source_ids:
+      - ghg-product-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_movement
+      process_id: "road_movement"
+      flow_role: "Freight output, propulsion, direct exhaust and full duty"
+      record_type: "Trip manifests, meters and dispatch records"
+      raw_fields: "consignment_id; cargo_identity; mass; volume; OD; leg_distance; loaded_empty_failed_km; fuel_opening_receipts_closing_transfers; actual_burn; AC_meter; completed_N; period; quality_acceptance; allocation_share; native_unit; provider_gate; uncertainty"
+      collection_method: "Link telematics, calibrated meters, fuel and signed delivery to one route/cohort; preserve all joint users and empty/failed duties; partition engine-driven refrigeration once against master pool, then calculate attributable numerator and divide once by completed N. Build the qualified denominator from unique accepted output on the declared reference basis. Retain disqualified events and their resource duties separately. Keep the reference amount fixed; normalize only attributable inventory totals by the positive denominator. Keep non-reference rows of this protocol in their own physical units."
+      unit: "Item(s); kg; MJ; km; h"
+      frequency: "Each event; reconcile each period"
+      temporal_coverage: "Declared reporting period and linked lifecycle years"
+      site_scope: "Actual vehicles, compartments, sites and suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Calibrations; signed records; reconciled allocations; coverage and uncertainty Retain the source and native basis of each measured operand; document the conversion or attribution actually used and whether the supplied result is already per reference flow."
+    - protocol_id: cp_cold
+      process_id: "cold_control"
+      flow_role: "Cold preservation, energy, refrigerant and leakage"
+      record_type: "Temperature logger, cooling meter and refrigerant service ledger"
+      raw_fields: "equipment_id; compartment; acceptance_temperature; setpoint; actual_temperature_trace; door_events; hours; ambient; defrost; cooling_fuel_AC; charge_opening_makeup_recovery_closing; leak_species_medium; rejected_lot_receiver; allocation_share; period; N; native_unit; uncertainty"
+      collection_method: "Calibrate logger and meter, reconcile same-equipment charge/stock/recovery, separate all actual coolant/cryogen species and fates, allocate actual cooling by thermal/compartment-time causation and divide each native quantity once by N. Keep native observations and reconciliation totals on their recorded basis. For burden rows, attribute only the still-shared total and divide an assigned total only by positive qualified output of the same cohort and gate. Preserve already equivalent per-reference results. At zero output retain the burden for documented disposition. Record independently measured deliveries, releases and transfers at their own gates; any allocation applies to burdens."
+      unit: "kg; MJ; h; temperature unit"
+      frequency: "Each event; reconcile each period"
+      temporal_coverage: "Declared reporting period and linked lifecycle years"
+      site_scope: "Actual vehicles, compartments, sites and suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Calibrations; signed records; reconciled allocations; coverage and uncertainty Retain the source and native basis of each measured operand; document the conversion or attribution actually used and whether the supplied result is already per reference flow."
+    - protocol_id: cp_support
+      process_id: "support_lifecycle"
+      flow_role: "Loading, cleaning, custody loss and collected waste"
+      record_type: "Supplier tickets, utility meter, custody and waste handover records"
+      raw_fields: "site; event_id; provider_id; included_cells; water; handling_native_activity; cargo_in_out_stock_loss_return; waste_identity_receiver_mass; fate; period; N; allocation_share; uncertainty"
+      collection_method: "Reconcile gate and custody ledger with signed handovers; keep loss, return, evaporation, collected wastewater and direct releases distinct; identify provider-covered cells and aggregate attributable native quantities before one N division. Keep native observations and reconciliation totals on their recorded basis. For burden rows, attribute only the still-shared total and divide an assigned total only by positive qualified output of the same cohort and gate. Preserve already equivalent per-reference results. At zero output retain the burden for documented disposition. Record independently measured deliveries, releases and transfers at their own gates; any allocation applies to burdens."
+      unit: "kg; native supplier unit"
+      frequency: "Each event; reconcile each period"
+      temporal_coverage: "Declared reporting period and linked lifecycle years"
+      site_scope: "Actual vehicles, compartments, sites and suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Calibrations; signed records; reconciled allocations; coverage and uncertainty Retain the source and native basis of each measured operand; document the conversion or attribution actually used and whether the supplied result is already per reference flow."
+    - protocol_id: cp_assets
+      process_id: "support_lifecycle"
+      flow_role: "Vehicle, refrigeration and shared infrastructure lifecycle"
+      record_type: "Asset bill of materials, supplier lifecycle scope and maintenance register"
+      raw_fields: "asset_cohort; configuration; initial_components_included; native_delivered_quantity; manufacture_install_maintenance_replacement_retirement_dates; all_user_useful_duty; attributed_duty; providers_sites_periods; native_unit; N; uncertainty"
+      collection_method: "Verify assembly versus component scope, each lifecycle event and all-user cohort denominator; multiply native quantity by actual attributable duty / positive total same-cohort useful duty then divide once by N, replacing provider-covered cells only. Keep native observations and reconciliation totals on their recorded basis. For burden rows, attribute only the still-shared total and divide an assigned total only by positive qualified output of the same cohort and gate. Preserve already equivalent per-reference results. At zero output retain the burden for documented disposition."
+      unit: "Item(s); kg; native duty and service units"
+      frequency: "Each event; reconcile each period"
+      temporal_coverage: "Declared reporting period and linked lifecycle years"
+      site_scope: "Actual vehicles, compartments, sites and suppliers"
+      aggregation_rule: "per declared reference flow"
+      quality_evidence: "Calibrations; signed records; reconciled allocations; coverage and uncertainty Retain the source and native basis of each measured operand; document the conversion or attribution actually used and whether the supplied result is already per reference flow."
+    - protocol_id: cp_expand_refrigerated_vehicle_assembly
+      process_id: "support_lifecycle"
+      flow_role: "Mandatory identity expansion refrigerated_vehicle_assembly (inputs/product): Complete refrigerated road freight vehicle assembly at delivery"
+      record_type: "collected_record"
+      raw_fields: "requirement_id=refrigerated_vehicle_assembly; process_id=support_lifecycle; required_direction=inputs; required_flow_type=product; original_collection_protocol=cp_assets; applicability_evidence; occurrence_event_id; concrete_row_id; physical_identity; formulation_or_species; phase; carbon_origin; particle_fraction; source_compartment; receiving_compartment; supply_or_handover_gate; provider_covered_cells; asset_component_event_and_lifecycle_phase; native_property; native_unit; measured_native_quantity; source_record_id; allocation_all_users; normalization_denominator; per_identity_amount_calculation; verification_evidence; unresolved_reason; occurrence_to_row_reconciliation; asset_or_reusable_id; model_configuration; included_initial_components; lifecycle_phase; manufacture_native_quantity; target_duty; all_user_same_cohort_lifetime_duty; replacement_event; provider_coverage_cells; applicability_decision_record; covered_concrete_rows; excluded_occurrence_reason; completion_evidence; observed_quantity_state; conversion_or_allocation_evidence; supply_or_service_gate; accepted_service_demand; provider_functional_unit; provider_intensity_basis; covered_lifecycle_stages"
+      collection_method: "Actual complete truck or road-car assembly, specification, initial cooling equipment/battery/tyres/body inclusion and manufacturing gate required. This is manufacturing supply, not a whole-life transport service. Record actual additions, replacements, maintenance and retirement separately without duplicating initial included components. Treat this scope as a mandatory identification requirement, not an exchange. Use the original node protocol and its records; separate every actual identity, gate and independent function before quantification, then apply the retained amount/basis/evidence instructions to each compatible concrete row separately. Never use an aggregate amount across heterogeneous identities or infer the native property/unit from a group label. A conclusion that no occurrence took place must be supported by evidence; unknown applicability or identity blocks completion. For the physical asset or reusable item specified here, verify its supply gate, included initial parts, actual replacements, maintenance, cleaning, failure and retirement records. A lease or inclusive supplier contract requires an explicit coverage decision: where a delivered service is within this scope measure its accepted native demand and trace only uncovered asset stages. For a directly modelled asset, use same-cohort target duty over supported positive lifetime duty of all users; do not charge the whole facility to one service. Explicit branches (activate only on actual applicable records): refrigerated_vehicle_assembly_manufacture. For every applicability decision retain evidence. An evidenced absence closes only the stated scope and period; missing records remain unresolved. For a present requirement, map every occurrence to concrete row IDs and compatible native quantities, or to exact already-covered rows/provider cells, with a reason for each exclusion. Evidence must cover identity, support unit, calculation, source records and all fates. Existing and newly added branches are mutually exclusive coverage of the same event; never count the protocol itself as an exchange. Completion requires no unassigned occurrence, no duplicate coverage and no unresolved relevant quantity or identity. Collect raw fields for the evidenced branch. For each inapplicable operand record the branch decision; missing applicable quantities remain unresolved."
+      unit: "Physical asset or reusable article in its verified manufacture/supply unit; compatible duty for the same cohort; delivered service in its native functional unit where in scope"
+      frequency: "Every actual occurrence and each evidenced absence decision"
+      temporal_coverage: "Full declared cohort and attributable asset life/linked events"
+      site_scope: "Actual responsible sites/providers of this process only"
+      aggregation_rule: "Reconcile native event totals first. Combine only the same identity, state, unit, gate and period. Apply the matching calculation once to each resulting row: assign only still-shared burdens; divide a target total only by positive qualified output on the same basis. Keep already equivalent per-reference values and resolve zero-output periods without division."
+      quality_evidence: "For an asset use the quantity at its documented supply gate times target duty / positive all-user lifetime duty for that cohort. Record configuration, commissioning, replacement and retired or remaining life. If the scope includes a delivered service, use its verified native intensity times matching delivered demand and retain the coverage record; charge uncovered phases separately. For a physical asset measured in Number of items / Item(s), retain the measured supply quantity and the separate lifetime-duty unit. For a matching asset quantity or independently verified service result at the stated gate, apply the following quantity rule only at its specified attribution and normalization state: attributed_vehicle_manufacture_items / N Preserve original records, applied factors and resulting units. Value mode: calculated_value; Specificity: site_specific; Normalization basis: per declared reference flow; Basis kind: reference_flow; Evidence kind: calculated_from_collection; Collection protocol: cp_assets; Sources: unsd-cpc3-65111; ghg-product-2011. Require original records, exact native support and per-concrete-row verification; these instructions do not supply a missing identity or numerical value. Completion gate: check_occurrence_completion."
+    - protocol_id: cp_expand_road_infrastructure_service
+      process_id: "support_lifecycle"
+      flow_role: "Mandatory identity expansion road_infrastructure_service (inputs/product): Attributable road infrastructure lifecycle service"
+      record_type: "collected_record"
+      raw_fields: "requirement_id=road_infrastructure_service; process_id=support_lifecycle; required_direction=inputs; required_flow_type=product; original_collection_protocol=cp_assets; applicability_evidence; occurrence_event_id; concrete_row_id; physical_identity; formulation_or_species; phase; carbon_origin; particle_fraction; source_compartment; receiving_compartment; supply_or_handover_gate; provider_covered_cells; asset_component_event_and_lifecycle_phase; native_property; native_unit; measured_native_quantity; source_record_id; allocation_all_users; normalization_denominator; per_identity_amount_calculation; verification_evidence; unresolved_reason; occurrence_to_row_reconciliation; provider_contract; independent_function; provider_gates; native_functional_unit; delivered_quantity; covered_process_phase_cells; uncovered_foreground_rows; applicability_decision_record; covered_concrete_rows; excluded_occurrence_reason; completion_evidence; observed_quantity_state; conversion_or_allocation_evidence; provider_functional_unit; accepted_service_demand; provider_intensity_basis; covered_service_stages"
+      collection_method: "Actual road construction, maintenance and retirement service at documented native provider unit and vehicle class/load/duty basis. Provider-covered lifecycle cells replace corresponding foreground cells once. Do not infer an invented universal road lifetime or axle factor. Treat this scope as a mandatory identification requirement, not an exchange. Use the original node protocol and its records; separate every actual identity, gate and independent function before quantification, then apply the retained amount/basis/evidence instructions to each compatible concrete row separately. Never use an aggregate amount across heterogeneous identities or infer the native property/unit from a group label. A conclusion that no occurrence took place must be supported by evidence; unknown applicability or identity blocks completion. Apply these recording instructions only to the stated inputs/product identity and gate (Attributable road infrastructure lifecycle service). Activate only for an actually contracted independent function within this PCR scope. Record provider contract, delivered service function, gates, native functional unit, measured delivered quantity and exact covered processes/life stages. Compare each covered cell with owned activities; use complete-provider coverage or the uncovered foreground activity once. Do not substitute monetary spend, a material mass or an assumed item count for the actual function. A provider of the PCR final product cannot recursively duplicate the same final service. For every applicability decision retain evidence. An evidenced absence closes only the stated scope and period; missing records remain unresolved. For a present requirement, map every occurrence to concrete row IDs and compatible native quantities, or to exact already-covered rows/provider cells, with a reason for each exclusion. Evidence must cover identity, support unit, calculation, source records and all fates. Existing and newly added branches are mutually exclusive coverage of the same event; never count the protocol itself as an exchange. Completion requires no unassigned occurrence, no duplicate coverage and no unresolved relevant quantity or identity. Collect raw fields for the evidenced branch. For each inapplicable operand record the branch decision; missing applicable quantities remain unresolved."
+      unit: "Verified native functional unit of the contracted delivery; Item(s) only for independently countable accepted results"
+      frequency: "Every actual occurrence and each evidenced absence decision"
+      temporal_coverage: "Full declared cohort and attributable asset life/linked events"
+      site_scope: "Actual responsible sites/providers of this process only"
+      aggregation_rule: "Reconcile native event totals first. Combine only the same identity, state, unit, gate and period. Apply the matching calculation once to each resulting row: assign only still-shared burdens; divide a target total only by positive qualified output on the same basis. Keep already equivalent per-reference values and resolve zero-output periods without division."
+      quality_evidence: "Use the measured accepted quantity at the specified gate. Multiply supplier intensity by demand in that same native unit only when converting an intensity to a total. Record the contract scope, acceptance, native unit and covered stages. Use time only for a delivered time-based function. For an accepted service on the basis specified by its contract, apply the following quantity rule only at its specified attribution and normalization state: attributed_native_road_service / N Preserve original records, applied factors and resulting units. Value mode: calculated_value; Specificity: site_specific; Normalization basis: per declared reference flow; Basis kind: reference_flow; Evidence kind: calculated_from_collection; Collection protocol: cp_assets; Sources: unsd-cpc3-65111; ghg-product-2011. Require original records, exact native support and per-concrete-row verification; these instructions do not supply a missing identity or numerical value. Completion gate: check_occurrence_completion."
+    - protocol_id: cp_expand_terminal_handling_service
+      process_id: "support_lifecycle"
+      flow_role: "Mandatory identity expansion terminal_handling_service (inputs/product): Contracted loading and unloading service"
+      record_type: "collected_record"
+      raw_fields: "requirement_id=terminal_handling_service; process_id=support_lifecycle; required_direction=inputs; required_flow_type=product; original_collection_protocol=cp_support; applicability_evidence; occurrence_event_id; concrete_row_id; physical_identity; formulation_or_species; phase; carbon_origin; particle_fraction; source_compartment; receiving_compartment; supply_or_handover_gate; provider_covered_cells; asset_component_event_and_lifecycle_phase; native_property; native_unit; measured_native_quantity; source_record_id; allocation_all_users; normalization_denominator; per_identity_amount_calculation; verification_evidence; unresolved_reason; occurrence_to_row_reconciliation; provider_contract; independent_function; provider_gates; native_functional_unit; delivered_quantity; covered_process_phase_cells; uncovered_foreground_rows; applicability_decision_record; covered_concrete_rows; excluded_occurrence_reason; completion_evidence; observed_quantity_state; conversion_or_allocation_evidence; provider_functional_unit; accepted_service_demand; provider_intensity_basis; covered_service_stages"
+      collection_method: "Conditional actual loading/unloading/transfer provider service within this transport contract. Declare gate, energy, assets and cargo coverage; independent third-party terminal duties are attached upstream once or explicitly excluded with a boundary reason. Treat this scope as a mandatory identification requirement, not an exchange. Use the original node protocol and its records; separate every actual identity, gate and independent function before quantification, then apply the retained amount/basis/evidence instructions to each compatible concrete row separately. Never use an aggregate amount across heterogeneous identities or infer the native property/unit from a group label. A conclusion that no occurrence took place must be supported by evidence; unknown applicability or identity blocks completion. Apply these recording instructions only to the stated inputs/product identity and gate (Contracted loading and unloading service). Activate only for an actually contracted independent function within this PCR scope. Record provider contract, delivered service function, gates, native functional unit, measured delivered quantity and exact covered processes/life stages. Compare each covered cell with owned activities; use complete-provider coverage or the uncovered foreground activity once. Do not substitute monetary spend, a material mass or an assumed item count for the actual function. A provider of the PCR final product cannot recursively duplicate the same final service. For every applicability decision retain evidence. An evidenced absence closes only the stated scope and period; missing records remain unresolved. For a present requirement, map every occurrence to concrete row IDs and compatible native quantities, or to exact already-covered rows/provider cells, with a reason for each exclusion. Evidence must cover identity, support unit, calculation, source records and all fates. Existing and newly added branches are mutually exclusive coverage of the same event; never count the protocol itself as an exchange. Completion requires no unassigned occurrence, no duplicate coverage and no unresolved relevant quantity or identity. Collect raw fields for the evidenced branch. For each inapplicable operand record the branch decision; missing applicable quantities remain unresolved."
+      unit: "Verified native functional unit of the contracted delivery; Item(s) only for independently countable accepted results"
+      frequency: "Every actual occurrence and each evidenced absence decision"
+      temporal_coverage: "Full declared cohort and attributable asset life/linked events"
+      site_scope: "Actual responsible sites/providers of this process only"
+      aggregation_rule: "Reconcile native event totals first. Combine only the same identity, state, unit, gate and period. Apply the matching calculation once to each resulting row: assign only still-shared burdens; divide a target total only by positive qualified output on the same basis. Keep already equivalent per-reference values and resolve zero-output periods without division."
+      quality_evidence: "Use the measured accepted quantity at the specified gate. Multiply supplier intensity by demand in that same native unit only when converting an intensity to a total. Record the contract scope, acceptance, native unit and covered stages. Use time only for a delivered time-based function. For an accepted service on the basis specified by its contract, apply the following quantity rule only at its specified attribution and normalization state: attributed_native_handling_service / N Preserve original records, applied factors and resulting units. Value mode: calculated_value; Specificity: site_specific; Normalization basis: per declared reference flow; Basis kind: reference_flow; Evidence kind: calculated_from_collection; Collection protocol: cp_support; Sources: unsd-cpc3-65111; ghg-product-2011. Require original records, exact native support and per-concrete-row verification; these instructions do not supply a missing identity or numerical value. Completion gate: check_occurrence_completion."
+    - protocol_id: cp_expand_wash_wastewater
+      process_id: "support_lifecycle"
+      flow_role: "Mandatory identity expansion wash_wastewater (outputs/waste): Collected refrigerated-body cleaning wastewater"
+      record_type: "collected_record"
+      raw_fields: "requirement_id=wash_wastewater; process_id=support_lifecycle; required_direction=outputs; required_flow_type=waste; original_collection_protocol=cp_support; applicability_evidence; occurrence_event_id; concrete_row_id; physical_identity; formulation_or_species; phase; carbon_origin; particle_fraction; source_compartment; receiving_compartment; supply_or_handover_gate; provider_covered_cells; asset_component_event_and_lifecycle_phase; native_property; native_unit; measured_native_quantity; source_record_id; allocation_all_users; normalization_denominator; per_identity_amount_calculation; verification_evidence; unresolved_reason; occurrence_to_row_reconciliation; waste_origin_event; material_or_true_mixture; moisture_basis; container_tare; opening_waste_stock; generated_waste; received_waste; handover_quantity; closing_waste_stock; onsite_treatment; receiver_id; applicability_decision_record; covered_concrete_rows; excluded_occurrence_reason; completion_evidence; observed_quantity_state; conversion_or_allocation_evidence"
+      collection_method: "Actual collected cleaning stream with cargo residues/cleaning chemicals and receiving treatment known. Split streams with incompatible composition or receiver; distinguish evaporation, carried water and direct release. Treat this scope as a mandatory identification requirement, not an exchange. Use the original node protocol and its records; separate every actual identity, gate and independent function before quantification, then apply the retained amount/basis/evidence instructions to each compatible concrete row separately. Never use an aggregate amount across heterogeneous identities or infer the native property/unit from a group label. A conclusion that no occurrence took place must be supported by evidence; unknown applicability or identity blocks completion. Apply these recording instructions only to the stated outputs/waste identity and gate (Collected refrigerated-body cleaning wastewater). Activate when this process actually generates or receives the specified waste. Record material/formulation or genuine co-collected mixture, wet/dry state, container tare, origin event, stored quantities, handover gate and actual receiver. Reconcile generation + opening stock + receipts = handovers + closing stock + separately recorded onsite treatment. Different separately collected wastes require different rows; one genuine receiving mixture may remain one row, with composition as a nonadditive audit. Useful recovery, customer-retained items and waste are distinct fates; no automatic substitution credit. For every applicability decision retain evidence. An evidenced absence closes only the stated scope and period; missing records remain unresolved. For a present requirement, map every occurrence to concrete row IDs and compatible native quantities, or to exact already-covered rows/provider cells, with a reason for each exclusion. Evidence must cover identity, support unit, calculation, source records and all fates. Existing and newly added branches are mutually exclusive coverage of the same event; never count the protocol itself as an exchange. Completion requires no unassigned occurrence, no duplicate coverage and no unresolved relevant quantity or identity. Collect raw fields for the evidenced branch. For each inapplicable operand record the branch decision; missing applicable quantities remain unresolved."
+      unit: "Receiver-accepted native quantity of the specific waste or genuinely co-collected mixture in its measured state"
+      frequency: "Every actual occurrence and each evidenced absence decision"
+      temporal_coverage: "Full declared cohort and attributable asset life/linked events"
+      site_scope: "Actual responsible sites/providers of this process only"
+      aggregation_rule: "Reconcile native event totals first. Combine only the same identity, state, unit, gate and period. Apply the matching calculation once to each resulting row: assign only still-shared burdens; divide a target total only by positive qualified output on the same basis. Keep already equivalent per-reference values and resolve zero-output periods without division."
+      quality_evidence: "Match generation, retained stock, onsite treatment and measured handover to receiver records. Separate mixed-stream quantity from constituent measurements; wet/dry or mass/volume conversion needs matching composition or density. Receiver transfer and direct environmental release have distinct gates. For the stated physical identity and matching input basis, apply the following quantity rule only at its specified attribution and normalization state: attributed_collected_wash_wastewater / N Preserve original records, applied factors and resulting units. Value mode: calculated_value; Specificity: site_specific; Normalization basis: per declared reference flow; Basis kind: reference_flow; Evidence kind: calculated_from_collection; Collection protocol: cp_support; Sources: unsd-cpc3-65111; ghg-product-2011. Require original records, exact native support and per-concrete-row verification; these instructions do not supply a missing identity or numerical value. Completion gate: check_occurrence_completion."
+    - protocol_id: cp_expand_spoiled_cargo_waste
+      process_id: "support_lifecycle"
+      flow_role: "Mandatory identity expansion spoiled_cargo_waste (outputs/waste): Spoiled refrigerated cargo at waste handover"
+      record_type: "collected_record"
+      raw_fields: "requirement_id=spoiled_cargo_waste; process_id=support_lifecycle; required_direction=outputs; required_flow_type=waste; original_collection_protocol=cp_support; applicability_evidence; occurrence_event_id; concrete_row_id; physical_identity; formulation_or_species; phase; carbon_origin; particle_fraction; source_compartment; receiving_compartment; supply_or_handover_gate; provider_covered_cells; asset_component_event_and_lifecycle_phase; native_property; native_unit; measured_native_quantity; source_record_id; allocation_all_users; normalization_denominator; per_identity_amount_calculation; verification_evidence; unresolved_reason; occurrence_to_row_reconciliation; waste_origin_event; material_or_true_mixture; moisture_basis; container_tare; opening_waste_stock; generated_waste; received_waste; handover_quantity; closing_waste_stock; onsite_treatment; receiver_id; applicability_decision_record; covered_concrete_rows; excluded_occurrence_reason; completion_evidence; observed_quantity_state; conversion_or_allocation_evidence"
+      collection_method: "Only actual carrier-owned waste crossing the service boundary, identified by cargo and receiver; food, medicine and other materials are not one interchangeable waste identity. Returned recoverable cargo remains cargo custody ledger rather than invented waste. The transport service excludes original cargo production, but physical spoilage and treatment responsibility must be disclosed to the cargo product model without duplicate cargo manufacture. Treat this scope as a mandatory identification requirement, not an exchange. Use the original node protocol and its records; separate every actual identity, gate and independent function before quantification, then apply the retained amount/basis/evidence instructions to each compatible concrete row separately. Never use an aggregate amount across heterogeneous identities or infer the native property/unit from a group label. A conclusion that no occurrence took place must be supported by evidence; unknown applicability or identity blocks completion. Apply these recording instructions only to the stated outputs/waste identity and gate (Spoiled refrigerated cargo at waste handover). Activate when this process actually generates or receives the specified waste. Record material/formulation or genuine co-collected mixture, wet/dry state, container tare, origin event, stored quantities, handover gate and actual receiver. Reconcile generation + opening stock + receipts = handovers + closing stock + separately recorded onsite treatment. Different separately collected wastes require different rows; one genuine receiving mixture may remain one row, with composition as a nonadditive audit. Useful recovery, customer-retained items and waste are distinct fates; no automatic substitution credit. For every applicability decision retain evidence. An evidenced absence closes only the stated scope and period; missing records remain unresolved. For a present requirement, map every occurrence to concrete row IDs and compatible native quantities, or to exact already-covered rows/provider cells, with a reason for each exclusion. Evidence must cover identity, support unit, calculation, source records and all fates. Existing and newly added branches are mutually exclusive coverage of the same event; never count the protocol itself as an exchange. Completion requires no unassigned occurrence, no duplicate coverage and no unresolved relevant quantity or identity. Collect raw fields for the evidenced branch. For each inapplicable operand record the branch decision; missing applicable quantities remain unresolved."
+      unit: "Receiver-accepted native quantity of the specific waste or genuinely co-collected mixture in its measured state"
+      frequency: "Every actual occurrence and each evidenced absence decision"
+      temporal_coverage: "Full declared cohort and attributable asset life/linked events"
+      site_scope: "Actual responsible sites/providers of this process only"
+      aggregation_rule: "Reconcile native event totals first. Combine only the same identity, state, unit, gate and period. Apply the matching calculation once to each resulting row: assign only still-shared burdens; divide a target total only by positive qualified output on the same basis. Keep already equivalent per-reference values and resolve zero-output periods without division."
+      quality_evidence: "Match generation, retained stock, onsite treatment and measured handover to receiver records. Separate mixed-stream quantity from constituent measurements; wet/dry or mass/volume conversion needs matching composition or density. Receiver transfer and direct environmental release have distinct gates. For a row requiring Mass / kg, verify measurement or conversion to that basis. For the stated physical identity and matching input basis, apply the following quantity rule only at its specified attribution and normalization state: attributed_spoiled_cargo_waste_kg / N Preserve original records, applied factors and resulting units. Value mode: calculated_value; Specificity: site_specific; Normalization basis: per declared reference flow; Basis kind: reference_flow; Evidence kind: calculated_from_collection; Collection protocol: cp_support; Sources: unsd-cpc3-65111; ghg-product-2011. Require original records, exact native support and per-concrete-row verification; these instructions do not supply a missing identity or numerical value. Completion gate: check_occurrence_completion."
+  calculation_rules:
+    - id: normalize_service
+      applies_to: "all inventory rows except reference output"
+      rule: "x_ref = sum(x_native_attributed) / N; N is actual eligible completed consignment legs, positive and same cohort/period; reference output is 1 Item(s)."
+      inputs:
+        - x_native_attributed
+        - N
+        - cp_movement
+        - cp_cold
+        - cp_support
+        - cp_assets
+      output: "x_ref"
+      source_ids:
+        - ghg-product-2011
+    - id: cargo_transport_activity
+      applies_to: "reported supplementary tonne-distance"
+      rule: "T = sum(m_i_t * d_i_km) over actual loaded segments with actual transported mass; empty distance and cooling hours are recorded separately and retain burdens. T is not a replacement for completed N."
+      inputs:
+        - m_i_t
+        - d_i_km
+        - cp_movement
+      output: "T"
+      source_ids:
+        - ghg-product-2011
+    - id: stock_reconciliation
+      applies_to: "fuel, coolant and cargo by actual ledger"
+      rule: "opening + receipts + inward_transfers = closing + useful_use_or_delivery + outward_transfers + measured_loss; terms are mutually exclusive boundary-ledger destinations. Internal recovered material is retained in closing stock or subsequently recorded once at its actual use/outward gate, never an additional recovery term. Split every term by actual material/equipment/period and do not infer loss from one missing term."
+      inputs:
+        - "actual stocks"
+        - receipts
+        - transfers
+        - use
+        - recovery
+        - loss
+        - cp_movement
+        - cp_cold
+        - cp_support
+      output: "closed native ledger"
+      source_ids:
+        - ghg-product-2011
+  data_quality_requirements:
+    - id: traceability
+      applies_to: "all nodes"
+      requirement: "Retain raw record, calibration, native unit, gate, actual state, period/site, allocation decision and uncertainty for each exchange; supplier model comparability is explicit."
+      evidence: "Signed records and meter/service logs"
+    - id: temperature_quality
+      applies_to: "cold_control and reference output"
+      requirement: "Actual cargo-specific temperature/time and acceptance requirements, sensor position and excursions are mandatory; no default setpoint, shelf life or zero spoilage."
+      evidence: "Contracts; logger records; acceptance and disposition"
+    - id: missing_range
+      applies_to: "quantities and factors"
+      requirement: "No universal numerical fuel intensity, load factor, empty return, refrigeration leakage, asset lifetime or emission factor is supplied. Missing actual evidence remains incomplete; empirical guardrails require an independent compatible reference sample and never use this batch maximum to validate itself."
+      evidence: "Data completeness register; independent sample provenance"
+validation_rules:
+  - rule_id: reference_gate
+    applies_to: "all nodes"
+    rule: "Require actual road refrigerated mode, cargo/quality/temperature/OD/distance/time and accepted completion records; N must be positive. Reject temperature-excursion cargo from qualified output until documented disposition; failed duty is retained. Equal Item(s) with different consignments or distances is not equivalent performance."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: native_fates
+    applies_to: "all nodes"
+    rule: "Close fuel/stock/burn/spill and refrigerant initial/recharge/recovery/stock/release ledgers by equipment and period; require species and destination before direct emissions. Match property/unit/gate and receiving medium; no charge=leak, supplied=burned, waste=direct emission or AC=DC substitution."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: coverage_allocation
+    applies_to: "all nodes"
+    rule: "Validate every actual mode/duty and shared node/provider/asset/terminal cell, all-user share closure, positive compatible lifetime and normalization once. Unknown actual technology, receiver, quantity, supplier lifecycle coverage or life is incomplete. Enumerate every contributing site and period, include its eligible output and burden before pooled normalization; never average site intensities without justified weighting."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: exchange_expansion
+    applies_to: "all nodes"
+    rule: "Require one verified concrete UUID and compatible native support for each final implemented exchange; unresolved semantic cards and count support alone are not final service identities. Compare EN/ZH ordered IDs, formulas, qualifiers, protocols, source references and canonical projection; record all skipped/inconclusive checks."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: atomic_road_movement
+    applies_to: "road_movement"
+    rule: "Reject any exchange whose identity combines alternative materials, independently supplied assets/services, different waste streams, pollutant species, carbon origins, phases, particle fractions or environmental compartments. For every applicable cp_expand_ requirement in this node require an occurrence/absence record and exhaustive concrete-row register, each with its own identity, gate, verified UUID, native property/unit, quantity, source record, calculation and exclusive responsibility. A supplier-covered whole assembly or genuinely collected mixture remains one actual supplied/collected identity; do not invent constituent exchanges. Never bind a requirement label/id, generic NOx/VOC/PM total, unspecified physical release, or heterogeneous list to one UUID. Reconcile all requirement children, source events, provider-covered cells and cross-node transfers; no missing-as-zero or double counting. Unknown identity, applicability, quantity or fate blocks a complete foreground package and final TIDAS exchange production. The PCR checker does not verify these foreground facts; retain their row-addressable evidence for review."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: atomic_cold_control
+    applies_to: "cold_control"
+    rule: "Reject any exchange whose identity combines alternative materials, independently supplied assets/services, different waste streams, pollutant species, carbon origins, phases, particle fractions or environmental compartments. For every applicable cp_expand_ requirement in this node require an occurrence/absence record and exhaustive concrete-row register, each with its own identity, gate, verified UUID, native property/unit, quantity, source record, calculation and exclusive responsibility. A supplier-covered whole assembly or genuinely collected mixture remains one actual supplied/collected identity; do not invent constituent exchanges. Never bind a requirement label/id, generic NOx/VOC/PM total, unspecified physical release, or heterogeneous list to one UUID. Reconcile all requirement children, source events, provider-covered cells and cross-node transfers; no missing-as-zero or double counting. Unknown identity, applicability, quantity or fate blocks a complete foreground package and final TIDAS exchange production. The PCR checker does not verify these foreground facts; retain their row-addressable evidence for review."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: atomic_support_lifecycle
+    applies_to: "support_lifecycle"
+    rule: "Reject any exchange whose identity combines alternative materials, independently supplied assets/services, different waste streams, pollutant species, carbon origins, phases, particle fractions or environmental compartments. For every applicable cp_expand_ requirement in this node require an occurrence/absence record and exhaustive concrete-row register, each with its own identity, gate, verified UUID, native property/unit, quantity, source record, calculation and exclusive responsibility. A supplier-covered whole assembly or genuinely collected mixture remains one actual supplied/collected identity; do not invent constituent exchanges. Never bind a requirement label/id, generic NOx/VOC/PM total, unspecified physical release, or heterogeneous list to one UUID. Reconcile all requirement children, source events, provider-covered cells and cross-node transfers; no missing-as-zero or double counting. Unknown identity, applicability, quantity or fate blocks a complete foreground package and final TIDAS exchange production. The PCR checker does not verify these foreground facts; retain their row-addressable evidence for review."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: check_occurrence_completion
+    applies_to: "all actual rows and identification protocols"
+    rule: "Retain applicability evidence and map each actual event to its inventory row or verified provider coverage. Evidence is required for absence; unknown remains unresolved. For each compatible identity, state, unit, period and gate, reconcile receipts and opening stock against closing stock and exclusive physical exits. In a consumables issue ledger, distinguish unused returns, internal issues and actual use for successful, failed and reworked duties. In a custody or material balance use opening stock + external receipts + paired internal receipts = closing stock + paired internal dispatch + accepted external deliveries + unused external returns + used goods or recovered material sent out + waste sent out + direct releases + quantity consumed or transformed within this boundary. Where that identity arises inside the gate, add evidenced formation or birth to its receipts and link the originating event. Cancel internal formation and transfers across the enclosing conserved-material or elemental balance. Classify each event once, include retained recovered stock at closing, and distinguish transfers from use. Apply the specific custody, phase, transformation or elemental rule on its own compatible basis; exclude downstream products of already counted transformation from the same exit total. Measure operands independently and investigate unresolved residuals. Keep physical totals separate from burden allocation. For a raw shared burden use Q_raw × s / R, where s is the evidenced target driver divided by the positive driver total for all eligible users of that same pool and period. Use Q_target / R for an already assigned target total and retain q_ref unchanged for an already equivalent per-reference result. For a provider intensity first multiply by measured demand in its matching native unit. Apply an additional share only for a distinct, still-shared stage. R is the positive qualified output quantity in the same reference unit, cohort and gate. Retain failed and partial duties without enlarging R; for zero output retain the burden with evidenced carry-forward or final disposition. For owned assets use the same-cohort all-user lifetime duty and exclusive initial-component coverage. Delivered services replace only their documented covered stages. Unresolved applicable identity, quantity, support unit, fate or allocation denominator prevents final dataset completion."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Qualified refrigerated road freight service attached to actual cargo supply chains"
+  allowed_use: "Compatible cargo/amount/OD/distance/cold quality/technology/provider scope with disclosed uncertainty"
+  excluded_use: "Cargo manufacture; other modes; unsupported equal-count comparison; failed-only pool intensity; unresolved final exchanges"
+  required_metadata: "Reference qualifiers; actual records; provider gates; nodes and coverage; allocation; all-user life; sources and units"
+  required_quality_disclosure: "Missing identities/quantities, temporal/site representativeness, rejected cargo and failed duty, leakage/fates, uncertainty and skipped checks"
+  update_trigger: "Cargo/route/quality/technology/asset/provider change or new verified quantities/identities"
+data_sources:
+  - id: "unsd-cpc3-65111"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0, 65111; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Official full service scope; no numeric activity or count unit prescribed"
+  - id: "ghg-product-2011"
+    type: "standard"
+    reference: "WRI/WBCSD Product Life Cycle Accounting and Reporting Standard (2011), chapters 6–10; https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Boundary/data/allocation principles; specific extended assets and record algorithms are declared PCR choices, not universal standard factors"
+  - id: "unece-atp-current"
+    type: "official_guidance"
+    reference: "UNECE ATP text and status, version applicable from 25 August 2026; https://unece.org/transport/road-transport/text-and-status-agreement"
+    used_for: "Equipment and temperature-control applicability questions for eligible perishable-food transport; no assumption all goods or domestic trips covered"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:aad0455ca71c0e5eac99fd77bde17e9ec9a49b80ed8ab052dd5fb13c3d51ae94"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_4071"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 4071
+          line: 54
+          column: 1
+        end:
+          offset: 7800
+          line: 76
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual cargo acceptance state, fleet/cooling topology and upstream supply/provider/asset gates |\n| starting_condition_role | Foreground starting facts do not erase earlier asset/supply burdens |\n| product_classification_scope | Full refrigerated road freight function of 65111 |\n| recursive_input_rule | Exact subcontracted stages replace covered foreground cells once with native unit and gate |\n| upstream_dataset_requirement | Compatible real technology, quality, geography, period, gate and lifecycle coverage |\n| disclosure | All loaded/empty/failed/cooling/site/asset duties, cargo custody, allocation, missing data and uncertainty |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| full_road_refrigeration | all nodes | Include frozen and refrigerated goods in specially refrigerated road trucks and cars; no diesel-only, food-only, single-temperature or one-size restriction. Distinguish intermodal-container service 65113, tanker 65112, rail 65121, warehousing and courier retail delivery by actual contract/function; do not classify solely because goods are cold. | unsd-cpc3-65111 |\n| full_duties | all nodes | Include attributed loading, acceptance inspection, pre-cooling, loaded running, multi-stop doors-open, waiting, defrost, empty return, positioning, failed/rejected/rescue and wash duties; physically shared propulsion/refrigeration inputs have one owner across nodes. No positive completed N means no finite per-completion result. | ghg-product-2011 |\n| cold_state | all nodes | The preservation intervention starts at actual cargo acceptance temperature/state and ends at documented delivery temperature, elapsed time, excursions and acceptance decision. Parent activity is road freight; mechanical diesel, engine-driven/electric compression, eutectic/ice and cryogenic alternatives retain actual topology, energy/cryogen supply, venting, leaks, recovery and asset obligations. Coexistence is allowed only when evidenced; alternative supplies are not all assumed present. ATP is applicable only to its actual legal/cargo scope; it supplies no universal temperature setpoint here. | unece-atp-current |\n| cargo_boundary | all nodes | Cargo is the object carried, not consumed transport input and not the freight-service output. Maintain custody mass/count/condition balances at every handover and receiver. Do not add original cargo production to the service; separately disclose production/replacement implications of actual loss for downstream cargo LCA. Transfer packaging/container ownership and reuse duties require explicit coverage. | ghg-product-2011 |\n| asset_provider | all nodes | PCR lifecycle choice includes actual vehicle/body/refrigerator/charging/battery/tyre/road/depot/terminal manufacture, installation, maintenance, replacement and retirement. Each native supplier result replaces only its documented covered cells; complete assembly and included initial components cannot both be counted. Useful life is an allocation denominator, not proof that operation or end-of-life is included. | ghg-product-2011 |\n| atomic_expansion | all nodes | For every actual unrepresented material, supply, asset, provider result, direct pollutant, waste or fate, add a separate row_id under one real node with one actual identity/state/type/direction, native property/unit/quantity, source and same-node protocol. Species, carbon origin, PM size, air/water/soil/collected fate and receiver remain distinct. Broad residual labels are expansion obligations and cannot become final unverified exchanges. Missing evidence is incomplete, never zero. | ghg-product-2011 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 247
+              line: 8
+              column: 1
+            end:
+              offset: 298
+              line: 8
+              column: 52
+          text: "# Refrigerated road freight consignment-leg service"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 4071
+              line: 54
+              column: 1
+            end:
+              offset: 4092
+              line: 54
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_20301"
+      family: "allocation"
+      span:
+        start:
+          offset: 20301
+          line: 325
+          column: 1
+        end:
+          offset: 22388
+          line: 334
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_precedence | all nodes | Avoid allocation by direct metering and process/compartment subdivision first. For unavoidable joint legs, allocate actual shared propulsion/site burdens using documented causal physical load, distance and capacity constraint evidence across all consignments/users; mass-distance is allowed only when it represents actual service causation, not a universal default. Sum shares to one over the same event. Cooling is separately attributed using actual thermal/compartment-time evidence; price allocation requires inability to establish physical causation and a sensitivity disclosure. | ghg-product-2011 |\n| failed_stock_period | all nodes | Retain attributed failed/empty/returned duties in causal service pool before dividing once by positive eligible completed N. Count returned or redelivered consignment only at the declared accepted completion, maintaining original/return leg IDs. Preserve stocks, fuel/charge/refrigerant/cargo transfers and year-end unfinished duties across periods; do not move burdens or completion counts to a convenient year. | ghg-product-2011 |\n| asset_lifetime | all nodes | Allocate native asset manufacture and each distinct lifecycle event by actual same-cohort duty consumed divided by positive supported same-cohort total all-user useful duty, then by N. Record installation, refurbishment, replacement and retirement dates and all users/periods; no universal truck kilometres, road life, refrigeration leakage or empty-running percentage. Shared depot/charger/road consumers are indexed once. | ghg-product-2011 |\n| provider_no_recursion | all nodes | A subcontracted eligible freight leg is a provider input with actual native service unit and explicit gates, replacing matching own-operated stage cells. Do not recursively consume the same finished reference output or duplicate supplier energy/emissions/assets; cargo ownership does not determine physical burden ownership. | ghg-product-2011 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 247
+              line: 8
+              column: 1
+            end:
+              offset: 298
+              line: 8
+              column: 52
+          text: "# Refrigerated road freight consignment-leg service"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 20301
+              line: 325
+              column: 1
+            end:
+              offset: 20341
+              line: 325
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_58401"
+      family: "validation"
+      span:
+        start:
+          offset: 58401
+          line: 366
+          column: 1
+        end:
+          offset: 66199
+          line: 379
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| reference_gate | all nodes | Require actual road refrigerated mode, cargo/quality/temperature/OD/distance/time and accepted completion records; N must be positive. Reject temperature-excursion cargo from qualified output until documented disposition; failed duty is retained. Equal Item(s) with different consignments or distances is not equivalent performance. | ghg-product-2011 |\n| native_fates | all nodes | Close fuel/stock/burn/spill and refrigerant initial/recharge/recovery/stock/release ledgers by equipment and period; require species and destination before direct emissions. Match property/unit/gate and receiving medium; no charge=leak, supplied=burned, waste=direct emission or AC=DC substitution. | ghg-product-2011 |\n| coverage_allocation | all nodes | Validate every actual mode/duty and shared node/provider/asset/terminal cell, all-user share closure, positive compatible lifetime and normalization once. Unknown actual technology, receiver, quantity, supplier lifecycle coverage or life is incomplete. Enumerate every contributing site and period, include its eligible output and burden before pooled normalization; never average site intensities without justified weighting. | ghg-product-2011 |\n| exchange_expansion | all nodes | Require one verified concrete UUID and compatible native support for each final implemented exchange; unresolved semantic cards and count support alone are not final service identities. Compare EN/ZH ordered IDs, formulas, qualifiers, protocols, source references and canonical projection; record all skipped/inconclusive checks. | ghg-product-2011 |\n| atomic_road_movement | road_movement | Reject any exchange whose identity combines alternative materials, independently supplied assets/services, different waste streams, pollutant species, carbon origins, phases, particle fractions or environmental compartments. For every applicable cp_expand_ requirement in this node require an occurrence/absence record and exhaustive concrete-row register, each with its own identity, gate, verified UUID, native property/unit, quantity, source record, calculation and exclusive responsibility. A supplier-covered whole assembly or genuinely collected mixture remains one actual supplied/collected identity; do not invent constituent exchanges. Never bind a requirement label/id, generic NOx/VOC/PM total, unspecified physical release, or heterogeneous list to one UUID. Reconcile all requirement children, source events, provider-covered cells and cross-node transfers; no missing-as-zero or double counting. Unknown identity, applicability, quantity or fate blocks a complete foreground package and final TIDAS exchange production. The PCR checker does not verify these foreground facts; retain their row-addressable evidence for review. | ghg-product-2011 |\n| atomic_cold_control | cold_control | Reject any exchange whose identity combines alternative materials, independently supplied assets/services, different waste streams, pollutant species, carbon origins, phases, particle fractions or environmental compartments. For every applicable cp_expand_ requirement in this node require an occurrence/absence record and exhaustive concrete-row register, each with its own identity, gate, verified UUID, native property/unit, quantity, source record, calculation and exclusive responsibility. A supplier-covered whole assembly or genuinely collected mixture remains one actual supplied/collected identity; do not invent constituent exchanges. Never bind a requirement label/id, generic NOx/VOC/PM total, unspecified physical release, or heterogeneous list to one UUID. Reconcile all requirement children, source events, provider-covered cells and cross-node transfers; no missing-as-zero or double counting. Unknown identity, applicability, quantity or fate blocks a complete foreground package and final TIDAS exchange production. The PCR checker does not verify these foreground facts; retain their row-addressable evidence for review. | ghg-product-2011 |\n| atomic_support_lifecycle | support_lifecycle | Reject any exchange whose identity combines alternative materials, independently supplied assets/services, different waste streams, pollutant species, carbon origins, phases, particle fractions or environmental compartments. For every applicable cp_expand_ requirement in this node require an occurrence/absence record and exhaustive concrete-row register, each with its own identity, gate, verified UUID, native property/unit, quantity, source record, calculation and exclusive responsibility. A supplier-covered whole assembly or genuinely collected mixture remains one actual supplied/collected identity; do not invent constituent exchanges. Never bind a requirement label/id, generic NOx/VOC/PM total, unspecified physical release, or heterogeneous list to one UUID. Reconcile all requirement children, source events, provider-covered cells and cross-node transfers; no missing-as-zero or double counting. Unknown identity, applicability, quantity or fate blocks a complete foreground package and final TIDAS exchange production. The PCR checker does not verify these foreground facts; retain their row-addressable evidence for review. | ghg-product-2011 |\n| check_occurrence_completion | all actual rows and identification protocols | Retain applicability evidence and map each actual event to its inventory row or verified provider coverage. Evidence is required for absence; unknown remains unresolved. For each compatible identity, state, unit, period and gate, reconcile receipts and opening stock against closing stock and exclusive physical exits. In a consumables issue ledger, distinguish unused returns, internal issues and actual use for successful, failed and reworked duties. In a custody or material balance use opening stock + external receipts + paired internal receipts = closing stock + paired internal dispatch + accepted external deliveries + unused external returns + used goods or recovered material sent out + waste sent out + direct releases + quantity consumed or transformed within this boundary. Where that identity arises inside the gate, add evidenced formation or birth to its receipts and link the originating event. Cancel internal formation and transfers across the enclosing conserved-material or elemental balance. Classify each event once, include retained recovered stock at closing, and distinguish transfers from use. Apply the specific custody, phase, transformation or elemental rule on its own compatible basis; exclude downstream products of already counted transformation from the same exit total. Measure operands independently and investigate unresolved residuals. Keep physical totals separate from burden allocation. For a raw shared burden use Q_raw × s / R, where s is the evidenced target driver divided by the positive driver total for all eligible users of that same pool and period. Use Q_target / R for an already assigned target total and retain q_ref unchanged for an already equivalent per-reference result. For a provider intensity first multiply by measured demand in its matching native unit. Apply an additional share only for a distinct, still-shared stage. R is the positive qualified output quantity in the same reference unit, cohort and gate. Retain failed and partial duties without enlarging R; for zero output retain the burden with evidenced carry-forward or final disposition. For owned assets use the same-cohort all-user lifetime duty and exclusive initial-component coverage. Delivered services replace only their documented covered stages. Unresolved applicable identity, quantity, support unit, fate or allocation denominator prevents final dataset completion. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 247
+              line: 8
+              column: 1
+            end:
+              offset: 298
+              line: 8
+              column: 52
+          text: "# Refrigerated road freight consignment-leg service"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 58401
+              line: 366
+              column: 1
+            end:
+              offset: 58423
+              line: 366
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "full_road_refrigeration"
+      identity_kind: "explicit"
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 4896
+          line: 69
+          column: 1
+        end:
+          offset: 5302
+          line: 69
+          column: 407
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "full_duties"
+      identity_kind: "explicit"
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 5303
+          line: 70
+          column: 1
+        end:
+          offset: 5681
+          line: 70
+          column: 379
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "cold_state"
+      identity_kind: "explicit"
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 5682
+          line: 71
+          column: 1
+        end:
+          offset: 6332
+          line: 71
+          column: 651
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "cargo_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 6333
+          line: 72
+          column: 1
+        end:
+          offset: 6790
+          line: 72
+          column: 458
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "asset_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 6791
+          line: 73
+          column: 1
+        end:
+          offset: 7256
+          line: 73
+          column: 466
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "atomic_expansion"
+      identity_kind: "explicit"
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 7257
+          line: 74
+          column: 1
+        end:
+          offset: 7798
+          line: 74
+          column: 542
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_precedence"
+      identity_kind: "explicit"
+      unit_id: "normative_20301"
+      source_span:
+        start:
+          offset: 20414
+          line: 329
+          column: 1
+        end:
+          offset: 21056
+          line: 329
+          column: 643
+    - pointer: "/allocation_rules/1"
+      rule_id: "failed_stock_period"
+      identity_kind: "explicit"
+      unit_id: "normative_20301"
+      source_span:
+        start:
+          offset: 21057
+          line: 330
+          column: 1
+        end:
+          offset: 21526
+          line: 330
+          column: 470
+    - pointer: "/allocation_rules/2"
+      rule_id: "asset_lifetime"
+      identity_kind: "explicit"
+      unit_id: "normative_20301"
+      source_span:
+        start:
+          offset: 21527
+          line: 331
+          column: 1
+        end:
+          offset: 22002
+          line: 331
+          column: 476
+    - pointer: "/allocation_rules/3"
+      rule_id: "provider_no_recursion"
+      identity_kind: "explicit"
+      unit_id: "normative_20301"
+      source_span:
+        start:
+          offset: 22003
+          line: 332
+          column: 1
+        end:
+          offset: 22386
+          line: 332
+          column: 384
+    - pointer: "/validation_rules/0"
+      rule_id: "reference_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 58496
+          line: 370
+          column: 1
+        end:
+          offset: 58880
+          line: 370
+          column: 385
+    - pointer: "/validation_rules/1"
+      rule_id: "native_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 58881
+          line: 371
+          column: 1
+        end:
+          offset: 59229
+          line: 371
+          column: 349
+    - pointer: "/validation_rules/2"
+      rule_id: "coverage_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 59230
+          line: 372
+          column: 1
+        end:
+          offset: 59713
+          line: 372
+          column: 484
+    - pointer: "/validation_rules/3"
+      rule_id: "exchange_expansion"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 59714
+          line: 373
+          column: 1
+        end:
+          offset: 60099
+          line: 373
+          column: 386
+    - pointer: "/validation_rules/4"
+      rule_id: "atomic_road_movement"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 60100
+          line: 374
+          column: 1
+        end:
+          offset: 61301
+          line: 374
+          column: 1202
+    - pointer: "/validation_rules/5"
+      rule_id: "atomic_cold_control"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 61302
+          line: 375
+          column: 1
+        end:
+          offset: 62501
+          line: 375
+          column: 1200
+    - pointer: "/validation_rules/6"
+      rule_id: "atomic_support_lifecycle"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 62502
+          line: 376
+          column: 1
+        end:
+          offset: 63711
+          line: 376
+          column: 1210
+    - pointer: "/validation_rules/7"
+      rule_id: "check_occurrence_completion"
+      identity_kind: "explicit"
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 63712
+          line: 377
+          column: 1
+        end:
+          offset: 66197
+          line: 377
+          column: 2486
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 4071
+          line: 54
+          column: 1
+        end:
+          offset: 4092
+          line: 54
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_4071"
+      source_span:
+        start:
+          offset: 4120
+          line: 58
+          column: 1
+        end:
+          offset: 4823
+          line: 65
+          column: 124
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_20301"
+      source_span:
+        start:
+          offset: 20301
+          line: 325
+          column: 1
+        end:
+          offset: 20341
+          line: 325
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_58401"
+      source_span:
+        start:
+          offset: 58401
+          line: 366
+          column: 1
+        end:
+          offset: 58423
+          line: 366
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aad0455ca71c0e5eac99fd77bde17e9ec9a49b80ed8ab052dd5fb13c3d51ae94"
+  generated_content_sha256: "sha256:1cea1aef681369a2f4e40d142e641b064ade56be6bb02a0d7e3b75acb5f9b573"

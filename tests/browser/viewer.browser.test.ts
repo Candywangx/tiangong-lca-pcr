@@ -64,8 +64,11 @@ for(const [name,engine] of [['chromium',chromium],['firefox',firefox],['webkit',
   const context=await browser.newContext({viewport:{width:1280,height:900}});const page=await context.newPage();
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   try {
-  await page.goto(service.origin);await page.waitForLoadState('networkidle');
-  assert.equal(await page.getByRole('button',{name:/Wheat seed/}).count(),1);
+  await page.goto(service.origin);
+  const wheatButton=page.getByRole('button',{name:/Wheat seed/});
+  // Network idle does not establish that the asynchronous catalog has rendered.
+  await wheatButton.waitFor({state:'visible',timeout:10_000});
+  assert.equal(await wheatButton.count(),1);
   assert.ok(service.requests.every(url=>!url.includes(ref('pcr.fixture.wheat detail').slice(7))));
   await page.getByLabel('Literal metadata filter').fill('01111');
   assert.equal(await page.getByRole('button',{name:/Farmed fish/}).count(),0);

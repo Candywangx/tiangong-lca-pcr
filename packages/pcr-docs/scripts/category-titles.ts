@@ -1,5 +1,15 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
+  "electricity-gas-and-water-distribution-on-own-account": "电力、燃气和水的自营分配服务",
+  "postal-and-courier-services": "邮政和快递服务",
+  "supporting-transport-services": "运输支持服务",
+
+  "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
+  "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
+  "accommodation-food-and-beverage-services": "住宿和餐饮服务",
+  "passenger-transport-services": "旅客运输服务",
+  "freight-transport-services": "货物运输服务",
+  "rental-services-of-transport-vehicles-with-operators": "带操作人员的运输工具租赁服务",
   "rubber-and-plastics-products": "橡胶和塑料制品",
   "pharmaceutical-ingredients": "药用成分",
   "chemicals": "化学品",
