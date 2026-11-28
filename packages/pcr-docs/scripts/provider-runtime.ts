@@ -3,16 +3,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import {NAVIGATION_BINDING_FILE} from '../lib/navigation-trees.ts';
+import {verifyNavigationTrees} from './navigation-tree-export.ts';
 export const PROVIDER_RUNTIME_FILE='generated/provider-runtime.json';
 export const PROVIDER_RUNTIME_PATHS=['middleware.ts','packages/pcr-docs/lib/chapter-compatibility.ts','packages/pcr-docs/compatibility/published-chapters.json'] as const;
+export const NAVIGATION_RUNTIME_PATHS=['packages/pcr-docs/lib/navigation-trees.ts','packages/pcr-docs/lib/navigation-binding.d.ts'] as const;
 export interface IdentityMove {from:string;to:string}
-export interface ProviderRuntime {schemaVersion:1|2;sourceCommit:string;files:{path:string;bytes:number;sha256:string}[];routes:{from:string;to:string;anchor:string}[];identityMoves?:IdentityMove[]}
+export interface ProviderRuntime {schemaVersion:1|2|3;sourceCommit:string;files:{path:string;bytes:number;sha256:string}[];routes:{from:string;to:string;anchor:string}[];identityMoves?:IdentityMove[];navigationBinding?:{path:string;bytes:number;sha256:string}|null}
 function record(value:unknown):Record<string,unknown>{assert(value&&typeof value==='object'&&!Array.isArray(value),'Invalid provider runtime object');return value as Record<string,unknown>;}
 function exact(value:Record<string,unknown>,keys:string[]){assert.deepEqual(Object.keys(value).sort(),keys.sort(),'Invalid provider runtime fields');}
 const hash=(bytes:Buffer)=>'sha256:'+createHash('sha256').update(bytes).digest('hex');
-function regular(root:string,relative:string):Buffer{
+function regular(root:string,relative:string,limit=Number.MAX_SAFE_INTEGER):Buffer{
  const base=fs.realpathSync(root),file=path.join(base,relative);assert(file.startsWith(base+path.sep)&&fs.realpathSync(file)===file,'Unsafe provider runtime source path');
- const before=fs.lstatSync(file);assert(before.isFile()&&!before.isSymbolicLink(),'Provider runtime must be regular');
+ const before=fs.lstatSync(file);assert(before.isFile()&&!before.isSymbolicLink()&&before.size<=limit,'Provider runtime must be a bounded regular file');
  const fd=fs.openSync(file,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW??0));try{const bytes=fs.readFileSync(fd),after=fs.fstatSync(fd);assert.equal(after.ino,before.ino);assert.equal(after.dev,before.dev);assert.equal(after.size,before.size);assert.equal(after.mtimeMs,before.mtimeMs);return bytes;}finally{fs.closeSync(fd);}
 }
 function identityMoveRows(value:unknown):IdentityMove[]{
@@ -38,23 +41,31 @@ function routeRows(value:unknown,moves:IdentityMove[]=[]):ProviderRuntime['route
  const sources=new Set(rows.map(row=>row.from));assert.equal(sources.size,rows.length);assert(rows.every(row=>!sources.has(row.to)),'Compatibility routes cannot cycle');assert.deepEqual(rows.map(row=>row.from),rows.map(row=>row.from).sort());return rows;
 }
 export function parseProviderRuntime(value:unknown,sourceCommit:string):ProviderRuntime{
- assert(/^[a-f0-9]{40}$/u.test(sourceCommit));const proof=record(value);assert(proof.schemaVersion===1||proof.schemaVersion===2);exact(proof,proof.schemaVersion===1?['schemaVersion','sourceCommit','files','routes']:['schemaVersion','sourceCommit','files','routes','identityMoves']);assert.equal(proof.sourceCommit,sourceCommit);assert(Array.isArray(proof.files));assert.equal(proof.files.length,PROVIDER_RUNTIME_PATHS.length);
- const moves=proof.schemaVersion===2?identityMoveRows(proof.identityMoves):undefined;
- const files=proof.files.map((raw,index)=>{const file=record(raw);exact(file,['path','bytes','sha256']);assert.equal(file.path,PROVIDER_RUNTIME_PATHS[index]);assert(typeof file.bytes==='number'&&Number.isSafeInteger(file.bytes)&&file.bytes>0&&file.bytes<1_000_000);assert(typeof file.sha256==='string'&&/^sha256:[a-f0-9]{64}$/u.test(file.sha256));return{path:PROVIDER_RUNTIME_PATHS[index]!,bytes:file.bytes,sha256:file.sha256};});
- const routes=routeRows(proof.routes,moves);
+ assert(/^[a-f0-9]{40}$/u.test(sourceCommit));const proof=record(value);assert(proof.schemaVersion===1||proof.schemaVersion===2||proof.schemaVersion===3);
+ const navigation=Object.hasOwn(proof,'navigationBinding'),identity=Object.hasOwn(proof,'identityMoves');
+ assert(proof.schemaVersion===1?!navigation&&!identity:proof.schemaVersion===2?navigation!==identity:navigation&&identity,'Invalid provider runtime capability version');
+ exact(proof,['schemaVersion','sourceCommit','files','routes',...(navigation?['navigationBinding']:[]),...(identity?['identityMoves']:[])]);assert.equal(proof.sourceCommit,sourceCommit);assert(Array.isArray(proof.files));
+ const expectedPaths:readonly string[]=[...PROVIDER_RUNTIME_PATHS,...(navigation?NAVIGATION_RUNTIME_PATHS:[])];assert.equal(proof.files.length,expectedPaths.length);
+ const files=proof.files.map((raw,index)=>{const file=record(raw);exact(file,['path','bytes','sha256']);assert.equal(file.path,expectedPaths[index]);assert(typeof file.bytes==='number'&&Number.isSafeInteger(file.bytes)&&file.bytes>0&&file.bytes<1_000_000);assert(typeof file.sha256==='string'&&/^sha256:[a-f0-9]{64}$/u.test(file.sha256));return{path:expectedPaths[index]!,bytes:file.bytes,sha256:file.sha256};});
+ let navigationBinding:ProviderRuntime['navigationBinding'];if(navigation){if(proof.navigationBinding===null)navigationBinding=null;else{const binding=record(proof.navigationBinding);exact(binding,['path','bytes','sha256']);assert.equal(binding.path,NAVIGATION_BINDING_FILE);assert(typeof binding.bytes==='number'&&Number.isSafeInteger(binding.bytes)&&binding.bytes>0&&binding.bytes<=4096&&typeof binding.sha256==='string'&&/^sha256:[a-f0-9]{64}$/.test(binding.sha256));navigationBinding={path:NAVIGATION_BINDING_FILE,bytes:binding.bytes,sha256:binding.sha256};}}
+ const moves=identity?identityMoveRows(proof.identityMoves):undefined,routes=routeRows(proof.routes,moves);
  if(moves)for(const move of moves)assert(routes.some(row=>row.from===move.from&&row.to===move.to),'Identity move lacks its exact root route');
- return{schemaVersion:proof.schemaVersion,sourceCommit,files,routes,...(moves?{identityMoves:moves}:{})};
+ return{schemaVersion:proof.schemaVersion,sourceCommit,files,routes,...(navigation?{navigationBinding:navigationBinding??null}:{}),...(moves?{identityMoves:moves}:{})};
 }
 export function createProviderRuntime(root:string,sourceCommit:string):ProviderRuntime|undefined{
  const present=PROVIDER_RUNTIME_PATHS.map(file=>fs.existsSync(path.join(root,file)));if(!present.some(Boolean))return undefined;assert(present.every(Boolean),'Incomplete provider runtime closure');
- const files=PROVIDER_RUNTIME_PATHS.map(file=>{const bytes=regular(root,file);return{path:file,bytes:bytes.length,sha256:hash(bytes)};});
+ const navigation=NAVIGATION_RUNTIME_PATHS.map(file=>fs.existsSync(path.join(root,file)));assert(navigation.every(Boolean)||navigation.every(present=>!present),'Incomplete navigation runtime closure');const hasNavigation=navigation.every(Boolean);
+ const sourcePaths:readonly string[]=[...PROVIDER_RUNTIME_PATHS,...(hasNavigation?NAVIGATION_RUNTIME_PATHS:[])];
+ const files=sourcePaths.map(file=>{const bytes=regular(root,file);return{path:file,bytes:bytes.length,sha256:hash(bytes)};});
  const mapping=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);assert(mapping.schemaVersion===1||mapping.schemaVersion===2);exact(mapping,mapping.schemaVersion===1?['schemaVersion','entries']:['schemaVersion','entries','identityMoves']);
- return parseProviderRuntime({schemaVersion:mapping.schemaVersion,sourceCommit,files,routes:mapping.entries,...(mapping.schemaVersion===2?{identityMoves:mapping.identityMoves}:{})},sourceCommit);
+ const hasIdentity=mapping.schemaVersion===2;
+ return parseProviderRuntime({schemaVersion:hasNavigation&&hasIdentity?3:hasNavigation||hasIdentity?2:1,sourceCommit,files,routes:mapping.entries,...(hasNavigation?{navigationBinding:null}:{}),...(hasIdentity?{identityMoves:mapping.identityMoves}:{})},sourceCommit);
 }
-export function verifyProviderRuntimeSource(root:string,proof:ProviderRuntime|undefined,sourceCommit:string):void{assert.deepEqual(createProviderRuntime(root,sourceCommit),proof,'Provider runtime differs from sealed source proof');}
+export function verifyProviderRuntimeSource(root:string,proof:ProviderRuntime|undefined,sourceCommit:string):void{assert.deepEqual(createProviderRuntime(root,sourceCommit),proof&&Object.hasOwn(proof,'navigationBinding')?{...proof,navigationBinding:null}:proof,'Provider runtime differs from sealed source proof');}
 export function verifyProviderRuntimeExport(out:string,sourceCommit:string,expected?:ProviderRuntime):ProviderRuntime|undefined{
  const file=path.join(out,PROVIDER_RUNTIME_FILE);if(!fs.existsSync(file)){assert.equal(expected,undefined,'Missing provider runtime proof');return undefined;}
- const proof=parseProviderRuntime(JSON.parse(regular(out,PROVIDER_RUNTIME_FILE).toString('utf8')) as unknown,sourceCommit);if(expected)assert.deepEqual(proof,expected,'Export provider runtime differs from source');
+ const proof=parseProviderRuntime(JSON.parse(regular(out,PROVIDER_RUNTIME_FILE).toString('utf8')) as unknown,sourceCommit);if(expected)assert.deepEqual(Object.hasOwn(proof,'navigationBinding')?{...proof,navigationBinding:null}:proof,Object.hasOwn(expected,'navigationBinding')?{...expected,navigationBinding:null}:expected,'Export provider runtime differs from source');
+ if(Object.hasOwn(proof,'navigationBinding')){assert(proof.navigationBinding,'Unbound navigation runtime');const binding=regular(out,NAVIGATION_BINDING_FILE,4096);assert.equal(binding.length,proof.navigationBinding.bytes);assert.equal(hash(binding),proof.navigationBinding.sha256);verifyNavigationTrees(out,sourceCommit,true);}
  const targets=new Map<string,Set<string>>();
  for(const route of proof.routes){assert(!fs.existsSync(path.join(out,decodeURIComponent(route.from.slice(1)),'index.html')),'Old compatibility URL must not shadow a current page');let anchors=targets.get(route.to);if(!anchors){const html=regular(out,decodeURIComponent(route.to.slice(1))+'index.html');anchors=htmlAnchors(html.toString('utf8'));targets.set(route.to,anchors);}assert(anchors.has(route.anchor),'Published default chapter anchor missing: '+route.from);}
  return proof;
@@ -158,6 +169,7 @@ export function htmlAnchors(html:string):Set<string>{
 }
 export function verifyProviderRuntimeInventory(value:unknown,sourceCommit:string,files:readonly {path:string;bytes:number;sha256?:string}[]):ProviderRuntime{
  const proof=parseProviderRuntime(value,sourceCommit),paths=new Set(files.map(file=>file.path));
+ if(Object.hasOwn(proof,'navigationBinding')){assert(proof.navigationBinding,'Unbound archived navigation runtime');const file=files.find(file=>file.path===NAVIGATION_BINDING_FILE);assert(file&&file.bytes===proof.navigationBinding.bytes&&'sha256:'+file.sha256?.replace(/^sha256:/,'')===proof.navigationBinding.sha256,'Archived navigation binding differs');}
  for(const row of proof.routes){assert(paths.has(decodeURIComponent(row.to.slice(1))+'index.html'),'Missing archived compatibility target');assert(!paths.has(decodeURIComponent(row.from.slice(1))+'index.html'),'Archived old route shadows current page');}
  return proof;
 }

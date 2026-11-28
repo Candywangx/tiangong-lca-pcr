@@ -1,0 +1,320 @@
+{
+  "code": "33720",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "07d23d50961df8f7f0090a74b0ef1893440651b8015d97bd32c1f7038be435f4",
+    "pcr.en-US.md": "f9696bbf506472416b0891fd9c92d98192a7b92ffae63e765e8df853d8a4c232",
+    "pcr.zh-CN.md": "6ac7c10324561c3e0d2e058b6b8fbea61fa4f6c1026dd9aceba539f66ff27316",
+    "structured.yaml": "d38bf7ad834217142449d1e1dc37a3b33402a8e08f88da32d61b978218db9000"
+  },
+  "author_commit": "416367c008db17a042de6f59c56de49aafb124b7",
+  "complete_inputs_and_derivations": [
+    {
+      "id": "100-60-30-10-intact-documentary-status",
+      "inputs_whole_rod_kg": {
+        "original_unique_first_acceptance_Q": 100,
+        "eligible_net_handover_dispatch": 60,
+        "closing_accepted_FG": 30,
+        "closing_intact_pending_record_verification_WIP": 10,
+        "opening_physical_stock": 0,
+        "actual_external_receipt": 100
+      },
+      "derivations": [
+        {
+          "check": "event_bridge",
+          "formula": "Q100 = D_new60 + F_new_close30 + L_new(intact pending record status10); WIP is not physical rework",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "physical_whole_mass",
+          "formula": "actual opening0 + receipt100 = external handover60 + accepted closing30 + intact pending closing10; acceptance Q is internal and not added",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "normalization",
+          "formula": "synthetic attributable burden100 units / locked Q100 kg =1 unit/kg",
+          "lhs": 1,
+          "rhs": 1,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "old_two_term_counterexample": {
+        "old_Q": 90,
+        "correct_Q": 100,
+        "wrong_burden_intensity": "100/(60+30) =1.1111111111111112 units/kg",
+        "missing_10_is_known_record_status_not_inferred_loss": true
+      }
+    },
+    {
+      "id": "old-cohort-gross-return-and-repeat-record-acceptance",
+      "inputs_whole_rod_kg": {
+        "opening_old_accepted_FG": 20,
+        "independently_recorded_original_Q0": 20,
+        "new_unique_first_acceptance_Q": 100,
+        "new_external_receipt": 100,
+        "new_gross_handover_dispatch": 65,
+        "new_linked_actual_external_return": 5,
+        "new_net_handover": 60,
+        "new_closing_accepted_FG": 30,
+        "new_closing_intact_pending": 10,
+        "old_net_handover": 5,
+        "old_closing_accepted_FG": 10,
+        "old_closing_intact_pending": 5,
+        "additional_new_first_Q_from_repeat_verification": 0,
+        "additional_old_first_Q_from_repeat_verification": 0
+      },
+      "derivations": [
+        {
+          "check": "new_net_handover",
+          "formula": "gross new handover65 - linked actual return5 = net60; return is allocated once among final accepted/pending states",
+          "lhs": 60,
+          "rhs": 60,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "new_event_bridge",
+          "formula": "locked new Q100 = net handover60 + accepted30 + pending10",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "old_stock_bridge",
+          "formula": "old opening20 = old handover5 + accepted10 + pending5, all under independently recorded original Q0",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "physical_net_stock",
+          "formula": "opening old20 + receipt100 = net handover65 + accepted closing40 + intact pending closing15 =120",
+          "lhs": 120,
+          "rhs": 120,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "physical_gross_stock",
+          "formula": "opening20 + receipt100 + linked external return5 = gross handover70 + accepted40 + pending15 =125",
+          "lhs": 125,
+          "rhs": 125,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "repeat_new_verification_changes_location_only",
+          "formula": "after the existing records resolve new pending10 to accepted status: Q stays100 = net60 + accepted40 + pending0; no extra acceptance",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "repeat_old_verification_changes_location_only",
+          "formula": "after old pending5 returns to accepted status: original Q0 stays20 = old handover5 + accepted15 + pending0",
+          "lhs": 20,
+          "rhs": 20,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "synthetic_burden_units": {
+        "new_inherited_and_interval_burden": 100,
+        "new_extra_in_scope_service": 10,
+        "new_total_intensity": "(100+10)/original Q100 =1.1 units/kg",
+        "old_original_burden_not_readded": 20,
+        "old_extra_in_scope_service": 4,
+        "old_service_correction": "4/original Q0(20) =0.2 units/kg",
+        "old_service_shifted_to_new_Q": 0,
+        "unchanged_original_provider_or_generation_burdens_added_again": 0
+      },
+      "note": "All objects remain intact in this documentary fixture. WIP describes record eligibility only; no material processing, handling procedure, intervention or equipment parameter is specified."
+    },
+    {
+      "id": "scope-exit-retains-history-without-process-admission",
+      "inputs_original_basis_kg": {
+        "unique_first_acceptance_Q": 100,
+        "eligible_net_handover": 60,
+        "closing_accepted_FG": 30,
+        "documented_intact_scope_exit_to_separately_scoped_custody": 10,
+        "opening_stock": 0,
+        "receipt": 100
+      },
+      "derivations": [
+        {
+          "check": "event_scope_exit_bridge",
+          "formula": "Q100 = admitted net handover60 + closing accepted30 + L_new(recorded distinct scope exit10); scope exit is not added to eligible handover",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "actual_whole_mass_at_boundary",
+          "formula": "actual receipt100 = eligible external handover60 + closing30 + separate recorded external scope exit10; Q is not another output",
+          "lhs": 100,
+          "rhs": 100,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "qualification": {
+        "original_historic_Q_kg": 100,
+        "later_excluded_operations_modelled_here": false,
+        "later_state_counted_as_new_eligible_output": false,
+        "hypothetical_breach_cutting_recovery_route_invented": false,
+        "real_native_or_site_admission_claimed": false
+      },
+      "note": "The fixture records only a separately scoped intact custody exit and invents no method for that stage. If real records instead show excluded damaged/cut/recovered state, record the boundary/history and reject subsequent state/operations from this PCR; the event equation does not establish eligibility."
+    },
+    {
+      "id": "unsupported-difference-is-unresolved-not-loss-or-decay",
+      "observed_original_basis_kg": {
+        "event_Q": 100,
+        "net_handover": 60,
+        "closing_accepted_FG": 30,
+        "other_disposition": "unknown"
+      },
+      "derivations": [
+        {
+          "check": "known_destination_total",
+          "formula": "known destinations=90; this is not authority to reset Q",
+          "lhs": 90,
+          "rhs": 90,
+          "residual": 0,
+          "pass": true
+        },
+        {
+          "check": "unexplained_event_gap",
+          "formula": "event gap100-90=10; this is a finding, not inferred loss, waste, decay or nuclear change",
+          "lhs": 10,
+          "rhs": 10,
+          "residual": 0,
+          "pass": true
+        }
+      ],
+      "expected_result": {
+        "complete_normalization": false,
+        "reported_loss_assumed_kg": null,
+        "decay_or_mass_adjustment_invented": false,
+        "Q_reset_to_90": false,
+        "nuclide_activity_to_mass_conversion": false,
+        "additional_existing_record_or_expert_evidence_required": true
+      }
+    }
+  ],
+  "case_payload_sha256": "a17cf6c82a47b34cc0ca3c8d5013ca9a987f4ef2b7629063ff071a043388ad63",
+  "additional_basis_and_negative_cases": {},
+  "independently_recomputed_checks": [
+    {
+      "case": "documentary_event",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "100=60eligiblehandover+30acceptedstock+10intactpending;not an inventedphysical loss",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_new_net",
+      "left_terms": [
+        20,
+        100
+      ],
+      "right_terms": [
+        65,
+        40,
+        15
+      ],
+      "formula": "whole actualstock120; Qnotextraoutput",
+      "recomputed_left": 120,
+      "recomputed_right": 120,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_new_gross",
+      "left_terms": [
+        20,
+        100,
+        5
+      ],
+      "right_terms": [
+        70,
+        40,
+        15
+      ],
+      "formula": "gross125 explicitlypaired return",
+      "recomputed_left": 125,
+      "recomputed_right": 125,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "repeat_new",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        40
+      ],
+      "formula": "pending10->accepted40 changesstatusnotQ",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "scope_exit",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "separatelydocumented intactscopeexit10noteligibleproduct",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "unknown_gap",
+      "left_terms": [
+        10
+      ],
+      "right_terms": [
+        10
+      ],
+      "formula": "unknown10 isfinding, not loss/decay;normalization incomplete",
+      "recomputed_left": 10,
+      "recomputed_right": 10,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}

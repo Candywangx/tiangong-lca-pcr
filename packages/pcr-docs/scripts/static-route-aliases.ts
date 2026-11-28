@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash, randomBytes } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
+import {planNavigationTrees,applyNavigationPlan} from './navigation-tree-export.ts';
 
 export const STATIC_ROUTE_ALIASES_FILE = 'generated/static-route-aliases.json';
 export const MAX_STATIC_ROUTE_ALIASES_BYTES = 16 * 1024 * 1024;
@@ -213,7 +214,14 @@ export function prepareStaticRouteAliases(out: string, expectedSourceCommit: str
   requireThat(indexes.length === pairs.length && indexes.every(index => sources.has(path.posix.join(path.posix.dirname(index), fullName))), 'Static route alias preparation has an unpaired index.txt.');
   pairs.sort((a, b) => a.source < b.source ? -1 : a.source > b.source ? 1 : 0);
   const manifest: StaticRouteAliases = { schemaVersion: 1, sourceCommit: expectedSourceCommit, pairs }, bytes = boundedManifest(manifest);
-  requireThat(files.size - pairs.length + 1 < maximumFiles, 'Prepared static route alias export exceeds the file limit.');
+  const inventory=[...files].map(([path,stat])=>({path,bytes:stat.size}));
+  const treePlan=planNavigationTrees(out,expectedSourceCommit,inventory);
+  // Reserve the routing-only edgeone.json added during sealing of provider exports.
+  const sealedFiles=(plan:typeof treePlan)=>files.size-pairs.length+1-(plan?.removed.length??0)+(plan?.added.length??0)+Number(treePlan!==undefined);
+  const navigation=treePlan&&sealedFiles(treePlan)>=maximumFiles
+    ?planNavigationTrees(out,expectedSourceCommit,inventory,true)
+    :treePlan;
+  requireThat(sealedFiles(navigation)<maximumFiles, `Prepared static route alias export exceeds the file limit (${sealedFiles(navigation)} files).`);
   // Recheck the complete baseline after comparison and before the first mutation.
   requireThat(JSON.stringify([...files].map(([relative, stat]) => [relative, identity(stat)]))
     === JSON.stringify([...layout(out)].map(([relative, stat]) => [relative, identity(stat)])), 'Static route alias export changed before preparation.');
@@ -221,6 +229,7 @@ export function prepareStaticRouteAliases(out: string, expectedSourceCommit: str
   const temporary = path.join(parent, `.static-route-aliases-${randomBytes(12).toString('hex')}.tmp`);
   try {
     fs.writeFileSync(temporary, bytes, { flag: 'wx', mode: 0o644 });
+    if(navigation)applyNavigationPlan(out,navigation);
     for (const relative of sources) {
       const filename = path.join(out, relative), original = files.get(relative)!, current = fs.lstatSync(filename);
       requireThat(current.isFile() && !current.isSymbolicLink() && fs.realpathSync(filename) === filename

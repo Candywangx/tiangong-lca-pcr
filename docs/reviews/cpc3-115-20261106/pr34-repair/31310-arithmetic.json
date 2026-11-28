@@ -1,0 +1,594 @@
+{
+  "code": "31310",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "a0122b9b908affb39617ca0c04f6c5f8a141148a3fddd06b5105d920010f1ce7",
+    "pcr.en-US.md": "f410185ad0bd30a25dcbb6dcd06c01e0164d929e32c73965599b03ddc2c7af26",
+    "pcr.zh-CN.md": "f7e99ee2a40a947576660b88ce13c39ddb95afa3f54590114f80b64f814a0853",
+    "structured.yaml": "c7863a0f297ae6b0cf4348264e71c2582dac705b011bb1c86d8a84c75a6b01d1"
+  },
+  "author_commit": "8922dde61abb6bb661c7936fbdeaeeec70fce2be",
+  "complete_inputs_and_derivations": [
+    {
+      "id": "first_acceptance_100_60_30_10",
+      "basis": "synthetic kg net whole treated roundwood at first acceptance; no packaging; no state change",
+      "inputs": {
+        "unique_first_acceptance_event_kg": [
+          100
+        ],
+        "net_dispatch_kg": 60,
+        "closing_new_FG_kg": 30,
+        "post_acceptance_scrap_kg": 10,
+        "attributed_current_production_burden_units": 100
+      },
+      "derivation": [
+        "Q=sum([100])=100 kg",
+        "L_new=10 kg; Q=60+30+10=100 kg",
+        "Old two-term rule gives 60+30=90 kg and is false because L_new is nonzero",
+        "100 burden units / Q 100 kg = 1 unit/kg; wrong old denominator gives 100/90 = 1.111111 unit/kg"
+      ],
+      "component_check_kg": {
+        "first_acceptance": {
+          "dry_wood": 70,
+          "water": 25,
+          "nonwater_CCA": 5
+        },
+        "dispatch": {
+          "dry_wood": 42,
+          "water": 15,
+          "nonwater_CCA": 3
+        },
+        "closing_FG": {
+          "dry_wood": 21,
+          "water": 7.5,
+          "nonwater_CCA": 1.5
+        },
+        "scrap": {
+          "dry_wood": 7,
+          "water": 2.5,
+          "nonwater_CCA": 0.5
+        }
+      },
+      "rules": [
+        "reference_mass",
+        "normalize_lot",
+        "acceptance_event_bridge",
+        "balance_separate",
+        "validate_balances"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "reference_mass": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 58
+          },
+          "normalize_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 641
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 644
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 663
+          }
+        },
+        "zh-CN": {
+          "reference_mass": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 59
+          },
+          "normalize_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 642
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 645
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 664
+          }
+        }
+      }
+    },
+    {
+      "id": "net_return_WIP_and_reacceptance",
+      "basis": "same locked whole-product kg; no moisture change; signed returns link same pieces",
+      "inputs": {
+        "unique_first_acceptance_kg": 100,
+        "gross_dispatch_kg": 70,
+        "linked_return_kg": 10,
+        "returned_to_FG_kg": 5,
+        "returned_to_WIP_kg": 5,
+        "other_closing_FG_kg": 15,
+        "other_closing_WIP_kg": 5,
+        "post_acceptance_scrap_kg": 10,
+        "rework_sent_kg": 20,
+        "rework_reaccepted_before_close_kg": 10
+      },
+      "derivation": [
+        "D_new=70-10=60 kg",
+        "FG_new=15+5=20 kg",
+        "closing WIP=5+5=10 kg; L_new=10 WIP+10 scrap=20 kg",
+        "Q=60+20+20=100 kg",
+        "20 kg sent to rework, 10 kg reaccepted and included in final dispositions: gross loop 20 and reacceptance 10 are not added as destinations or Q",
+        "Returned 10 kg is deducted from dispatch and assigned once (5 FG, 5 WIP), not added again to L_new",
+        "A later-period reacceptance of closing WIP adds zero new first-acceptance Q; inherited and incremental rework vectors remain attached to the original cohort. Missing original denominator remains unresolved"
+      ],
+      "rules": [
+        "cp_lot",
+        "normalize_lot",
+        "acceptance_event_bridge",
+        "dq_stocks",
+        "validate_balances"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "cp_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 627
+          },
+          "normalize_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 641
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "dq_stocks": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 655
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 663
+          }
+        },
+        "zh-CN": {
+          "cp_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 628
+          },
+          "normalize_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 642
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "dq_stocks": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 656
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 664
+          }
+        }
+      }
+    },
+    {
+      "id": "opening_and_purchased_FG_do_not_inflate_Q",
+      "basis": "synthetic compatible kg at unchanged product state",
+      "inputs": {
+        "opening_previously_accepted_FG_kg": 25,
+        "purchased_previously_accepted_FG_kg": 15,
+        "new_first_acceptance_kg": 100,
+        "new_dispatch_kg": 60,
+        "new_closing_FG_kg": 30,
+        "new_scrap_kg": 10,
+        "old_FG_dispatch_kg": 25,
+        "purchased_FG_dispatch_kg": 15,
+        "new_cohort_burden_units": 100,
+        "incremental_old_cohort_burden_units": 8,
+        "incremental_purchased_cohort_burden_units": 3
+      },
+      "derivation": [
+        "New cohort Q=100=60+30+10 kg, despite total plant dispatch=60+25+15=100 kg",
+        "Integrated post-treatment physical stock account: opening 25+purchased 15+new material 100 = dispatch 100+closing 30+scrap 10 = 140 kg",
+        "First acceptance is internal; adding Q once more as an external output would give a false right-hand total 240 kg",
+        "New cohort normalization is 100/100=1 unit/kg. Keep old-stock 8 and purchased-stock 3 burden units with their respective original cohorts and histories, not zero and not a new Q",
+        "If those original acceptance bases are unknown, retain the 8/3 units separately unresolved rather than silently fold them into new production"
+      ],
+      "rules": [
+        "normalize_lot",
+        "acceptance_event_bridge",
+        "balance_separate",
+        "dq_stocks"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "normalize_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 641
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 644
+          },
+          "dq_stocks": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 655
+          }
+        },
+        "zh-CN": {
+          "normalize_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 642
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 645
+          },
+          "dq_stocks": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 656
+          }
+        }
+      }
+    },
+    {
+      "id": "post_acceptance_water_loss",
+      "basis": "all kg tracked as acceptance-origin components; no new supply",
+      "inputs": {
+        "first_acceptance_kg": 100,
+        "acceptance_components_kg": {
+          "dry_wood": 70,
+          "water": 25,
+          "nonwater_CCA": 5
+        },
+        "dispatch_components_kg": {
+          "dry_wood": 50,
+          "water": 8,
+          "nonwater_CCA": 2
+        },
+        "closing_FG_components_kg": {
+          "dry_wood": 20,
+          "water": 7,
+          "nonwater_CCA": 3
+        },
+        "independently_measured_evaporated_water_kg": 10
+      },
+      "derivation": [
+        "Q=70+25+5=100 kg is locked",
+        "D_new=50+8+2=60 kg; FG_new=20+7+3=30 kg; L_new=10 kg evaporated water",
+        "Dry wood 70=50+20; water 25=8+7+10; non-water CCA 5=2+3",
+        "Q=60+30+10=100 kg; later drying does not reduce Q to90 or justify resetting moisture by a handbook factor",
+        "The water loss is counted once, not both as a component adjustment and again as a second whole-piece loss; Cu/Cr/As analytical subledgers are not extra total masses"
+      ],
+      "rules": [
+        "reference_mass",
+        "acceptance_event_bridge",
+        "balance_separate"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "reference_mass": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 58
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 644
+          }
+        },
+        "zh-CN": {
+          "reference_mass": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 59
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 645
+          }
+        }
+      }
+    },
+    {
+      "id": "later_added_water_separate_from_acceptance_origin",
+      "basis": "synthetic kg; independently recorded water addition to dispatch-bound material after first acceptance",
+      "inputs": {
+        "Q_kg": 100,
+        "acceptance_origin_dispatch_kg": 60,
+        "later_added_water_kg": 5,
+        "actual_dispatch_wet_kg": 65,
+        "closing_acceptance_origin_FG_kg": 30,
+        "post_acceptance_loss_kg": 10
+      },
+      "derivation": [
+        "General physical account 100+5=65+30+10=105 kg",
+        "Acceptance-origin bridge D_new=65-5=60 kg; Q=60+30+10=100 kg",
+        "The later 5 kg input and its burden stay in the physical/component and attributed activity accounts; it does not become a new acceptance event or inflate Q"
+      ],
+      "rules": [
+        "cp_lot",
+        "acceptance_event_bridge",
+        "balance_separate"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "cp_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 627
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 644
+          }
+        },
+        "zh-CN": {
+          "cp_lot": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 628
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "balance_separate": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 645
+          }
+        }
+      }
+    },
+    {
+      "id": "actual_compatible_solid_volume_conversion",
+      "basis": "synthetic measured example only; not a default density or range",
+      "inputs": {
+        "measured_same_cohort_acceptance_state_density_kg_per_m3": 500,
+        "first_accepted_solid_volume_m3": 0.2,
+        "dispatch_solid_volume_m3": 0.12,
+        "closing_solid_volume_m3": 0.06,
+        "scrap_solid_volume_m3": 0.02
+      },
+      "derivation": [
+        "Q=0.2m3*500kg/m3=100kg; D_new=0.12*500=60kg; FG_new=0.06*500=30kg; L_new=0.02*500=10kg",
+        "This multiplication requires measured same-state density, actual geometry and solid-volume basis; loose volume or retention assay-zone kg/m3 cannot replace it"
+      ],
+      "rules": [
+        "reference_mass",
+        "acceptance_event_bridge",
+        "validate_balances"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "reference_mass": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 58
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 663
+          }
+        },
+        "zh-CN": {
+          "reference_mass": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 59
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 664
+          }
+        }
+      }
+    },
+    {
+      "id": "two_term_shortcut_is_conditional",
+      "basis": "unchanged acceptance-state kg; complete records verify no other destination",
+      "inputs": {
+        "unique_Q_kg": 100,
+        "D_new_kg": 60,
+        "FG_new_kg": 40,
+        "measured_other_destinations_kg": 0
+      },
+      "derivation": [
+        "Q=60+40+0=100kg; two-term expression is available only with complete evidence that L_new=0",
+        "If destination evidence is missing or the observed bridge residual is10kg, the case is unresolved rather than proof of zero loss or permission to reduce Q"
+      ],
+      "rules": [
+        "acceptance_event_bridge",
+        "validate_balances"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 642
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.en-US.md",
+            "line": 663
+          }
+        },
+        "zh-CN": {
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 643
+          },
+          "validate_balances": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/products-of-wood-cork-straw-and-plaiting-materials/cca-preserved-radiata-pine-rough-roundwood/pcr.zh-CN.md",
+            "line": 664
+          }
+        }
+      }
+    }
+  ],
+  "case_payload_sha256": "edb30bfdd381339f56825acd3d31964daebd82dc590cd5249970abf9dd301877",
+  "additional_basis_and_negative_cases": {
+    "synthetic_case_notice": "All numerical inputs are bounded arithmetic counterexamples, not plant measurements, scientific qualification, default mass, density, yield, recipe or emission factors."
+  },
+  "independently_recomputed_checks": [
+    {
+      "case": "post_loss",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "whole treated-roundwood100=60+30+10",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "net_returns",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        20,
+        10,
+        10
+      ],
+      "formula": "Q=net60+FG20+closingWIP10+scrap10",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_purchased_store",
+      "left_terms": [
+        25,
+        15,
+        100
+      ],
+      "right_terms": [
+        60,
+        25,
+        15,
+        30,
+        10
+      ],
+      "formula": "opening25+purchased15+new100=dispatch100+FG30+loss10",
+      "recomputed_left": 140,
+      "recomputed_right": 140,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "water_component",
+      "left_terms": [
+        25
+      ],
+      "right_terms": [
+        8,
+        7,
+        10
+      ],
+      "formula": "original water25=dispatch8+FG7+evaporation10",
+      "recomputed_left": 25,
+      "recomputed_right": 25,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "CCA_component",
+      "left_terms": [
+        5
+      ],
+      "right_terms": [
+        2,
+        3
+      ],
+      "formula": "nonwaterCCA5=2+3, not duplicate element subledger",
+      "recomputed_left": 5,
+      "recomputed_right": 5,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "added_water_physical",
+      "left_terms": [
+        100,
+        5
+      ],
+      "right_terms": [
+        65,
+        30,
+        10
+      ],
+      "formula": "physical105; event-origin100=60+30+10",
+      "recomputed_left": 105,
+      "recomputed_right": 105,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "volume_conversion",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "measured compatible synthetic volume-density conversion only",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}

@@ -1,0 +1,723 @@
+{
+  "code": "33429",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "40278c43263a6e965b5110df733d5cf5ba19ddcb8b0c173cb0552e7894ed4c11",
+    "pcr.en-US.md": "7c70cebef2e2c956a1402aad1ace66ecd33466f2f859c808444fa863d1ac619b",
+    "pcr.zh-CN.md": "5682d41e8876a4d6154546f08a59780d34696d2586e95df2433646fc4128b728",
+    "structured.yaml": "8aff623991c10dbd5fe555ebae3158389425662672c4ca663f43eb4817a9d224"
+  },
+  "author_commit": "92af3e4a5ea1e8ffd01af17e1cd6183607ecbd0e",
+  "complete_inputs_and_derivations": [
+    {
+      "id": "100_60_30_10_original_dry_volume",
+      "inputs": {
+        "unique_first_acceptance_event_m3": [
+          100
+        ],
+        "D_new_m3": 60,
+        "FG_new_m3": 30,
+        "post_acceptance_loss_L_new_m3_equivalent": 10,
+        "current_cohort_burden_units": 100
+      },
+      "basis": "All quantities are original acceptance-state dry-gas m3; unchanged composition in this case. No packaging or exhaust volume is counted.",
+      "derivation": [
+        "Q=sum([100])=100 m3",
+        "Q=60+30+10=100 m3",
+        "The unconditional two-term rule produces90 m3 and omits measured10 m3 loss",
+        "Correct normalized burden=100/100=1 unit/m3; old rule gives100/90=1.111111 unit/m3"
+      ],
+      "rule_ids": [
+        "dry_volume",
+        "cp_delivery",
+        "normalize_records",
+        "acceptance_event_bridge",
+        "validate_records"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "dry_volume": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 55
+          },
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 656
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 669
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "validate_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 692
+          }
+        },
+        "zh-CN": {
+          "dry_volume": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 56
+          },
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 657
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 670
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "validate_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 693
+          }
+        }
+      }
+    },
+    {
+      "id": "parallel_100_60_30_10_kg_retains_native_m3_reference",
+      "inputs": {
+        "first_accepted_dry_gas_kg": 100,
+        "D_new_kg": 60,
+        "FG_new_kg": 30,
+        "L_new_kg": 10,
+        "synthetic_acceptance_state": {
+          "T_K": 300,
+          "P_absolute_Pa": 101325,
+          "Z": 0.97,
+          "dry_mole_fractions": {
+            "methane": 0.75,
+            "ethane": 0.25
+          },
+          "molar_masses_kg_per_mol": {
+            "methane": 0.016043,
+            "ethane": 0.03007
+          },
+          "R_J_per_mol_K": 8.31446261815324
+        },
+        "calculated_same_state_density_kg_per_m3": 0.8187110394377105
+      },
+      "derivation": [
+        "Parallel dry mass closure:100=60+30+10 kg",
+        "For this synthetic state only, rho=P*M_mix/(Z*R*T); use this explicitly evidenced state/composition conversion, not a generic density",
+        "Native reference volume Q=100/rho; D_new=60/rho; FG_new=30/rho; L_new=10/rho; their sum=Q",
+        "A burden100 units is100/(100/rho)=rho unit/m3. The kg counterexample does not change this PCR reference from m3 tokg"
+      ],
+      "calculated_m3": {
+        "Q": 122.14321681637497,
+        "D_new": 73.28593008982499,
+        "FG_new": 36.64296504491249,
+        "L_new": 12.214321681637498
+      },
+      "rule_ids": [
+        "dry_volume",
+        "gas_energy_basis",
+        "acceptance_event_bridge",
+        "balance_whole"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "dry_volume": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 55
+          },
+          "gas_energy_basis": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 673
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "balance_whole": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 670
+          }
+        },
+        "zh-CN": {
+          "dry_volume": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 56
+          },
+          "gas_energy_basis": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 674
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "balance_whole": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 671
+          }
+        }
+      }
+    },
+    {
+      "id": "linked_net_return_WIP_and_reacceptance",
+      "inputs": {
+        "unique_event_Q_m3": 100,
+        "gross_new_delivery_m3": 70,
+        "linked_return_m3": 10,
+        "returned_to_closing_FG_m3": 5,
+        "returned_to_closing_WIP_m3": 5,
+        "other_closing_FG_m3": 15,
+        "other_closing_WIP_m3": 5,
+        "post_acceptance_disposal_m3_equivalent": 10,
+        "gross_rework_sent_m3": 20,
+        "reaccepted_before_close_m3": 10
+      },
+      "basis": "Original acceptance-state dry-volume equivalent; no composition change in this case. Returned parcels remain individually linked.",
+      "derivation": [
+        "D_new=70-10=60 m3; FG_new=15+5=20 m3",
+        "Closing WIP=5+5=10 m3; L_new=10 WIP+10 disposal=20 m3",
+        "Q=60+20+20=100 m3",
+        "Gross rework20 and reacceptance10 add no event Q or second destination. The10 reaccepted is already in final net destinations",
+        "Return10 is deducted once from gross delivery and assigned5 FG+5 WIP. Adding10 again to L_new would falsely close110",
+        "Later-period reacceptance of closing WIP adds no new Q; actual rework/handling/cleaning/retest burdens remain in the original cohort, or raw unresolved if its original denominator is missing"
+      ],
+      "rule_ids": [
+        "physical_basis",
+        "cp_delivery",
+        "normalize_records",
+        "acceptance_event_bridge",
+        "cohort_service_carry"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "physical_basis": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 58
+          },
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 656
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 669
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "cohort_service_carry": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 676
+          }
+        },
+        "zh-CN": {
+          "physical_basis": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 59
+          },
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 657
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 670
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "cohort_service_carry": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 677
+          }
+        }
+      }
+    },
+    {
+      "id": "opening_and_purchased_finished_gas",
+      "inputs": {
+        "opening_previously_accepted_gas_m3": 25,
+        "purchased_previously_accepted_gas_m3": 15,
+        "new_event_Q_m3": 100,
+        "new_D_m3": 60,
+        "new_FG_m3": 30,
+        "new_L_m3": 10,
+        "old_stock_dispatch_m3": 25,
+        "purchased_stock_dispatch_m3": 15,
+        "new_cohort_burden_units": 100,
+        "incremental_old_service_units": 8,
+        "incremental_purchased_service_units": 3
+      },
+      "basis": "All gas at the same synthetic dry state/composition, so same-state mass is volume timesrho and no composition mapping is needed.",
+      "derivation": [
+        "New Q=100=60+30+10 m3 regardless of total physical deliveries60+25+15=100 m3",
+        "Integrated storage-inclusive physical mass account:rho*(25+15+100)=rho*(100 dispatch+30 closing+10 loss)=rho*140 kg",
+        "The100 m3 first-acceptance change is internal to that integrated account; do not add it as a second external output",
+        "Original stocks and purchased goods add no Q. Keep8 and3 service units with their own original cohorts; missing original Q leaves their service normalization unresolved. New production stays100/100=1 unit/m3"
+      ],
+      "rule_ids": [
+        "link_products",
+        "normalize_records",
+        "balance_whole",
+        "acceptance_event_bridge",
+        "cohort_service_carry"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "link_products": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 86
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 669
+          },
+          "balance_whole": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 670
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "cohort_service_carry": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 676
+          }
+        },
+        "zh-CN": {
+          "link_products": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 87
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 670
+          },
+          "balance_whole": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 671
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "cohort_service_carry": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 677
+          }
+        }
+      }
+    },
+    {
+      "id": "same_mixture_wet_meter_conversion",
+      "inputs": {
+        "wet_meter_m3": 125,
+        "measured_water_mole_fraction": 0.2,
+        "P_measured_Pa": 101325,
+        "P_reference_Pa": 101325,
+        "T_measured_K": 300,
+        "T_reference_K": 300,
+        "Z_measured": 0.97,
+        "Z_reference_dry": 0.97,
+        "D_new_dry_m3": 60,
+        "FG_new_dry_m3": 30,
+        "L_new_dry_m3_equivalent": 10
+      },
+      "derivation": [
+        "Only water removal in this hypothetical case; independently evidenced compressibilities happen to be equal, neither is assumed1",
+        "Q=125*(1-0.2)*(P/P)*(T/T)*(0.97/0.97)=100 dry m3",
+        "Dry bridge100=60+30+10; raw wet125 m3 is retained separately and cannot be mixed into that dry sum",
+        "Removed water remains in the physical water/species ledger and is not counted as extra accepted dry gas"
+      ],
+      "rule_ids": [
+        "dry_volume",
+        "gas_state_conversion",
+        "cp_delivery",
+        "acceptance_event_bridge",
+        "balance_water_species"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "dry_volume": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 55
+          },
+          "gas_state_conversion": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 56
+          },
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 656
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "balance_water_species": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 672
+          }
+        },
+        "zh-CN": {
+          "dry_volume": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 56
+          },
+          "gas_state_conversion": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 57
+          },
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 657
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "balance_water_species": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 673
+          }
+        }
+      }
+    },
+    {
+      "id": "selective_condensation_needs_component_mapping",
+      "inputs": {
+        "original_Q_dry_m3": 100,
+        "original_total_dry_moles": 4187.833805740281,
+        "original_mole_fractions": {
+          "methane": 0.75,
+          "ethane": 0.25
+        },
+        "delivered_original_moles_fraction": {
+          "methane": 0.45,
+          "ethane": 0.15
+        },
+        "closing_gas_original_moles_fraction": {
+          "methane": 0.3,
+          "ethane": 0
+        },
+        "condensed_removed_original_moles_fraction": {
+          "methane": 0,
+          "ethane": 0.1
+        },
+        "closing_gas_Z_at_declared_TP": 0.94,
+        "original_Z": 0.97,
+        "actual_condensate_volume_m3": "separately measured at its actual liquid state; never inserted as gas m3"
+      },
+      "derivation": [
+        "Track original molecules: CH4 .75=.45 delivered+.30 closing; C2H6 .25=.15 delivered+.10 removed",
+        "Original-basis D_new=(.45+.15)*100=60 m3; FG_new=.30*100=30 m3; L_new=.10*100=10 m3-equivalent; Q remains100",
+        "Actual closing gas at the same T/P but Z=.94 occupies30*.94/.97 m3. Its original-equivalent30 m3 comes from measured constituent quantity mapped with original event Z=.97, not from blindly adding actual closing volume",
+        "Removed condensate mass=.10*(100/molar_volume)*M_ethane kg; original constituent mass closes with delivery and closing gas masses",
+        "Do not apply the same-mixture conversion across selective ethane removal or add liquid m3 to dry fuel-gas m3. A missing phase/species mapping is unresolved; Q cannot be reset to apparent90"
+      ],
+      "calculated": {
+        "actual_closing_m3": 29.072164948453608,
+        "original_dry_mass_kg": 81.87110394377105,
+        "D_mass_kg": 49.12266236626263,
+        "FG_mass_kg": 20.1556253236474,
+        "condensed_removed_mass_kg": 12.592816253861026
+      },
+      "rule_ids": [
+        "cp_delivery",
+        "acceptance_event_bridge",
+        "balance_whole",
+        "balance_elements",
+        "validate_records"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 656
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "balance_whole": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 670
+          },
+          "balance_elements": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 671
+          },
+          "validate_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 692
+          }
+        },
+        "zh-CN": {
+          "cp_delivery": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 657
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "balance_whole": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 671
+          },
+          "balance_elements": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 672
+          },
+          "validate_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 693
+          }
+        }
+      }
+    },
+    {
+      "id": "failure_services_and_zero_or_unknown_Q",
+      "inputs": {
+        "failed_operation_burden_units": 12,
+        "new_first_acceptance_Q_m3": 0,
+        "old_cohort_original_Q_m3": 100,
+        "later_old_cohort_rework_service_units": 10,
+        "separate_unknown_original_cohort_service_units": 4
+      },
+      "derivation": [
+        "For new Q=0 preserve12 units raw; there is no division, no zero-burden claim and no invented output",
+        "For old positive Q_c=100, incremental original-cohort service=10/100=.1 unit/m3, added to its inherited vector without another reference event",
+        "Unknown original Q for the other4 units leaves4 raw/unresolved; do not move that load to current production",
+        "Supply service fuel drawn before any first acceptance adds no Q. Diversion of already accepted fuel retains its original Q and appears once in L_new; a separate receiving refinery own-use product transfer belongs once in D_new"
+      ],
+      "rule_ids": [
+        "link_products",
+        "normalize_records",
+        "acceptance_event_bridge",
+        "cohort_service_carry"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "link_products": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 86
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 669
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "cohort_service_carry": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 676
+          }
+        },
+        "zh-CN": {
+          "link_products": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 87
+          },
+          "normalize_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 670
+          },
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "cohort_service_carry": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 677
+          }
+        }
+      }
+    },
+    {
+      "id": "conditional_two_term_and_unexplained_gap",
+      "inputs": {
+        "Q_m3": 100,
+        "D_new_m3": 60,
+        "FG_new_m3": 40,
+        "evidenced_other_destinations_m3": 0,
+        "alternative_unexplained_FG_m3": 30
+      },
+      "derivation": [
+        "Complete evidence showing no other post-acceptance destinations allows100=60+40+0 and the conditional two-term reduction",
+        "If observed FG is30 with no destination evidence, independently measured Q100 and apparent bridge90 leave an unresolved10 gap. No assumed zero loss, no forced closure and no reset of Q"
+      ],
+      "rule_ids": [
+        "acceptance_event_bridge",
+        "quality_balance",
+        "validate_records"
+      ],
+      "result": "pass_for_explicit_synthetic_inputs",
+      "rule_locations": {
+        "en-US": {
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 677
+          },
+          "quality_balance": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 683
+          },
+          "validate_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.en-US.md",
+            "line": 692
+          }
+        },
+        "zh-CN": {
+          "acceptance_event_bridge": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 678
+          },
+          "quality_balance": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 684
+          },
+          "validate_records": {
+            "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/coke-oven-products-refined-petroleum-products-nuclear-fuel/refinery-c1-c2-fuel-gas-supply/pcr.zh-CN.md",
+            "line": 693
+          }
+        }
+      }
+    }
+  ],
+  "case_payload_sha256": "a18e83cd06292b326b362d4899ad1d0e0305b49b22e77e8f95cdead8c520202f",
+  "additional_basis_and_negative_cases": {
+    "synthetic_case_notice": "All numerical inputs, composition, molecular weights, state and Z values are hypothetical arithmetic evidence only, not plant measurements, recommended/default state/composition/density, a route extension, empirical range or actual study qualification. PCR reference remains1 m3 original-basis dry gas; kg examples remain parallel physical checks."
+  },
+  "independently_recomputed_checks": [
+    {
+      "case": "dry_gas_volume",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "original dryvolume100=60+30+10",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "mass_to_nativevolume",
+      "left_terms": [
+        122.14321681637497
+      ],
+      "right_terms": [
+        73.28593008982499,
+        36.64296504491249,
+        12.214321681637498
+      ],
+      "formula": "explicit synthetic state density keeps native m3 reference",
+      "recomputed_left": 122.14321681637497,
+      "recomputed_right": 122.14321681637497,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "wet_meter",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        100
+      ],
+      "formula": "same-mixture stipulated equalZ/T/P water-removal example",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "methane_mole_shares",
+      "left_terms": [
+        0.75
+      ],
+      "right_terms": [
+        0.45,
+        0.3
+      ],
+      "formula": "actual measured original constituent genealogy only",
+      "recomputed_left": 0.75,
+      "recomputed_right": 0.75,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "ethane_mole_shares",
+      "left_terms": [
+        0.25
+      ],
+      "right_terms": [
+        0.15,
+        0.1
+      ],
+      "formula": "selective condensation requires species map; never liquid/exhaust m3 sum",
+      "recomputed_left": 0.25,
+      "recomputed_right": 0.25,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "original_equivalent_volume",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "sum original-event mole/volume equivalents",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_new_stocks",
+      "left_terms": [
+        25,
+        15,
+        100
+      ],
+      "right_terms": [
+        100,
+        30,
+        10
+      ],
+      "formula": "same stipulated composition/state physicalmoles preserve140",
+      "recomputed_left": 140,
+      "recomputed_right": 140,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}

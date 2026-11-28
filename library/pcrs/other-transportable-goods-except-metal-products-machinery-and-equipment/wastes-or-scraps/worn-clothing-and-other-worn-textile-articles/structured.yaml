@@ -1,10 +1,1475 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39217"
-  title: "Worn clothing and other worn textile articles"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.worn-clothing-and-other-worn-textile-articles"
+  classification_refs: "CPC 3.0:39217; accepted narrower direct-rewear branch; see docs/adr/2026-11-21-accept-cpc-39217-worn-cotton-jersey-shirts-for-rewear.md"
+  covered_products: "Adult single-layer short-sleeved round-neck cotton-knit T-shirts with appreciable prior wear; sorted and prepared for direct clothing reuse; bulk sack supply"
+  excluded_products: "New or unworn garments; children’s garments; protective/medical clothing; mixed charity collection service; wiping rags; opened fibres; garnetted stock; fibre recycling; substantially remade clothing"
+  representative_product: "Intact adult cotton-jersey T-shirt with use-related fading or pilling but serviceable fabric and seams after actual preparation; main fabric cotton identity is verified; retained trims and moisture remain in the whole garment"
+  production_route: "Source-owner handover → separate collection and transport → receipt and item-level sorting → actual necessary aqueous cleaning/electric drying and minor seam repair → inspection and sack packing → first positive direct-rewear release → cohort storage and handover"
+  market_state: "Identified receiving market and operator grade; appreciably worn wearable shirts in protective LDPE sacks; no assumed remaining wearing life or new-shirt equivalence"
+functional_unit:
+  what: "Supply prepared worn cotton T-shirts for direct use as clothing"
+  how_much: "1 kg net newly first-released accepted garments; exclude every packaging tare"
+  how_well: "Item-level identity and condition checks meet the documented adult clothing function, cleanliness, seam integrity and receiving-market acceptance criteria; appreciable wear is compatible with safe function"
+  how_long_or_cycle: "One identified preparation/release cohort; no count of wears, resale events, dispatches or reinspection as new production"
+  reference_flow_link: "accepted_worn_shirts"
+system_boundary:
+  rules:
+    - rule_id: b_route
+      applies_to: "p_collect; p_prepare"
+      rule: "Include source handover, real pickup/transport, receiving/unpacking, individual sorting and condition assessment, necessary actual cleaning/drying and minor repair, inspection and bulk sack packing. Preserve rejected fractions. Do not substitute a charity collection total or purchased finished-shirt packaging inventory."
+      source_ids:
+        - jrc-textile-2025
+        - austria-reuse-2019
+    - rule_id: b_identity
+      applies_to: "reference product"
+      rule: "The chosen article remains an adult cotton-knit T-shirt for wearing. Verify appreciable prior wear and bulk sack presentation independently from direct-rewear suitability. New/unworn articles and material suitable only for rags or fibres are outside. UN CPC gives the category title only; the trade-condition basis here is WCO Chapter63 Note3."
+      source_ids:
+        - unsd-cpc-2025
+        - wco-hs63-2022
+    - rule_id: b_cleaning
+      applies_to: "p_prepare"
+      rule: "Choose actual item/cohort cleaning needs and fibre/care-compatible procedures; no universal wash temperature, dose, hygiene claim, repair rate or drying energy is supplied. The representative aqueous route uses whole laundry liquid and electric drying when needed. Dry cleaning, hazardous contamination, medical/protective decontamination or substantial reconstruction require another review and complete atomic inventory."
+      source_ids:
+        - austria-reuse-2019
+        - jrc-textile-2025
+    - rule_id: b_completeness
+      applies_to: "all processes"
+      rule: "Keep failed runs, Q0 cohorts, startup/shutdown, idle, cleanup, repeat washing and real rework. Add every actual omitted single formulation, fuel, utility, packaging component, separated waste and emitted species before asserting completeness. No other-material bucket or unsupported zero substitutes for a real exchange."
+      source_ids: []
+    - rule_id: b_utilities
+      applies_to: "electricity; heat; water"
+      rule: "The selected branch has electric washing/drying and handling. Do not copy a nonexistent boiler/steam/combustion inventory. If another actual heat route occurs, add each fuel, combustion gas species, steam or heat input and external condensate/heat-exchanger-water Product return separately, with actual state/enthalpy and supplier water/energy conventions; cancel internal circuits."
+      source_ids: []
+    - rule_id: b_stocks
+      applies_to: "Q; FG; V"
+      rule: "At first release, Q already includes released garments still in closing FG. Maintain opening FG + Q + external returns received = closing FG + gross physical dispatch V + real FG losses/transfers. Do not add closing FG to Q. Preserve original-dispatch reversal and old-cohort burdens on returns; extra cleaning/repair is incremental load, not new garment production."
+      source_ids: []
+    - rule_id: b_services
+      applies_to: "p_service"
+      rule: "Store raw post-release storage/handling/repacking loads H_i against original released cohort c. Join them into that cohort’s numerator before calc_normalize; do not put old-FG services onto unrelated current Q. Gross dispatch V and returned shipments remain physical diagnostics. Combine gates by cancelling internal T and Q transfers."
+      source_ids: []
+    - rule_id: b_provider
+      applies_to: "all provider and outlet rows"
+      rule: "Separate whole-outlet totals from source partitions: collect either measured partition amounts or a total with exhaustive non-overlapping shares, never both added. Match each stream to one provider/treatment boundary. An outsourced freight/treatment dataset already including fuel, emissions or losses must not be duplicated with direct rows."
+      source_ids: []
+    - rule_id: b_native
+      applies_to: "UUID-bearing and unbound rows"
+      rule: "All native restrictions in each card are mandatory product context. The worn-shirt core is unbound: manufactured-shirt, generic cloth and unusable-production-waste candidates do not establish a reusable worn garment. No surrogate UUID or inferred database-wide absence is asserted. Method use requires resolution of this core identity and actual-gate compatibility."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Whole post-use cotton T-shirts at source-owner handover, before collection/sorting/preparation; include assigned upstream garment history separately from current preparation activities"
+  starting_condition_role: "Post-use whole-article input; a finished reused-shirt purchase/repacking gate is not the starting point"
+  product_classification_scope: "One direct-clothing-reuse branch within CPC 3.0:39217; rags and recycling-only materials excluded"
+  recursive_input_rule: "Internal T transfers and unaccepted rework retain inherited vectors and cancel on combination. Previously released returned garments retain original cohort identity; they are not a new source purchase or new Q. External prepared garments require separate applicability review."
+  upstream_dataset_requirement: "Use one compatible provider for each actual purchase/service; retain route, geography, time and included transport/packaging. Carry the documented historical garment exchange vector exactly once, including the attributed manufacture, past maintenance/use and recovery steps; never assume donated means burden-free."
+  disclosure: "Report separate collection, preparation/first-release, FG-service and combined gates; raw physical balances, mixed collection partitions, history attribution and unresolved identity remain explicit"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Prepared appreciably worn adult cotton-jersey T-shirt for direct rewear"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "main-fabric cotton identity and verification method"
+    - "adult single-layer short-sleeved round-neck cotton-knit T-shirt construction and size scope"
+    - "retained seam/label/trim composition"
+    - "prior-use provenance and appreciable-wear evidence"
+    - "source-owner handover and waste/product status at every gate"
+    - "actual collection route and source partitions"
+    - "receiving-market grade and acceptance specification"
+    - "cleaning necessity and actual wash formulation"
+    - "drying route and endpoint moisture"
+    - "repair task and actual thread supply"
+    - "unique first-release lot/time and net weighing/tare"
+    - "site and reporting period"
+    - "country/voltage and utility provider boundary"
+    - "prior manufacture/use/recovery exchange-vector attribution"
+    - "output status and allocation drivers"
+    - "per-exchange opening/closing WIP vectors"
+    - "opening/closing FG and original cohort burdens"
+    - "gross physical dispatch and external returns"
+    - "each packaging component and reusable-pool ledger"
+    - "native UUID restrictions and unresolved core identity"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is the sum of unique new positive first-release net masses in cp_release after all necessary cleaning/repair, garment acceptance and sack packing. Measure whole as-accepted shirts including actual moisture and retained trims; exclude sacks. Reinspection, each wear, resale, old-lot returns and dispatch do not add Q."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Original measured property"
+      uuid: ""
+    required_unit: "kg; MJ; kg*km"
+    rule: "Convert raw quantities before attribution. kWh × 3.6 gives MJ once. Actual rates require integration over the recorded interval; already integrated quantities do not get another time factor. Volume-to-mass requires independent material-specific density at the measured temperature/pressure. No generic density or kg per garment is supplied."
+  - id: whole_supply
+    applies_to: "source_shirts; wash_detergent; repair_thread"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each whole supplied garment or purchased formulation once. Cotton content, original trims, detergent active matter and carrier water are constituent subledgers, not additional purchases. On-site mixing instead requires each actual separately purchased ingredient and real mixing energy/loss as individual exchanges."
+  - id: phase_mass
+    applies_to: "physical ledgers"
+    required_property_ref:
+      name: "Mass and composition"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile total physical mass separately from water, cotton solids and each relevant trim/soil/formulation constituent. Washing and drying do not imply polymer conversion or reaction water. Free liquid, retained moisture and vapour differ from chemically bound water. COD/TOC are indicators, not a named chemical mass. One balance residual cannot solve two unknown outlets."
+process_map:
+  - id: p_collect
+    name: "Source collection and delivery"
+    inclusion: "required"
+    inclusion_condition: "Actual source-owner cohort"
+    role: "Source whole-article gate and collection"
+    quantitative_reference: "Gross receipts and internal T with inherited vector"
+  - id: p_prepare
+    name: "Item sorting cleaning repair packing and first release"
+    inclusion: "required"
+    inclusion_condition: "Matched T; cleaning/repair only as actually necessary"
+    role: "Preparation and acceptance"
+    quantitative_reference: "Unique new first-release Q"
+  - id: p_service
+    name: "Released-cohort storage and physical dispatch"
+    inclusion: "required"
+    inclusion_condition: "Actual storage/handling/returns; replacement packing only if real"
+    role: "Original-cohort raw service H_i and FG reconciliation"
+    quantitative_reference: "Original Qc and physical V; no new production"
+process_inventory:
+  - id: p_collect
+    label: "Source collection and delivery"
+    inputs:
+      product:
+        - row_id: source_shirts
+          role: "Whole source garment"
+          name: "Post-use adult cotton-jersey T-shirt before reuse sorting"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive whole shirts with source-owner record, net mass, original cotton/trim/soil/moisture subledgers and a separately auditable inherited exchange vector. This is not virgin fabric or a newly manufactured T-shirt purchase. Collect real handover and pickup work even for donations; no source UUID is adopted."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source
+              source_ids:
+                - ilcd-2010
+            ranges: []
+        - row_id: collection_freight
+          role: "Contracted road freight"
+          name: "Road freight transport service"
+          flow_type: "product"
+          property_unit: "mass*distance / kg*km"
+          description: "The contracted road-freight service UUID and its mass-distance property UUID remain unresolved. Record actual vehicle, fuel, load and route; no historical 30-ton provider restriction is asserted. Collect source-to-preparation legs, actual payload/distance and empty-trip policy. The outsourced service is one provider; do not additionally buy diesel or add its exhaust already included upstream."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport
+              source_ids:
+                - ilcd-2010
+            ranges: []
+        - row_id: collection_electricity
+          role: "Collection-site electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Metered alternating-current electricity; actual grid, voltage and provider flow UUID remain unresolved. Energy/MJ describes the metered quantity only; it is not a verified native supplier flow property. A shared Units of energy group does not establish Net calorific value. Include real receiving, weighing, lighting, conveying and idle electricity. A different grid/voltage/technology needs a compatible identity/provider, not this UUID by name alone."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: source_ldpe_sack
+          role: "LDPE sack received with source garments"
+          name: "polyethylene low density foil(PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional first non-purchase external receipt of one non-laminated LDPE film sack, with garments or separately. It is a physical packaging receipt, not a new sack-manufacture event. Classify every first non-purchase external receipt, with incoming garments or as a separate loan/free transfer, in the first-receipt leg regardless of supplier inventory coverage. Only a proven same physical sack previously dispatched from this site is a return; an already included source-package burden is not bought again. Source bags of another material require another specific card."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: collected_shirts
+          role: "Internal delivered garment transfer T"
+          name: "Post-use adult cotton-jersey T-shirt before reuse sorting"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Physical net handover T to preparation, with whole garment state and the same inherited vector. Account collection losses individually if they occur. This internal transfer is neither a second external supply nor reference production; cancel it against received_shirts when combining gates."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: p_prepare
+    label: "Item sorting cleaning repair packing and first release"
+    inputs:
+      product:
+        - row_id: received_shirts
+          role: "Received internal whole garment"
+          name: "Post-use adult cotton-jersey T-shirt before reuse sorting"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive exactly the matched T lot from collected_shirts; retain inherited vector and measured condition. Sort each shirt by identity, wear, damage, cleanliness and market fitness before deciding preparation and final destination. Do not add source_shirts a second time in the combined model."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer
+              source_ids:
+                - jrc-textile-2025
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Washing drying repair and packing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Verify actual grid, voltage and supplier flow identity; Energy/MJ is the metered quantity, not the unverified native supplier property. Meter actual washing, electrically heated drying, minor sewing, sealing, conveying, idle and cleanup separately enough to allocate them; add no fuel-fired dryer or steam default. The actual dry endpoint and moisture are recorded, not a universal cycle."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - austria-reuse-2019
+            ranges: []
+        - row_id: washing_water
+          role: "Municipal wash and rinse water"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The selected exchange is actual treated municipal water; its supplier flow UUID is unresolved. It is not raw water, deionised water or purchased steam. Metered Mass/kg is used; any secondary Volume factor would not establish independent measured density; collect mass or actual water density/temperature for conversion. Include repeat washes and cleaning; absence needs records."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - austria-reuse-2019
+            ranges: []
+        - row_id: wash_detergent
+          role: "Whole purchased laundry liquid"
+          name: "Liquid Detergent"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c1214ed0-28a4-4273-a8c9-a4f29351747a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Product explicitly includes laundry liquid and hand/spot washing with no fixed brand, assay, route or geography. Record one whole actual formulation including carrier water; retain supplier SDS/composition and compatibility. No dosage, disinfection efficacy or active-matter content is inferred. Separately purchased bleach or softener requires its own concrete card, not this formulation twice."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - austria-reuse-2019
+            ranges: []
+        - row_id: repair_thread
+          role: "Cotton sewing thread for minor seam repair"
+          name: "Cotton sewing thread with actual supplied finish"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual minor seam repair, not recutting or remanufacture. Record complete supplied thread once including real finish/moisture and offcuts; no assumed repair fraction. No verified sewing-thread identity is adopted; actual composition, finish and sewing use require supplier evidence. Any different thread or replacement component is a separate actual row."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - austria-reuse-2019
+            ranges: []
+        - row_id: new_ldpe_sack
+          role: "Fresh protective sack material"
+          name: "polyethylene low density foil(PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The archived native Product is PE-LD foil, production mix at plant, Mass/kg. Non-laminated sack construction and actual converting burdens are site-specific applicability requirements; the foil record alone does not verify a finished sack provider. Use this identity only for the one actual LDPE film sack; no woven PP sack, composite laminate, PET strap, tape or resin substitution. Record purchased finished sack once with its included conversion burden; if formed/sealed on site, include actual forming/sealing electricity without a second sack or resin purchase."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - wco-hs63-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_worn_shirts
+          role: "New first accepted direct-rewear garments"
+          name: "Prepared appreciably worn adult cotton-jersey T-shirt for direct rewear"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Q is net newly first-released whole shirts meeting the documented adult direct-clothing function, cotton-main-fabric identity, actual cleaning/repair acceptance, moisture and safety/market criteria. Maintain appreciable prior wear and bulk LDPE sack form; exclude every sack tare. Retained labels, seams, finish and actual moisture remain garment constituents. This is not a claim of new-garment quality, specific remaining wears, uniform factory origin or cradle-to-gate completeness. No compatible core UUID has been confirmed; do not bind new manufactured T-shirts, cloth, production scrap or rags instead."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - wco-hs63-2022
+                - austria-reuse-2019
+                - jrc-textile-2025
+            ranges: []
+      waste:
+        - row_id: rejected_cotton_shirt
+          role: "Non-rewearable cotton shirt to treatment"
+          name: "Rejected post-consumer cotton T-shirt for contracted treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This physical whole-shirt waste stream is not Q. Measure rejected shirts and real route/status, including actual soil, moisture and original trims. A mixed unknown-fibre waste-fabric UUID and unusable manufacturing-scrap Product do not match it. If a real valuable recycling/wiper co-product instead leaves the gate, create the separately qualified Product outlet and allocate; no automatic recovery credit or invented downstream yield."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlet
+              source_ids:
+                - jrc-textile-2025
+                - ilcd-2010
+            ranges: []
+        - row_id: captured_cotton_lint
+          role: "Captured cotton lint from preparation"
+          name: "Cotton lint captured from washing or drying cotton shirts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the physically captured lint with actual moisture and soil fractions; separate filter cake from any independently collected dry lint when their states/destinations differ. This is neither cotton-ginning linters nor a measured airborne emission. No UUID or constant loss fraction is adopted; any actual other removed soil/trim must be its own specific flow."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlet
+              source_ids: []
+            ranges: []
+        - row_id: laundry_effluent
+          role: "Whole wash effluent to external treatment"
+          name: "Cotton-shirt laundry wastewater to contracted treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the one physical aqueous effluent mixture, measured mass and actual destination; preserve separate dissolved/solid/soil/formulation subledgers and analytical uncertainty. It is a technosphere Waste outlet, not direct elementary water discharge. The candidate fixed to electrolytic-manganese-slag washing is incompatible. Do not count whole effluent plus its constituents as separate full masses or infer a named chemical mass from COD. Treatment provider emissions are not repeated locally."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_outlet
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_sack_waste
+          role: "Discarded LDPE sack"
+          name: "Discarded non-laminated LDPE clothing sack"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual torn or retired LDPE sack only, with destination and contamination records. Native virgin/supplied Product film cannot be reused as a Waste UUID. Keep each actual other package component or soil stream separate. Reconcile this outlet with cp_pack; internal reused bags are neither waste nor new procurement."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: evaporated_water
+          role: "Actual water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Native Elementary flow is CAS7732-18-5 H2O, emission to air with unspecified subcompartment, Mass/kg. Broad synonym lists also mention isotope/ice labels; no isotope, liquid release or steam Product is intended here. Use only actual free-water evaporation to air and independently measure retained water and wastewater before closing the water balance; unmeasured competing outlets cannot be fitted from one residual. Captured condensate is a separate actual liquid outlet/return, not this emission."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+  - id: p_service
+    label: "Released-cohort storage and physical dispatch"
+    inputs:
+      product:
+        - row_id: released_for_service
+          role: "Internal released-cohort receipt"
+          name: "Prepared appreciably worn adult cotton-jersey T-shirt for direct rewear"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive the original Q cohort with its complete vector; stock is a physical gate transfer and is cancelled against accepted_worn_shirts in the combined model. Retain external returns separately by original release and original-dispatch reversal. Old stock does not inherit a fresh production date."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids: []
+            ranges: []
+        - row_id: storage_electricity
+          role: "Storage handling and loading electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Verify actual grid, voltage and supplier flow identity; Energy/MJ is the metered quantity only. Keep raw actual electricity H_i by original cohort and occupied duration/space or other demonstrated causal driver; include idle and cleanup. Join H_i before that cohort’s single normalization, not another division by current dispatch or Q."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-2010
+            ranges: []
+        - row_id: replacement_ldpe_sack
+          role: "Actual fresh replacement sack"
+          name: "polyethylene low density foil(PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same one non-laminated PE-LD film/sack restriction as new_ldpe_sack. Record only fresh replacement procurement assigned to the original released cohort; a physically returned or internally reused sack does not create a purchase. If another component is needed, add it separately. Keep its service-stage raw load in H_i."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: returned_worn_shirts
+          role: "External returned old released garments"
+          name: "Prepared appreciably worn adult cotton-jersey T-shirt for direct rewear"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual returned old-cohort whole shirts only. Record original release and dispatch/reversal and preserve the original allocated garment vector; keep the positive physical returned mass separate from gross outward V. Additional work is attached as incremental H or a linked rework event, never new Q or a second original production burden. The same unbound worn-shirt core restriction applies."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids: []
+            ranges: []
+        - row_id: sack_return_received
+          role: "External LDPE sack return received"
+          name: "polyethylene low density foil(PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual return of a non-laminated LDPE sack proven to be the same physical item previously dispatched from this site, empty or attached to returned old-cohort goods; retain its physical mass and inherited packaging vector. Count the external return received once in cp_pack; subsequent internal reuse is not fresh procurement. Do not collapse this receipt into net purchases or net outward packaging."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gross_dispatch
+          role: "Gross physical garment dispatch V"
+          name: "Prepared appreciably worn adult cotton-jersey T-shirt for direct rewear"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record every gross outward net garment mass V and its original cohort, including redispatch after a return, with sack tare separately. This is a physical delivery diagnostic; it is not a second reference production, not net delivery Q and not an additional product supply when combined with accepted_worn_shirts. Attach real post-release services to the original cohort only."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids: []
+            ranges: []
+        - row_id: sack_outward
+          role: "LDPE sack accompanying gross dispatch"
+          name: "polyethylene low density foil(PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same native PE-LD material restrictions. This is the physical sack mass attached to gross outward garments, including reused sacks. It is a cp_pack ledger leg and a product packaging attribute, not another fresh sack purchase, garment Q, independently credited co-product or double-counted upstream burden. Record external empty-bag returns and external returns received as separate signed legs."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: empty_sack_return
+          role: "Empty LDPE sack returned externally"
+          name: "polyethylene low density foil(PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional return of the same non-laminated LDPE sack to an external owner, after detachment and empty-bag weighing. This is a distinct outward leg from packaging attached to gross V and from waste. It creates neither garment Q, a new bag purchase nor a credited co-product."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: service_ldpe_sack_waste
+          role: "LDPE sack discarded during released-cohort service"
+          name: "Discarded non-laminated LDPE clothing sack"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record real post-release replacement/handling sack loss by the original garment cohort, with its destination and retained packaging burden. This is a separate service-stage physical outlet and is reconciled once in cp_pack; do not duplicate preparation-stage ldpe_sack_waste. No supplied-Product film UUID is used as a Waste identity."
+          amount:
+            expression: "Use the single §8 normalization calculation on this row’s raw attributable A_i and matched Q; do not renormalize. Physical transfer/dispatch/attachment diagnostics are not another supply."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_scope
+    applies_to: "all allocation"
+    rule: "Use only attributional inventory accounting in an allocation-requiring situation consistent with the study goal. This is not a consequential substitution model; no avoided new clothing, avoided landfill or automatic recycling credit."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_subdivide
+    applies_to: "all shared processes"
+    rule: "First assign dedicated collection/preparation work and embodied inputs by measured subdivision or technically demonstrated virtual subdivision. Assess each remaining exchange’s determining physical causality, including duration with limiting volume/mass for transport or storage; a single mass split for every load is not justified."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_residual
+    applies_to: "remaining shared inventory"
+    rule: "Only genuinely unresolved residual common-process loads may use contemporaneous market value for each output/service in its actual state and amount at the same process gate. Document why subdivision and exchange-specific physical causality fail; remove later transport, washing, packing or retail margins from downstream prices. Reconcile shares to the full unallocated vector."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_history
+    applies_to: "source_shirts; historical vector"
+    rule: "Retain each article’s manufacture, prior wearing/maintenance and recovery history without assigning the same historical exchange twice. Identify the technically equivalent true joint article-production gate and actual value/status trajectory; ordinary use-phase laundry belongs to the wearing service that caused it, not automatically to current reuse preparation. For a positive/nonnegative-valued article with limited inherent change, assess supported cycles/quality and physical attribution under ILCD §§7.9.3VI and14.4; if needed data cannot be obtained or approximated, justify the permitted value-based fallback and its uncertainty. Do not infer an infinite lifetime or recycling rate from a garment’s weight."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_waste_transition
+    applies_to: "negative-value intake"
+    rule: "Where intake has negative market value, locate the actual step creating the first valuable reused article. Keep earlier waste-management responsibility with the first system; identify the true joint process and apply ILCD’s additional transition-step allocation rather than burden-free intake. Gate fees use their actual status and absolute value only in that specified transition allocation. Donated/zero-priced transfer alone does not establish a waste status or zero environmental history. Missing status, transition or history is unresolved, not a default cutoff."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_rejects
+    applies_to: "rejects and reusable packaging"
+    rule: "Value and intended route determine whether a rejected cotton shirt is an actual co-product or waste requiring treatment. Record each separated physical fraction and real destination; no automatic scrap sale or credit. Reusable sacks retain their own measured lifetime/usage attribution; internal reuse is not fresh procurement or garment Q."
+    source_ids:
+      - ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_source
+      process_id: "p_collect"
+      flow_role: "Whole source article and inherited vector"
+      record_type: "handover and history ledger"
+      raw_fields: "source owner; article/lot; date; gross/tare/net mass; main fabric; trim/soil/moisture fractions; prior use and maintenance; gate status/value; historical raw exchange vector; history attribution decision"
+      collection_method: "Calibrated net weighing plus provenance and composition checks; reconstruct attributed historical manufacture/use/recovery with documented true-joint gate; do not invent an absent record"
+      unit: "kg; native exchange units"
+      frequency: "Each source lot and history revision"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_transport
+      process_id: "p_collect"
+      flow_role: "Actual source delivery service"
+      record_type: "journey manifest"
+      raw_fields: "vehicle capacity/fuel; source; destination; leg; distance; payload; empty return; provider included boundary; source partitions"
+      collection_method: "Use actual contracted trip records and independent distance/load records; sum actual payload in kg times matched distance in km once; verify the actual vehicle and native service/property identity before binding"
+      unit: "kg; km; kg*km"
+      frequency: "Each leg including empty-trip attribution"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_energy
+      process_id: "p_prepare"
+      flow_role: "Electricity by process and cohort"
+      record_type: "meter and event log"
+      raw_fields: "process; cohort; meter start/end; kWh; voltage; grid/country; wash/dry/sew/seal task; idle/failed/cleanup intervals; provider boundary"
+      collection_method: "Submeter actual collection/preparation equipment and reconcile to site meter; retain failed and zero-output work; convert kWh to MJ before attribution"
+      unit: "kWh; MJ"
+      frequency: "Each run and meter period"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_transfer
+      process_id: "p_prepare"
+      flow_role: "T and per-exchange WIP inheritance"
+      record_type: "physical transfer and WIP ledger"
+      raw_fields: "lot; process; T mass/state; opening/closing WIP mass/composition; inherited raw vector per exchange; additions; transfers; losses; rework loop"
+      collection_method: "Calibrated transfer/WIP weighing and linked run tickets; preserve provenance and each exchange vector through internal transfers; no bulk monetary proxy for inherited energy/material"
+      unit: "kg; native exchange units"
+      frequency: "Each transfer and period opening/closing"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_material
+      process_id: "p_prepare"
+      flow_role: "Whole detergent or sewing thread"
+      record_type: "purchase issue and composition ledger"
+      raw_fields: "single material identity; supplier/SDS; lot; purchased mass; opening/closing stock; issue; return; actual formulation; repair/wash task; carrier/active assay; loss"
+      collection_method: "Weigh complete supplies and actual issues/returns; reconcile separate material stocks; composition is a subledger rather than a second procurement"
+      unit: "kg"
+      frequency: "Each receipt issue and task"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_water
+      process_id: "p_prepare"
+      flow_role: "Water phases and evaporation"
+      record_type: "water balance with independent measurements"
+      raw_fields: "water meter/mass; temperature; independently established water density if needed; detergent-carrier water; incoming/retained garment moisture; wastewater mass/water fraction; condensate; vapour measurement; uncertainty"
+      collection_method: "Meter/weigh water and independently measure garment moisture and effluent; measure exhaust water by supported humidity/airflow method or use one residual only after all other water legs are independently known; integrated gas volume receives no extra time factor"
+      unit: "kg; raw meter units"
+      frequency: "Each wash/dry/cleanup run and stock boundary"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_release
+      process_id: "p_prepare"
+      flow_role: "Unique accepted first-release mass Q"
+      record_type: "inspection release and tare ledger"
+      raw_fields: "unique first-release ID/time; source/cohort; garment checks; wear evidence; care/cleaning/repair record; receiving-market grade; gross mass; sack tare; accepted net mass; reject; reinspection flags"
+      collection_method: "Inspect item condition/function/safety and documented market fit after preparation; weigh accepted cohort on calibrated scale excluding all packaging and deduplicate release IDs; do not infer cotton composition from an unreadable label"
+      unit: "kg"
+      frequency: "Every first release and rejection"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_outlet
+      process_id: "p_prepare"
+      flow_role: "One physical rejected shirt lint or effluent outlet"
+      record_type: "outlet measurement and destination ledger"
+      raw_fields: "single outlet identity; route/status/value; gross/tare/net mass; moisture/composition; sample method; whole-outlet total; exhaustive source shares; provider/treatment boundary; destinations"
+      collection_method: "Weigh/sample each actual physical stream independently and retain custody/destination record; distinguish bound whole wastewater from its analytical subledger and real separate lint; totals and partitions are alternative non-additive views"
+      unit: "kg"
+      frequency: "Every outlet and representative composition sample"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_pack
+      process_id: "p_prepare"
+      flow_role: "Each LDPE sack component and reusable pool"
+      record_type: "complete physical packaging and burden ledger"
+      raw_fields: "component/material; single-sack tare; empty/WIP-attached/FG-attached/reusable opening stock; all purchases including bundled purchases; first non-purchase external receipts with garments or separately loaned/free-transferred regardless of supplier coverage; same-item previous outward-dispatch ID; true external returns received; closing stocks in same states; attached mass on gross dispatch; empty external return sent; waste; internal reuse; original burden vector"
+      collection_method: "Weigh each component and trace reusable sack identity/condition; reconcile all signed external/stock legs for the same physical pool. Keep procurement/usage burden and attachment diagnostics separate; add actual seal/tape/strap separately if present"
+      unit: "kg"
+      frequency: "Every packaging event and opening/closing count"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_fg
+      process_id: "p_service"
+      flow_role: "Released stock dispatch V and returns"
+      record_type: "cohort FG physical and inherited-burden ledger"
+      raw_fields: "original release/cohort; original Q; opening/closing FG; gross physical V; returned mass; original dispatch ID/reversal; real losses; regrades; inherited vector; incremental repair"
+      collection_method: "Trace calibrated weighbridge/warehouse records by original cohort and dispatch; record returned old stock and incremental preparation without another first-release receipt"
+      unit: "kg; native exchange units"
+      frequency: "Every event and period opening/closing"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+    - protocol_id: cp_service
+      process_id: "p_service"
+      flow_role: "Raw post-release service vector H_i"
+      record_type: "service event and meter ledger"
+      raw_fields: "original cohort; event/time; occupied space/duration; meter/raw exchange; idle/cleanup; storage/handling/repacking task; causal driver; stock return attribution"
+      collection_method: "Collect undivided real raw loads by original released cohort; cross-reference cp_pack/cp_fg and apply demonstrated allocation before joining H into that cohort numerator"
+      unit: "kWh; MJ; kg"
+      frequency: "Every service event and meter interval"
+      temporal_coverage: "Declared reporting window plus complete original-cohort history and post-release events"
+      site_scope: "Actual named source/collection/preparation/storage sites; identify outsourced boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Dated original records; calibrated measurement; custody/provider scope; uncertainty; reconciled totals and retained gaps"
+  calculation_rules:
+    - id: calc_convert
+      applies_to: "all inventory rows"
+      rule: "Convert each undivided raw observation into its exchange unit before attribution; electricity_MJ = measured_kWh * 3.6; freight_kgkm = sum(payload_kg * distance_km) for matched actual legs. Use independently supported density/state for any volume conversion and integrate only genuine rates."
+      inputs:
+        - raw_observations
+        - measured_kWh
+        - payload_kg
+        - distance_km
+        - density_state
+      output: "converted_raw_observations"
+      source_ids: []
+    - id: calc_attribute
+      applies_to: "all inventory rows"
+      rule: "Build raw per-exchange A_i by source/cohort after applicable §7 history and shared-process attribution: opening WIP inherited vector + attributed current additions + original-cohort raw H_i - closing WIP inherited vector - explicit transfers assigned to other cohorts. Reconcile each destination vector to its physical quantity. Preserve failed/Q0/idle/cleanup loads and unresolved assignments; do not discard them or silently spread them over unrelated Q. F_i is only genuinely new unrecorded same-direction load; X_i is only an exactly proven duplicate on that same side (including an upstream-contained exchange). F_i and X_i cannot balance unknown losses or remove a necessary opposite-side return."
+      inputs:
+        - converted_raw_observations
+        - inherited_vectors
+        - allocation_decisions
+        - H_i
+        - F_i
+        - X_i
+      output: "A_i"
+      source_ids:
+        - ilcd-2010
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "q_i = A_i / Q for Q > 0, once, on the matched first-release cohort; Q = sum of unique accepted net release masses in cp_release. Reference production is 1 kg; T/Q, V/Q and packaging-attached diagnostics express gate ratios and are not additional external supplies. At Q = 0 retain raw inventory and unresolved cohort assignments and issue no unit result. Cards and protocol aggregation only reference this calculation; never divide an already normalized q_i again."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+      output: "q_i"
+      source_ids: []
+    - id: calc_physical
+      applies_to: "physical ledgers"
+      rule: "For each physical process/cohort: opening WIP + all real material receipts = closing WIP + all distinct physical material outlets. Preparation production output is Q + actual rejects/lint/effluent/vapour, not Q + closing FG. FG gate: opening FG + Q + external returns received = closing FG + V + actual FG losses/transfers. Combined collection/preparation/FG balance cancels internal T and Q transfers, retains opening/closing WIP and FG, all external material legs and actual water/species states. Balance physical mass and relevant components independently of allocation shares."
+      inputs:
+        - cp_source
+        - cp_transfer
+        - cp_release
+        - cp_outlet
+        - cp_water
+        - cp_fg
+      output: "physical_reconciliation"
+      source_ids: []
+    - id: calc_packaging
+      applies_to: "all packaging rows"
+      rule: "For each component and the same physical pool: opening(empty + WIP-attached + FG-attached + reusable) + all purchased packaging receipts + first non-purchase external receipts + proven same-item external returns received = closing(empty + WIP-attached + FG-attached + reusable) + attached packaging on gross physical dispatch V + external empty returns sent + waste. Purchased receipts include standalone and bundled purchases. First non-purchase receipts include sacks arriving with garments and separate loans/free transfers, even when omitted from a supplier inventory. A true return must trace the same physical sack to its prior dispatch from this site; an untraced incoming sack is not a return. Assign each physical receipt once. Record actual procurement, freight and service burdens once, net of proven provider inclusions only; missing supplier data is pending, never zero. Internal attachment/detachment/reuse cancels; source packaging retains its real inherited burden without manufacturing it again. No packaging mass enters garment Q."
+      inputs:
+        - cp_pack
+        - V
+        - packaging_stock_states
+      output: "packaging_reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all garments and native references"
+      requirement: "Resolve the worn-shirt core before methodology acceptance; verify whole native record and its actual supplier/route/form/type/property chain. All §3 qualifiers and every native restriction must remain in consumable product context. Unreadable composition/unknown old-clothing origin is not a passed identity check."
+      evidence: "Source custody and composition evidence; exact direct/support records; applicability decision"
+    - id: dq_measure
+      applies_to: "all raw fields"
+      requirement: "Keep calibration, tare and moisture methods, complete failed/idle/Q0 records, original units, independent density when required, time intervals, uncertainty and any reconciliation discrepancy; missing is not zero."
+      evidence: "Calibration and batch/meter logs; independent samples and balance residuals"
+    - id: dq_history
+      applies_to: "source history and shared allocation"
+      requirement: "Keep raw historical/current/service vectors separately, explicit status/value trajectory, true joint gate, subdivision/physical-causality decisions, residual same-gate values and sensitivity. A zero price is no history waiver."
+      evidence: "Traceable upstream studies and history/transition decision; complete share reconciliation"
+    - id: dq_completeness
+      applies_to: "whole physical gates"
+      requirement: "Record source partitions exhaustively without overlap and one provider per exchange. Inspect all actual materials, utilities, wastes and emitted species; add omitted atomic rows. Check independent whole/component and complete packaging balances with WIP/FG inheritance."
+      evidence: "Custody manifests; raw balance and provider-boundary audit"
+    - id: dq_time
+      applies_to: "all collection protocols"
+      requirement: "Use one declared site/reporting window plus original-cohort history and actual post-release service periods. Disclose older evidence, geographical transfer, operator-selected grades, unknowns and uncertainty; synthesis is not one observed order or factory."
+      evidence: "Dated source and site records; condition-specific applicability review"
+validation_rules:
+  - rule_id: v_scope
+    applies_to: "applicability"
+    rule: "Verify adult cotton-knit T-shirt identity, appreciable wear, bulk presentation, actual reuse market and safe functional acceptance independently. Neither a cotton label nor a collection sack alone proves direct rewear. Reject new clothes and recycling-only rags from Q."
+    source_ids:
+      - unsd-cpc-2025
+      - wco-hs63-2022
+      - austria-reuse-2019
+  - rule_id: v_uuid
+    applies_to: "native identity"
+    rule: "Reject mismatched route/form/grade/media/type/CAS, even with a similar basename or classification. Verify exact reference property and unit-group versions outside canonical text, and actual reference unit. Ordinary provider/auxiliary UUID gaps remain explicit; the unresolved core prevents a complete usable identity."
+    source_ids: []
+  - rule_id: v_basis
+    applies_to: "Q; A_i; H_i"
+    rule: "Check one first-release denominator and exactly one calc_normalize application after raw conversion and attribution. Reject duplicate first-release IDs, dispatch/return/each-wear production, closing-FG duplication, hidden Q0 loads, lost WIP/FG vectors or an extra division."
+    source_ids: []
+  - rule_id: v_mass
+    applies_to: "all physical gates"
+    rule: "Check collection/preparation/FG and combined physical balances independently of allocation, with distinct actual species/water phases, complete packaging complete and source-partition reconciliation. Multiple unresolved outlets cannot be fitted from one residual; unresolved discrepancies are findings."
+    source_ids: []
+  - rule_id: v_allocation
+    applies_to: "history and shared processes"
+    rule: "Check documented history/status/value and true joint process, then subdivision, exchange-specific determining physical causality and only remaining same-gate economic residuals. No free choice of mass/economic share, default zero-history input, fixed reuse proportion or avoided-new-clothing credit."
+    source_ids:
+      - ilcd-2010
+  - rule_id: v_complete
+    applies_to: "dataset and claim"
+    rule: "Report performed/skipped checks, findings, missing evidence and scope completeness. Structural/projection/measurement checks do not establish scientific, translation, supplier or legal approval. Missing core identity or actual route/history evidence remains unresolved; do not advertise full coverage or a unit result for Q0."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Attributed supply of this specified prepared worn garment at the declared first-release gate, with cohort-bound post-release services"
+  allowed_use: "Use only after core identity, route and history applicability are resolved and required foreground data are collected; disclose candidate methodology and uncertainty"
+  excluded_use: "New garment manufacturing; per-wear functional comparisons; automatic substitution/credit; mixed collection or fibre-recycling dataset; unknown-endpoint exports"
+  required_metadata: "All §3 qualifiers; source/receiver and custody; first-release gate/cohort; raw Q and A vectors; native restrictions; provider boundaries; historical allocation and stock/service links"
+  required_quality_disclosure: "Core and auxiliary identity gaps; actual electricity provider/native property gap; operator-specific acceptance and cleaning; historical uncertainties; geographic/temporal transfer; actual measurement completeness and mass/packaging discrepancies"
+  update_trigger: "Changed garment family, reuse market/grade, waste status, cleaning/repair/heat route, provider, native identity, reference gate or material evidence"
+data_sources:
+  - id: "unsd-cpc-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Version3.0 explanatory notes, 30June2025, PDF pp200–201; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Complete notes, PDF pp200–201: 39217 has a title but no further inclusion text; 39214–39216 fibre wastes and 39218 rags are excluded from this intact clothing branch"
+  - id: "wco-hs63-2022"
+    type: "official_guidance"
+    reference: "WCO HS2022 Chapter63 Note3; https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1163_2022e.pdf"
+    used_for: "Appreciable-wear and bulk/bale/sack presentation as separate trade-state conditions; not a lifecycle burden rule"
+  - id: "jrc-textile-2025"
+    type: "literature"
+    reference: "Bakowska et al., Fate and Composition of Textile Waste from Italy, the Czech Republic and Romania, JRC141441 (2025), Annex 3, printed pp69–73 (PDF pp73–77); https://doi.org/10.2760/3332076"
+    used_for: "Observed sorting context, operator/market-specific reuse selection, T-shirt category and wiper/recycling counterexamples; technical synthesis only, no transfer of study yields or default garment mass"
+  - id: "austria-reuse-2019"
+    type: "official_guidance"
+    reference: "Meissner et al., Guide to determining the end-of-waste status in the preparation for reuse, November2019, §§1–2 and5.1; https://www.umweltberatung.at/download/?id=Prep-for-Re-Use_end-of-waste-guide_Austria_2019.pdf"
+    used_for: "General garment assessment sheet: checking, actual necessary cleaning/repair, function/safety and documentation; Austrian guidance is methodological evidence, not universal legal clearance or a wash recipe"
+  - id: "ilcd-2010"
+    type: "handbook"
+    reference: "European Commission JRC, ILCD Handbook General guide — Detailed guidance, First editionMarch2010, §§7.9.2–7.9.3 and14.4; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional allocation hierarchy and explicit reuse/history/status/true-joint-process conditions; no product-specific shares or fixed lifespan"
+  - id: "pacific-sorting"
+    type: "literature"
+    reference: "Pacific Clothing Recyclers, Product Process; https://pacificclothing.ca/product-process/"
+    used_for: "First-party sorting and men’s short-sleeved cotton round-neck shirt grade, knit/woven distinction, individual reinspection and packing; no transferred yield, bag material or wash/repair assumptions"
+  - id: "eu-textile-2025"
+    type: "official_guidance"
+    reference: "Directive (EU) 2025/1892, recital 23 and Article 22d sorting/direct-reuse provisions; https://eur-lex.europa.eu/eli/dir/2025/1892/oj/eng"
+    used_for: "Legal-status and destination-relevant reuse evidence distinction, only within applicable jurisdiction; not CPC identity or universal clearance"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:9644bbf140abe1eb4dd91279d399324ab62161c2fcabc627be483de24485fc89"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8570"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8570
+          line: 65
+          column: 1
+        end:
+          offset: 13746
+          line: 90
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Whole post-use cotton T-shirts at source-owner handover, before collection/sorting/preparation; include assigned upstream garment history separately from current preparation activities |\n| starting_condition_role | Post-use whole-article input; a finished reused-shirt purchase/repacking gate is not the starting point |\n| product_classification_scope | One direct-clothing-reuse branch within CPC 3.0:39217; rags and recycling-only materials excluded |\n| recursive_input_rule | Internal T transfers and unaccepted rework retain inherited vectors and cancel on combination. Previously released returned garments retain original cohort identity; they are not a new source purchase or new Q. External prepared garments require separate applicability review. |\n| upstream_dataset_requirement | Use one compatible provider for each actual purchase/service; retain route, geography, time and included transport/packaging. Carry the documented historical garment exchange vector exactly once, including the attributed manufacture, past maintenance/use and recovery steps; never assume donated means burden-free. |\n| disclosure | Report separate collection, preparation/first-release, FG-service and combined gates; raw physical balances, mixed collection partitions, history attribution and unresolved identity remain explicit |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| b_route | p_collect; p_prepare | Include source handover, real pickup/transport, receiving/unpacking, individual sorting and condition assessment, necessary actual cleaning/drying and minor repair, inspection and bulk sack packing. Preserve rejected fractions. Do not substitute a charity collection total or purchased finished-shirt packaging inventory. | jrc-textile-2025; austria-reuse-2019 |\n| b_identity | reference product | The chosen article remains an adult cotton-knit T-shirt for wearing. Verify appreciable prior wear and bulk sack presentation independently from direct-rewear suitability. New/unworn articles and material suitable only for rags or fibres are outside. UN CPC gives the category title only; the trade-condition basis here is WCO Chapter63 Note3. | unsd-cpc-2025; wco-hs63-2022 |\n| b_cleaning | p_prepare | Choose actual item/cohort cleaning needs and fibre/care-compatible procedures; no universal wash temperature, dose, hygiene claim, repair rate or drying energy is supplied. The representative aqueous route uses whole laundry liquid and electric drying when needed. Dry cleaning, hazardous contamination, medical/protective decontamination or substantial reconstruction require another review and complete atomic inventory. | austria-reuse-2019; jrc-textile-2025 |\n| b_completeness | all processes | Keep failed runs, Q0 cohorts, startup/shutdown, idle, cleanup, repeat washing and real rework. Add every actual omitted single formulation, fuel, utility, packaging component, separated waste and emitted species before asserting completeness. No other-material bucket or unsupported zero substitutes for a real exchange. |  |\n| b_utilities | electricity; heat; water | The selected branch has electric washing/drying and handling. Do not copy a nonexistent boiler/steam/combustion inventory. If another actual heat route occurs, add each fuel, combustion gas species, steam or heat input and external condensate/heat-exchanger-water Product return separately, with actual state/enthalpy and supplier water/energy conventions; cancel internal circuits. |  |\n| b_stocks | Q; FG; V | At first release, Q already includes released garments still in closing FG. Maintain opening FG + Q + external returns received = closing FG + gross physical dispatch V + real FG losses/transfers. Do not add closing FG to Q. Preserve original-dispatch reversal and old-cohort burdens on returns; extra cleaning/repair is incremental load, not new garment production. |  |\n| b_services | p_service | Store raw post-release storage/handling/repacking loads H_i against original released cohort c. Join them into that cohort’s numerator before calc_normalize; do not put old-FG services onto unrelated current Q. Gross dispatch V and returned shipments remain physical diagnostics. Combine gates by cancelling internal T and Q transfers. |  |\n| b_provider | all provider and outlet rows | Separate whole-outlet totals from source partitions: collect either measured partition amounts or a total with exhaustive non-overlapping shares, never both added. Match each stream to one provider/treatment boundary. An outsourced freight/treatment dataset already including fuel, emissions or losses must not be duplicated with direct rows. |  |\n| b_native | UUID-bearing and unbound rows | All native restrictions in each card are mandatory product context. The worn-shirt core is unbound: manufactured-shirt, generic cloth and unusable-production-waste candidates do not establish a reusable worn garment. No surrogate UUID or inferred database-wide absence is asserted. Method use requires resolution of this core identity and actual-gate compatibility. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 9
+              column: 1
+            end:
+              offset: 313
+              line: 9
+              column: 61
+          text: "# Preparation of worn cotton-knit T-shirts for direct rewear"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8570
+              line: 65
+              column: 1
+            end:
+              offset: 8591
+              line: 65
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_44804"
+      family: "allocation"
+      span:
+        start:
+          offset: 44804
+          line: 528
+          column: 1
+        end:
+          offset: 47827
+          line: 539
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_scope | all allocation | Use only attributional inventory accounting in an allocation-requiring situation consistent with the study goal. This is not a consequential substitution model; no avoided new clothing, avoided landfill or automatic recycling credit. | ilcd-2010 |\n| a_subdivide | all shared processes | First assign dedicated collection/preparation work and embodied inputs by measured subdivision or technically demonstrated virtual subdivision. Assess each remaining exchange’s determining physical causality, including duration with limiting volume/mass for transport or storage; a single mass split for every load is not justified. | ilcd-2010 |\n| a_residual | remaining shared inventory | Only genuinely unresolved residual common-process loads may use contemporaneous market value for each output/service in its actual state and amount at the same process gate. Document why subdivision and exchange-specific physical causality fail; remove later transport, washing, packing or retail margins from downstream prices. Reconcile shares to the full unallocated vector. | ilcd-2010 |\n| a_history | source_shirts; historical vector | Retain each article’s manufacture, prior wearing/maintenance and recovery history without assigning the same historical exchange twice. Identify the technically equivalent true joint article-production gate and actual value/status trajectory; ordinary use-phase laundry belongs to the wearing service that caused it, not automatically to current reuse preparation. For a positive/nonnegative-valued article with limited inherent change, assess supported cycles/quality and physical attribution under ILCD §§7.9.3VI and14.4; if needed data cannot be obtained or approximated, justify the permitted value-based fallback and its uncertainty. Do not infer an infinite lifetime or recycling rate from a garment’s weight. | ilcd-2010 |\n| a_waste_transition | negative-value intake | Where intake has negative market value, locate the actual step creating the first valuable reused article. Keep earlier waste-management responsibility with the first system; identify the true joint process and apply ILCD’s additional transition-step allocation rather than burden-free intake. Gate fees use their actual status and absolute value only in that specified transition allocation. Donated/zero-priced transfer alone does not establish a waste status or zero environmental history. Missing status, transition or history is unresolved, not a default cutoff. | ilcd-2010 |\n| a_rejects | rejects and reusable packaging | Value and intended route determine whether a rejected cotton shirt is an actual co-product or waste requiring treatment. Record each separated physical fraction and real destination; no automatic scrap sale or credit. Reusable sacks retain their own measured lifetime/usage attribution; internal reuse is not fresh procurement or garment Q. | ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 9
+              column: 1
+            end:
+              offset: 313
+              line: 9
+              column: 61
+          text: "# Preparation of worn cotton-knit T-shirts for direct rewear"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 44804
+              line: 528
+              column: 1
+            end:
+              offset: 44844
+              line: 528
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_64309"
+      family: "validation"
+      span:
+        start:
+          offset: 64309
+          line: 579
+          column: 1
+        end:
+          offset: 66481
+          line: 590
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_scope | applicability | Verify adult cotton-knit T-shirt identity, appreciable wear, bulk presentation, actual reuse market and safe functional acceptance independently. Neither a cotton label nor a collection sack alone proves direct rewear. Reject new clothes and recycling-only rags from Q. | unsd-cpc-2025; wco-hs63-2022; austria-reuse-2019 |\n| v_uuid | native identity | Reject mismatched route/form/grade/media/type/CAS, even with a similar basename or classification. Verify exact reference property and unit-group versions outside canonical text, and actual reference unit. Ordinary provider/auxiliary UUID gaps remain explicit; the unresolved core prevents a complete usable identity. |  |\n| v_basis | Q; A_i; H_i | Check one first-release denominator and exactly one calc_normalize application after raw conversion and attribution. Reject duplicate first-release IDs, dispatch/return/each-wear production, closing-FG duplication, hidden Q0 loads, lost WIP/FG vectors or an extra division. |  |\n| v_mass | all physical gates | Check collection/preparation/FG and combined physical balances independently of allocation, with distinct actual species/water phases, complete packaging complete and source-partition reconciliation. Multiple unresolved outlets cannot be fitted from one residual; unresolved discrepancies are findings. |  |\n| v_allocation | history and shared processes | Check documented history/status/value and true joint process, then subdivision, exchange-specific determining physical causality and only remaining same-gate economic residuals. No free choice of mass/economic share, default zero-history input, fixed reuse proportion or avoided-new-clothing credit. | ilcd-2010 |\n| v_complete | dataset and claim | Report performed/skipped checks, findings, missing evidence and scope completeness. Structural/projection/measurement checks do not establish scientific, translation, supplier or legal approval. Missing core identity or actual route/history evidence remains unresolved; do not advertise full coverage or a unit result for Q0. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 253
+              line: 9
+              column: 1
+            end:
+              offset: 313
+              line: 9
+              column: 61
+          text: "# Preparation of worn cotton-knit T-shirts for direct rewear"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 64309
+              line: 579
+              column: 1
+            end:
+              offset: 64331
+              line: 579
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_route"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 10078
+          line: 80
+          column: 1
+        end:
+          offset: 10475
+          line: 80
+          column: 398
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 10476
+          line: 81
+          column: 1
+        end:
+          offset: 10887
+          line: 81
+          column: 412
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_cleaning"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 10888
+          line: 82
+          column: 1
+        end:
+          offset: 11378
+          line: 82
+          column: 491
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 11379
+          line: 83
+          column: 1
+        end:
+          offset: 11739
+          line: 83
+          column: 361
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 11740
+          line: 84
+          column: 1
+        end:
+          offset: 12170
+          line: 84
+          column: 431
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_stocks"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 12171
+          line: 85
+          column: 1
+        end:
+          offset: 12566
+          line: 85
+          column: 396
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_services"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 12567
+          line: 86
+          column: 1
+        end:
+          offset: 12934
+          line: 86
+          column: 368
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "b_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 12935
+          line: 87
+          column: 1
+        end:
+          offset: 13328
+          line: 87
+          column: 394
+    - pointer: "/system_boundary/rules/8"
+      rule_id: "b_native"
+      identity_kind: "explicit"
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 13329
+          line: 88
+          column: 1
+        end:
+          offset: 13744
+          line: 88
+          column: 416
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 44917
+          line: 532
+          column: 1
+        end:
+          offset: 45193
+          line: 532
+          column: 277
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 45194
+          line: 533
+          column: 1
+        end:
+          offset: 45579
+          line: 533
+          column: 386
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 45580
+          line: 534
+          column: 1
+        end:
+          offset: 46015
+          line: 534
+          column: 436
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_history"
+      identity_kind: "explicit"
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 46016
+          line: 535
+          column: 1
+        end:
+          offset: 46794
+          line: 535
+          column: 779
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_waste_transition"
+      identity_kind: "explicit"
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 46795
+          line: 536
+          column: 1
+        end:
+          offset: 47423
+          line: 536
+          column: 629
+    - pointer: "/allocation_rules/5"
+      rule_id: "a_rejects"
+      identity_kind: "explicit"
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 47424
+          line: 537
+          column: 1
+        end:
+          offset: 47825
+          line: 537
+          column: 402
+    - pointer: "/validation_rules/0"
+      rule_id: "v_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 64404
+          line: 583
+          column: 1
+        end:
+          offset: 64754
+          line: 583
+          column: 351
+    - pointer: "/validation_rules/1"
+      rule_id: "v_uuid"
+      identity_kind: "explicit"
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 64755
+          line: 584
+          column: 1
+        end:
+          offset: 65106
+          line: 584
+          column: 352
+    - pointer: "/validation_rules/2"
+      rule_id: "v_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 65107
+          line: 585
+          column: 1
+        end:
+          offset: 65411
+          line: 585
+          column: 305
+    - pointer: "/validation_rules/3"
+      rule_id: "v_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 65412
+          line: 586
+          column: 1
+        end:
+          offset: 65751
+          line: 586
+          column: 340
+    - pointer: "/validation_rules/4"
+      rule_id: "v_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 65752
+          line: 587
+          column: 1
+        end:
+          offset: 66113
+          line: 587
+          column: 362
+    - pointer: "/validation_rules/5"
+      rule_id: "v_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 66114
+          line: 588
+          column: 1
+        end:
+          offset: 66479
+          line: 588
+          column: 366
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 8570
+          line: 65
+          column: 1
+        end:
+          offset: 8591
+          line: 65
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8570"
+      source_span:
+        start:
+          offset: 8619
+          line: 69
+          column: 1
+        end:
+          offset: 10005
+          line: 76
+          column: 215
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_44804"
+      source_span:
+        start:
+          offset: 44804
+          line: 528
+          column: 1
+        end:
+          offset: 44844
+          line: 528
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_64309"
+      source_span:
+        start:
+          offset: 64309
+          line: 579
+          column: 1
+        end:
+          offset: 64331
+          line: 579
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9644bbf140abe1eb4dd91279d399324ab62161c2fcabc627be483de24485fc89"
+  generated_content_sha256: "sha256:cc835d119e5a3bb084ce519bec53187cba6d07055495ee9883477becf95344a6"

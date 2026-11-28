@@ -114,3 +114,13 @@ test('source lookup handles emitted paths and stops at the nearest checkout boun
  const nested=path.join(f.root,'nested');write(nested,'.git','gitdir: nested-fixture\n');write(nested,emitted,'export {};\n');assert.equal(providerRuntimeSourceRoot(pathToFileURL(path.join(nested,emitted))),nested);
  fs.unlinkSync(path.join(f.root,'.git'));assert.throws(()=>providerRuntimeSourceRoot(pathToFileURL(path.join(f.root,emitted))),/Cannot locate authored provider source repository/);
 }finally{f.cleanup();}});
+
+test('combined identity and navigation profile binds both capabilities with version three',()=>{const f=fixture();try{
+ install(f.root);const from='/en/docs/pcr/a/b/redundant/',to='/en/docs/pcr/a/b/original/';
+ write(f.root,PROVIDER_RUNTIME_PATHS[2],JSON.stringify({schemaVersion:2,entries:[{from,to,anchor:'scope'}],identityMoves:[{from,to}]}));
+ for(const file of ['packages/pcr-docs/lib/navigation-trees.ts','packages/pcr-docs/lib/navigation-binding.d.ts'])write(f.root,file,'export {};\n');
+ const proof=createProviderRuntime(f.root,source)!;assert.equal(proof.schemaVersion,3);assert.equal(proof.navigationBinding,null);assert.deepEqual(proof.identityMoves,[{from,to}]);assert.equal(proof.files.length,5);verifyProviderRuntimeSource(f.root,proof,source);
+ for(const key of ['navigationBinding','identityMoves'] as const){const changed=structuredClone(proof);delete changed[key];assert.throws(()=>parseProviderRuntime(changed,source));}
+ const downgraded=structuredClone(proof);downgraded.schemaVersion=2;assert.throws(()=>parseProviderRuntime(downgraded,source));
+ const closure=structuredClone(proof);closure.files.pop();assert.throws(()=>parseProviderRuntime(closure,source));
+}finally{f.cleanup();}});

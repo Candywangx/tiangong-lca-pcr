@@ -110,7 +110,9 @@ before removing any duplicate file from the new owned export; it publishes a
 source-bound `generated/static-route-aliases.json` with each original URL, retained
 target, byte count and SHA-256. Verification requires the complete current route
 inventory and exact target bytes. Missing, malformed, foreign-source or unequal
-pairs fail the build. Other Next navigation payloads remain physical and unchanged.
+pairs fail the build. The bounded transport below covers Next tree payloads and,
+when required by the file limit, a subset of primary-language document page
+prefetches. The remaining navigation payloads are physical.
 
 EdgeOne internal rewrites retain HTTP 200 access to `/__next._full.txt` and every
 nested `/*/__next._full.txt`, serving `/index.txt` and `/:splat/index.txt`
@@ -123,6 +125,65 @@ representatives, checks both original and target URLs with and without queries,
 and requires exact decoded bytes, MIME, revalidation and nosniff behavior. Existing
 HTML, raw-download, search and browser-navigation checks remain required. Static
 configuration alone does not establish actual provider rewrite behavior.
+
+### Bounded Next navigation transport
+
+The owner-authorized PR34 storage exception packs only `__next._tree.txt` files.
+It preserves every original URL and byte, without redirecting the request or changing
+HTML, source downloads, page payloads or the full/index alias contract. Preparation
+compares every original before mutation and independently derives complete route
+coverage from physical `index.txt` files. A changed original fails the handoff.
+The strict fewer-than-20,000 physical-file limit remains unchanged.
+
+The first hexadecimal SHA-256 digit of the canonical encoded URL selects one of at
+most 16 packs. Each pack is bounded to 512 rows and 1,000,000 bytes; the manifest is
+bounded to 16,384 bytes and the compilation binding to 4,096 bytes. Content-addressed
+filenames, exact lengths, source identity, body hashes, canonical base64, route
+uniqueness and the complete namespace are verified before acceptance. No undeclared
+pack, missing route or physical tree shadow is eligible for sealing or import.
+
+Provider profile 2 binds the runtime source closure and the final non-null
+`generated/navigation-binding.json`. The provider entry imports that literal JSON
+from the verified owned export at compilation; it never fetches a mutable latest
+binding. Next also compiles this entry before producing its static export, so the
+Next stage may create an owned temporary `null` compilation slot when none exists.
+Static export does not execute this middleware. Cleanup removes only that unchanged
+owned slot; final export, product sealing and provider import reject an unbound
+profile. The final provider compilation uses the verified non-null binding, and
+Next's intermediate middleware bundle is not a deployed artifact. Existing profile
+1 artifacts retain their original verification path.
+
+The shared runtime serves GET and HEAD at the original tree URL, preserves query
+semantics, and returns exact decoded bytes with text/plain, nosniff, revalidation
+and a content hash ETag. Unknown routes and other methods retain normal routing;
+invalid or unavailable authenticated data returns a non-cacheable 503. Each fetch
+has a ten-second deadline and a decoded-byte bound, including compressed responses.
+Each of at most two cached origins shares one manifest request, at most one pending
+request per bucket and two decoded cached packs. The sealed local server executes
+this same source-owned handler and forwards its Response. Product probes bind the
+whole transport plus root/English/Chinese original URL responses; these checks do
+not replace the complete browser suite or establish live provider deployment.
+
+[Fork PR #38](https://github.com/Candywangx/tiangong-lca-pcr/pull/38) extends the transport only when tree packing and full/index aliases would
+still exceed the file budget after reserving the sealed routing configuration.
+The additional eligible files have the exact Next page-prefetch basename
+`__next.$d$lang.docs.$oc$slug.__PAGE__.txt` under `/en/docs/` or `/zh/docs/`.
+The exporter chooses up to 600 of the smallest eligible responses that fit
+the existing 1,000,000-byte and 512-row pack limits, using 54 separately identified
+buckets selected by the first four hexadecimal SHA-256 digits modulo 54.
+Schema 2 keeps the 16,384-byte manifest and 4,096-byte binding bounds. The
+binding holds sorted 24-bit path-hash prefixes so physical prefetches normally
+bypass pack fetching. On a prefix collision, an exact canonical path lookup
+still decides whether to serve a packed or physical response. Schema 1 products
+retain the tree-only behavior.
+
+Preparation checks all original page prefetches against the physical route
+indexes before mutation and compares each packed response with its original
+bytes. Sealing and import require exactly one physical or packed prefetch per
+eligible route, verify all pack bytes and the binding's membership, and reject
+physical shadows. The original literal-dollar and percent-encoded URLs return
+the same bytes and revalidation headers. Sealed qualification exercises packed
+English and Chinese representative responses and the complete browser suite.
 
 An independently collected source inventory accounts for every rendered block,
 rule identifier, table value, link and code block. Rendering may add navigation,
@@ -792,6 +853,8 @@ Reviewed published continuation URLs remain accessible through exact GET/HEAD mi
 
 `generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires real target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. Anchor checks use a dependency-free scanner for generated HTML below 25,000,000 UTF-8 bytes and at most 1,000 open elements: only first id attributes in the ordinary document tree count, with emitted character references decoded once. Quoted attribute text, comments, raw-text payloads, inert template content and foreign SVG/MathML descendants cannot supply chapter anchors. Unsupported malformed structure, declarative shadow templates or ambiguous character references fail closed; this scanner does not claim general browser error-recovery compatibility. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
 
+Provider runtime profile version 3 binds identity restorations and packed navigation in the same source closure. It requires both `identityMoves` and `navigationBinding`, the original middleware files and both navigation runtime files. Readers retain version 1 and each historical version 2 profile. Capability checks use the declared fields, so an identity-only version 2 profile does not require packed navigation. Source verification normalizes only the export-bound navigation receipt, while retaining every identity move.
+
 Provider CLI discovery/compilation and sealed-browser simulation are evidence for their respective scopes. They do not assert live production adoption; deployment and live acceptance still require the existing release authority.
 
 When an authorized product release invokes live acceptance for a sealed provider-runtime profile,
@@ -799,3 +862,145 @@ it verifies the served profile digest and bilingual representative old/target re
 without queries, including the actual default chapter anchor. This stays within the existing
 live-request deadline and size bounds. A compile-only or locally emulated result cannot replace
 that future live acceptance.
+
+## Scoped upstream intake: search transports v8 through v12
+
+Search manifest version 8 uses envelope `schemaVersion: 4` and
+`encoding: "v4-columnar-new-reuse-ranked-split-vlq"`. It retains the original
+first-appearance term dictionary and every ordered logical v4 wire. Its five
+numeric channels contain term commands, ranked score headers, posting lengths,
+signed predicted first values and unsigned remaining posting deltas. A map with
+negative remaining deltas, unsupported shapes, oversized integers or insufficient
+shared expansion budget retains its original native numeric columns.
+
+Term command zero introduces the next dictionary ID. A positive command is one
+plus the zigzag delta from the previous reused ID in that map; new terms do not
+change that predictor. Reuse state resets per map, while the next new ID advances
+through every map in original shard/key order, including native fallbacks. Reuse
+cannot name an unintroduced term, native columns cannot skip a new ID, and all
+dictionary entries must be introduced. The restored original term-ID deltas,
+not the command stream, enter the existing logical-wire checks.
+
+The 1,023 legal score headers have a fixed corpus-independent rank: headers whose
+declared length equals the mask's bit length come first, then mask popcount and
+the original numeric header break ties. This bijection preserves trailing empty
+slots. Nonempty postings retain v7's previous-first-value predictor independently
+for each of the nine score slots; first and remaining values occupy separate
+channels without reordering the restored postings. Empty lists consume neither.
+
+V8 retains complete unique channel ownership, canonical bounded VLQs, header and
+posting-count checks, finite predictor arithmetic and the same shared 20 MB numeric
+expansion budget. The budget accounts for the original term/header digit lengths,
+slot vectors, posting arrays and restored first values as well as decoded channels;
+short term commands and small header ranks cannot conceal larger restoration.
+Physical bytes, summed restored-wire bytes, final logical hashes and record counts
+remain independently checked. Readers and canonical writer bytes for v1-7 remain
+compatible; older Workers reject the v8 manifest. A new transport does not alter
+source text, independent logical indexes, engine exports, record fields or ranking.
+
+Search manifest version 9 uses envelope `schemaVersion: 5` and
+`encoding: "v4-columnar-arithmetic-channels"`. It preserves the complete v8
+term dictionary, shards and five ordered numeric channels. Only the ASCII VLQ
+channel strings are transported with an adaptive binary arithmetic code; original
+string lengths, valid bit count and canonical base64 bytes are explicit. Each
+six-bit alphabet symbol uses the preceding symbol and current binary prefix as
+context; the initial predecessor is 64 at each original string boundary. Counts
+start at one and rescale by rounded-up halving at a combined count of 256.
+The 32-bit interval uses exact integer-valued arithmetic and canonical final bits.
+
+Before arithmetic expansion, the reader verifies complete, unique map-to-channel
+ownership and equal channel counts. All five channels share a separate 20 MB
+restored-ASCII/count budget, charged before allocation. Noncanonical base64,
+padding, termination, truncated streams and unbounded lengths are rejected;
+re-encoding checks the canonical bitstream. Restored strings then pass every
+existing v8 VLQ, predictor, numeric-expansion, dictionary, logical-wire hash and
+record-count check. The original numeric expansion budget is not replaced or
+increased. The emitted Worker includes the compiled arithmetic module explicitly;
+older Workers fail closed on v9. No original record, token, posting, score slot,
+logical shard order, query cutoff or ranking is changed. V1–8 readers and V5–8
+writer behavior remain available. An unavailable arithmetic candidate cannot
+suppress an eligible earlier transport.
+
+Search manifest version 10 adds a lossless Brotli envelope around a selected
+v7, v8 or v9 physical pack. The envelope binds its original transport version,
+exact inner UTF-8 length and SHA-256, source commit, language and first logical
+shard. Its canonical base64 holds Brotli quality-11 bytes with a 22-bit window.
+Selection compares the complete manifest and actual level-9 gzip file sizes; the
+older layout remains available when the envelope does not improve transfer size.
+The sixteen-member limit, 20 MB physical and restored-byte bounds, 4 MB language
+transfer limit, logical identities and all inner decoder checks remain unchanged.
+
+The Worker lazily loads the pinned `brotli-dec-wasm` decoder and its WASM only
+when a v10 pack is requested. The emitter copies these locked dependency bytes
+and the MIT license; it does not rely on a CDN or native browser Brotli support.
+Decompression runs in the existing Worker, uses at most 64 KiB per output step,
+requires exact input consumption and the authenticated inner output length, and
+frees streaming allocations on success or failure. Truncated, oversized and
+trailing-byte streams fail without publishing partial indexes. Node verification
+uses its independently implemented bounded Brotli decoder. Both paths authenticate
+the outer bytes, then the restored inner bytes and every logical wire before
+import. Old transport readers, full records, tokenization, query limits, ranking
+and retry behavior remain available. The additional decoder assets are included
+in the static export and resource counts; measured transfer savings must be
+reported alongside their download cost.
+
+If the earlier transports exceed a language budget, the generator also measures
+manifest version 11 over consecutive groups of at most sixteen logical shards.
+Its Brotli envelope (schema 7, `v8-context-brotli-base64`) binds the coded byte
+length and the exact canonical v8 inner length and hash. Within the v8 numeric
+columns, term commands and score ranks use two-symbol context, posting lengths
+and first values use the v9 one-symbol model, and posting remainders retain
+their VLQ strings. The two-symbol model blends the observed bit counts for the
+previous two symbols and current bit prefix with six observations from the
+one-symbol prior. At 255 observations both pair counts are halved, rounding
+down. Both predecessors reset at each string boundary.
+
+The reader checks map ownership, channel counts and the exact expanded UTF-8
+length before arithmetic decoding. It authenticates the reconstructed v8 bytes
+and then every logical wire. The existing Worker Brotli decoder handles both
+envelopes. Full manifests and physical files count toward the same budgets.
+
+When v11 still exceeds either per-language budget, v12 measures a bounded
+set of wider physical groups. Their dictionaries use a space-delimited string
+when every term is nonempty and contains no space. The original dictionary order
+and values are restored exactly. A dictionary that contains a literal space uses
+the array representation. The reader charges the recovered array framing against
+the authenticated inner length before splitting the string.
+
+V12 uses at most 56 consecutive logical shards per physical group and retains
+the existing 20 MB bound on the physical file, decoded bytes and summed logical
+bytes of a group. Existing formats retain their 16-member cap. The 20 MB raw and
+4 MB gzip per-language budgets still include the manifest. The larger physical
+groups share a dictionary across more original shards. Logical boundaries,
+record fields, native exports, search cutoffs and ranking remain unchanged.
+The worker uses its existing Brotli decoder and verifies the restored v8 pack
+and each logical wire before importing the index.
+
+The generator retains the original sixteen-member greedy layout as a candidate
+and compares v7, v8 and v9 over a bounded set of consecutive pack boundaries near balanced cuts.
+At each cut position it retains at most sixteen paths. Physical dictionary strings
+may use equivalent lowercase JSON Unicode escapes when that pack's actual level-9
+gzip is smaller; dictionary values and first-appearance order remain exact. The
+complete manifest and physical files determine the selected gzip cost within the
+unchanged raw budget. Candidates must also retain the existing per-pack physical
+and summed restored-wire byte limits before selection. This does not change
+logical text buckets, engine exports,
+record fields, logical order, ranking, decoder versions or any size/expansion guard.
+
+Corpus auditing accepts only the exact canonical physical pack spelling or its
+exact dictionary-only Unicode-escape variant for v7/v8/v9. It still verifies physical hashes,
+every restored logical wire, native engine exports, complete records, ordered
+query results and the full existing raw/gzip budgets. This compatibility does not
+permit arbitrary JSON rewrites or changes to non-dictionary fields.
+
+`node packages/pcr-docs/scripts/search-capacity-audit.ts <search-root> <new-output-root>`
+compares captured physical assets with repacked v8 files over the exact same
+logical wires, source identity, language and pack membership. It retains physical,
+logical, native-export and complete-record hashes and both full manifest costs.
+A baseline may be over budget; that diagnostic does not qualify it for browser
+use. Generation measures every language before failing a search-budget violation,
+retains `search-budget-diagnostics.json` in its unpromoted stage, and preserves the
+previous generated artifact set. The v10 corpus audit additionally verifies the canonical Brotli envelope and its
+exact inner v7/v8/v9 bytes before the same export and query comparisons.
+Final combined-source generation, complete
+export/browser verification and product resource gates remain mandatory.

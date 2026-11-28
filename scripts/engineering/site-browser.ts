@@ -1,4 +1,6 @@
-import {middleware as providerMiddleware} from '../../middleware.ts';
+import {createProviderMiddleware} from '../../middleware.ts';
+import {NAVIGATION_BINDING_FILE,PREFETCH_NAME,prefetchRequestPath} from '../../packages/pcr-docs/lib/navigation-trees.ts';
+import {navigationWebProof,verifyNavigationTrees,type NavigationProbe} from '../../packages/pcr-docs/scripts/navigation-tree-export.ts';
 import {verifyProviderRuntimeExport,verifyProviderRuntimeSource,providerRuntimeSourceRoot,type ProviderRuntime} from '../../packages/pcr-docs/scripts/provider-runtime.ts';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -91,11 +93,15 @@ export async function withSiteExportServer<T>(root:string,callback:(origin:strin
  const providerIdentity=readIdentityJson(canonical,'generated/version.json');assert.ok(object(providerIdentity)&&typeof providerIdentity.sourceCommit==='string');
  const providerRuntime=verifyProviderRuntimeExport(canonical,providerIdentity.sourceCommit);
  if(providerRuntime)verifyProviderRuntimeSource(providerRuntimeSourceRoot(import.meta.url),providerRuntime,providerIdentity.sourceCommit);
+ const providerMiddleware=createProviderMiddleware(providerRuntime!==undefined&&Object.hasOwn(providerRuntime,'navigationBinding')?readIdentityJson(canonical,NAVIGATION_BINDING_FILE):undefined);
  const server=createServer(async(request,response)=>{try{
   const raw=(request.url??'/').split('?')[0]!;const decoded=decodeURIComponent(raw);
   if(!decoded.startsWith('/')||decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(segment=>segment==='.'||segment==='..')||/%(?:2f|5c)/iu.test(raw)){response.writeHead(403);response.end('Forbidden');return;}
-  let providerPath:string|undefined;
-  if(providerRuntime)await providerMiddleware({request:new Request(new URL(request.url??'/','http://localhost'),{method:request.method??'GET'}),rewrite(target){providerPath=new URL(target).pathname;return new Response();},next(){return new Response();}});
+  let providerPath:string|undefined,passed=false;
+  if(providerRuntime){const address=server.address();assert.ok(address&&typeof address==='object');const headers=new Headers();for(const [name,value] of Object.entries(request.headers))if(value!==undefined)headers.set(name,Array.isArray(value)?value.join(','):value);
+   const handled=await providerMiddleware({request:new Request(new URL(request.url??'/',`http://127.0.0.1:${address.port}`),{method:request.method??'GET',headers}),rewrite(target){providerPath=new URL(target).pathname;return new Response();},next(){passed=true;return new Response();}});
+   if(!passed&&providerPath===undefined){response.writeHead(handled.status,Object.fromEntries(handled.headers));response.end(request.method==='HEAD'?undefined:Buffer.from(await handled.arrayBuffer()));return;}
+  }
   const alias=aliases.get(raw);
   let relative=(providerPath?decodeURIComponent(providerPath):alias?decodeURIComponent(alias.target):decoded).slice(1);if(relative===''||(providerPath??decoded).endsWith('/'))relative+='index.html';else if(existsSync(path.join(canonical,relative))&&lstatSync(path.join(canonical,relative)).isDirectory())relative+='/index.html';
   const bytes=readRegular(canonical,relative);if(alias&&(bytes.length!==alias.bytes||hash(bytes)!==alias.sha256))failure('SITE_EXPORT_ALIASES','Alias target changed.');response.writeHead(200,{'content-type':mime[path.extname(relative)]??'application/octet-stream','cache-control':'no-store','content-length':bytes.length});response.end(request.method==='HEAD'?undefined:bytes);
@@ -368,7 +374,7 @@ function currentNetworkIdle(page:Page):()=>Promise<void> {
  };
 }
 async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{width:number;height:number},documentPath:string,languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence):Promise<void> {
- const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
+ const {checks}=evidence;
  for(const scenario of browserLanguageScenarios(languageCodes)){
   const context=await browser.newContext({viewport,locale:scenario.languages[0]??languageCodes.en!});
   try {
@@ -409,16 +415,27 @@ async function checkLanguagePreferences(browser:Browser,origin:string,viewport:{
   await selectLanguage('English');assert.equal(await page.evaluate(key=>window.localStorage.getItem(key),LANGUAGE_PREFERENCE_KEY),'en');
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');checks.push('manual English selection persists for next neutral entry');
  }finally{await context.close();}
+ await checkBlockedStorageLanguagePreference(browser,origin,viewport,languageCodes,evidence);
+}
+/** Exercise storage denial against the shipped selector; phase observation never changes error policy. */
+export async function checkBlockedStorageLanguagePreference(browser:Browser,origin:string,viewport:{width:number;height:number},languageCodes:Readonly<Record<string,string>>,evidence:LanguagePreferenceEvidence,observePhase:(phase:string)=>void=()=>{}):Promise<void>{
+ const {checks,ignoredPrefetchAborts,requestFailures:failedRequests,prefetchUrls}=evidence;
  const blocked=await browser.newContext({viewport,locale:'en-US'});
  try {
   await blocked.addInitScript(()=>{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>{throw new Error('Storage blocked for qualification');}});});
   const page=await blocked.newPage(),errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));
-  const trace=observeSiteRequests(page,{engine:evidence.engine,viewport:evidence.viewport},failedRequests,prefetchUrls);trace.setPhase('blocked-storage-entry');
+  const trace=observeSiteRequests(page,{engine:evidence.engine,viewport:evidence.viewport},failedRequests,prefetchUrls);
+  const setPhase=(value:string)=>{trace.setPhase(value);observePhase(value);};setPhase('blocked-storage-entry');
   try {const waitForCurrentRequests=currentNetworkIdle(page);
   await page.goto(origin+'/',{waitUntil:'networkidle'});await page.waitForURL(origin+'/en/');
   await settleLanguage(page,languageCodes.en!);
-  trace.setPhase('blocked-storage-select');await openLanguageSelector(page);
-  await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();trace.setPhase('blocked-storage-reload');await page.reload({waitUntil:'networkidle'});
+  setPhase('blocked-storage-select');await openLanguageSelector(page);
+  setPhase('blocked-storage-menu-ready');
+  // Same-document entry and opening the menu can start work after lifecycle idle.
+  // Finish those requests before the qualifier intentionally replaces the document.
+  await waitForCurrentRequests();
+  setPhase('blocked-storage-navigate');
+  await page.getByRole('button',{name:'中文',exact:true}).last().click();await page.waitForURL(origin+'/zh/');await settleLanguage(page,languageCodes.zh!);await waitForCurrentRequests();setPhase('blocked-storage-reload');await page.reload({waitUntil:'networkidle'});
   for(const request of failedRequests)if(isCancelledSitePrefetch(request,prefetchUrls))ignoredPrefetchAborts.push(request.url);
   assert.equal(new URL(page.url()).pathname,'/zh/');assert.deepEqual(errors,[]);assert.deepEqual(failedRequests.filter(request=>!isCancelledSitePrefetch(request,prefetchUrls)),[]);checks.push('blocked storage permits fallback, manual Chinese and localized reload');
   }finally{trace.stop();}
@@ -472,6 +489,26 @@ export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserE
  return results;
 }
 
+async function checkPagePrefetchResponses(origin:string,samples:readonly NavigationProbe[]):Promise<void>{
+ for(const sample of samples){
+  const literal=sample.path.replace(encodeURIComponent(PREFETCH_NAME),PREFETCH_NAME);
+  for(const url of [sample.path,literal+'?_rsc=sealed-prefetch']){
+   const response=await fetch(origin+url,{redirect:'error'});
+   assert.equal(response.status,200);
+   assert.equal(response.headers.get('content-type'),'text/plain; charset=utf-8');
+   assert.equal(response.headers.get('x-content-type-options'),'nosniff');
+   assert.equal(response.headers.get('cache-control'),'public, max-age=0, must-revalidate');
+   const body=Buffer.from(await response.arrayBuffer());
+   assert.equal(body.length,sample.bytes);
+   assert.equal('sha256:'+hash(body),sample.sha256);
+  }
+  const response=await fetch(origin+literal,{method:'HEAD',redirect:'error'});
+  assert.equal(response.status,200);
+  assert.equal(response.headers.get('content-length'),String(sample.bytes));
+  assert.equal((await response.arrayBuffer()).byteLength,0);
+ }
+}
+
 export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const metadata:unknown=createRequire(import.meta.url)('playwright/package.json');if(!object(metadata)||metadata.version!=='1.65.0')failure('SITE_BROWSER_RUNTIME','Qualification requires exact Playwright 1.65.0.');
  const selectedEngines=options.engines?options.engines.map(parseSiteBrowserEngine):[...SITE_BROWSER_ENGINES];
@@ -480,12 +517,18 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const exported=inspectSiteExport(options.root),languageCodes=emittedLanguageCodes(exported),report=prepareSiteBrowserReport(options.report,exported.root),results:BrowserEvidence[]=[];
  const chapterCompatibility:ChapterCompatibilityEvidence[]=[];
  const publishedChapterHttp:{from:string;to:string;sha256:string}[]=[];
+ const pagePrefetchHttp:NavigationProbe[]=[];
  const languagePreferences:LanguagePreferenceEvidence[]=[];let nativeSamples:NativeDownload[]=[],inlineSamples:InlineDownload[]=[];
  const nativeDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[];
  const inlineDownloads:({engine:string}&Awaited<ReturnType<typeof checkNativeDownload>>)[]=[],inlineManifestDownloads:typeof inlineDownloads=[];
- const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),engines:selectedEngines,source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
+ const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),engines:selectedEngines,source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
   const boundSource=exported.source.sourceCommit;assert.ok(typeof boundSource==='string');const boundProvider=verifyProviderRuntimeExport(exported.root,boundSource);
+  if(boundProvider!==undefined&&Object.hasOwn(boundProvider,'navigationBinding')){
+   const navigation=verifyNavigationTrees(exported.root,boundSource,true)!;
+   const prefetch=navigationWebProof(navigation).samples.filter(sample=>prefetchRequestPath(sample.path));
+   await checkPagePrefetchResponses(origin,prefetch);pagePrefetchHttp.push(...prefetch);
+  }
   if(boundProvider)for(const route of boundProvider.routes){const response=await fetch(origin+route.from+'?compat=a+b&compat=%2F');assert.equal(response.status,200);const body=Buffer.from(await response.arrayBuffer()),expected=readRegular(exported.root,decodeURIComponent(route.to.slice(1))+'index.html');assert.ok(body.equals(expected),'Rewritten published document differs from target: '+route.from);publishedChapterHttp.push({from:route.from,to:route.to,sha256:hash(body)});}
   for(const name of selectedEngines){const browser=await browserTypes[name].launch({headless:true});
    try {const chapterSource=exported.source.sourceCommit;assert.ok(typeof chapterSource==='string');const chapterProof=verifyProviderRuntimeExport(exported.root,chapterSource);if(chapterProof)chapterCompatibility.push(...await checkPublishedChapters(browser,name,origin,chapterProof,report));

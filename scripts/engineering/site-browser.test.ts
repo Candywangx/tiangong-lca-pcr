@@ -205,7 +205,9 @@ test('new exports require declared aliases but explicit archived product identit
 });
 
 test('missing native samples retain a failed browser receipt before any engine launch',async()=>{
- const f=fixture();try{const report=path.join(f.parent,'missing-native-report');await assert.rejects(qualifySiteBrowser({root:f.root,report}),/Missing native/u);const receipt=JSON.parse(readFileSync(path.join(report,'report.json'),'utf8'));assert.equal(receipt.status,'failed');assert.match(receipt.failure,/Missing native/u);assert.deepEqual(receipt.nativeDownloads,[]);assert.deepEqual(receipt.results,[]);}finally{f.close();}
+ for(const engines of [undefined,['webkit'] as SiteBrowserEngine[]]){
+  const f=fixture();try{const report=path.join(f.parent,'missing-native-report');await assert.rejects(qualifySiteBrowser({root:f.root,report,...(engines?{engines}:{})}),/Missing native/u);const receipt=JSON.parse(readFileSync(path.join(report,'report.json'),'utf8'));assert.equal(receipt.status,'failed');assert.match(receipt.failure,/Missing native/u);assert.deepEqual(receipt.nativeDownloads,[]);assert.deepEqual(receipt.results,[]);assert.deepEqual(receipt.engines,engines??['chromium','firefox','webkit']);assert.deepEqual(receipt.pagePrefetchHttp,[]);}finally{f.close();}
+ }
 });
 test('HTTP 200 RSC aliases use verified encoded routes with queries and exact target bytes',async()=>{
  const f=fixture();try{
@@ -228,7 +230,10 @@ test('sealed server executes source-bound provider middleware for published chap
  try{const proof=createProviderRuntime(sourceRoot,'a'.repeat(40))!;assert.ok(proof);f.put(PROVIDER_RUNTIME_FILE,JSON.stringify(proof));
   const targets=new Map<string,Set<string>>();for(const row of proof.routes){const anchors=targets.get(row.to)??new Set<string>();anchors.add(row.anchor);targets.set(row.to,anchors);}
   for(const [url,anchors]of targets)f.put(decodeURIComponent(url.slice(1))+'index.html','<html><h1>Target</h1>'+[...anchors].map(anchor=>'<h2 id="'+anchor+'">Section</h2>').join('')+'</html>');
-  await withSiteExportServer(f.root,async origin=>{for(const language of ['en','zh']){const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'))!;const response=await fetch(origin+row.from+'?q=a+b&q=%E4%B8%AD');assert.equal(response.status,200);assert.equal(await response.text(),await(await fetch(origin+row.to)).text());assert.equal((await fetch(origin+row.from,{method:'POST'})).status,404);}});
-  proof.files[0]!.sha256='sha256:'+'0'.repeat(64);f.put(PROVIDER_RUNTIME_FILE,JSON.stringify(proof));await assert.rejects(withSiteExportServer(f.root,async()=>assert.fail('Unbound provider code must not run')));
+  if(Object.hasOwn(proof,'navigationBinding')){rmSync(path.join(f.root,'generated/static-route-aliases.json'));for(const route of ['', 'en/docs/pcr/', 'zh/docs/pcr/']){f.put(route+'index.txt','complete '+route);f.put(route+'__next._full.txt','complete '+route);f.put(route+'__next._tree.txt','exact tree '+route);}prepareStaticRouteAliases(f.root,'a'.repeat(40));}
+  await withSiteExportServer(f.root,async origin=>{for(const language of ['en','zh']){const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'))!;const response=await fetch(origin+row.from+'?q=a+b&q=%E4%B8%AD');assert.equal(response.status,200);assert.equal(await response.text(),await(await fetch(origin+row.to)).text());assert.equal((await fetch(origin+row.from,{method:'POST'})).status,404);}
+   if(Object.hasOwn(proof,'navigationBinding'))for(const route of ['', 'en/docs/pcr/', 'zh/docs/pcr/']){const url=origin+'/'+route+'__next._tree.txt?_rsc=native';const response=await fetch(url);assert.equal(response.status,200);assert.equal(await response.text(),'exact tree '+route);assert.equal(response.headers.get('x-content-type-options'),'nosniff');assert.equal(response.headers.get('cache-control'),'public, max-age=0, must-revalidate');const head=await fetch(url,{method:'HEAD'});assert.equal(head.status,200);assert.equal((await head.arrayBuffer()).byteLength,0);}
+  });
+  const sealed=JSON.parse(readFileSync(path.join(f.root,PROVIDER_RUNTIME_FILE),'utf8')) as typeof proof;sealed.files[0]!.sha256='sha256:'+'0'.repeat(64);f.put(PROVIDER_RUNTIME_FILE,JSON.stringify(sealed));await assert.rejects(withSiteExportServer(f.root,async()=>assert.fail('Unbound provider code must not run')));
  }finally{f.close();}
 });

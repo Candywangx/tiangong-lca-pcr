@@ -1,10 +1,1678 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39910"
-  title: "Municipal waste"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.municipal-waste"
+  classification_refs: "CPC 3.0 39910, accepted narrower household residual at North first receipt under docs/adr/2026-11-22-accept-cpc-39910-single-family-residual-garbage-at-north-station-receipt.md"
+  covered_products: "Source-traced whole mixed single-family residential residual garbage for the declared North Transfer Station acceptance"
+  excluded_products: "Clinical/pharmaceutical/hazardous/chemical/industrial specialist waste; sewage sludge; source-separated recyclable/organic streams; incinerator ash; recycled materials; collection/treatment services"
+  representative_product: "One provenance-qualified actual mixed household garbage lot in its measured as-received state"
+  production_route: "Actual discard formation/history → household storage and containment → collection/lifting/actual on-board compaction → actual route transport → weighing/inspection/tipping → first receiving acceptance"
+  market_state: "Whole mixed discarded material at receiving floor; actual signed value/fee and legal state declared separately; no inferred end-of-waste or new recycled product"
+functional_unit:
+  what: "Supply/handover of the declared whole mixed residential residual garbage to its named receiving gate"
+  how_much: "1 kg net as-received garbage"
+  how_well: "Traceable household origin and actual receiver conformity/inspection; no generic grade, composition, density, moisture or safety assumption"
+  how_long_or_cycle: "One first-accepted physical cohort; later services retain original Qc and measured H"
+  reference_flow_link: "finished_garbage"
+system_boundary:
+  rules:
+    - rule_id: b_scope
+      applies_to: "all routes"
+      rule: "Use only source-traced Seattle single-family residential residual garbage, with actual catchment, household origin, route and lot records. Exclude commercial, multifamily, self-haul, street-sweeping and construction/demolition loads; exclude clinical/pharmaceutical waste, hazardous/chemical specialist waste, industrial feed, sewage sludge, source-separated paper/plastic/glass/metal/food/yard streams, incinerator ash and treatment-service references. Mixed or uncertain origin requires actual acceptance evidence, not a blanket non-hazardous claim."
+      source_ids:
+        - un-cpc3-2025
+        - un-cpc3-2026
+        - wco-hs38-2022
+        - epa-transfer-2002
+        - spu-garbage
+        - spu-north
+    - rule_id: b_chain
+      applies_to: "supply chain"
+      rule: "Trace original discard formation and history; include household set-aside/storage, operational containment, actual collection/lifting and on-board compaction, route travel and attributable return/empty movement, weighing, queueing, inspection, tipping and first receiving acceptance at North Transfer Station. Include actual losses, leaks, rejects, failures, starts/stops, idle, cleanup and rework. This is a transparent synthesis of official source and general engineering guidance, not a measured Seattle SKU or factory inventory."
+      source_ids:
+        - epa-transfer-2002
+        - spu-garbage
+        - spu-north
+        - spu-features
+        - spu-trucks
+        - spu-rates
+    - rule_id: b_gate
+      applies_to: "receiving gate"
+      rule: "The selected terminal is first accepted delivery on the North Transfer Station tipping floor at 1350 N34th St, Seattle, after inspection and reconciled weighbridge records. Do not extend the terminal into station consolidation, outbound transfer, rail haul, landfill, incineration or biological treatment. Any necessary intermediate operation before this gate remains included. Shared station intake services are subdivided from downstream treatment."
+      source_ids:
+        - spu-plan-2022
+        - spu-feis-2025
+        - epa-transfer-2002
+        - spu-north
+        - spu-features
+        - spu-rates
+    - rule_id: b_atomic
+      applies_to: "all exchanges"
+      rule: "Each real exchange requires its own specific material/form/type/direction row and measured quantity or validated source-specific measurement interface before a concrete data package is complete. The named conditional rows do not assert occurrence. Add every other actual fuel, formulation, detergent, container, attachment, replacement component, refrigerant, waste outlet and emitted species atomically. An absent interface is a specific incomplete-data finding; symbols, generic families, copied entire lots and fictitious purchases/returns cannot fill it."
+      source_ids:
+        - epa-transfer-2002
+    - rule_id: b_components
+      applies_to: "each operational packaging/container component"
+      rule: "For each actual component k at one physical custody gate collect opening empty/attached-WIP/attached-FG/reusable stocks, purchased first receipts P_k, non-purchased first external receipts N_ext_k and true return receipts ER_k. Close opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k. P, N_ext and ER are mutually exclusive. N_ext includes supplier accompanying goods and first entrusted/borrowed/rented receipts. ER requires prior external dispatch history; opening stock cannot replace current receipts. Internal warehouse/WIP/FG issues and internal reuse cancel. Count newly added physical sources only once on the same side; never duplicate an existing term."
+      source_ids:
+        - epa-transfer-2002
+        - ilcd-2010
+    - rule_id: b_custody_burden
+      applies_to: "components and contract services"
+      rule: "Physical receipts do not decide ownership or environmental burden. Keep owner, original cohort, actual supplier-included scope and the inherited vector for each exchange separately. First non-purchased receipt is not a new purchase or a return and does not imply free burden. Genuine return retains its original burden; actual incremental rental, return transport, washing or repair services are separate and charged once to the serviced cohort. No new Q, automatic credit or second manufacture. Contracted collection and plant supply use the same physical-receipt interfaces and closure as own operations."
+      source_ids:
+        - ilcd-2010
+    - rule_id: b_premix
+      applies_to: "whole garbage"
+      rule: "Whole premix mass and origin/composition partitions are non-additive. Original discarded consumer packaging belongs to the garbage mixture; newly added operational bag/cart mass is separately tared and accounted. Do not repurchase constituent paper/plastic/glass/food or charge a whole provider plus the same included constituent providers. No national-average composition, density, moisture, DOC, methane yield, recycling rate or avoided credit is supplied."
+      source_ids:
+        - epa-transfer-2002
+        - spu-garbage
+        - ilcd-2010
+    - rule_id: b_services
+      applies_to: "released cohorts"
+      rule: "Post-gate services are a separately disclosed extension, excluded from the first-receipt product result. Keep all real storage/handling/dispatch/reinspection/return/rework services after first release in the original accepted cohort Qc ledger. H is measured service duration, not a new production denominator. Transfer service burdens to the same cohort once; a consolidated study cancels internal reference quantities and transfers. Re-delivery and reinspection never manufacture Q again."
+      source_ids:
+        - ilcd-2010
+boundary_abstraction:
+  declared_starting_condition: "Actual mixed household residual discard at its original formation/handover; retain source burden/responsibility and storage history"
+  starting_condition_role: "Declared physical entry and historical responsibility interface, not a zero-burden cutoff"
+  product_classification_scope: "Narrow household residual subset of CPC39910, not sewage sludge or waste-treatment services"
+  recursive_input_rule: "Same whole-garbage inputs retain actual lot/cohort and per-exchange history; internal recirculation cancels; no automatic new purchase or Q"
+  upstream_dataset_requirement: "One compatible source/history vector with actual provider-included scope; constituent assays are non-additive; independently justify allocation and signed responsibility"
+  disclosure: "Source catchment, original formation, actual gate, exclusions, all physical and burden ledgers, failed/Q0 activity, uncertainty and concrete incomplete interfaces"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Mixed Seattle single-family residential residual garbage at North Transfer Station receipt"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "household origin and catchment"
+    - "actual lot cohort and formation history"
+    - "collection route vehicle configuration and fuel"
+    - "diversion boundary and actual composition sampling basis"
+    - "named North Transfer Station gate and acceptance time"
+    - "gross tare and operational containment deductions"
+    - "measured moisture temperature pressure state"
+    - "actual contamination hazard screening and receiver limits"
+    - "actual signed market value fee and approved responsibility method"
+    - "opening closing WIP and FG inherited exchange vectors"
+    - "each packaging container attachment P/N_ext/ER physical event"
+    - "supplier-included scope and single burden assignment"
+    - "original Qc and actual incremental service H"
+reference_flows:
+  []
+measurement_rules:
+  - id: m_reference
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is unique first accepted net as-received garbage. For each trip reconcile weighing times, actual loading/unloading, acceptance and documented vehicle fuel/water/non-cargo changes. Paired gross_in minus gross_out already cancels the vehicle and containers or rejected material remaining aboard at both weighings. Correct documented non-cargo changes, then deduct only actually unloaded operational containment and actually unloaded non-target/rejected net masses already included in the difference, each once. Never deduct retained return loads again. Original discarded constituent packaging stays in the mixture. Closing released FG is already in Q."
+  - id: m_units
+    applies_to: "all numerator rows"
+    required_property_ref:
+      name: "actual row property"
+      uuid: ""
+    required_unit: "row native unit"
+    rule: "Retain raw units and measured state; convert before allocation and A/Q. Count × measured empty-unit mass is allowed only for the same actual bag/cart configuration. No default density or per-item kg."
+  - id: m_single_division
+    applies_to: "all numerator rows"
+    required_property_ref:
+      name: "attributable exchange amount"
+      uuid: ""
+    required_unit: "exchange unit per kg"
+    rule: "Use c_normalize once after forming A. Q0 retains raw loads without a unit result; H is not a garbage production denominator."
+process_map:
+  - id: supply
+    name: "Household discard origin through first receiving acceptance"
+    inclusion: "required"
+    inclusion_condition: "declared household source and North Transfer Station gate"
+    role: "attributional supply with separately metered actual suboperations"
+    quantitative_reference: "finished_garbage"
+process_inventory:
+  - id: supply
+    label: "Household discard origin through first receiving acceptance"
+    inputs:
+      product:
+        - row_id: diesel
+          role: "Collection vehicle diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual diesel use in collection, on-board compaction, queueing, return travel attributable to this route, starts/stops and cleanup. The native Product is a mass identity with unspecified grade, formulation, density, heating value, refinery route, geographic supply and provider. Collect all these supply facts; it supplies no emission factor. Never infer diesel from the truck type or duplicate combustion already included by a transport provider."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: electricity
+          role: "Metered received electricity"
+          name: "Low-voltage electricity received at the collection/receiving equipment meter"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Conditional actual meter point, declared voltage, Seattle supply geography and provider boundary. The Chinese grid mix candidate is not a Seattle identity. Metered electrical energy uses Technical flow property Energy f6811440-ee37-11de-8a39-0800200c9a66, with MJ/kWh in Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66. This is the measurement basis only: the unresolved supplier flow needs its own native property verification; sharing an energy unit group does not establish net calorific value. Separate on-site generation from received electricity and charge it once through its verified generating process. Name another voltage/supply as its own atomic exchange if present."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+                - spu-features
+            ranges: []
+        - row_id: wash_water
+          role: "Received washing water"
+          name: "Treated mains water for cart and collection-equipment washing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual treated mains water supply, meter state and supplier treatment/energy scope; not river abstraction or Chinese process water. Record wash consumption and returns separately. No steam, boiler, condenser or reaction water is assumed."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Hydraulic make-up fluid"
+          name: "Formulated hydraulic oil supplied to the collection compactor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only if installed equipment actually uses this formulation. Record whole supplied formulation once, SDS, grade and supplier scope; constituents are assay subaccounts. No vacuum-refining route, water fraction or fuel use is inferred."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+        - row_id: pebag_p
+          role: "Polyethylene refuse bag — purchased first receipt P"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual purchase and first physical receipt of this component; not an invoice without goods. Native Product is a PE bag, CAS9002-88-4, production mix at plant; no density, thickness, grade, recycling content or provider is implied. Only use for a verified actual whole PE bag; the city bagging instruction alone does not prove its polymer. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: pebag_n
+          role: "Polyethylene refuse bag — non-purchased first external receipt N_ext"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record supplier-accompanying, entrusted, borrowed or rented first physical receipt of this component with its actual measured mass, event id, material/form/type and direction. It is not P or ER. Native Product is a PE bag, CAS9002-88-4, production mix at plant; no density, thickness, grade, recycling content or provider is implied. Only use for a verified actual whole PE bag; the city bagging instruction alone does not prove its polymer. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: pebag_er
+          role: "Polyethylene refuse bag — true external return receipt ER"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require this exact component’s prior external shipment id, original cohort and inherited per-exchange vector; no prior outward shipment means first receipt N_ext or P instead. Native Product is a PE bag, CAS9002-88-4, production mix at plant; no density, thickness, grade, recycling content or provider is implied. Only use for a verified actual whole PE bag; the city bagging instruction alone does not prove its polymer. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: cart_p
+          role: "Wheeled plastic refuse cart — purchased first receipt P"
+          name: "Complete wheeled plastic refuse cart"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual purchase and first physical receipt of this component; not an invoice without goods. One actual assembled cart with documented body/lid/wheels and supplied bill of materials, serial identity and measured empty mass. Do not replace it with PE resin, a steel vessel or a generic recycled container. Independently received replacement lid/wheel is a separate component exchange. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: cart_n
+          role: "Wheeled plastic refuse cart — non-purchased first external receipt N_ext"
+          name: "Complete wheeled plastic refuse cart"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record supplier-accompanying, entrusted, borrowed or rented first physical receipt of this component with its actual measured mass, event id, material/form/type and direction. It is not P or ER. One actual assembled cart with documented body/lid/wheels and supplied bill of materials, serial identity and measured empty mass. Do not replace it with PE resin, a steel vessel or a generic recycled container. Independently received replacement lid/wheel is a separate component exchange. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: cart_er
+          role: "Wheeled plastic refuse cart — true external return receipt ER"
+          name: "Complete wheeled plastic refuse cart"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Require this exact component’s prior external shipment id, original cohort and inherited per-exchange vector; no prior outward shipment means first receipt N_ext or P instead. One actual assembled cart with documented body/lid/wheels and supplied bill of materials, serial identity and measured empty mass. Do not replace it with PE resin, a steel vessel or a generic recycled container. Independently received replacement lid/wheel is a separate component exchange. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+      waste:
+        - row_id: whole_discard
+          role: "Whole source handover"
+          name: "Mixed Seattle single-family residential residual garbage at discard"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual premixed household discard supply stream, identified by origin/route/lot and measured net mass. Paper, glass, plastics, food and original discarded packaging are analytical partitions of this whole; never additional purchases. Capture generation/handover and pre-existing component history under cp_history. Unknown hazard or source does not pass acceptance."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - un-cpc3-2025
+                - epa-transfer-2002
+                - spu-garbage
+                - ilcd-2010
+            ranges: []
+      elementary:
+        - row_id: oxygen
+          role: "Net oxygen uptake"
+          name: "oxygen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "e2fb04b0-6555-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional net atmospheric oxygen consumed in verified fuel combustion or actual pre-receipt transformation; CAS7782-44-7, Resource from air, renewable element resource. Not purchased oxygen and not an oxygen emission. Determine independently with measured combustion/species balance; do not use residual mass to invent it and methane simultaneously."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+    outputs:
+      product:
+        - row_id: pebag_s
+          role: "Polyethylene refuse bag — physical departure with gross garbage shipment S"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Gross physical outgoing attachment/containment mass, independent of net garbage Q; an empty cart staying at a home is stock/internal circulation, never a new cart shipment. Native Product is a PE bag, CAS9002-88-4, production mix at plant; no density, thickness, grade, recycling content or provider is implied. Only use for a verified actual whole PE bag; the city bagging instruction alone does not prove its polymer. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: pebag_eo
+          role: "Polyethylene refuse bag — external return or separate outward transfer EO"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual outward custody transfer/return and receiving party; return transport/repair is only an evidenced incremental service, not a second manufacturing charge. Native Product is a PE bag, CAS9002-88-4, production mix at plant; no density, thickness, grade, recycling content or provider is implied. Only use for a verified actual whole PE bag; the city bagging instruction alone does not prove its polymer. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: cart_s
+          role: "Wheeled plastic refuse cart — physical departure with gross garbage shipment S"
+          name: "Complete wheeled plastic refuse cart"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Gross physical outgoing attachment/containment mass, independent of net garbage Q; an empty cart staying at a home is stock/internal circulation, never a new cart shipment. One actual assembled cart with documented body/lid/wheels and supplied bill of materials, serial identity and measured empty mass. Do not replace it with PE resin, a steel vessel or a generic recycled container. Independently received replacement lid/wheel is a separate component exchange. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: cart_eo
+          role: "Wheeled plastic refuse cart — external return or separate outward transfer EO"
+          name: "Complete wheeled plastic refuse cart"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual outward custody transfer/return and receiving party; return transport/repair is only an evidenced incremental service, not a second manufacturing charge. One actual assembled cart with documented body/lid/wheels and supplied bill of materials, serial identity and measured empty mass. Do not replace it with PE resin, a steel vessel or a generic recycled container. Independently received replacement lid/wheel is a separate component exchange. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: finished_garbage
+          role: "First accepted whole garbage lot"
+          name: "Mixed Seattle single-family residential residual garbage at North Transfer Station receipt"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net as-received whole garbage at first documented conformity acceptance on the named tipping floor after traceable inbound/outbound weighing, inspection and unloading. This is a proposed material reference, not a collection/treatment service or a relabelled native Waste flow. An appropriate native Product reference remains required. Original discarded constituent packaging stays within the mixture; separately added operational containment tare is excluded."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - un-cpc3-2025
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-north
+                - spu-features
+                - spu-rates
+            ranges: []
+      waste:
+        - row_id: pebag_w
+          role: "Polyethylene refuse bag — discarded component W"
+          name: "Discarded polyethylene bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual discarded component and disposal receiver separately from garbage already supplied. Use a compatible Waste identity, never its procurement Product UUID. Native Product is a PE bag, CAS9002-88-4, production mix at plant; no density, thickness, grade, recycling content or provider is implied. Only use for a verified actual whole PE bag; the city bagging instruction alone does not prove its polymer. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: cart_w
+          role: "Wheeled plastic refuse cart — discarded component W"
+          name: "Discarded complete wheeled plastic refuse cart"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual discarded component and disposal receiver separately from garbage already supplied. Use a compatible Waste identity, never its procurement Product UUID. One actual assembled cart with documented body/lid/wheels and supplied bill of materials, serial identity and measured empty mass. Do not replace it with PE resin, a steel vessel or a generic recycled container. Independently received replacement lid/wheel is a separate component exchange. All physical events remain distinct in cp_components; charge a provider/inherited vector once only."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - epa-transfer-2002
+                - spu-garbage
+                - spu-trucks
+                - ilcd-2010
+            ranges: []
+        - row_id: rejected_garbage
+          role: "Rejected whole garbage load"
+          name: "Rejected mixed residential residual garbage load"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Whole rejected lot physically redirected or returned; record actual reason, source and receiving destination. It is not Q, a negative purchase or a fabricated returned finished product; any newly identified clinical/hazardous item requires its own exact outlet and legal acceptance evidence."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - epa-transfer-2002
+                - spu-north
+                - spu-rates
+            ranges: []
+        - row_id: leachate
+          role: "Pre-receipt separated leachate"
+          name: "Drainage leachate separated from stored household residual garbage before receipt"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual liquid drained to a named tank/sewer/tanker and receiver before Q. This is not bioreactor-landfill degradation liquid. Meter or weigh the liquid with its own measured density/state if converting volume; COD and dissolved solids are properties, not extra chemical masses."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+        - row_id: wash_effluent
+          role: "Cart washing effluent"
+          name: "Effluent from refuse-cart and collection-equipment washing"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual collected washing effluent at its stated receiver gate, separate from leachate and rainwater. Report liquid identity/quantity and treatment provider once; if directly discharged, create each actual dissolved/emitted species at the correct environmental compartment, not the same bulk wastewater as an elementary emission."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+        - row_id: cleanup_refuse
+          role: "Captured pre-receipt spilled garbage"
+          name: "Captured spilled mixed residential residual garbage"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weighed recoverable spill returned internally cancels the original withdrawal and does not create a new input, waste output or Q. Use this external outlet only for actual removed spill sent to a separate receiver; dust sent to air belongs to its species card."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent hydraulic fluid"
+          name: "Spent collection-compactor hydraulic oil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual drained fluid with measured contaminants, whole formulation mass and declared disposal/recovery receiver; no assumed 50% oil or refining credit. Distinguish lost oil to soil/water from collected oil and create the actual chemical outlets if leakage occurred."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_exchange
+              source_ids:
+                - epa-transfer-2002
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. CAS124-38-9; Elementary emission to air, unspecified subcompartment. Only independently established fossil carbon; no assumed fully oxidised diesel or biogenic fraction. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: fossil_co
+          role: "Fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. CAS630-08-0; Elementary emission to air, unspecified subcompartment; measured fossil CO only, not purchased industrial CO, CO2 or undifferentiated VOC. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: nitric_oxide
+          role: "Nitrogen monoxide to air"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ee-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. CAS10102-43-9; Elementary emission to air, unspecified subcompartment. Actual NO mass only; NOx reported as NO2-equivalent is not NO or actual NO2 mass. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. Actual NO2 molecule, CAS10102-44-0, separately speciated; nitrite and nitrous oxide candidates cannot bind this row. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: sulfur_dioxide
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. Actual SO2 mass from the stated fuel/source; determine fuel sulfur and other sulfur outlets independently; no sulfur content default. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: dust
+          role: "Handling particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. Elementary emission to air, unspecified subcompartment and particle size; no chemical composition, height, size distribution or characterization factor established. The native clinker example is not a garbage factor or route requirement. Size-resolved measurements require separate compatible identities and non-overlapping mass. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour to air"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. CAS7732-18-5; Elementary water-vapour emission to air, unspecified subcompartment, not liquid discharge or purchased steam. Separate measured evaporation from actual fuel-reaction water; no garbage water destruction or invented biochemical reaction. No isotopic-water identity is implied by noisy imported synonyms. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: storage_methane
+          role: "Storage methane to air"
+          name: "Methane emitted during pre-receipt garbage storage"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. Actual CH4, CAS74-82-8, only if observed or supported by a validated source-specific method. Establish carbon origin before selecting biogenic/fossil identity; no DOC, decay, landfill yield or methane fraction default. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: storage_co2
+          role: "Biogenic storage carbon dioxide"
+          name: "Biogenic carbon dioxide emitted during pre-receipt garbage storage"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. Actual separately established biogenic CO2, CAS124-38-9; do not infer it by subtracting an assumed fossil fraction or treat all mixed garbage as biomass. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+        - row_id: hydrogen_sulfide
+          role: "Hydrogen sulfide to air"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual event before the declared gate. CAS7783-06-4; Elementary H2S emission to air, unspecified subcompartment; require molecule-specific evidence and actual source. Odour concentration alone does not establish H2S mass or treatment chemistry. Collect species mass independently under cp_species; measured zero/absence must have evidence; missing is unknown. Preserve raw state, control efficiency and upstream provider-included scope without double counting."
+          amount:
+            expression: "Measured attributable amount per reference flow; reuse the single normalization result in section 8."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_species
+              source_ids:
+                - epa-transfer-2002
+                - ilcd-2010
+            ranges: []
+allocation_rules:
+  - rule_id: a_goal
+    applies_to: "allocation requiring attributional studies"
+    rule: "This method is attributional only where the study goal requires allocation. Declare signed actual market status, responsibilities and the receiving function at each handover. The city tariff shows a treatment fee context but is not proof of the signed value of a particular lot. The native reference flow type and legal waste status are separate facts."
+    source_ids:
+      - spu-rates
+      - ilcd-2010
+  - rule_id: a_history
+    applies_to: "original generation and waste handovers"
+    rule: "Obtain the original formation and the approved burden/responsibility method with exchange-specific inherited vectors. Annex14.4 distinguishes positive-value coproducts from negative-value waste and the actual step producing a valuable secondary good. Do not assign the whole preceding household-product history, assume all history zero, erase the first system responsibility, apply indefinite recycling formulas to mixed refuse, or invent a secondary product at this reception gate. Retain carried and responsibility-only vectors with their owners once; unresolved core responsibility prevents a usable unit result."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_subdivide
+    applies_to: "shared collection and receiving"
+    rule: "First directly meter dedicated routes/operations and subdivide identifiable subprocesses, including receiving versus later treatment and recycling-building streams. Use documented virtual subdivision for exclusively attributable exchanges. Original whole mixed garbage remains one mixture; analytical partitions are not coproducts."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_causality
+    applies_to: "remaining shared exchanges"
+    rule: "For each genuinely remaining exchange determine and substantiate its determining physical causality separately. Route fuel, compaction work, space-time storage and actual reception can have different drivers. Record actual loaded mass, route distance, stop/operating time, occupied capacity and control state as relevant; never apply one arbitrary physical or economic key across all exchanges."
+    source_ids:
+      - ilcd-2010
+  - rule_id: a_residual
+    applies_to: "only unresolved residual common process"
+    rule: "Only if specific physical causality cannot determine the remaining exchange use documented contemporaneous market values at the same actual process gate and condition, excluding later transport/packing/treatment. For the applicable negative-value crossing case use Annex14.4 sign/absolute-fee logic at the real crossing process, not a negative allocation factor, a current city tariff or assumed composition value. Require coherent denominators, sensitivity and review; no fixed percentages, substitution or avoided-disposal credit."
+    source_ids:
+      - ilcd-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot
+      process_id: "supply"
+      flow_role: "whole garbage and first accepted output"
+      record_type: "weighbridge and origin records"
+      raw_fields: "event_id; household_source; catchment; route; cohort; generation_time; collection_time; arrival_time; inspection; acceptance_time; gross_in; gross_out; unit; containment_tare; net_garbage; rejected_mass; opening_WIP; closing_WIP; opening_FG; closing_FG"
+      collection_method: "Match calibrated inbound/outbound scale tickets to the same vehicle/load and observed unloading and acceptance; remove separately added operational containment tare. Collect whole discard/handover and every rejection independently. Preserve undivided raw mass and units."
+      unit: "Reconcile calibrated inbound/outbound tickets, their times, actual loaded/unloaded and reloaded masses and acceptance for the same trip/cohort. Record non-cargo vehicle changes; deduct only actually unloaded operational containment and unloaded non-target/rejected mass included in the paired difference, once. Retained return containers/rejections already cancel. Collect whole-discard handover and each rejection independently as undivided raw quantities in original units."
+      frequency: "each handover and truckload"
+      temporal_coverage: "complete declared campaign including overnight/failed loads"
+      site_scope: "households; collection route; North Transfer Station receiving floor"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "scale calibration; ticket pairs; load inspection; original-holder trace"
+    - protocol_id: cp_exchange
+      process_id: "supply"
+      flow_role: "specific supplied or removed exchange"
+      record_type: "meter stock and supplier record"
+      raw_fields: "row_id; event_id; material_form; direction; quantity_raw; unit_raw; temperature; pressure; moisture; density_measured; density_method; opening; received; closing; external_out; loss; vehicle; operation; provider; included_scope"
+      collection_method: "Independently meter/weigh each named utility, formulation or liquid; retain original units, all start/idle/cleanup/failure periods and measured state. For volume-to-mass use that substance/state density; no water density for oil or leachate. Collect raw undivided values."
+      unit: "kg; MJ; original metered unit"
+      frequency: "every receipt/use/removal and meter interval"
+      temporal_coverage: "same complete campaign including failures and Q0"
+      site_scope: "actual household/vehicle/receiving meter point"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; stock reconciliation; supplier scope; formulation/SDS"
+    - protocol_id: cp_components
+      process_id: "supply"
+      flow_role: "one specific bag/cart/component and event direction"
+      record_type: "component custody ledger"
+      raw_fields: "component_id; row_id; event_id; material; form; supplied_type; direction; ownership; original_cohort; purchase_flag; first_external_receipt_flag; P; N_ext; ER; prior_outward_id; grossS; EO; W; empty_open; attached_WIP_open; attached_FG_open; reusable_open; empty_close; attached_WIP_close; attached_FG_close; reusable_close; measured_mass; measured_count; empty_unit_mass_method; provider_included_scope; inherited_exchange_vector; incremental_service"
+      collection_method: "Weigh each actual component/event separately or use measured count and measured empty mass of the same configuration. Verify procurement P, first nonpurchase N_ext or true ER against physical custody and prior external dispatch. Cover supplier-accompanying and first entrusted/borrowed/rented goods. Preserve separate atomic receipt interfaces; missing actual material/form/type/direction is incomplete data, never fill by cloning the whole lot. Collect undivided mass."
+      unit: "kg; measured count for supporting reconciliation"
+      frequency: "every physical custody event and stock boundary"
+      temporal_coverage: "whole campaign and opening/closing cohort history"
+      site_scope: "same component and physical custody gate across households/contractor/receiver"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "signed custody receipt; scale/count records; original shipment; ownership; full BOM; provider-scope reconciliation"
+    - protocol_id: cp_species
+      process_id: "supply"
+      flow_role: "one actual species and destination"
+      record_type: "species-resolved measurement"
+      raw_fields: "row_id; source_id; molecule; CAS; carbon_origin; direction; medium; subcompartment; measured_mass; concentration; concentration_basis; gas_liquid_volume; volume_is_integrated; rate; interval; temperature; pressure; humidity; control_state; detection_limit; uncertainty; actual_absence_evidence; provider_included_scope"
+      collection_method: "Measure each species and its own destination before the receiving gate, using calibrated species analysis plus integrated carrier volume or an integrated rate where appropriate. Keep instrument concentration basis/state and detection limits. Odour, COD and NOx-equivalent remain indicators. No invented decay, stoichiometry or generic default factor. Raw quantities remain undivided."
+      unit: "kg; original concentration/volume/rate units"
+      frequency: "each real event and representative operating state"
+      temporal_coverage: "full storage/collection/receiving campaign including idle and cleanup"
+      site_scope: "actual exhaust/fugitive/drainage measurement point"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "instrument QA; analysis; state conversion; independent mass/element closure; uncertainty"
+    - protocol_id: cp_history
+      process_id: "supply"
+      flow_role: "original formation and stock burdens"
+      record_type: "genealogy and inherited vector"
+      raw_fields: "cohort; source_formation; approved_method; signed_market_status; responsibility_owner; exchange_id; inherited_vector; supplier_included_scope; opening_WIP_mass; opening_WIP_vector; closing_WIP_mass; closing_WIP_vector; opening_FG_mass; opening_FG_vector; closing_FG_mass; closing_FG_vector; original_Qc; reverse_delivery; rework_increment; evidence_id"
+      collection_method: "Trace actual discard origin and approved waste-responsibility handover, each exchange’s carried vector and each stock cohort. Preserve responsibility-only accounts separately from the material burden. Do not presume whole original consumer-product burdens or zero burdens. Raw vectors and masses are not normalized again."
+      unit: "kg; each inherited exchange original unit"
+      frequency: "every cohort and period boundary"
+      temporal_coverage: "history needed to reconcile current period plus all current activity"
+      site_scope: "original holder through declared receiving gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "approved method record; signed status/value; source trace; stock and inherited-vector ledger"
+    - protocol_id: cp_service
+      process_id: "supply"
+      flow_role: "original-cohort incremental service"
+      record_type: "cohort service event"
+      raw_fields: "event_id; original_Qc; cohort; H; operation; physical_gate; physical_component; P; N_ext; ER; prior_outward_id; inherited_vector; actual_increment; supplier_scope; internal_transfer"
+      collection_method: "Collect real post-release storage/handling/rental/return/washing/repair activity as undivided service totals against the original Qc. H describes actual duration, never the production denominator. Component receipts still need their atomic physical event and cp_components closure; internal transfer is eliminated on consolidation."
+      unit: "h; original exchange unit; kg Qc"
+      frequency: "each service event"
+      temporal_coverage: "actual original-cohort service life"
+      site_scope: "actual responsible contractor or owner"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "service log; original release; custody and scope reconciliation"
+    - protocol_id: cp_allocation
+      process_id: "supply"
+      flow_role: "remaining common exchange"
+      record_type: "allocation evidence"
+      raw_fields: "exchange_id; dedicated_operation; subdivision; virtual_subdivision; physical_causal_driver; measured_driver; shared_total; assigned_total; residual; common_gate; condition; contemporaneous_value; sign; justified_key; sensitivity"
+      collection_method: "Identify dedicated operations first, then determine each remaining exchange’s physical cause. Only genuine residual uses same-gate same-condition actual value after documented justification. Retain original totals and assigned vectors without division by Q."
+      unit: "each exchange native unit and documented driver"
+      frequency: "each allocation period and changed route"
+      temporal_coverage: "same campaign and matching market period"
+      site_scope: "actual common process gate"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter split; causal model; price/status records; sensitivity; independent review"
+  calculation_rules:
+    - id: c_q
+      applies_to: "finished_garbage"
+      rule: "For each trip t, D_t is gross_in_t minus gross_out_t corrected for documented non-cargo vehicle changes between weighings. Q = sum_t(D_t - C_unloaded_t - R_unloaded_t) for unique first-accepted lots. C_unloaded is operational containment actually unloaded and already in D; R_unloaded is actual unloaded non-target/rejected mass already in D. Deduct each mass once. Retained/returned-on-vehicle containers or rejected material already cancel from D; never deduct again. Reconcile unloading, any reloading, physical handover and acceptance against both tickets and times. Previously accepted redeliveries and reinspection create no new Q; closing accepted FG is already in Q."
+      inputs:
+        - cp_lot
+        - cp_components
+        - cp_history
+      output: "Q"
+      source_ids:
+        - epa-transfer-2002
+        - spu-features
+        - spu-rates
+    - id: c_units
+      applies_to: "all measured exchanges"
+      rule: "Convert original measured units first. Confirm the recorded unit: 1 US short ton = 2,000 lb av = 907.18474 kg, 1 lb av = 0.45359237 kg, and 1 metric tonne = 1,000 kg. Verify any unspecified ton. Integrate only rates; integrated volume remains volume. For a specific liquid mass = integrated volume × independently measured density at that liquid state. For electricity kWh to MJ uses the exact factor 3.6; this does not define supply geography or energy technology."
+      inputs:
+        - cp_exchange
+        - cp_species
+        - cp_lot
+        - cp_components
+      output: "converted raw exchange amounts"
+      source_ids:
+        - epa-transfer-2002
+    - id: c_attributable
+      applies_to: "each inventory numerator"
+      rule: "A_e = B_WIP_open_e + assigned_new_e + assigned_increment_e - B_WIP_close_e, in exchange e’s own unit. B denotes the verified inherited per-exchange vector attached to that WIP cohort; assigned_new and assigned_increment are converted and actually allocated undivided activity with supplier-included scope removed only when genuinely duplicated. Form A for each exchange from verified converted raw activity, actual dedicated/shared allocation and applicable opening/closing WIP inherited vectors; retain all failures, rejects, Q0, idle and cleanup. Keep physical gross material closure independent from this burden equation. Carry already accepted FG by original cohort without charging its manufacture again; post-release service uses its actual original Qc account."
+      inputs:
+        - "converted raw exchange amounts"
+        - cp_history
+        - cp_allocation
+        - cp_service
+      output: "A"
+      source_ids:
+        - ilcd-2010
+    - id: c_normalize
+      applies_to: "all inventory numerator rows"
+      rule: "For Q > 0: a = A / Q once. A is the attributable undivided exchange amount in its own unit; Q is uniquely first-accepted net garbage in kg. a is that exchange unit per 1 kg reference flow. Collection protocols and inventory cards reuse this one result; no second division. With Q = 0 preserve A and report no unit value. Original-cohort services first use their original Qc; consolidate transfers without creating Q."
+      inputs:
+        - A
+        - Q
+        - cp_history
+        - cp_service
+      output: "a"
+      source_ids:
+        - ilcd-2010
+    - id: c_component_balance
+      applies_to: "each operational component at the same physical gate"
+      rule: "opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k. Opening/closing cover empty, attached WIP, attached FG and reusable stocks. P is actual purchased first receipt; N_ext is actual non-purchased first external receipt; ER is true return with prior outward history. Internal warehouse/WIP/FG issues/reuse cancel. Verify each real event’s specific material/form/type/direction interface and measured mass before closure; an unknown is not zero."
+      inputs:
+        - cp_components
+        - cp_service
+      output: "component physical closure and missing-interface findings"
+      source_ids:
+        - epa-transfer-2002
+        - ilcd-2010
+    - id: c_mass_species
+      applies_to: "whole material and physical outlets"
+      rule: "Independently reconcile opening garbage + actual new discard/receipts + measured additions = closing garbage + gross external garbage movement + separated actual liquid/solid/species outlets. Treat new operational containment on its own component balance; never add analytical composition partitions to whole garbage. Account actual air uptake and water/species transfers where evidenced; reject a fitted residual used for multiple unknowns."
+      inputs:
+        - cp_lot
+        - cp_exchange
+        - cp_species
+        - cp_components
+      output: "physical mass and independent element closure"
+      source_ids:
+        - epa-transfer-2002
+        - ilcd-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "whole lot and each auxiliary"
+      requirement: "Trace household origin, catchment, actual route, receiver specification and native identity restrictions; do not generalise this subset to all CPC39910 or all Seattle station material."
+      evidence: "original-holder and receiver records; full native identity"
+    - id: dq_measurement
+      applies_to: "all physical events"
+      requirement: "Calibrated mass/energy/species records and state-specific conversions; preserve units, detection limits and uncertainty; sampling partitions reconcile without addition to whole mass."
+      evidence: "calibration; tickets; samples; independent mass/element balances"
+    - id: dq_completeness
+      applies_to: "entire campaign"
+      requirement: "Keep failures/rejects/Q0/startstop/idle/cleanup/rework, all stock changes and full component P/N_ext/ER interfaces. Missing actual component receipt or species path remains incomplete, never a future selector, cloned lot or assumed zero."
+      evidence: "event and stock registers; missing-interface report"
+    - id: dq_burden
+      applies_to: "each inherited exchange and service"
+      requirement: "Keep original source method, sign/value responsibility, owner/cohort vectors and supplier-included scopes; test duplicate charges. Service H and original Qc stay distinct."
+      evidence: "approved responsibility method; inherited vector; allocation and provider audit"
+    - id: dq_time
+      applies_to: "all source and foreground records"
+      requirement: "Match actual campaign, current receiver rules and supply geography; disclose generic versus site-specific evidence and actual measurement gaps. Design capacities and fees are not default quantities."
+      evidence: "dated operations and source register"
+validation_rules:
+  - rule_id: v_identity
+    applies_to: "reference and native identities"
+    rule: "Require actual source, complete native formal name/type/route/form/CAS/geography/grade/comments and all flow-property restrictions. Accept no Waste or collection/incineration/landfill service as a Product material reference. A classification label alone cannot establish compatibility. An unresolved core reference is a genuine hold; ordinary auxiliary/provider gaps stay specific."
+    source_ids:
+      - un-cpc3-2025
+      - epa-transfer-2002
+      - ilcd-2010
+  - rule_id: v_basis
+    applies_to: "Q and inventory"
+    rule: "Require exactly one first receiving acceptance per physical cohort; Q is net accepted as-received garbage excluding operational containment. Closing accepted FG already belongs to Q and is not added again to output. Reconcile all opening/closing WIP and FG with exchange-specific inherited vectors; gross physical movement is not A burden or new Q. With Q=0 retain all real loads and no per-unit result."
+    source_ids:
+      - epa-transfer-2002
+      - ilcd-2010
+  - rule_id: v_normalization
+    applies_to: "all numerator rows"
+    rule: "Raw protocols collect undivided amounts; convert original units/states and allocate before forming attributable A. Calculation c_normalize performs A/Q once. Cards and protocol aggregation only reference that same result, never divide it again. Reject duplicate provider/foreground combustion and duplicate whole-mixture/constituent burdens."
+    source_ids:
+      - ilcd-2010
+  - rule_id: v_component_events
+    applies_to: "each bag/container/attachment"
+    rule: "Require every actual P, N_ext and ER event to have one specific atomic material/form/type/direction row or complete measurement interface and measured quantity; P/N_ext/ER mutually exclusive. Verify prior outward history for ER. At the same component/gate verify opening+P+N_ext+ER=closing+grossS+EO+W, including empty/attached-WIP/attached-FG/reusable stocks. Internal issues/reuse cancel. Missing real interfaces make the concrete data package incomplete; no purchase UUID on waste or invented return, copied whole lot, ownership waiver or zero-burden shortcut."
+    source_ids:
+      - epa-transfer-2002
+      - ilcd-2010
+  - rule_id: v_vectors
+    applies_to: "contract and cohort services"
+    rule: "For each physical event independently reconcile owner, original cohort, supplier-included scope, per-exchange inherited vector and actual incremental rental/return/washing/repair service. Apply the same event/balance rules to own and contracted operations. Opening inventories never substitute current first physical receipts; retain one burden charge and the original Qc for services, not H or new Q."
+    source_ids:
+      - ilcd-2010
+  - rule_id: v_physics
+    applies_to: "physical mass and species"
+    rule: "Independently close garbage, packaging, liquids, fuel/combustion and relevant C/H/O/N/S/metal balances with measured state and uncertainty. Separate free/inherent/evaporated/reaction water, actual species and outlets; no biochemical conversion without evidence. Integrated volumes are not multiplied by time again; only rates are integrated. Density is substance/state-specific. COD, NOx-equivalent and odour are not chemical masses; one residual cannot determine two unknowns."
+    source_ids:
+      - epa-transfer-2002
+      - ilcd-2010
+  - rule_id: v_acceptance
+    applies_to: "concrete data completeness"
+    rule: "Check actual receiver inspection, excluded-material routing and origin segregation rather than infer legal/nonhazardous acceptance. Preserve failures, missing measurements, true zeros and all Q0/idle/cleanup activity. No known-composition or safe-acceptance assertion from a national mixture or UUID comment."
+    source_ids:
+      - epa-transfer-2002
+      - spu-garbage
+      - spu-north
+      - spu-rates
+  - rule_id: v_sources
+    applies_to: "evidence and use"
+    rule: "Preserve full source scope, original conditions, adjacent counterexamples and uncertainties. Official route evidence does not establish a measured lot; native identity evidence is not a method factor. No methodology, translation or publication approval follows from mechanical checks."
+    source_ids:
+      - spu-composition-2020
+      - spu-plan-2022
+      - spu-feis-2025
+      - epa-transfer-2002
+      - ilcd-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Only a qualified whole mixed household-garbage material handover at the same receiving gate and responsibility convention"
+  allowed_use: "Origin/gate-compatible material linkage after actual data completeness, core reference resolution and independent methodological review"
+  excluded_use: "Collection/treatment-service equivalence; incineration/landfill factors; source-separated material supply; national-average composition; safe/legal acceptance; zero burden or recycling-credit default"
+  required_metadata: "All reference qualifiers; physical lot and receipt-gate identity; responsibility method; native restrictions; original cohort stock/vector ledgers; provider scope; atomic P/N_ext/ER interfaces"
+  required_quality_disclosure: "Generic-source versus site evidence; actual campaign coverage; uncertainty; missing atomic exchanges; core holds; no implied scientific/translation approval"
+  update_trigger: "Changed source catchment, diversion, receiver gate/criteria, signed value/responsibility, truck/fuel, container/supply scope or native identity"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC Version 3.0 Explanatory Notes (30 June 2025), pp.204–206. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "39910 heading and neighbouring classes only; no composition or process specification."
+  - id: "epa-transfer-2002"
+    type: "official_guidance"
+    reference: "US EPA. Waste Transfer Stations: A Manual for Decision-Making. EPA530-R-02-002 (June 2002), especially pp.7–8 and 22–30 and operating/environmental-control chapters. https://www.epa.gov/sites/default/files/2016-03/documents/r02002.pdf"
+    used_for: "General generation/collection/receipt/compaction options and environmental interfaces; examples are not Seattle quantities or mandatory plant equipment."
+  - id: "spu-garbage"
+    type: "official_guidance"
+    reference: "Seattle Public Utilities. Garbage. https://www.seattle.gov/utilities/your-services/collection-and-disposal/garbage"
+    used_for: "Single-family residential residual source; bagging; recycling and food/yard diversion; household hazardous-waste alternatives."
+  - id: "spu-north"
+    type: "official_guidance"
+    reference: "Seattle Public Utilities. North Transfer Station. https://www.seattle.gov/utilities/your-services/collection-and-disposal/transfer-stations/north-station"
+    used_for: "Named receiving site at 1350 N 34th St; household hazardous-waste exclusion; actual-load acceptance still required."
+  - id: "spu-features"
+    type: "official_guidance"
+    reference: "Seattle Public Utilities. North Transfer Station Features. https://www.seattle.gov/utilities/your-services/collection-and-disposal/transfer-stations/north-station/station-features"
+    used_for: "Inbound/outbound scales and tipping floor; separate recycling building; on-site solar/stormwater context only. Capacity and power ratings are not inventory."
+  - id: "spu-trucks"
+    type: "official_guidance"
+    reference: "Seattle Public Utilities. Types of Collection Trucks. https://www.seattle.gov/utilities/your-services/collection-and-disposal/your-collection-day/types-of-collection-trucks"
+    used_for: "Actual contractor fleet types and plastic-cart service; does not establish fuel or one route vehicle configuration."
+  - id: "spu-rates"
+    type: "official_guidance"
+    reference: "Seattle Public Utilities. Transfer Station Rates. https://www.seattle.gov/utilities/your-services/collection-and-disposal/transfer-stations/rates"
+    used_for: "Scale-attendant load declaration and inspection; garbage fee versus clean separated streams. Tariff is not a lot market value or allocation factor."
+  - id: "ilcd-2010"
+    type: "handbook"
+    reference: "European Commission JRC. ILCD Handbook: General guide for Life Cycle Assessment — Detailed guidance. First edition March 2010. §§7.9.2–7.9.3 and Annex14.4 (printed pp.255–272 and 349–354). https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision and exchange-specific determining physical causality; residual common-gate value; signed waste responsibility limits. No mixed-refuse recycling rate or credit adopted."
+  - id: "un-cpc3-2026"
+    type: "official_guidance"
+    reference: "UNSD. CPC Version 3 explanatory notes, 23 October 2026, CPC3!A1936:D1936. https://unsdsna.azure-api.net/files/pages/cpc/CPC_Ver3_Exp_Notes_2026-10-23_for_Website.xlsx"
+    used_for: "39910 to HS2022 3825.10 only; supplements the frozen June coordinate, no shared classification change."
+  - id: "wco-hs38-2022"
+    type: "official_guidance"
+    reference: "WCO. HS 2022 Chapter 38, note 4 and subheading 3825.10. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0638_2022e.pdf?la=en"
+    used_for: "Mixed municipal waste definition and exclusions; broad HS population is not this single-family scope."
+  - id: "spu-plan-2022"
+    type: "official_guidance"
+    reference: "SPU. 2022 Solid Waste Plan Update, Chapter 7, Table 7.1, printed p.7.5, PDF p.6; final approved June 2023. https://www.seattle.gov/documents/departments/spu/documents/plans/solidwaste/2022solidwaste-chapter7-solidwastetransferprocessingdisposalemergencymanagement.pdf"
+    used_for: "Named city-contracted residential route at North, alongside other streams; separate actual lot origin, intake from outbound transfer."
+  - id: "spu-feis-2025"
+    type: "official_guidance"
+    reference: "City of Seattle. One Seattle Plan Final EIS, Chapter 3.11, Exhibit 3.11-34, PDF p.47 (2025). https://www.seattle.gov/documents/Departments/OPCD/SeattlePlan/FEIS2025/OneSeattlePlanFEIS-Chapter3.11-PublicServices.pdf"
+    used_for: "Residential garbage transfer at North; no single-family lot measurement or composition."
+  - id: "spu-composition-2020"
+    type: "official_guidance"
+    reference: "SPU. 2020 Residential Waste and Recycling Composition Studies, methodology, PDF pp.17–19. https://www.seattle.gov/documents/departments/spu/aboutus/reports/solid-waste/2020residentialwasterecyclingcompositionstudies.pdf"
+    used_for: "Counterevidence: garbage sampled at South, recycling sorted at North; no North residual-lot composition adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:3afae703bf3a84c9cd74022cb0f64ace25bf582ab157d65600ca9514900a0942"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7919"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7919
+          line: 70
+          column: 1
+        end:
+          offset: 14055
+          line: 95
+          column: 1
+      markdown: "## 5. System Boundary\n\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual mixed household residual discard at its original formation/handover; retain source burden/responsibility and storage history |\n| starting_condition_role | Declared physical entry and historical responsibility interface, not a zero-burden cutoff |\n| product_classification_scope | Narrow household residual subset of CPC39910, not sewage sludge or waste-treatment services |\n| recursive_input_rule | Same whole-garbage inputs retain actual lot/cohort and per-exchange history; internal recirculation cancels; no automatic new purchase or Q |\n| upstream_dataset_requirement | One compatible source/history vector with actual provider-included scope; constituent assays are non-additive; independently justify allocation and signed responsibility |\n| disclosure | Source catchment, original formation, actual gate, exclusions, all physical and burden ledgers, failed/Q0 activity, uncertainty and concrete incomplete interfaces |\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| b_scope | all routes | Use only source-traced Seattle single-family residential residual garbage, with actual catchment, household origin, route and lot records. Exclude commercial, multifamily, self-haul, street-sweeping and construction/demolition loads; exclude clinical/pharmaceutical waste, hazardous/chemical specialist waste, industrial feed, sewage sludge, source-separated paper/plastic/glass/metal/food/yard streams, incinerator ash and treatment-service references. Mixed or uncertain origin requires actual acceptance evidence, not a blanket non-hazardous claim. | un-cpc3-2025; un-cpc3-2026; wco-hs38-2022; epa-transfer-2002; spu-garbage; spu-north |\n| b_chain | supply chain | Trace original discard formation and history; include household set-aside/storage, operational containment, actual collection/lifting and on-board compaction, route travel and attributable return/empty movement, weighing, queueing, inspection, tipping and first receiving acceptance at North Transfer Station. Include actual losses, leaks, rejects, failures, starts/stops, idle, cleanup and rework. This is a transparent synthesis of official source and general engineering guidance, not a measured Seattle SKU or factory inventory. | epa-transfer-2002; spu-garbage; spu-north; spu-features; spu-trucks; spu-rates |\n| b_gate | receiving gate | The selected terminal is first accepted delivery on the North Transfer Station tipping floor at 1350 N34th St, Seattle, after inspection and reconciled weighbridge records. Do not extend the terminal into station consolidation, outbound transfer, rail haul, landfill, incineration or biological treatment. Any necessary intermediate operation before this gate remains included. Shared station intake services are subdivided from downstream treatment. | spu-plan-2022; spu-feis-2025; epa-transfer-2002; spu-north; spu-features; spu-rates |\n| b_atomic | all exchanges | Each real exchange requires its own specific material/form/type/direction row and measured quantity or validated source-specific measurement interface before a concrete data package is complete. The named conditional rows do not assert occurrence. Add every other actual fuel, formulation, detergent, container, attachment, replacement component, refrigerant, waste outlet and emitted species atomically. An absent interface is a specific incomplete-data finding; symbols, generic families, copied entire lots and fictitious purchases/returns cannot fill it. | epa-transfer-2002 |\n| b_components | each operational packaging/container component | For each actual component k at one physical custody gate collect opening empty/attached-WIP/attached-FG/reusable stocks, purchased first receipts P_k, non-purchased first external receipts N_ext_k and true return receipts ER_k. Close opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k. P, N_ext and ER are mutually exclusive. N_ext includes supplier accompanying goods and first entrusted/borrowed/rented receipts. ER requires prior external dispatch history; opening stock cannot replace current receipts. Internal warehouse/WIP/FG issues and internal reuse cancel. Count newly added physical sources only once on the same side; never duplicate an existing term. | epa-transfer-2002; ilcd-2010 |\n| b_custody_burden | components and contract services | Physical receipts do not decide ownership or environmental burden. Keep owner, original cohort, actual supplier-included scope and the inherited vector for each exchange separately. First non-purchased receipt is not a new purchase or a return and does not imply free burden. Genuine return retains its original burden; actual incremental rental, return transport, washing or repair services are separate and charged once to the serviced cohort. No new Q, automatic credit or second manufacture. Contracted collection and plant supply use the same physical-receipt interfaces and closure as own operations. | ilcd-2010 |\n| b_premix | whole garbage | Whole premix mass and origin/composition partitions are non-additive. Original discarded consumer packaging belongs to the garbage mixture; newly added operational bag/cart mass is separately tared and accounted. Do not repurchase constituent paper/plastic/glass/food or charge a whole provider plus the same included constituent providers. No national-average composition, density, moisture, DOC, methane yield, recycling rate or avoided credit is supplied. | epa-transfer-2002; spu-garbage; ilcd-2010 |\n| b_services | released cohorts | Post-gate services are a separately disclosed extension, excluded from the first-receipt product result. Keep all real storage/handling/dispatch/reinspection/return/rework services after first release in the original accepted cohort Qc ledger. H is measured service duration, not a new production denominator. Transfer service burdens to the same cohort once; a consolidated study cancels internal reference quantities and transfers. Re-delivery and reinspection never manufacture Q again. | ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 223
+              line: 9
+              column: 1
+            end:
+              offset: 301
+              line: 9
+              column: 79
+          text: "# Mixed residential residual garbage — first receipt at North Transfer Station"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7919
+              line: 70
+              column: 1
+            end:
+              offset: 7940
+              line: 70
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_50412"
+      family: "allocation"
+      span:
+        start:
+          offset: 50412
+          line: 633
+          column: 1
+        end:
+          offset: 53100
+          line: 643
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| a_goal | allocation requiring attributional studies | This method is attributional only where the study goal requires allocation. Declare signed actual market status, responsibilities and the receiving function at each handover. The city tariff shows a treatment fee context but is not proof of the signed value of a particular lot. The native reference flow type and legal waste status are separate facts. | spu-rates; ilcd-2010 |\n| a_history | original generation and waste handovers | Obtain the original formation and the approved burden/responsibility method with exchange-specific inherited vectors. Annex14.4 distinguishes positive-value coproducts from negative-value waste and the actual step producing a valuable secondary good. Do not assign the whole preceding household-product history, assume all history zero, erase the first system responsibility, apply indefinite recycling formulas to mixed refuse, or invent a secondary product at this reception gate. Retain carried and responsibility-only vectors with their owners once; unresolved core responsibility prevents a usable unit result. | ilcd-2010 |\n| a_subdivide | shared collection and receiving | First directly meter dedicated routes/operations and subdivide identifiable subprocesses, including receiving versus later treatment and recycling-building streams. Use documented virtual subdivision for exclusively attributable exchanges. Original whole mixed garbage remains one mixture; analytical partitions are not coproducts. | ilcd-2010 |\n| a_causality | remaining shared exchanges | For each genuinely remaining exchange determine and substantiate its determining physical causality separately. Route fuel, compaction work, space-time storage and actual reception can have different drivers. Record actual loaded mass, route distance, stop/operating time, occupied capacity and control state as relevant; never apply one arbitrary physical or economic key across all exchanges. | ilcd-2010 |\n| a_residual | only unresolved residual common process | Only if specific physical causality cannot determine the remaining exchange use documented contemporaneous market values at the same actual process gate and condition, excluding later transport/packing/treatment. For the applicable negative-value crossing case use Annex14.4 sign/absolute-fee logic at the real crossing process, not a negative allocation factor, a current city tariff or assumed composition value. Require coherent denominators, sensitivity and review; no fixed percentages, substitution or avoided-disposal credit. | ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 223
+              line: 9
+              column: 1
+            end:
+              offset: 301
+              line: 9
+              column: 79
+          text: "# Mixed residential residual garbage — first receipt at North Transfer Station"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 50412
+              line: 633
+              column: 1
+            end:
+              offset: 50452
+              line: 633
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_67271"
+      family: "validation"
+      span:
+        start:
+          offset: 67271
+          line: 680
+          column: 1
+        end:
+          offset: 71190
+          line: 693
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| v_identity | reference and native identities | Require actual source, complete native formal name/type/route/form/CAS/geography/grade/comments and all flow-property restrictions. Accept no Waste or collection/incineration/landfill service as a Product material reference. A classification label alone cannot establish compatibility. An unresolved core reference is a genuine hold; ordinary auxiliary/provider gaps stay specific. | un-cpc3-2025; epa-transfer-2002; ilcd-2010 |\n| v_basis | Q and inventory | Require exactly one first receiving acceptance per physical cohort; Q is net accepted as-received garbage excluding operational containment. Closing accepted FG already belongs to Q and is not added again to output. Reconcile all opening/closing WIP and FG with exchange-specific inherited vectors; gross physical movement is not A burden or new Q. With Q=0 retain all real loads and no per-unit result. | epa-transfer-2002; ilcd-2010 |\n| v_normalization | all numerator rows | Raw protocols collect undivided amounts; convert original units/states and allocate before forming attributable A. Calculation c_normalize performs A/Q once. Cards and protocol aggregation only reference that same result, never divide it again. Reject duplicate provider/foreground combustion and duplicate whole-mixture/constituent burdens. | ilcd-2010 |\n| v_component_events | each bag/container/attachment | Require every actual P, N_ext and ER event to have one specific atomic material/form/type/direction row or complete measurement interface and measured quantity; P/N_ext/ER mutually exclusive. Verify prior outward history for ER. At the same component/gate verify opening+P+N_ext+ER=closing+grossS+EO+W, including empty/attached-WIP/attached-FG/reusable stocks. Internal issues/reuse cancel. Missing real interfaces make the concrete data package incomplete; no purchase UUID on waste or invented return, copied whole lot, ownership waiver or zero-burden shortcut. | epa-transfer-2002; ilcd-2010 |\n| v_vectors | contract and cohort services | For each physical event independently reconcile owner, original cohort, supplier-included scope, per-exchange inherited vector and actual incremental rental/return/washing/repair service. Apply the same event/balance rules to own and contracted operations. Opening inventories never substitute current first physical receipts; retain one burden charge and the original Qc for services, not H or new Q. | ilcd-2010 |\n| v_physics | physical mass and species | Independently close garbage, packaging, liquids, fuel/combustion and relevant C/H/O/N/S/metal balances with measured state and uncertainty. Separate free/inherent/evaporated/reaction water, actual species and outlets; no biochemical conversion without evidence. Integrated volumes are not multiplied by time again; only rates are integrated. Density is substance/state-specific. COD, NOx-equivalent and odour are not chemical masses; one residual cannot determine two unknowns. | epa-transfer-2002; ilcd-2010 |\n| v_acceptance | concrete data completeness | Check actual receiver inspection, excluded-material routing and origin segregation rather than infer legal/nonhazardous acceptance. Preserve failures, missing measurements, true zeros and all Q0/idle/cleanup activity. No known-composition or safe-acceptance assertion from a national mixture or UUID comment. | epa-transfer-2002; spu-garbage; spu-north; spu-rates |\n| v_sources | evidence and use | Preserve full source scope, original conditions, adjacent counterexamples and uncertainties. Official route evidence does not establish a measured lot; native identity evidence is not a method factor. No methodology, translation or publication approval follows from mechanical checks. | spu-composition-2020; spu-plan-2022; spu-feis-2025; epa-transfer-2002; ilcd-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 223
+              line: 9
+              column: 1
+            end:
+              offset: 301
+              line: 9
+              column: 79
+          text: "# Mixed residential residual garbage — first receipt at North Transfer Station"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 67271
+              line: 680
+              column: 1
+            end:
+              offset: 67293
+              line: 680
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 9038
+          line: 86
+          column: 1
+        end:
+          offset: 9703
+          line: 86
+          column: 666
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_chain"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 9704
+          line: 87
+          column: 1
+        end:
+          offset: 10346
+          line: 87
+          column: 643
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 10347
+          line: 88
+          column: 1
+        end:
+          offset: 10913
+          line: 88
+          column: 567
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_atomic"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 10914
+          line: 89
+          column: 1
+        end:
+          offset: 11523
+          line: 89
+          column: 610
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_components"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 11524
+          line: 90
+          column: 1
+        end:
+          offset: 12304
+          line: 90
+          column: 781
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_custody_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 12305
+          line: 91
+          column: 1
+        end:
+          offset: 12981
+          line: 91
+          column: 677
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_premix"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 12982
+          line: 92
+          column: 1
+        end:
+          offset: 13515
+          line: 92
+          column: 534
+    - pointer: "/system_boundary/rules/7"
+      rule_id: "b_services"
+      identity_kind: "explicit"
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 13516
+          line: 93
+          column: 1
+        end:
+          offset: 14053
+          line: 93
+          column: 538
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_goal"
+      identity_kind: "explicit"
+      unit_id: "normative_50412"
+      source_span:
+        start:
+          offset: 50525
+          line: 637
+          column: 1
+        end:
+          offset: 50958
+          line: 637
+          column: 434
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_history"
+      identity_kind: "explicit"
+      unit_id: "normative_50412"
+      source_span:
+        start:
+          offset: 50959
+          line: 638
+          column: 1
+        end:
+          offset: 51644
+          line: 638
+          column: 686
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_50412"
+      source_span:
+        start:
+          offset: 51645
+          line: 639
+          column: 1
+        end:
+          offset: 52040
+          line: 639
+          column: 396
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_causality"
+      identity_kind: "explicit"
+      unit_id: "normative_50412"
+      source_span:
+        start:
+          offset: 52041
+          line: 640
+          column: 1
+        end:
+          offset: 52494
+          line: 640
+          column: 454
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_50412"
+      source_span:
+        start:
+          offset: 52495
+          line: 641
+          column: 1
+        end:
+          offset: 53098
+          line: 641
+          column: 604
+    - pointer: "/validation_rules/0"
+      rule_id: "v_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 67366
+          line: 684
+          column: 1
+        end:
+          offset: 67843
+          line: 684
+          column: 478
+    - pointer: "/validation_rules/1"
+      rule_id: "v_basis"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 67844
+          line: 685
+          column: 1
+        end:
+          offset: 68310
+          line: 685
+          column: 467
+    - pointer: "/validation_rules/2"
+      rule_id: "v_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 68311
+          line: 686
+          column: 1
+        end:
+          offset: 68707
+          line: 686
+          column: 397
+    - pointer: "/validation_rules/3"
+      rule_id: "v_component_events"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 68708
+          line: 687
+          column: 1
+        end:
+          offset: 69359
+          line: 687
+          column: 652
+    - pointer: "/validation_rules/4"
+      rule_id: "v_vectors"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 69360
+          line: 688
+          column: 1
+        end:
+          offset: 69820
+          line: 688
+          column: 461
+    - pointer: "/validation_rules/5"
+      rule_id: "v_physics"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 69821
+          line: 689
+          column: 1
+        end:
+          offset: 70373
+          line: 689
+          column: 553
+    - pointer: "/validation_rules/6"
+      rule_id: "v_acceptance"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 70374
+          line: 690
+          column: 1
+        end:
+          offset: 70785
+          line: 690
+          column: 412
+    - pointer: "/validation_rules/7"
+      rule_id: "v_sources"
+      identity_kind: "explicit"
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 70786
+          line: 691
+          column: 1
+        end:
+          offset: 71188
+          line: 691
+          column: 403
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 7919
+          line: 70
+          column: 1
+        end:
+          offset: 7940
+          line: 70
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7919"
+      source_span:
+        start:
+          offset: 7969
+          line: 75
+          column: 1
+        end:
+          offset: 8965
+          line: 82
+          column: 180
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_50412"
+      source_span:
+        start:
+          offset: 50412
+          line: 633
+          column: 1
+        end:
+          offset: 50452
+          line: 633
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_67271"
+      source_span:
+        start:
+          offset: 67271
+          line: 680
+          column: 1
+        end:
+          offset: 67293
+          line: 680
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3afae703bf3a84c9cd74022cb0f64ace25bf582ab157d65600ca9514900a0942"
+  generated_content_sha256: "sha256:8f9679f7286852bad08f1cabd19b5b7a96a24c27baba148da41f9309d168b74e"

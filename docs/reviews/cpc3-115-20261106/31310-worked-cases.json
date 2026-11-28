@@ -1,0 +1,251 @@
+{
+  "generated_at": "2026-11-06T07:02:57.523Z",
+  "synthetic_arithmetic_only": true,
+  "purpose": "Author worked cases for independent review. No actual factory data, numerical defaults, scientific approval or exhaustive validation claim.",
+  "cases": [
+    {
+      "id": "new-production-cohort",
+      "inputs": {
+        "openingFGkg": 200,
+        "newDispatchKg": 80,
+        "newClosingFGkg": 20,
+        "returnedOldKg": 30
+      },
+      "formula": "Q = newDispatch + newClosingFG = 80 + 20",
+      "calculated": 100,
+      "expected": 100,
+      "counterexample": "330 kg counts opening FG and returns again; 120 kg counts closing FG twice.",
+      "scope": "One unique newly accepted cohort; dispatch and closing FG disjoint.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "opening-WIP-vector",
+      "inputs": {
+        "openingWIPkg": 40,
+        "priorBurdenMJ": 20,
+        "newInputBurdenMJ": 50,
+        "currentProcessingMJ": 30,
+        "newAcceptedKg": 100
+      },
+      "formula": "(20 + 50 + 30) / 100",
+      "calculated": 1,
+      "expected": 1,
+      "counterexample": "0.8 MJ/kg drops opening-WIP inherited burden; 1.2 MJ/kg adds it twice.",
+      "scope": "Opening WIP entering new acceptance carries its actual prior vector once.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "old-FG-retest",
+      "inputs": {
+        "originalAcceptedKg": 200,
+        "originalVectorMJ": 400,
+        "retestMJ": 20,
+        "newAcceptedKgThisPeriod": 100
+      },
+      "formula": "(400 + 20) / original 200",
+      "calculated": 2.1,
+      "expected": 2.1,
+      "counterexample": "20/100 incorrectly charges unrelated new product; 30 kg returned is not a new denominator.",
+      "scope": "Return/retest increment stays on original cohort; unknown original denominator remains unresolved.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "zero-new-output",
+      "inputs": {
+        "Qkg": 0,
+        "measuredElectricityMJ": 25
+      },
+      "expected": "No finite per-kg product inventory. Retain 25 MJ unnormalized on stock/cohort or unresolved activity ledger.",
+      "counterexample": "Reporting 0 MJ/kg or silently dropping a failed charge creates a false zero.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "untreated-moisture",
+      "inputs": {
+        "wetWoodKg": 1200,
+        "dryBasisWaterRatio": 0.5
+      },
+      "formula": "dryWood = 1200 / (1 + 0.5)",
+      "calculated": 800,
+      "expected": 800,
+      "counterexample": "1200*(1-0.5)=600 kg incorrectly treats dry-basis moisture as wet-basis fraction.",
+      "scope": "Untreated wood with measured dry-basis water ratio only.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "treated-composite-water",
+      "inputs": {
+        "finalWetKg": 1100,
+        "dryWoodKg": 800,
+        "retainedNonwaterKg": 50
+      },
+      "formula": "water = 1100 - 800 - 50",
+      "calculated": 250,
+      "expected": 250,
+      "counterexample": "300 kg assigns retained preservative mass to water; oven loss cannot establish water when volatile chemicals are unknown.",
+      "scope": "Independent dry-wood and non-water-chemical constraints; no invented water residual with other unknowns.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "whole-liquor-physical-input",
+      "inputs": {
+        "wholeLiquorKg": 100,
+        "hypotheticalVerifiedNonwaterFraction": 0.6,
+        "addedWaterKg": 50
+      },
+      "formula": "external physical input = 100 + 50",
+      "calculated": 150,
+      "expected": 150,
+      "counterexample": "Adding 60 kg analytical components and 40 kg carrier again gives 250 kg; buying oxides separately is a different route.",
+      "scope": "Illustrative verified composition only; 60% is a synthetic test input, not SDS content or a PCR recipe.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "whole-liquor-water-subledger",
+      "inputs": {
+        "wholeLiquorKg": 100,
+        "hypotheticalVerifiedCarrierWaterFraction": 0.4,
+        "addedWaterKg": 50
+      },
+      "formula": "contained + separately supplied water = 100*0.4 + 50",
+      "calculated": 90,
+      "expected": 90,
+      "counterexample": "140 kg duplicates carrier water as an additional physical purchase.",
+      "scope": "Nested water subledger, not a third external inventory input.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "CuO-to-Cu",
+      "inputs": {
+        "oxideEquivalentKg": 1,
+        "illustrativeAtomicMassCu": 63.5,
+        "illustrativeAtomicMassO": 16
+      },
+      "formula": "Cu = 1 * 63.5/(63.5+16)",
+      "calculated": 0.7987421383647799,
+      "expected": 0.7987421383647799,
+      "counterexample": "1 kg CuO is not 1 kg Cu; oxide equivalent does not establish dissolved molecular species.",
+      "scope": "Rounded illustrative atomic weights; actual data require documented weights, purity and analytical basis.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "CrO3-to-Cr",
+      "inputs": {
+        "oxideEquivalentKg": 1,
+        "illustrativeAtomicMassCr": 52,
+        "illustrativeAtomicMassO": 16
+      },
+      "formula": "Cr = 1 * 52/(52+3*16)",
+      "calculated": 0.52,
+      "expected": 0.52,
+      "counterexample": "0.52 kg total Cr does not establish a CrIII/CrVI environmental split.",
+      "scope": "Rounded illustrative atomic weights; no oxidation-state yield or numerical PCR factor.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "As2O5-to-As",
+      "inputs": {
+        "oxideEquivalentKg": 1,
+        "illustrativeAtomicMassAs": 75,
+        "illustrativeAtomicMassO": 16
+      },
+      "formula": "As = 1 * 2*75/(2*75+5*16)",
+      "calculated": 0.6521739130434783,
+      "expected": 0.6521739130434783,
+      "counterexample": "Using one As atom in the numerator halves the elemental mass; assigning AsIII/AsV is ungrounded.",
+      "scope": "Rounded illustrative atomic weights, not an adopted numerical factor.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "retention-assay-zone",
+      "inputs": {
+        "assayRetentionKgPerM3": 10,
+        "sampledCompatibleZoneM3": 0.02,
+        "wholePoleM3": 0.1
+      },
+      "formula": "known retained amount in assay zone = 10*0.02",
+      "calculated": 0.2,
+      "expected": 0.2,
+      "counterexample": "10*0.1 = 1 kg silently applies sapwood-zone retention to unsampled heartwood; whole-pole total remains unknown.",
+      "scope": "Only the measured representative zone, not a whole-piece recipe.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "PM-nonoverlap",
+      "inputs": {
+        "totalPMkg": 1,
+        "cumulativePM10kg": 0.7,
+        "cumulativePM25kg": 0.2
+      },
+      "formula": "PM2.5 + (PM10-PM2.5) + (total-PM10)",
+      "calculated": 1,
+      "expected": 1,
+      "counterexample": "1+0.7+0.2=1.9 kg double-counts nested cumulative measurements; incompatible tests or a negative residual require review.",
+      "scope": "Same source, interval, sampling and analytical basis; metal content remains a speciation subledger.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "air-rate-to-mass",
+      "inputs": {
+        "concentrationMgPerM3": 2,
+        "gasFlowM3PerHour": 100,
+        "operatingHours": 3
+      },
+      "formula": "2*100*3 mg / 1e6 mg per kg",
+      "calculated": 0.0006,
+      "expected": 0.0006,
+      "counterexample": "600 kg relabels mg as kg; 0.0002 kg omits the 3-hour integration; multiplying an already integrated 300 m3 by 3 hours duplicates time.",
+      "scope": "Compatible concentration, volume, duration and actual post-control source.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "first-nonpurchase-packaging-receipt",
+      "inputs": {
+        "openingKg": 10,
+        "purchasesPkg": 5,
+        "firstBorrowedNkg": 8,
+        "genuineSameItemReturnERkg": 2,
+        "outwardSkg": 12,
+        "otherOutwardEOkg": 1,
+        "wasteWkg": 1
+      },
+      "formula": "closing = 10+5+8+2-12-1-1",
+      "calculated": 11,
+      "expected": 11,
+      "counterexample": "Calling the first borrowed 8 kg a return ER invents a prior outward item; omitting it because no invoice breaks physical custody balance.",
+      "scope": "Each article/cohort; genuine ER requires that same item earlier outward S. Unknown inherited burden is not zero.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "causal-allocation-burden",
+      "inputs": {
+        "residualSharedBurdenMJ": 100,
+        "justifiedWoodShare": 0.7,
+        "woodPhysicalKg": 100,
+        "barkPhysicalKg": 20
+      },
+      "formula": "wood burden intensity = 100*0.7/100",
+      "calculated": 0.7,
+      "expected": 0.7,
+      "counterexample": "Physical wood stays 100 kg and bark 20 kg; multiplying these by 0.7 breaks mass balance. Treatment dedicated to wood is not assigned to bark removed earlier.",
+      "scope": "A acts on justified residual burden after subdivision and exchange-specific causal attribution, never gross physical V.",
+      "author_arithmetic_checked": true
+    },
+    {
+      "id": "separate-phase-element-balance",
+      "inputs": {
+        "openingCuKg": 2,
+        "externalCuKg": 6,
+        "retainedCuKg": 5,
+        "liquidWasteCuKg": 1,
+        "closingCuKg": 1.8
+      },
+      "formula": "known Cu residual = 2+6-5-1-1.8",
+      "calculated": 0.19999999999999996,
+      "expected": 0.2,
+      "counterexample": "0.2 kg unexplained Cu cannot be arbitrarily assigned between air, water and sludge, or treated as CuO mass. The gross wet liquor waste already contains its Cu.",
+      "scope": "Independent element ledger with uncertainty; missing destinations remain unresolved.",
+      "author_arithmetic_checked": true
+    }
+  ]
+}

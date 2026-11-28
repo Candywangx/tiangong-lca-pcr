@@ -1,10 +1,927 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "38962"
-  title: "Postage or revenue stamps, stamp-postmarks, first-day covers, postal stationery (stamped paper) and the like"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.furniture-other-transportable-goods-n-e-c.postage-or-revenue-stamps-stamp-postmarks-first-day-covers-postal-stationery-stamped-pa-275c1e5f"
+  classification_refs: "CPC 3.0:38962, accepted narrower association for official cancelled paper first-day covers"
+  covered_products: "Newly completed genuine postal-operator official paper first-day covers, one declared issue/configuration"
+  excluded_products: "Unused stamp manufacturing; customer-owned cancellation service; completed-cover repackaging; digital colour and multi-cover gift sets"
+  representative_product: "USPS 894516; Putting a Stamp on the American Experience; 2025-07-23; Washington DC"
+  production_route: "Procured finished printed envelope and genuine stamp; affix using integral adhesive; authorized black cancellation; inspection and first release"
+  market_state: "Complete bare collectible cover; affixed stamp cancelled; not valid for mailing; at first quality-release gate"
+functional_unit:
+  what: "Provide completed physical official first-day-cover collectibles of one issue and configuration"
+  how_much: "1 kg net accepted first-day covers"
+  how_well: "Genuine stamp securely affixed; authorized date/place postmark legible; dry and intact envelope; no false postal-use claim"
+  how_long_or_cycle: "One first completion and release cycle; no assumed collection lifetime"
+  reference_flow_link: "reference_product_fdc"
+system_boundary:
+  rules:
+    - rule_id: b_gate
+      applies_to: "whole system"
+      rule: "Include upstream physical components and their inbound transport, stamp affixing, authorized cancellation, drying if actually performed, inspection, attributable pre-release holding and reject treatment through the first accepted bare-cover gate. Packaging and customer shipment after that gate, retail, collector use and end of life are outside this dataset and require downstream modelling."
+      source_ids:
+        - usps-fdc
+    - rule_id: b_service
+      applies_to: "stamp_input"
+      rule: "Separate physical stamp supply from any bundled postal entitlement. Cancellation does not cause a mailing journey. Do not infer tonne-kilometres from denomination, fee or retail price. A real intersite movement is counted once from actual route and transported mass. Customer-owned cancellation/return service is excluded; Canada Post describes those separate operations, not this USPS SKU route."
+      source_ids:
+        - usps-fdc
+        - canada-service
+    - rule_id: b_complete
+      applies_to: "p_fdc"
+      rule: "Record each actual additional chemical, utility, packaging component, waste and elementary emission as its own exchange. No unspecified residual is zero. Verify complete purchased ink formulation and upstream boundary before adding constituent flows. Unmeasured solvent loss, heating, cleaning and packaging waste remain data gaps if present."
+      source_ids: []
+    - rule_id: b_supply_once
+      applies_to: "p_fdc"
+      rule: "For every provider and movement declare included operations and delivery point. If a component provider includes delivery to the receiving site, do not add the same freight service again. Add separately purchased road freight only for uncovered actual road legs using road_freight and cp_freight; another actual mode needs its own specific exchange and protocol. Delivery fees and denomination do not prove transport work."
+      source_ids:
+        - canada-service
+    - rule_id: b_cancel_once
+      applies_to: "p_fdc"
+      rule: "When an authorized contractor cancels operator-owned component assemblies as part of first formation, cancellation_service represents only that purchased operation, not a second finished cover or a customer-owned cancellation-only dataset. Record the provider inclusion ledger under cp_service. Ink, electricity, drying, transport and reject treatment included by that provider are represented once through its service inventory and are not duplicated as foreground purchases. Separately supplied ink or electricity remain direct cards only for the uncovered quantities. Unknown provider inclusion is unresolved, never zero."
+      source_ids:
+        - canada-service
+    - rule_id: b_cohort
+      applies_to: "p_fdc"
+      rule: "Record original lot and item identity before processing. Keep raw activity quantities, failed cancellation attempts, rework, inherited burdens and their exchange-specific units without normalization while the cohort remains open. For Q = 0 no per-kg result may be emitted; retain the complete failed-lot record and terminal burden vector. A later accepted output of the same traceable cohort inherits its prior failed/rework burdens. An entirely failed lot may enter a predefined documented production campaign only with explicit traceable transfer of its full burden vector and unchanged failure status; never silently discard it or move it to an unrelated successful lot."
+      source_ids: []
+    - rule_id: b_wip
+      applies_to: "p_fdc"
+      rule: "At period close carry physical WIP count/mass and its accumulated exchange-specific burden vector forward under the same item/lot lineage. No release from WIP is counted in Q until first acceptance. Every transfer has one matching source out-record and destination in-record with the same transfer ID, physical state and burden vector; transfers inside the consolidated scope cancel, and inherited vectors are not added again as new purchases. Already released stock carries its earlier release history and is never first output again on sale, return or repacking."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Genuine stamp with integral adhesive and finished printed envelope received before affixing and official cancellation"
+  starting_condition_role: "foreground_collection_start"
+  product_classification_scope: "Official first-day cover collectible after cancellation; unused stamp manufacture is upstream input supply"
+  recursive_input_rule: "A completed first-day cover cannot be a blank input to first formation. Already cancelled covers require a separate reuse model with inherited burdens; do not reset their history."
+  upstream_dataset_requirement: "Compatible physical stamp and printed-envelope production providers, including adhesive, printing and purchased supply-state burdens; no face-value proxy or zero-burden assumption"
+  disclosure: "Declare component ownership, delivery state, cancellation authority, original batch and gate; distinguish first formation, outsourced operation and delivery"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Official cancelled paper first-day cover"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - operator
+    - "issue title/date/place"
+    - "stamp identity/count/adhesive"
+    - "envelope size/printing"
+    - "authorized cancellation method and ink"
+    - "bare product gate"
+    - "batch identity"
+    - "net accepted mass Q and accepted count N"
+    - "component supply states"
+    - "rejection/rework"
+    - "packaging gate"
+    - "upstream providers"
+    - "service/transport split"
+reference_flows:
+  []
+measurement_rules:
+  - id: mass_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh total net accepted bare covers Q for the same closed batch using a calibrated balance; exclude sleeves, boxes and shipping envelopes. Q may be zero in retained failed/open-cohort records; positive Q is required only for a normalized released output. Record accepted count N as an independent reconciliation, not a default mass conversion."
+  - id: same_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row-specific"
+      uuid: ""
+    required_unit: "row-specific"
+    rule: "Released dataset exchanges use per 1 kg reference flow; raw records and WIP vectors keep their original units until eligible closure. Collect batch quantities and divide each allocated quantity by the same accepted Q once. Failed covers do not enter Q; their inputs and treatment remain in the batch numerator."
+process_map:
+  - id: p_fdc
+    name: "Receipt, affixing, official cancellation and first release"
+    inclusion: "required"
+    inclusion_condition: "First formation of the declared issue"
+    role: "foreground"
+    quantitative_reference: "1 kg net accepted bare covers"
+process_inventory:
+  - id: p_fdc
+    label: "Receipt, affixing, official cancellation and first release"
+    inputs:
+      product:
+        - row_id: stamp_input
+          role: "Genuine unused paper postage stamp with integral adhesive"
+          name: "Genuine unused paper postage stamp with integral adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Consumed physical stamp mass / Q; reconcile count, rejects and stock. Include supplied adhesive; no separate stamp manufacturing in this process."
+          amount:
+            expression: "Consumed physical stamp mass / Q; reconcile count, rejects and stock. Include supplied adhesive; no separate stamp manufacturing in this process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - usps-fdc
+            ranges: []
+        - row_id: envelope_input
+          role: "Finished printed paper envelope"
+          name: "Finished printed paper envelope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Consumed finished envelope mass / Q; include printed decoration and supplied seams in upstream provider."
+          amount:
+            expression: "Consumed finished envelope mass / Q; include printed decoration and supplied seams in upstream provider."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - usps-fdc
+            ranges: []
+        - row_id: cancel_ink
+          role: "Black postal cancellation ink"
+          name: "Black postal cancellation ink"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measured consumed complete black ink formulation / Q; record batch, SDS and solids; count retained ink and waste separately without adding constituent purchases already in formulation."
+          amount:
+            expression: "Measured consumed complete black ink formulation / Q; record batch, SDS and solids; count retained ink and waste separately without adding constituent purchases already in formulation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ink
+              source_ids:
+                - usps-fdc
+            ranges: []
+        - row_id: electricity
+          role: "Electricity at completion site"
+          name: "Electricity at completion site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Measured attributable affixing, cancellation, inspection and holding electricity / Q; not zero solely because cancellation is manual."
+          amount:
+            expression: "Measured attributable affixing, cancellation, inspection and holding electricity / Q; not zero solely because cancellation is manual."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Mains water"
+          name: "Mains water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual measured water supplied for integral-gum activation / Q only if this adhesive route is confirmed; documented absence for pressure-sensitive affixing. Not a cleaning-water allowance."
+          amount:
+            expression: "Actual measured water supplied for integral-gum activation / Q only if this adhesive route is confirmed; documented absence for pressure-sensitive affixing. Not a cleaning-water allowance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: road_freight
+          role: "Separately purchased road freight transport of input components"
+          name: "Separately purchased road freight transport of input components"
+          flow_type: "product"
+          property_unit: "Transport work / tkm"
+          description: "Only actual uncovered road legs: allocated gross payload kg / 1000 × road km / Q; reconcile provider delivery scope and cp_freight. No default road mode for an unknown route."
+          amount:
+            expression: "Only actual uncovered road legs: allocated gross payload kg / 1000 × road km / Q; reconcile provider delivery scope and cp_freight. No default road mode for an unknown route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freight
+              source_ids:
+                - canada-service
+            ranges: []
+        - row_id: cancellation_service
+          role: "Authorized black first-day cancellation service"
+          name: "Authorized black first-day cancellation service"
+          flow_type: "product"
+          property_unit: "Service count / item"
+          description: "Only separately purchased authorized cancellation of operator-owned assemblies: actual attributable serviced cover count / Q. cp_service identifies included ink and electricity; direct cancel_ink and electricity cards retain only quantities outside that provider boundary."
+          amount:
+            expression: "Only separately purchased authorized cancellation of operator-owned assemblies: actual attributable serviced cover count / Q. cp_service identifies included ink and electricity; direct cancel_ink and electricity cards retain only quantities outside that provider boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_service
+              source_ids:
+                - canada-service
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_fdc
+          role: "Official cancelled paper first-day cover"
+          name: "Official cancelled paper first-day cover"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "1 kg accepted net covers; measured batch Q / Q."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - usps-fdc
+                - canada-product
+            ranges: []
+      waste:
+        - row_id: liner_waste
+          role: "Discarded silicone-coated paper release liner"
+          name: "Discarded silicone-coated paper release liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual separated liner mass / Q when the received stamp format includes it; do not also count it in retained stamp mass. Supplier removal belongs upstream."
+          amount:
+            expression: "Actual separated liner mass / Q when the received stamp format includes it; do not also count it in retained stamp mass. Supplier removal belongs upstream."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: reject_cover
+          role: "Rejected assembled paper first-day cover"
+          name: "Rejected assembled paper first-day cover"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weighed non-recoverable assembled cover mass / Q; record secure destruction and actual treatment. Reworked covers are not counted as waste again."
+          amount:
+            expression: "Weighed non-recoverable assembled cover mass / Q; record secure destruction and actual treatment. Reworked covers are not counted as waste again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: ink_waste
+          role: "Spent black postal cancellation ink"
+          name: "Spent black postal cancellation ink"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weighed spent ink mass / Q with destination and composition; no automatic recycling credit."
+          amount:
+            expression: "Weighed spent ink mass / Q with destination and composition; no automatic recycling credit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_direct
+    applies_to: "p_fdc"
+    rule: "For an attributional study first subdivide production from postal transport, retail and other issue batches; directly assign stamp and envelope purchases and actual cancellation workload. Allocation is only for genuinely shared burdens. Use measured causal machine time or metered consumption with a complete denominator of all users, justify each driver and ensure allocated fractions sum to one. If causal separation is unsupported, leave the shared burden unresolved for study review rather than use face value or collector price by default."
+    source_ids:
+      - ilcd-allocation
+  - rule_id: a_reject
+    applies_to: "p_fdc"
+    rule: "No co-product or displacement credit for cancellation, invalidated postage or rejects. In-batch rework keeps original inputs and additional work; returned unused stamps retain their physical stock history."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "p_fdc"
+      flow_role: "release"
+      record_type: "weighing"
+      raw_fields: "issue; batch; Q; N; accepted and rejected count; first release date"
+      collection_method: "Calibrated balance; weigh net dry accepted covers without protective or transport packaging; reconcile first release once"
+      unit: "kg"
+      frequency: "each closed batch"
+      temporal_coverage: "same issue campaign"
+      site_scope: "operator and contracted site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot records; invoices; approval and reconciliation"
+    - protocol_id: cp_components
+      process_id: "p_fdc"
+      flow_role: "components"
+      record_type: "stock record"
+      raw_fields: "issue; supplier; ownership; stamp count and mass; envelope mass; opening/closing stock; receipts; returns; adhesive and liner state"
+      collection_method: "Weigh representative components with traceable lot sampling and reconcile actual consumption with stock movements; no fabricated per-cover weight"
+      unit: "kg"
+      frequency: "each closed batch"
+      temporal_coverage: "same issue campaign"
+      site_scope: "operator and contracted site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot records; invoices; approval and reconciliation"
+    - protocol_id: cp_ink
+      process_id: "p_fdc"
+      flow_role: "ink"
+      record_type: "stock record"
+      raw_fields: "ink lot; SDS; opening; purchases; closing; return; retained and waste ink; moisture loss"
+      collection_method: "Weigh actual full formulation consumption; reconcile container tare and stock; investigate water or solvent losses separately"
+      unit: "kg"
+      frequency: "each closed batch"
+      temporal_coverage: "same issue campaign"
+      site_scope: "operator and contracted site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot records; invoices; approval and reconciliation"
+    - protocol_id: cp_energy
+      process_id: "p_fdc"
+      flow_role: "electricity"
+      record_type: "meter record"
+      raw_fields: "meter; site; batch hours; other users; allocation driver; calibration"
+      collection_method: "Submeter or document causal allocation of measured site electricity; include pre-release handling and holding"
+      unit: "kWh"
+      frequency: "each closed batch"
+      temporal_coverage: "same issue campaign"
+      site_scope: "operator and contracted site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot records; invoices; approval and reconciliation"
+    - protocol_id: cp_water
+      process_id: "p_fdc"
+      flow_role: "water"
+      record_type: "meter record"
+      raw_fields: "adhesive route; metered activation water; loss; retained water; batch"
+      collection_method: "Measure water only when activation is verified; retain absence evidence otherwise"
+      unit: "kg"
+      frequency: "each closed batch"
+      temporal_coverage: "same issue campaign"
+      site_scope: "operator and contracted site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot records; invoices; approval and reconciliation"
+    - protocol_id: cp_waste
+      process_id: "p_fdc"
+      flow_role: "waste"
+      record_type: "weighing record"
+      raw_fields: "separate stream; mass; lot; rework; destination; treatment; composition"
+      collection_method: "Weigh each stream separately, reconcile manifests and secure destruction; no fitting unknown emissions as a residual"
+      unit: "kg"
+      frequency: "each closed batch"
+      temporal_coverage: "same issue campaign"
+      site_scope: "operator and contracted site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; lot records; invoices; approval and reconciliation"
+    - protocol_id: cp_freight
+      process_id: "p_fdc"
+      flow_role: "road_freight"
+      record_type: "carrier record"
+      raw_fields: "leg ID; supplier; delivery point; included transport; mode; gross kg; km; consignment; other loads; allocation"
+      collection_method: "Verify real road leg and carrier work against component delivery terms; weigh gross load and use actual route distance, not straight-line distance or price; document separately billed versus already included leg"
+      unit: "tkm"
+      frequency: "each consignment"
+      temporal_coverage: "same cohort/campaign"
+      site_scope: "actual dispatch and receipt sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "carrier waybill; distance evidence; payload; provider scope ledger"
+    - protocol_id: cp_service
+      process_id: "p_fdc"
+      flow_role: "cancellation_service"
+      record_type: "contract record"
+      raw_fields: "operator; contractor; authorization; cohort/item IDs; serviced/rejected counts; included ink; electricity; drying; freight; waste; separate supplies"
+      collection_method: "Reconcile actual authorized service count and provider inventory boundary; map each included activity to one provider, each excluded actual supply to one foreground card; retain unresolved inclusions"
+      unit: "item"
+      frequency: "each service lot"
+      temporal_coverage: "same cohort/campaign"
+      site_scope: "operator and authorized contractor"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "contract; authorization; acceptance and provider inventory"
+    - protocol_id: cp_cohort
+      process_id: "p_fdc"
+      flow_role: "WIP and failed lots"
+      record_type: "lineage ledger"
+      raw_fields: "original lot; item ID; period; opening/closing WIP count and kg; opening inherited vector; new activities; failed attempts; transfer ID; source/destination; terminal losses; first-release ID; Q"
+      collection_method: "Retain unnormalized raw activities and exchange-specific burden vectors at each cutoff; match transfer pairs and item history before closing a positive-Q cohort or predefined campaign"
+      unit: "kg and each exchange unit"
+      frequency: "each period cutoff and transfer"
+      temporal_coverage: "all periods of the original cohort"
+      site_scope: "all sites in declared consolidated scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "immutable raw ledger; matching transfer IDs; stock and release reconciliation"
+  calculation_rules:
+    - id: batch_normalize
+      applies_to: "all inventory rows"
+      rule: "x_ref = X_alloc / Q; X_alloc is attributable batch exchange quantity in its own unit; Q is accepted net bare-cover mass in kg. Reference output = Q / Q = 1 kg. Divide once, never by N and Q together."
+      inputs:
+        - X_alloc
+        - Q
+        - cp_release
+      output: "x_ref"
+      source_ids: []
+    - id: component_reconcile
+      applies_to: "stamp_input; envelope_input; cancel_ink"
+      rule: "Consumption = opening stock + receipts - closing stock - unused returns - transfers to other batches. Count internal rework only as extra activity. Retain component-specific mass balance with accepted product, rejects, stock and measured species losses. Whole cover mass does not equal dry paper mass alone."
+      inputs:
+        - cp_components
+        - cp_ink
+        - cp_waste
+        - cp_release
+      output: "batch consumption"
+      source_ids: []
+    - id: transport
+      applies_to: "p_fdc"
+      rule: "For each actual freight leg tkm = gross transported kg / 1000 × km; allocate shared loads causally and divide attributable tkm by Q. Include incoming packaging in freight mass but exclude it from Q; add each physical packaging waste separately. No shipment inferred from cancelled face value."
+      inputs:
+        - "carrier records"
+        - "measured gross mass"
+        - Q
+      output: "tkm per kg"
+      source_ids:
+        - canada-service
+    - id: cohort_balance
+      applies_to: "all inventory rows"
+      rule: "For each exchange separately B_close = B_open + B_new + B_transfer_in - B_transfer_out - B_first_release - B_terminal. Physical WIP counts/mass are reconciled independently; never substitute kg for energy or transport units. Internal transfers cancel on consolidation. Preserve opening/closing physical stocks and burden vectors; do not allocate all period purchases to period shipments."
+      inputs:
+        - cp_cohort
+        - cp_release
+      output: "reconciled physical stock and burden ledger"
+      source_ids: []
+    - id: zero_and_release
+      applies_to: "all inventory rows"
+      rule: "Emit x_ref only after closing a documented cohort/campaign with total first-release Q > 0. Its numerator includes complete traceable inherited and new attributable burdens, including its failed attempts and predefined campaign terminal losses, with all internal transfer duplicates eliminated. At Q = 0 retain the complete unnormalized record and emit no unit result. Each item contributes net mass to first-release Q once; shipment of previously released stock contributes no new Q."
+      inputs:
+        - cp_cohort
+        - cp_release
+      output: "unit result or retained unnormalized ledger"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "p_fdc"
+      requirement: "Trace legal stamp procurement, issue/date/place, cancellation authority and first physical release. Record photographs and operator records; do not count replacement markings as genuine."
+      evidence: "usps-fdc; operator records"
+    - id: dq_complete
+      applies_to: "all inventory rows"
+      requirement: "Use one closed lot, time and site basis. Missing meters, provider exchanges, ink chemistry/emissions, upstream packaging and holding burdens remain explicit gaps; do not replace unknowns by zeros or invented ranges."
+      evidence: "stock reconciliation; uncertainty register"
+validation_rules:
+  - rule_id: v_reference
+    applies_to: "reference_product_fdc"
+    rule: "Require positive measured Q, accepted N, one reference output, matching batch/issue and 1 kg normalization in every row and protocol. Mass property support does not approve an unresolved product UUID."
+    source_ids: []
+  - rule_id: v_state
+    applies_to: "p_fdc"
+    rule: "Verify affixed genuine stamp, authorized cancellation date/place, readable dry intact saleable cover, and recorded rejects before first release. Exclude mint stamp production and existing-cover repacking."
+    source_ids:
+      - usps-fdc
+      - unsd-cpc3
+  - rule_id: v_boundary
+    applies_to: "whole system"
+    rule: "Reconcile upstream providers and owned/outsource operations without duplicate stamp, envelope, integral adhesive, cancellation service, postage entitlement, transport or packaging. Keep unresolved species and historical stocks explicit. Method checks confer no scientific approval, classification acceptance or publication."
+    source_ids:
+      - canada-service
+  - rule_id: v_lineage
+    applies_to: "p_fdc"
+    rule: "Audit Q = 0 records, all period WIP vectors, matching transfer pairs, campaign membership, and once-only first-release IDs before normalization. Require each actual freight or cancellation activity to have exactly one provider/direct owner; unresolved inclusions block a complete dataset."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Physical official paper first-day cover supply at the same bare first-release gate"
+  allowed_use: "Same declared issue/configuration after provider and data-quality review"
+  excluded_use: "Postal delivery, mint stamp manufacture, resale of historical covers, customer cancellation services, complete lifetime footprint or all-38962 coverage"
+  required_metadata: "All reference qualifiers; operator and sites; batch Q/N; provider boundaries; adhesive/ink supply state; allocation; rejects and rework; transport and packaging gate"
+  required_quality_disclosure: "Actual collection coverage, identity and chemistry gaps, source limitations, uncertainty and separate scientific/translation review state"
+  update_trigger: "Issue, operator, envelope, stamp/adhesive, cancellation method/ink, supply state, gate, allocation or provider change"
+data_sources:
+  - id: "unsd-cpc3"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 explanatory notes, 30 June 2025, complete PDF pp152,197; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/38962"
+    used_for: "Classification boundary only; unused stamps versus named first-day covers; no quantitative manufacturing evidence."
+  - id: "usps-fdc"
+    type: "official_guidance"
+    reference: "USPS, Putting a Stamp on the American Experience First Day Cover, product 894516, issue 2025-07-23, product description/details/specifications; https://store.usps.com/store/product/putting-a-stamp-on-the-american-experience-first-day-cover-S_894516"
+    used_for: "Actual completed collectible, affixed cancelled stamp, black-and-white authorized marking and mail-use exclusion; no factory measurements or mass defaults."
+  - id: "canada-product"
+    type: "official_guidance"
+    reference: "Canada Post, Standing orders, Official First Day Covers section; https://www.canadapost-postescanada.ca/cpc/en/support/kb/sending/stamps-packaging/create-a-philatelic-standing-order.page"
+    used_for: "Independent product-state corroboration; official cover bears stamp cancelled at date/place of issue; not USPS process observations."
+  - id: "canada-service"
+    type: "official_guidance"
+    reference: "Canada Post, Official First Day Covers, complete support article; https://www.canadapost-postescanada.ca/cpc/en/support/articles/philatelic-products/official-first-day-covers.page"
+    used_for: "Customer-owned cover affixing/cancellation and actual return mailing distinguished; not a combined USPS/Canada SKU or assumed transport."
+  - id: "ilcd-allocation"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA, Detailed guidance, March 2010, §7.9.1–7.9.2 printed p255/PDF275; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional multifunctionality and subdivision before allocation; no transferred allocation factor or price rule."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:b5e80f51ce72f4a9de9884d96a87c788a85f392a72cb24a4da7465e8f2011b0a"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5455"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5455
+          line: 58
+          column: 1
+        end:
+          offset: 10240
+          line: 81
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Genuine stamp with integral adhesive and finished printed envelope received before affixing and official cancellation |\n| starting_condition_role | foreground_collection_start |\n| product_classification_scope | Official first-day cover collectible after cancellation; unused stamp manufacture is upstream input supply |\n| recursive_input_rule | A completed first-day cover cannot be a blank input to first formation. Already cancelled covers require a separate reuse model with inherited burdens; do not reset their history. |\n| upstream_dataset_requirement | Compatible physical stamp and printed-envelope production providers, including adhesive, printing and purchased supply-state burdens; no face-value proxy or zero-burden assumption |\n| disclosure | Declare component ownership, delivery state, cancellation authority, original batch and gate; distinguish first formation, outsourced operation and delivery |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_gate | whole system | Include upstream physical components and their inbound transport, stamp affixing, authorized cancellation, drying if actually performed, inspection, attributable pre-release holding and reject treatment through the first accepted bare-cover gate. Packaging and customer shipment after that gate, retail, collector use and end of life are outside this dataset and require downstream modelling. | usps-fdc |\n| b_service | stamp_input | Separate physical stamp supply from any bundled postal entitlement. Cancellation does not cause a mailing journey. Do not infer tonne-kilometres from denomination, fee or retail price. A real intersite movement is counted once from actual route and transported mass. Customer-owned cancellation/return service is excluded; Canada Post describes those separate operations, not this USPS SKU route. | usps-fdc; canada-service |\n| b_complete | p_fdc | Record each actual additional chemical, utility, packaging component, waste and elementary emission as its own exchange. No unspecified residual is zero. Verify complete purchased ink formulation and upstream boundary before adding constituent flows. Unmeasured solvent loss, heating, cleaning and packaging waste remain data gaps if present. |  |\n| b_supply_once | p_fdc | For every provider and movement declare included operations and delivery point. If a component provider includes delivery to the receiving site, do not add the same freight service again. Add separately purchased road freight only for uncovered actual road legs using road_freight and cp_freight; another actual mode needs its own specific exchange and protocol. Delivery fees and denomination do not prove transport work. | canada-service |\n| b_cancel_once | p_fdc | When an authorized contractor cancels operator-owned component assemblies as part of first formation, cancellation_service represents only that purchased operation, not a second finished cover or a customer-owned cancellation-only dataset. Record the provider inclusion ledger under cp_service. Ink, electricity, drying, transport and reject treatment included by that provider are represented once through its service inventory and are not duplicated as foreground purchases. Separately supplied ink or electricity remain direct cards only for the uncovered quantities. Unknown provider inclusion is unresolved, never zero. | canada-service |\n| b_cohort | p_fdc | Record original lot and item identity before processing. Keep raw activity quantities, failed cancellation attempts, rework, inherited burdens and their exchange-specific units without normalization while the cohort remains open. For Q = 0 no per-kg result may be emitted; retain the complete failed-lot record and terminal burden vector. A later accepted output of the same traceable cohort inherits its prior failed/rework burdens. An entirely failed lot may enter a predefined documented production campaign only with explicit traceable transfer of its full burden vector and unchanged failure status; never silently discard it or move it to an unrelated successful lot. |  |\n| b_wip | p_fdc | At period close carry physical WIP count/mass and its accumulated exchange-specific burden vector forward under the same item/lot lineage. No release from WIP is counted in Q until first acceptance. Every transfer has one matching source out-record and destination in-record with the same transfer ID, physical state and burden vector; transfers inside the consolidated scope cancel, and inherited vectors are not added again as new purchases. Already released stock carries its earlier release history and is never first output again on sale, return or repacking. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 359
+              line: 10
+              column: 1
+            end:
+              offset: 435
+              line: 10
+              column: 77
+          text: "# First release of postal-operator official cancelled paper first-day covers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5455
+              line: 58
+              column: 1
+            end:
+              offset: 5476
+              line: 58
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_18391"
+      family: "allocation"
+      span:
+        start:
+          offset: 18391
+          line: 266
+          column: 1
+        end:
+          offset: 19323
+          line: 273
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_direct | p_fdc | For an attributional study first subdivide production from postal transport, retail and other issue batches; directly assign stamp and envelope purchases and actual cancellation workload. Allocation is only for genuinely shared burdens. Use measured causal machine time or metered consumption with a complete denominator of all users, justify each driver and ensure allocated fractions sum to one. If causal separation is unsupported, leave the shared burden unresolved for study review rather than use face value or collector price by default. | ilcd-allocation |\n| a_reject | p_fdc | No co-product or displacement credit for cancellation, invalidated postage or rejects. In-batch rework keeps original inputs and additional work; returned unused stamps retain their physical stock history. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 359
+              line: 10
+              column: 1
+            end:
+              offset: 435
+              line: 10
+              column: 77
+          text: "# First release of postal-operator official cancelled paper first-day covers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 18391
+              line: 266
+              column: 1
+            end:
+              offset: 18431
+              line: 266
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_27054"
+      family: "validation"
+      span:
+        start:
+          offset: 27054
+          line: 306
+          column: 1
+        end:
+          offset: 28334
+          line: 315
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_reference | reference_product_fdc | Require positive measured Q, accepted N, one reference output, matching batch/issue and 1 kg normalization in every row and protocol. Mass property support does not approve an unresolved product UUID. |  |\n| v_state | p_fdc | Verify affixed genuine stamp, authorized cancellation date/place, readable dry intact saleable cover, and recorded rejects before first release. Exclude mint stamp production and existing-cover repacking. | usps-fdc; unsd-cpc3 |\n| v_boundary | whole system | Reconcile upstream providers and owned/outsource operations without duplicate stamp, envelope, integral adhesive, cancellation service, postage entitlement, transport or packaging. Keep unresolved species and historical stocks explicit. Method checks confer no scientific approval, classification acceptance or publication. | canada-service |\n| v_lineage | p_fdc | Audit Q = 0 records, all period WIP vectors, matching transfer pairs, campaign membership, and once-only first-release IDs before normalization. Require each actual freight or cancellation activity to have exactly one provider/direct owner; unresolved inclusions block a complete dataset. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 359
+              line: 10
+              column: 1
+            end:
+              offset: 435
+              line: 10
+              column: 77
+          text: "# First release of postal-operator official cancelled paper first-day covers"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 27054
+              line: 306
+              column: 1
+            end:
+              offset: 27076
+              line: 306
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 6556
+          line: 73
+          column: 1
+        end:
+          offset: 6987
+          line: 73
+          column: 432
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_service"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 6988
+          line: 74
+          column: 1
+        end:
+          offset: 7441
+          line: 74
+          column: 454
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 7442
+          line: 75
+          column: 1
+        end:
+          offset: 7812
+          line: 75
+          column: 371
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_supply_once"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 7813
+          line: 76
+          column: 1
+        end:
+          offset: 8280
+          line: 76
+          column: 468
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_cancel_once"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 8281
+          line: 77
+          column: 1
+        end:
+          offset: 8950
+          line: 77
+          column: 670
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_cohort"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 8951
+          line: 78
+          column: 1
+        end:
+          offset: 9650
+          line: 78
+          column: 700
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_wip"
+      identity_kind: "explicit"
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 9651
+          line: 79
+          column: 1
+        end:
+          offset: 10238
+          line: 79
+          column: 588
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_direct"
+      identity_kind: "explicit"
+      unit_id: "normative_18391"
+      source_span:
+        start:
+          offset: 18504
+          line: 270
+          column: 1
+        end:
+          offset: 19089
+          line: 270
+          column: 586
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_reject"
+      identity_kind: "explicit"
+      unit_id: "normative_18391"
+      source_span:
+        start:
+          offset: 19090
+          line: 271
+          column: 1
+        end:
+          offset: 19321
+          line: 271
+          column: 232
+    - pointer: "/validation_rules/0"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_27054"
+      source_span:
+        start:
+          offset: 27149
+          line: 310
+          column: 1
+        end:
+          offset: 27394
+          line: 310
+          column: 246
+    - pointer: "/validation_rules/1"
+      rule_id: "v_state"
+      identity_kind: "explicit"
+      unit_id: "normative_27054"
+      source_span:
+        start:
+          offset: 27395
+          line: 311
+          column: 1
+        end:
+          offset: 27643
+          line: 311
+          column: 249
+    - pointer: "/validation_rules/2"
+      rule_id: "v_boundary"
+      identity_kind: "explicit"
+      unit_id: "normative_27054"
+      source_span:
+        start:
+          offset: 27644
+          line: 312
+          column: 1
+        end:
+          offset: 28016
+          line: 312
+          column: 373
+    - pointer: "/validation_rules/3"
+      rule_id: "v_lineage"
+      identity_kind: "explicit"
+      unit_id: "normative_27054"
+      source_span:
+        start:
+          offset: 28017
+          line: 313
+          column: 1
+        end:
+          offset: 28332
+          line: 313
+          column: 316
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 5455
+          line: 58
+          column: 1
+        end:
+          offset: 5476
+          line: 58
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5455"
+      source_span:
+        start:
+          offset: 5504
+          line: 62
+          column: 1
+        end:
+          offset: 6483
+          line: 69
+          column: 174
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_18391"
+      source_span:
+        start:
+          offset: 18391
+          line: 266
+          column: 1
+        end:
+          offset: 18431
+          line: 266
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_27054"
+      source_span:
+        start:
+          offset: 27054
+          line: 306
+          column: 1
+        end:
+          offset: 27076
+          line: 306
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b5e80f51ce72f4a9de9884d96a87c788a85f392a72cb24a4da7465e8f2011b0a"
+  generated_content_sha256: "sha256:9a530408ef3f840373fbe190fe7480cbeba247f17c2ff3be6860643ebc71481f"

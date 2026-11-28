@@ -1,0 +1,297 @@
+{
+  "code": "33630",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "34bcaed9d8fcdf9d2aae6b5dea49c76cc56e65c9f9b62fb2ac8db67a73fdfa56",
+    "pcr.en-US.md": "8f14283efad8b64318121a40cc2a7a4b86eafb46c1c442f335006afffc7e23a3",
+    "pcr.zh-CN.md": "e6f2e96e16e35abedfdd325f36d210dc84c12bb23269242a7709a2765e59c5cc",
+    "structured.yaml": "62c70598f8374b7a57b01e3cd31fe17bee4425c4e96604d6c34cdb8716a3a332"
+  },
+  "author_commit": "ea086c3a167efaf54f5d89c416ac8f849d2e4b08",
+  "complete_inputs_and_derivations": [
+    {
+      "id": "post_acceptance_loss_100_60_30_10",
+      "inputs": {
+        "units": "all product quantities in kg on the same original first-acceptance whole-grade basis; burdens in arbitrary consistent units",
+        "events": [
+          {
+            "event_id": "new-A-first",
+            "lot": "A",
+            "mass": 100
+          }
+        ],
+        "D_new": 60,
+        "FG_new": 30,
+        "L_new": {
+          "actual_post_acceptance_loss": 10
+        },
+        "opening_FG": 0,
+        "attributed_cohort_burden": 100
+      },
+      "derivation": [
+        "Q = sum(unique first-acceptance event kg) = 100",
+        "Complete bridge: 60 + 30 + 10 = 100",
+        "Burden/Q = 100/100 = 1 unit/kg",
+        "Old incomplete bridge: 60+30=90; 100/90=1.111111... is rejected",
+        "Storage-inclusive isolated product account: received already-manufactured supplied-material mass 100 = actual net external dispatch 60 + closing FG 30 + actual loss 10; Q is an internal acceptance event, never a second output"
+      ],
+      "expected": {
+        "Q": 100,
+        "destination_total": 100,
+        "unit_burden": 1,
+        "invalid_old_denominator": 90,
+        "invalid_old_unit_burden": 1.1111111111111112
+      },
+      "checks": {
+        "event_bridge_closes": true,
+        "normalization_unchanged_by_loss": true
+      },
+      "scope_note": "Abstract accounting fixture at the existing supplied-material gate; all kg are measured on one original whole-product acceptance basis, arbitrary burden units only. No isotope/activity/default operating quantity is inferred."
+    },
+    {
+      "id": "opening_FG_is_old_cohort",
+      "inputs": {
+        "basis": "same whole-product kg, no composition/water changes in this illustrative account",
+        "old_cohort": {
+          "Q0": 20,
+          "opening_FG": 20,
+          "current_dispatch": 15,
+          "closing_FG": 5,
+          "incremental_current_service_burden": 4
+        },
+        "new_cohort": {
+          "unique_first_acceptance": 100,
+          "D_new": 60,
+          "FG_new": 30,
+          "L_new_loss": 10,
+          "attributed_burden": 100
+        }
+      },
+      "derivation": [
+        "New Q = 100, excludes old opening FG 20 and old dispatch 15",
+        "New bridge: 60+30+10=100",
+        "Old physical account: opening FG 20 = dispatch 15 + closing FG 5",
+        "Combined physical account: opening FG 20 + new supplied material awaiting acceptance 100 = net external dispatch (15+60) + closing FG (5+30) + loss 10 = 120",
+        "New burden = 100/100 = 1 unit/kg",
+        "Old service correction = 4/Q0 = 4/20 = 0.2 unit/kg; never 4/new Q"
+      ],
+      "expected": {
+        "new_Q": 100,
+        "combined_physical_input": 120,
+        "combined_external_dispatch": 75,
+        "combined_closing_FG": 35,
+        "combined_loss": 10,
+        "old_unit_service_correction": 0.2
+      },
+      "checks": {
+        "new_bridge_closes": true,
+        "old_stock_closes": true,
+        "whole_physical_closes": true,
+        "old_Q0_service": true
+      },
+      "scope_note": "Abstract accounting fixture at the existing supplied-material gate; all kg are measured on one original whole-product acceptance basis, arbitrary burden units only. No isotope/activity/default operating quantity is inferred."
+    },
+    {
+      "id": "return_to_WIP_and_later_reacceptance",
+      "inputs": {
+        "basis": "unchanged first-acceptance whole-product kg",
+        "original_cohort": {
+          "event_id": "B-first",
+          "first_acceptance_mass": 100,
+          "D_new": 60,
+          "FG_new": 20,
+          "L_new_closing_rework_WIP": 20,
+          "inherited_burden": 100,
+          "current_actual_rework_burden": 10
+        },
+        "later_period": {
+          "opening_rework_WIP": 20,
+          "reaccepted_to_FG": 20,
+          "closing_FG": 20,
+          "new_unique_first_acceptance_events": [],
+          "actual_incremental_service_burden": 5
+        }
+      },
+      "derivation": [
+        "Original first-acceptance Q=100; destination bridge 60+20+20=100",
+        "Transfer of accepted 20 kg to WIP is an internal state change, represented once as its closing L_new destination and once as stock in the separate physical account, never an extra external output",
+        "Cohort burden = inherited 100 + actual incremental rework 10 = 110; 110/Q = 1.1 unit/kg",
+        "Later reacceptance of the same 20 kg creates zero new Q; current new Q=0 permits raw records only",
+        "Later physical stock account: opening rework WIP 20 = closing FG 20; gross internal transfer is not a new input/output",
+        "Original Q0 remains 100; later service correction 5/100=0.05 unit/kg and cumulative cohort vector (100+10+5)/100=1.15 unit/kg",
+        "At the later observation cut, the original cohort can be reconciled as D=60, FG=40, closing rework=0; Q0 remains100. Do not add the historical 20 WIP transfer to the later 40 FG."
+      ],
+      "expected": {
+        "original_Q": 100,
+        "original_unit_burden": 1.1,
+        "later_new_Q": 0,
+        "original_Q0": 100,
+        "later_service_correction": 0.05,
+        "cumulative_unit_burden": 1.15
+      },
+      "checks": {
+        "original_bridge_closes": true,
+        "rework_load_retained": true,
+        "later_physical_stock_closes": true,
+        "reacceptance_not_new_Q": true,
+        "later_bridge_closes": true,
+        "incremental_service_not_lost": true
+      },
+      "scope_note": "Abstract accounting fixture at the existing supplied-material gate; all kg are measured on one original whole-product acceptance basis, arbitrary burden units only. No isotope/activity/default operating quantity is inferred. WIP/rework denotes recorded status and actual in-scope gate services only, without prescribing manufacturing, species transformation or extending applicability."
+    },
+    {
+      "id": "linked_net_return_not_double_counted",
+      "inputs": {
+        "basis": "same original accepted whole-product kg",
+        "unique_first_acceptance_mass": 100,
+        "gross_dispatch": 70,
+        "linked_return_received": 10,
+        "return_final_destination": "10 kg closing rework/WIP",
+        "net_D_new": 60,
+        "FG_new": 20,
+        "L_new": {
+          "closing_rework_WIP_from_return": 10,
+          "actual_loss": 10
+        }
+      },
+      "derivation": [
+        "D_new = gross dispatch70 - linked return10 =60",
+        "Returned material destination is closing WIP10 in L_new; do not add another generic return10 term",
+        "Q=100 = D_new60 + FG_new20 + L_new(10+10)",
+        "Physical account retains actual external gross dispatch70 and return receipt10 separately, or uses consistent net60: 100+10 = 70+20+10+10 =110",
+        "Return/reacceptance event creates no additional first-acceptance Q"
+      ],
+      "expected": {
+        "Q": 100,
+        "D_new": 60,
+        "L_new_total": 20,
+        "destination_total": 100
+      },
+      "checks": {
+        "net_dispatch_reconciles": true,
+        "destination_bridge_closes": true,
+        "gross_physical_closes": true
+      },
+      "scope_note": "Abstract accounting fixture at the existing supplied-material gate; all kg are measured on one original whole-product acceptance basis, arbitrary burden units only. No isotope/activity/default operating quantity is inferred."
+    },
+    {
+      "id": "failed_and_rework_activities_remain_burdens",
+      "inputs": {
+        "basis": "isolated product account in same whole-product kg; arbitrary burden units",
+        "pre_acceptance_rejects": 20,
+        "unique_first_accepted_mass": 80,
+        "D_new": 50,
+        "FG_new": 30,
+        "L_new": 0,
+        "failed_rework_actual_incremental_burden": 20,
+        "fresh_supplied_material_at_gate": 100,
+        "initial_gate_services_burden": 100,
+        "scope": "Existing receipt/storage/acceptance/delivery gate and recorded failures/handling services; no manufacture operation."
+      },
+      "derivation": [
+        "Physical product account: input100 = first-accepted product80 + pre-acceptance waste20; waste is retained",
+        "Unique first-acceptance Q=80, never100 and never80 plus repeated rework passes",
+        "Bridge: D_new50+FG_new30+L_new0=80; two-term form valid here only because all other post-acceptance net destinations are evidenced zero",
+        "Attributable actual burden=100+20=120, including failures/rework; burden/Q=120/80=1.5"
+      ],
+      "expected": {
+        "Q": 80,
+        "attributed_burden": 120,
+        "unit_burden": 1.5
+      },
+      "checks": {
+        "physical_account_closes": true,
+        "event_account_closes": true,
+        "actual_failure_burden_retained": true
+      },
+      "scope_note": "Abstract accounting fixture at the existing supplied-material gate; all kg are measured on one original whole-product acceptance basis, arbitrary burden units only. No isotope/activity/default operating quantity is inferred."
+    }
+  ],
+  "case_payload_sha256": "f91e77bb24403e8da987afb0f0c36cc556d6a0da049df4c3bf44d0ac1ca4c127",
+  "additional_basis_and_negative_cases": {},
+  "independently_recomputed_checks": [
+    {
+      "case": "post_acceptance_loss",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "Q=100=60+30+10; 100/Q=1, while100/(60+30)=10/9 is rejected",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "linked_returns",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        20,
+        10,
+        10
+      ],
+      "formula": "Q=100=(gross70-return10)+FG20+WIP10+loss10",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_cohort_physical",
+      "left_terms": [
+        20,
+        100
+      ],
+      "right_terms": [
+        75,
+        35,
+        10
+      ],
+      "formula": "opening20+new100=old/new dispatch75+FG35+loss10",
+      "recomputed_left": 120,
+      "recomputed_right": 120,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "later_reacceptance",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        40
+      ],
+      "formula": "Original Q0=100 after WIP20 moves toFG; no additional event",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "failed_rework_load",
+      "left_terms": [
+        1.5
+      ],
+      "right_terms": [
+        1.5
+      ],
+      "formula": "All actual120 burden / unique accepted80=1.5",
+      "recomputed_left": 1.5,
+      "recomputed_right": 1.5,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}
