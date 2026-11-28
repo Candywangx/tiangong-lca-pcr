@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { htmlAnchors, verifyPublishedChapterAnchors, providerRuntimeSourceRoot, createProviderRuntime, verifyProviderRuntimeSource, verifyProviderRuntimeExport, PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_PATHS } from './provider-runtime.ts';
+import { htmlAnchors, verifyPublishedChapterAnchors, providerRuntimeSourceRoot, createProviderRuntime, parseProviderRuntime, verifyProviderRuntimeSource, verifyProviderRuntimeExport, PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_PATHS } from './provider-runtime.ts';
 const source='a'.repeat(40);
 function fixture(){const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'pcr-provider-proof-')));const out=path.join(root,'out');fs.mkdirSync(out);return{root,out,cleanup:()=>fs.rmSync(root,{recursive:true,force:true})};}
 function write(root:string,file:string,value:string){const target=path.join(root,file);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,value);}
@@ -22,6 +22,30 @@ test('sealed compatibility proof checks source, safe routes, physical target and
  write(f.out,'en/docs/pcr/a/b/c/index.html','<h2 id="other">body</h2>');assert.throws(()=>verifyProviderRuntimeExport(f.out,source,proof));
  const changed=structuredClone(proof);changed.routes[0]!.to='https://example.com/';write(f.out,PROVIDER_RUNTIME_FILE,JSON.stringify(changed));assert.throws(()=>verifyProviderRuntimeExport(f.out,source));
  fs.unlinkSync(path.join(f.out,PROVIDER_RUNTIME_FILE));assert.throws(()=>verifyProviderRuntimeExport(f.out,source,proof));
+}finally{f.cleanup();}});
+
+test('identity restoration permits only source-bound same-language roots and preserves root and chapter anchors',()=>{const f=fixture();try{
+ install(f.root);const from='/en/docs/pcr/a/b/redundant/',to='/en/docs/pcr/a/b/original/';
+ const entries=[{from,to,anchor:'scope'},{from:from+'chapters/old/',to,anchor:'section'}];
+ write(f.root,PROVIDER_RUNTIME_PATHS[2],JSON.stringify({schemaVersion:2,entries,identityMoves:[{from,to}]}));
+ const proof=createProviderRuntime(f.root,source)!;assert.equal(proof.schemaVersion,2);verifyProviderRuntimeSource(f.root,proof,source);
+ write(f.out,PROVIDER_RUNTIME_FILE,JSON.stringify(proof));write(f.out,to.slice(1)+'index.html','<main><h2 id="scope">Scope</h2><h2 id="section">Retained</h2></main>');
+ assert.deepEqual(verifyProviderRuntimeExport(f.out,source,proof),proof);
+ write(f.root,'packages/pcr-docs/compatibility/published-chapter-anchors.json',JSON.stringify({schemaVersion:1,baseline:'fixture',requirements:entries.map(row=>({from:row.from,anchors:['scope','section']}))}));
+ verifyPublishedChapterAnchors(f.root,f.out,proof);
+ write(f.out,to.slice(1)+'index.html','<h2 id="scope">Missing section</h2>');assert.throws(()=>verifyPublishedChapterAnchors(f.root,f.out,proof),/Published chapter anchor missing/);
+ for(const mutate of [
+  (p:typeof proof)=>{p.routes[0]!.to='/en/docs/pcr/a/b/unrelated/';},
+  (p:typeof proof)=>{p.identityMoves![0]!.to='/zh/docs/pcr/a/b/original/';},
+  (p:typeof proof)=>{p.identityMoves![0]!.to=p.identityMoves![0]!.from;},
+  (p:typeof proof)=>{p.identityMoves=[];},
+  (p:typeof proof)=>{p.routes.shift();},
+  (p:typeof proof)=>{p.identityMoves!.push({...p.identityMoves![0]!});},
+  (p:typeof proof)=>{p.identityMoves!.push({from:to,to:from});},
+  (p:typeof proof)=>{p.identityMoves![0]!.from='/en/docs/pcr/a/b/%2e%2e/';},
+  (p:typeof proof)=>{p.routes[1]!.to=to+'chapters/extra/nested/';},
+ ]){const changed=structuredClone(proof);mutate(changed);assert.throws(()=>parseProviderRuntime(changed,source));}
+ const legacy=structuredClone(proof);legacy.schemaVersion=1;delete legacy.identityMoves;assert.throws(()=>parseProviderRuntime(legacy,source),/explicit identity move/);
 }finally{f.cleanup();}});
 
 test('published anchor verification cannot mistake a data-id attribute for a real HTML id',()=>{const f=fixture();try{
