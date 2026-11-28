@@ -1,10 +1,1387 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39282"
-  title: "Agglomerated wood waste and scrap in forms other than pellets, including wood briquettes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.agglomerated-wood-waste-and-scrap-in-forms-other-than-pellets-including-wood-briquettes"
+  classification_refs: "CPC 3.0:39282; narrower untreated sawdust mechanical-piston briquette subset; acceptance separate"
+  covered_products: "Non-pellet uncarbonised binderless wood fuel briquettes from one segregated untreated sawmill sawdust supply stream"
+  excluded_products: "Pellets; loose sawdust; continuous-grain densified wood; charcoal; bonded boards; treated wood; mixed refuse; other biomass; screw/hydraulic routes"
+  representative_product: "One declared wood-sawdust briquette specification; net mass at first release; polyethylene-film wrapped"
+  production_route: "Trace source and prior drying → collect/supply → transport/receive → screen/size → mechanical piston press → actual cooling → size/inspect/pack → first release → attributable stock/loading"
+  market_state: "Uncarbonised solid fuel briquettes; actual moisture and dimensions; no universal quality class"
+functional_unit:
+  what: "Supply declared non-pellet wood fuel briquettes at first quality release with attributable ex-works services"
+  how_much: "1 kg newly first-released net briquette at actual release moisture excluding film"
+  how_well: "Meet actual declared moisture/dimensions/integrity/contamination fuel specification; no universal grade or useful-heat equivalence"
+  how_long_or_cycle: "One first-release cohort and disclosed subsequent storage/loading history; no assumed use lifetime"
+  reference_flow_link: "finished_briquette"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "all processes"
+      rule: "Include all failed runs, zero-output periods, start-up/shutdown, idle, cleanup, dust capture, rework and actual losses. Missing instruments are not zero. Add every actually present material, formulation, fuel, refrigerant, water stream, package, waste and identified emission separately before the dataset can be complete."
+      source_ids:
+        - fao-briquetting-1996
+        - ilcd-attributional-2010
+    - rule_id: boundary_gates
+      applies_to: "all physical balances"
+      rule: "Use identical manufacturing/FG/consolidated physical interfaces. Define V_new=Q_c+measured wrappers attached at first release; V_old is gross previously accepted material and its actual wrappers returned after rework. Manufacturing mass: opening raw/empty-package/machine-fluid stores and WIP+external mass inputs+old FG sent to rework=closing same stores and WIP+V_new+V_old returned to FG+external mass rejects/emissions. For each separate ledger preserve net wood, water and package components; Q_c excludes wrappers. Every internal transfer appears once on each side and cancels in consolidation. New Q_c is already within V_new and is not another added output. Keep gross V separate from attributed A; internal fines are not purchases/coproducts."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: boundary_stock
+      applies_to: "all inventory rows"
+      rule: "For each exchange j retain opening/closing WIP physical quantities and historical/current burden vectors by lot/stage, including source, utilities and failed work. For newly first-released cohorts A_jc includes actual current attributable records plus historical unreleased WIP burden transferred in, minus separately retained closing unreleased WIP burden, with losses/allocation retained. Accepted closing FG is already in Q_c and its production burden is not subtracted. Previously accepted FG sent through rework carries its original vector as a balanced transfer at both ends, not a second addition of historical production to A_jc; only real incremental rework/service is newly assigned to its original cohort and original Q_c. Cross-period corrections remain linked to the original lot."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: boundary_service
+      applies_to: "p_service"
+      rule: "Use gross FG mass including actual attached packaging consistently: opening gross FG+V_new+external accepted returns+V_old returned from manufacturing+actual moisture uptake+new service packaging issued=closing gross FG+gross physical dispatch+gross old FG sent to rework+actual external losses/emissions. Keep net wood/water and each packaging subledger independent; external returns include their real attached packaging. Empty service-packaging store changes are included in the separately closed packaging ledger. Closing FG is already first-released; new Q_c occurs only inside V_new. Link each physical return stock event to its original dispatch; retain both gross events for stock reconciliation. Retain the original production burden once and all actually performed original storage/handling/repacking/loading burdens on the original cohort; add actual return/inspection/repacking/rework increments once. Correct a service booking only with evidence that it was erroneous, duplicated or never performed; a physical return never cancels consumed energy/materials or actual emissions/waste. Attribute service to original cohorts with original Q_c; H allocates service and is never production."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: boundary_water_heat
+      applies_to: "cooling and upstream drying"
+      rule: "Record actual die-water recirculation, makeup, purge, evaporation and heat rejection with measured states; internal loop water is not repeated supply. No boiler, steam, purchased heat or condensate return is assumed. If such exchanges actually exist, expand the route: external condensate/heat-exchanger-water returns remain separate Product returns with measured mass/state/enthalpy and supplier water/energy agreement, not an invented negative tap-water or heat input."
+      source_ids:
+        - fao-briquetting-1996
+    - rule_id: boundary_packaging
+      applies_to: "each packaging material"
+      rule: "For each actual packaging material separately: opening empty + opening attached WIP + opening attached FG + opening reusable stock + purchases P + first non-purchase external physical receipts N_ext + actual external returns received ER = closing empty + closing attached WIP + closing attached FG + closing reusable stock + packaging on gross physical shipments S + external returns out EO + waste W. P is actual component procurement, including a component genuinely purchased within a whole consignment only as its non-additive share. N_ext is the actual first non-return external physical receipt without component procurement, including supplier-attached, first entrusted, borrowed or leased packaging. ER requires a linked prior external dispatch and true return; P/N_ext/ER are mutually exclusive event partitions. Opening means physically present at period start, not a current receipt. Keep measured component quantity, ownership/custody, original cohort and inherited vector separate from environmental burden: actual manufacture/supply and incremental lease/return/handling service follow one recorded provider convention, never automatically N_ext kg of new manufacture or a repeated upstream-included burden. Match N_ext once to the same external mass gate in boundary_gates/boundary_service using non-additive whole/component bridges; issue between empty stores and WIP/FG is a cancelling internal transfer, not another receipt. Internal reuse/transfers create no purchase, Q_c, automatic coproduct or credit. Each real pallet, label, strap or other additional component needs its own specific atomic physical receipt/destination interface and ledger when used; missing quantity/interface is a concrete-inventory completeness gap, not zero or a collective identity."
+      source_ids:
+        - ilcd-attributional-2010
+boundary_abstraction:
+  declared_starting_condition: "Segregated sawmill sawdust from untreated solid wood; received dry with actual source generation/collection and drying history"
+  starting_condition_role: "Explicit foreground receipt interface; upstream burdens are connected rather than discarded"
+  product_classification_scope: "Non-pellet wood briquettes in CPC 39282; no full-leaf coverage claim"
+  recursive_input_rule: "Incoming finished briquettes are never virgin sawdust or new production. Record their original cohort and upstream provider; internal fines and rework cancel physically and inherit their vector. Purchased briquettes require an explicitly different assessed input route."
+  upstream_dataset_requirement: "One verified compatible provider per supplied exchange; include source wood production, source-process allocation, actual prior drying, collection and supply transport exactly once. Waste classification or low value never sets burdens to zero."
+  disclosure: "Disclose site/period, source moisture and composition, prior drying, all gate locations, allocation, actual process configuration, stock vectors, service cohorts, exclusions and missing provider evidence."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Biomass briquette fuel"
+    uuid: "e464a548-5c9d-41d5-afb7-a88eba3849cc"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "wood source process and waste/co-product status"
+    - "single sawmill stream and actual species composition"
+    - "untreated wood and no added product binder confirmation"
+    - "source allocation and complete inherited load vector"
+    - "prior drying site and actual heat/fuel/water/emission inventory"
+    - "incoming and release moisture with wet/dry basis and test method"
+    - "feed particle-size distribution and actual screening/milling"
+    - "mechanical reciprocating-piston route and equipment/die settings"
+    - "actual die/line cooling and water circuit configuration"
+    - "briquette non-pellet dimensions and intended fuel specification"
+    - "first-release event IDs and net mass Q_c excluding film"
+    - "opening/closing WIP and each inherited exchange vector"
+    - "opening/closing FG cohort IDs and original Q_c"
+    - "gross dispatch and returns without second production"
+    - "each packaging stock and destinations"
+    - "site and accounting period and real product provider"
+    - "electricity CN grid-average user supply below 1 kV when UUID selected"
+    - "transport actual truck and service boundary"
+    - "native identity limits and independent provider compatibility"
+    - "measured state-specific density or NCV only when a conversion is needed"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net first-released briquette mass at measured release moisture. Weigh on calibrated scales and subtract actual film/tare. Q_c excludes packaging, rejected output and previously released material; record accepted closing FG without adding it a second time."
+  - id: unit_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row-specific"
+      uuid: ""
+    required_unit: "row-specific"
+    rule: "Keep raw units. Convert kWh to MJ with 3.6 MJ/kWh before allocation; tonne-km to kg*km with 1000 kg*km per tonne-km. Integrate true rates over their measured time only; a cumulative volume or energy total is never multiplied by duration again. Obtain material-specific density at measured temperature/pressure/composition if volume must become mass; no water-density assumption or secondary Flow coefficient establishes wood density."
+  - id: moisture_accounts
+    applies_to: "wood exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "For each measured wet mass m and wet-basis water fraction w: water=m*w and dry solid=m*(1-w). Dry-basis moisture u converts by w=u/(1+u). Measure release and intake separately. Physical gross mass, dry wood, free/sorbed water and relevant elements are independent ledgers; moisture loss does not create dry wood. No assumed reaction, structural-water formation or combustion is introduced."
+process_map:
+  - id: p_manufacture
+    name: "Sawdust receipt preparation piston pressing cooling sizing packing and first release"
+    inclusion: "required"
+    inclusion_condition: "Selected dry-sawdust route; source drying remains upstream"
+    role: "manufacturing"
+    quantitative_reference: "Q_c kg newly first-released net briquette"
+  - id: p_service
+    name: "Post-release stock handling repacking and loading"
+    inclusion: "conditional"
+    inclusion_condition: "Whenever accepted lots have real storage/handling/return history"
+    role: "cohort_service"
+    quantitative_reference: "Original cohort Q_c; H is service allocator only"
+process_inventory:
+  - id: p_manufacture
+    label: "Sawdust receipt preparation piston pressing cooling sizing packing and first release"
+    inputs:
+      product:
+        - row_id: inbound_transport
+          role: "Contracted inbound sawdust freight"
+          name: "Road freight transport service"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9425f2bf-e734-4884-be1b-645473a3e82d"
+          property_unit: "mass*distance 118f2a40-50ec-457c-aa60-9bc6b6af9931 / kg*km"
+          description: "One actual road freight service by a 30-ton diesel truck. Native mixed-production/road identity fixes that truck type; other truck sizes/modes require different verified identities. Record gross transported load, distance, utilisation and empty-return allocation; provider includes its own fuel/emissions so do not duplicate them as plant exchanges."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_supply; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: prep_electricity
+          role: "Receipt screening and necessary milling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter conveying, screening, any justified milling and associated dust aspiration. User-side CN grid-average AC below 1 kV only; native property is Net calorific value interpreted here as electrical energy in MJ, not fuel combustion. Actual site, voltage, supply mix, period, transmission boundary and one compatible provider must match; the Flow is no electricity consumption factor."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_energy; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: press_electricity
+          role: "Mechanical piston and actual cooling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter dosing, reciprocating press, actual die-loop pumps and cooling fans; include all start/stop and failed pressing. User-side CN grid-average AC below 1 kV only; native property is Net calorific value interpreted here as electrical energy in MJ, not fuel combustion. Actual site, voltage, supply mix, period, transmission boundary and one compatible provider must match; the Flow is no electricity consumption factor."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_energy; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: finish_electricity
+          role: "Sizing inspection packing and compressor electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter real sizing/packing drives and onsite compressor if the actual saw uses pneumatic actuation. Compression, distribution leaks and standby remain in this electricity supply; internal compressed air is not bought again. User-side CN grid-average AC below 1 kV only; native property is Net calorific value interpreted here as electrical energy in MJ, not fuel combustion. Actual site, voltage, supply mix, period, transmission boundary and one compatible provider must match; the Flow is no electricity consumption factor."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_energy; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: cooling_makeup
+          role: "Die cooling-loop makeup water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on an actual water-cooled die; meter fresh makeup, not internal circulation. Native Tap water is treated municipal/potable piped supply, production mix in factory, Water production supply; no fixed geography or treatment recipe. Use one compatible supplier and measured supply state. Native secondary Volume coefficient is not a measured density or conversion for this site; weigh or use independently measured state-specific water density."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_water; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+        - row_id: lubricant
+          role: "Purchased whole mineral machine lubricating oil"
+          name: "Mineral machine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One whole purchased mineral-oil formulation for actual press/crank bearings or drive lubrication; count it once. Retain supplier SDS, viscosity grade and additives as a composition subledger, not additional purchases. Do not substitute a PAO/total-synthesis native record for mineral oil. No lubricant is a product binder in this route; leakage/contamination is measured separately."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_consumables; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+        - row_id: film_input
+          role: "Initial polyethylene film wrapper"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One purchased polyethylene film wrapper formulation at plant, CAS 9002-88-4; verify actual polymer, thickness, grade, additives, recycled share and supplier. Native comments distinguish competing PET polyester, which is not this PE input; the unrelated luggage classification is disclosed as an isolated tag inconsistency, not physical permission for PET, resin pellets, cartons or straps. Whole film enters once; additives are subledger details."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_packaging; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - cfn-saw-2023
+            ranges: []
+      waste:
+        - row_id: sawdust_input
+          role: "Segregated incoming dry untreated sawmill sawdust"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One actual untreated sawmill sawdust waste stream, fine wood particles to small chips, at plant, untreated comb/rec; native reference Mass/kg and non-agglomerated form. Retain actual species/source, legal waste/co-product status, contamination checks, moisture and prior drying/collection burden and one supplier dataset. The native generic uses in fuel/mulch do not establish treatment, grade, composition, density or zero burden. Agglomerated wood-waste UUIDs cannot replace this non-agglomerated feed. Product status at a real site needs a separately compatible Product identity rather than silently changing this Waste type."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_supply; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_supply
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+      elementary:
+        - row_id: ambient_moisture
+          role: "Measured sorbed ambient water"
+          name: "Water vapour absorbed from ambient air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only independently evidenced net water uptake by wood during manufacture, kept separate from native emission-to-air water identity. No assumed uptake, quantity or negative evaporation; inlet carrier-air humidity cancels against unchanged outlet humidity and is not counted as process consumption."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_water; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+    outputs:
+      product:
+        - row_id: finished_briquette
+          role: "Newly first-released net fuel briquette"
+          name: "Biomass briquette fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e464a548-5c9d-41d5-afb7-a88eba3849cc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only newly accepted non-pellet mechanical-piston briquettes from the declared untreated sawdust, after actual cooling, sizing, inspection and initial film packing. The Biomass briquette fuel native record is a Product, production mix at plant, solid fuel industrial, Mass/kg; it covers agricultural/forestry residues and has broad pellet synonyms. Here it is restricted to the declared wood briquette composition/form and gate; it is never pellet equivalence or a provider dataset. Native steam/hot-water classification conflicts with its consistently solid-fuel physical names/comments and Mass reference; this isolated classification defect is disclosed, never used to select steam. Native heating-value range, lower-emission and renewable claims are not adopted as quantitative factors, grade or neutrality. Actual net mass and qualifiers establish the reference. Closing FG is already included in its original Q_c."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-mobile-2023
+                - cfn-saw-2023
+            ranges: []
+      waste:
+        - row_id: sawdust_reject
+          role: "Unreused captured untreated sawdust"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual non-agglomerated untreated sawdust fines leaving for a documented external receiver, using the same untreated sawdust Waste identity and Mass/kg restrictions as incoming sawdust. Internal captured and rebriquetted fines cancel and remain in the load vector. No bulk mixed refuse, agglomerated briquette or oil-contaminated sweepings belong to this row."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_residuals; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: wood_cut_reject
+          role: "Separated untreated wood cut-piece reject"
+          name: "Untreated solid-wood cut-piece reject"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh actual screen-separated oversized solid-wood pieces sent externally; record composition/moisture and actual receiver. Internal remilling is transfer, not this waste output."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_residuals; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: briquette_reject
+          role: "Unreused agglomerated briquette reject"
+          name: "Rejected untreated wood fuel briquette"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh genuinely rejected still-agglomerated wood briquettes leaving externally; keep failed lots, moisture and destination. Distinguish broken loose sawdust. A Waste record cannot identify the accepted Product output."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_residuals; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: film_waste
+          role: "Discarded polyethylene wrapper"
+          name: "Waste polyethylene wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh actual PE offcuts/removed wraps as one material stream with contamination and destination; not an input Product UUID or all packaging wastes. Close the separate PE stock ledger."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_residuals; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: cooling_purge
+          role: "Cooling-loop water purge"
+          name: "Die-cooling-loop purge water"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional actual purge sent to external treatment. Record whole wastewater mass, temperature and measured dissolved/suspended species as non-additive composition detail; no separate environmental discharge is assumed. No condenser or steam return is inferred."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_residuals; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: compressor_condensate
+          role: "Collected compressor condensate"
+          name: "Air-compressor condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual collected onsite-compressor condensate crossing to external treatment. Preserve measured whole mass and oil/water assay; oil submass is not another whole wastewater output. No drying condensate is invented."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_residuals; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - fao-briquetting-1996
+                - cfn-saw-2023
+            ranges: []
+        - row_id: spent_lubricant
+          role: "Drained used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Waste used petroleum-based or synthetic lubricating oil contaminated through use, at generation point, treatment unspecified, Mass/kg. Restrict here to the actual drained mineral machine oil; retain assay and one actual external treatment provider. The record gives no recycling, combustion, disposal or credit default and does not include oily water or cleaning textiles."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_consumables; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+      elementary:
+        - row_id: wood_pm_air
+          role: "Residual wood particulate release to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual uncaptured wood particulate emitted to air with subcompartment and size fraction unspecified; record measured control boundary, sampling and uncertainty. Native Mass/kg defines no chemical composition, size distribution, stack height or LCIA factor. Its clinker example is explicitly only an example and supplies no wood emission factor. Captured fines remain separate Waste/internal return. Do not sum nested PM size fractions; use mutually exclusive fractions if measured and separately identified."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_air; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+        - row_id: water_vapour_air
+          role: "Net actual water vapour release"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water CAS 7732-18-5 in vapour phase emitted to air unspecified, Mass/kg. Subtract inlet-air humidity when using an exhaust moisture balance; cooling-loop and wood-water origins are subledger partitions of this whole emission, not additional water outputs. Native broad imported synonyms mentioning ice/heavy/isotopic water do not change this ordinary H2O vapour identity. It is neither liquid effluent nor purchased process steam, and its occurrence is measured, not forced from a single residual."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_air; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+        - row_id: alpha_pinene_air
+          role: "Speciated alpha-pinene release when present"
+          name: "Alpha-pinene to air, stereochemistry unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional only on actual speciated alpha-pinene, CAS 80-56-8, from this wood/press handling. No amount or universal presence is asserted. Do not map an unspecified stereoisomer to a fixed (1S)-(-) native record or convert a total-VOC detector response into this species. Identify each additional actual gas separately with its own amount and destination; unknown VOC composition remains an explicit measurement gap."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_air; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+  - id: p_service
+    label: "Post-release stock handling repacking and loading"
+    inputs:
+      product:
+        - row_id: service_electricity
+          role: "Finished-stock handling and repacking electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter actual electric storage/handling/loading/repacking work including idle and return inspection. User-side CN grid-average AC below 1 kV only; native property is Net calorific value interpreted here as electrical energy in MJ, not fuel combustion. Actual site, voltage, supply mix, period, transmission boundary and one compatible provider must match; the Flow is no electricity consumption factor. Attribute by original cohort and measured activity; use its original Q_c once, never gross dispatch or service H as production."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: service_film
+          role: "Replacement polyethylene wrap"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual new PE replacement film only; the same CAS 9002-88-4 at-plant polyethylene-film native limits apply: verify polymer/thickness/grade/additives/recycled share and one supplier, disclose unrelated luggage classification, exclude PET/resin pellets/other package materials. Returned or internally reused film is stock transfer, never a new purchase. Assign to original cohort with original Q_c."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_packaging_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_service
+              source_ids:
+                - cfn-saw-2023
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: service_moisture
+          role: "Stored briquette water uptake"
+          name: "Water vapour absorbed from ambient air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual post-release net sorption into the original cohort, measured independently; changes physical FG mass, never its original release Q_c. It is not an emission Flow used in reverse."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - fao-briquetting-1996
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: service_film_waste
+          role: "Removed PE wrapper"
+          name: "Waste polyethylene wrapping film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual removed film sent externally, by original cohort; retain its own packaging stock balance and measured mass/destination."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_packaging_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_service
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: service_wood_waste
+          role: "Damaged stored agglomerated briquette"
+          name: "Rejected untreated wood fuel briquette"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual still-agglomerated stored briquette lost to an external receiver. Retain original production burden and incremental service, original acceptance ID and Q_c; it does not reverse or create production. Loose disintegrated sawdust is separately recorded under its own identity when real."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: service_sawdust
+          role: "Loose sawdust from damaged stored briquettes"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only separately weighed actual disintegrated untreated wood sawdust sent externally, same non-agglomerated Waste at-plant untreated comb/rec Mass/kg limits as the incoming sawdust. Its original cohort burden and original Q_c remain; do not count the same mass again as still-agglomerated briquette reject or captured/internal recirculation."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        - row_id: service_vapour
+          role: "Stored briquette net evaporation"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual H2O CAS 7732-18-5 vapour emitted to air unspecified, Mass/kg, assigned to original cohort. Native imported ice/heavy-water synonyms do not change ordinary vapour identity; no process-steam, liquid-effluent or density factor is inferred. Separate real physical moisture loss from allocation; original Q_c never changes."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: service_pm
+          role: "Actual handling dust emitted to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual airborne wood particulate, size/subcompartment unspecified, Mass/kg. Native identity specifies no composition, size, stack height, emission factor or LCIA factor; clinker example supplies no value here. Keep captured dust and mutually exclusive measured size fractions separate, and attribute to the original cohort."
+          amount:
+            expression: "Use the sole section 8 result x_jc for this exchange from cp_service; retain unnormalised raw records and do not divide again."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_goal
+    applies_to: "all processes"
+    rule: "Use attributional accounting. First identify actual functions and separate dedicated operations or virtual subdivisions, including source sawmill, drying, briquette production and FG services. Assign each exclusive input and its embodied components to its actual recipient without allocating the entire plant by one arbitrary mass fraction."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_physical
+    applies_to: "remaining multifunctional exchanges"
+    rule: "After subdivision, determine for each remaining exchange whether a quantified physical causality actually determines its existence and quantity. Distinguish embodied wood/water, process electricity, transport and storage. A correlation with product mass, market value or heating value alone is not causality. Keep losses and non-valued outputs in the relationship; wet mass, dry wood, time or energy cannot be freely chosen as alternative whole-process keys."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_residual
+    applies_to: "genuinely residual shared exchanges"
+    rule: "Only the unresolved remainder after the preceding steps may use contemporaneous quantities and market values in the actual conditions at one common allocation gate. Remove downstream drying/packing/transport value when reconciling a later quoted price back to that gate. Document quantities, prices, currency/date and uncertainty and test sensitivity. A negative-value treatment function requires explicit functional/boundary review; do not invent a positive product price, fixed ratio or substitution credit."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_recycle
+    applies_to: "fines rejects and returns"
+    rule: "Internal compatible fines retain their load vector and circulation energy; no second raw purchase, avoided burden or new reference output is created. Externally sent rejects have actual treatment/provider destinations. Document any real saleable coproduct and reassess allocation before use; a waste flow name never proves zero burden or environmental credit. Keep biogenic uptake, stored carbon and actual species releases distinct, without automatic carbon neutrality."
+    source_ids:
+      - ilcd-attributional-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_supply
+      process_id: "p_manufacture"
+      flow_role: "sawdust_input; inbound_transport"
+      record_type: "supplier_and_weighing"
+      raw_fields: "source mill and actual species; untreated declaration; source operation and waste status; supplier and reference amount; source allocation vector; prior drying raw inputs and heat source and water phases and dust and losses; moisture tests and basis; gross and tare mass; transport truck and distance and load; supply boundary"
+      collection_method: "Trace original sawmill and drying records and one compatible upstream provider. Weigh incoming lots on calibrated scales and sample moisture/size. Verify actual 30-ton diesel transport when that UUID is used; isolate transport already included upstream to prevent double counting. Retain raw receipt masses and trip activity before conversion/allocation; carry source burden by lot; no division by Q_c."
+      unit: "kg; kg*km; moisture fraction"
+      frequency: "each lot and trip"
+      temporal_coverage: "complete production period and inherited upstream periods"
+      site_scope: "source mill/drying supplier and actual receiving site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighbridge calibration; moisture test; supplier route and source allocation evidence"
+    - protocol_id: cp_release
+      process_id: "p_manufacture"
+      flow_role: "finished_briquette"
+      record_type: "first_release"
+      raw_fields: "lot ID; previous acceptance ID check; time; release gross and actual film/tare; net mass; moisture method and wet/dry basis; dimensions; quality tests and target; no binder and route; disposition; Q_c cohort register"
+      collection_method: "Weigh cooled inspected initially packed briquettes on calibrated scales and subtract actual wrappers; release only against declared actual specification and batch records. Deduplicate earlier accepted lots including returns. Sum unique net first-release masses as Q_c; retain closing FG as a destination within that total; no extra yield or shipment denominator."
+      unit: "kg"
+      frequency: "each first-release event"
+      temporal_coverage: "complete cohort production period"
+      site_scope: "actual manufacturing and release gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale calibration; release specification; batch register; rejection and return links"
+    - protocol_id: cp_energy
+      process_id: "p_manufacture"
+      flow_role: "prep_electricity; press_electricity; finish_electricity"
+      record_type: "meters"
+      raw_fields: "meter ID; start/end readings; original unit; true power rates and time if applicable; equipment stage; operating modes; cooling/compressor boundaries; site voltage and supply provider; failures and idle; shared-meter partition"
+      collection_method: "Use calibrated submeters or a reconciled measured stage partition of one master meter; include actual conveying, sizing, press, cooling, extraction, packing and compressor. No nameplate-power default. Store unnormalised raw meter differences and measured activity partitions; retain all modes and unit conversions for calc_raw; no division by Q_c."
+      unit: "kWh; MJ; kW and h when actual rate"
+      frequency: "continuous meter logging and every batch"
+      temporal_coverage: "full period including all failure/idle/start/stop/cleanup"
+      site_scope: "actual production site and shared utilities"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; master/submeter closure; time and operating log"
+    - protocol_id: cp_water
+      process_id: "p_manufacture"
+      flow_role: "cooling_makeup; ambient_moisture"
+      record_type: "water_and_moisture"
+      raw_fields: "actual die cooling configuration; initial/final loop inventory; makeup; purge; evaporative loss; inlet/outlet state and temperature; measured water density if volumetric; wood moisture uptake; inlet/outlet air humidity; independent measurements"
+      collection_method: "Meter/weigh real water transfers; record loop stocks and independently measured heat rejection. Use paired humidity/moisture measurements for actual net uptake/release. No boiler or steam inferred. Retain raw amounts/states and stocks; distinguish internal circulation from external makeup; no division by Q_c."
+      unit: "kg; temperature; actual volume only with state"
+      frequency: "each batch and purge and accounting boundary"
+      temporal_coverage: "complete production period"
+      site_scope: "actual die loop and manufacturing air/wood interfaces"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; state/density tests; water/heat-balance reconciliation"
+    - protocol_id: cp_consumables
+      process_id: "p_manufacture"
+      flow_role: "lubricant; spent_lubricant"
+      record_type: "purchase_stock_waste"
+      raw_fields: "whole mineral lubricant receipt; SDS and viscosity grade; opening/closing stores and machine fill; issued mass; drained mass; leaks and contamination; actual treatment receiver"
+      collection_method: "Weigh receipts/issues/drains and reconcile stores and machine fills, including opening historical burdens; keep additive assays as subledger. Retain raw receipt/consumption/waste/stock masses; allocate actual machine-use burden before calc_normalize; no division by Q_c."
+      unit: "kg"
+      frequency: "each issue/change and stock boundary"
+      temporal_coverage: "full period and inherited machine fill"
+      site_scope: "actual press/drive lubrication and external receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "SDS; invoices; stock reconciliation; waste transfer manifest"
+    - protocol_id: cp_packaging
+      process_id: "p_manufacture"
+      flow_role: "film_input; film_waste; each actual first non-purchase PE receipt N_ext and additional component interface"
+      record_type: "packaging_stock"
+      raw_fields: "PE supplier and composition; thickness and grade; opening empty/attached WIP/attached FG/reusable; purchases; external returns received; closing same stocks; gross shipment wrapper mass; external return out; waste; original cohort IDs; P actual component procurement; N_ext first non-purchase non-return external physical receipt kg by source; ER linked prior external dispatch; receipt event ID/time/direction and actual material/form/type/condition; measured gross/tare/component kg and uncertainty; ownership/custody before/after and entrustment/loan/lease terms; linked supplied consignment; inherited per-exchange vector; actual burden owner and provider-included scope; non-additive whole/component bridge; specific atomic external receipt row/interface"
+      collection_method: "Weigh every actual PE component and every other packaging construction independently of net wood by event, phase and original cohort. Keep complete opening/closing empty, attached-WIP, attached-FG and reusable stocks, actual P/N_ext/ER receipts and gross S/EO/W destinations under boundary_packaging. Include first supplier-attached, entrusted, borrowed or leased non-purchase physical receipts even where manufacture is already upstream included; these are not opening stock, invented purchases or ER without prior-dispatch evidence. Each actual N_ext needs a separately identified atomic external-input quantity/interface matching its material/form/type/direction; add that specific receipt interface where existing purchase/true-return rows do not cover the event before concrete-inventory completeness. Do not merely add a prose symbol, clone procurement rows or use a collective package/UUID. Preserve each event ownership/custody, inherited vector and actual provider scope; assign real supply or incremental services once without buying included manufacture again. Whole-consignment/component views are non-additive. Retain unnormalised raw stocks/movements, reconcile the same manufacturing/FG gate and cancel internal empty-store/FG issuance and reuse without new purchase or Q_c."
+      unit: "kg"
+      frequency: "each packing/repacking/shipment/return and stock boundary"
+      temporal_coverage: "full production and attributable service history"
+      site_scope: "actual packing and FG service sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale records; polymer/SDS declaration; stock and return audit trail; delivery/entrustment/loan/lease receipt; original external dispatch; owner/cohort and inherited-vector/provider bridge"
+    - protocol_id: cp_residuals
+      process_id: "p_manufacture"
+      flow_role: "sawdust_reject; wood_cut_reject; briquette_reject; film_waste; cooling_purge; compressor_condensate"
+      record_type: "separate_waste_measurement"
+      raw_fields: "stream ID and actual material/form; raw whole mass; water/solids/oil assay; failed-run ID; captured dust returned/external; receiver/provider and destination; contamination; stock changes"
+      collection_method: "Weigh each external waste separately and reconcile capture/screening/press/saw stocks and internal returns; actual liquid waste is measured whole, with species/origin partitions kept non-additive. Store unnormalised gross whole amounts, non-overlapping destinations and composition/origin subledgers; no Q_c division."
+      unit: "kg"
+      frequency: "each generation/transfer and stock boundary"
+      temporal_coverage: "full period including failures and cleanup"
+      site_scope: "manufacturing gate to each actual receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scales; assays; transfer manifests; dust-return closure"
+    - protocol_id: cp_air
+      process_id: "p_manufacture"
+      flow_role: "wood_pm_air; water_vapour_air; alpha_pinene_air"
+      record_type: "emission_measurement"
+      raw_fields: "species CAS/stereochemistry and medium; sampling/control point; concentration basis and actual integrated gas volume or rate/time; inlet humidity; actual gas temperature/pressure; dry/wet basis; detection limit; particulate size fractions; independent moisture and solids measures"
+      collection_method: "Use actual monitored concentration and compatible total gas volume, or integrate real rates once, after controls with fugitive coverage declared. Water, wood solids and VOC speciation need independent evidence, not one residual fitted to two unknowns. Retain raw concentration/volume/rate/time and actual occurrence evidence; calc_raw handles one conversion before allocation; no Q_c division."
+      unit: "kg; actual concentration and volume units"
+      frequency: "representative operating modes including abnormal periods"
+      temporal_coverage: "full period with documented monitored/extrapolated coverage"
+      site_scope: "real plant-air boundary and each actual species destination"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling report; analyser calibration; detection limits; coverage and uncertainty"
+    - protocol_id: cp_service
+      process_id: "p_service"
+      flow_role: "service_electricity; service_film_waste; service_wood_waste; service_sawdust; service_moisture; service_vapour; service_pm"
+      record_type: "cohort_service_stock"
+      raw_fields: "original acceptance cohort and original Q_c; opening/closing FG wet/dry/water mass and inherited burden; gross shipment ID/mass; matched gross return/original dispatch stock events; performed original service burdens; evidence for erroneous/duplicate/unperformed service-booking corrections; reinspection/rework increment; meters; H activity; loss and species measurements; no second acceptance count"
+      collection_method: "Follow lot genealogy through storage/returns/repacking/loading. Measure real handling activity and physical net water/dust changes; use compatible meters/assays and original supplier links, retaining losses and failed handling. Keep raw activity, original Q_c and stock vectors. Allocate service to original cohorts first; calc_normalize alone divides attributable A by original Q_c once. H and gross dispatch never replace Q_c."
+      unit: "kg; MJ; actual H unit"
+      frequency: "each event and cohort/stock boundary"
+      temporal_coverage: "actual service history for every included cohort"
+      site_scope: "actual FG storage/handling/loading sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "cohort genealogy; stock/meter closure; dispatch/return links; sampling reports"
+    - protocol_id: cp_wip
+      process_id: "p_manufacture"
+      flow_role: "all inventory rows"
+      record_type: "lot_stage_stock_vectors"
+      raw_fields: "lot and process stage; opening/closing WIP wet/dry/water mass; per-exchange historical and current burden vector; internal fines/rework transfers; failed/idle/start/stop/cleanup loads; real allocation; provenance"
+      collection_method: "Take physical stock measurements and retain each exchange vector by lot/stage, cross-checking production/utility records, internal transfers and original FG returns. Retain raw quantities and full vector; perform stock/attribution adjustments in calc_attribution only; never divide stock records by Q_c."
+      unit: "kg; each original exchange unit"
+      frequency: "each lot transfer and period boundary"
+      temporal_coverage: "full period plus inherited historical cohorts"
+      site_scope: "all manufacturing stages"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "physical stock audit; lot genealogy; source vector reconciliation"
+    - protocol_id: cp_packaging_service
+      process_id: "p_service"
+      flow_role: "service_film; service_film_waste; each actual first non-purchase PE receipt N_ext and additional component interface"
+      record_type: "packaging_stock"
+      raw_fields: "PE supplier and composition; thickness and grade; opening empty/attached WIP/attached FG/reusable; purchases; external returns received; closing same stocks; gross shipment wrapper mass; external return out; waste; original cohort IDs; P actual component procurement; N_ext first non-purchase non-return external physical receipt kg by source; ER linked prior external dispatch; receipt event ID/time/direction and actual material/form/type/condition; measured gross/tare/component kg and uncertainty; ownership/custody before/after and entrustment/loan/lease terms; linked supplied consignment; inherited per-exchange vector; actual burden owner and provider-included scope; non-additive whole/component bridge; specific atomic external receipt row/interface"
+      collection_method: "Weigh every actual PE component and every other packaging construction independently of net wood by event, phase and original cohort. Keep complete opening/closing empty, attached-WIP, attached-FG and reusable stocks, actual P/N_ext/ER receipts and gross S/EO/W destinations under boundary_packaging. Include first supplier-attached, entrusted, borrowed or leased non-purchase physical receipts even where manufacture is already upstream included; these are not opening stock, invented purchases or ER without prior-dispatch evidence. Each actual N_ext needs a separately identified atomic external-input quantity/interface matching its material/form/type/direction; add that specific receipt interface where existing purchase/true-return rows do not cover the event before concrete-inventory completeness. Do not merely add a prose symbol, clone procurement rows or use a collective package/UUID. Preserve each event ownership/custody, inherited vector and actual provider scope; assign real supply or incremental services once without buying included manufacture again. Whole-consignment/component views are non-additive. Retain unnormalised raw stocks/movements, reconcile the same manufacturing/FG gate and cancel internal empty-store/FG issuance and reuse without new purchase or Q_c."
+      unit: "kg"
+      frequency: "each packing/repacking/shipment/return and stock boundary"
+      temporal_coverage: "full production and attributable service history"
+      site_scope: "actual packing and FG service sites"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale records; polymer/SDS declaration; stock and return audit trail; delivery/entrustment/loan/lease receipt; original external dispatch; owner/cohort and inherited-vector/provider bridge"
+  calculation_rules:
+    - id: calc_raw
+      applies_to: "all inventory rows"
+      rule: "Convert raw units and integrate true rates once before attribution: E_MJ=3.6*E_kWh; transport_kgkm=1000*transport_tkm; species_mass=compatible_mass_concentration*integrated_gas_volume. If volume is already integrated do not multiply time. Apply measured state corrections and independently measured substance density only where needed; preserve original observations."
+      inputs:
+        - "raw units"
+        - "measured state"
+        - "rate and time when applicable"
+      output: "converted raw numerator by exchange"
+      source_ids:
+        - fao-briquetting-1996
+    - id: calc_attribution
+      applies_to: "all inventory rows"
+      rule: "Construct A_jc from converted actual records, inherited source and opening WIP exchange vectors, actual internal transfers and closing WIP vectors under boundary_stock. Allocate dedicated work first and remaining exchanges only under allocation_goal/physical/residual. Retain all failed and Q_c=0 loads, actual losses and original FG/rework cohorts. Service A_jc follows original cohort attribution using measured H; H allocates service and is never production output. Physical dispatch/return stock events do not cancel performed original service burdens. Retain those burdens and add actual return/inspection/repacking/rework increments once for the original cohort and original Q_c. Correct only evidenced erroneous, duplicate or unperformed service bookings; preserve production history and all real service consumption, emissions and waste."
+      inputs:
+        - "converted records"
+        - cp_wip
+        - "original cohort"
+        - "allocation evidence"
+      output: "A_jc in the original exchange unit"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "x_jc = A_jc / Q_c, once only for Q_c > 0; x_jc is the exchange amount per 1 kg reference flow of original first-release cohort c. Cards and aggregation refer to this same result without further division. The reference output is exactly 1 kg. For Q_c=0 retain actual burden and disclose its later causal assignment or unresolved carryover; produce no unit result and never divide by zero or discard failed/idle load."
+      inputs:
+        - A_jc
+        - Q_c
+        - cp_release
+        - cp_service
+      output: "x_jc per 1 kg reference flow"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: calc_physical
+      applies_to: "all physical exchanges"
+      rule: "Reconcile independent wet-mass, dry-wood, water and relevant-element balances over the same manufacturing/FG/consolidated gates, including stock and internal cancellations. Whole liquid/gas waste/emission amounts are counted once; measured composition and source-origin partitions sum to that whole without adding it again. A mass residual is a discrepancy to investigate, not simultaneous evidence for both unmeasured evaporation and dust/VOC. Use measured temperatures/heat rejection and motor energy for a separate relevant energy check; do not treat mass closure as energy closure or a universal calorific/density factor."
+      inputs:
+        - cp_supply
+        - cp_water
+        - cp_air
+        - cp_release
+        - cp_wip
+        - cp_service
+      output: "independent physical and energy reconciliation"
+      source_ids:
+        - fao-briquetting-1996
+        - ilcd-attributional-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify actual form/composition/CAS/route/type/media/geography and every native property, then one compatible provider independently. Use official Chinese basenames for adopted UUIDs. Missing auxiliary identities stay specific and tracked; a missing core terminal identity or unsupported essential route prevents a usable completed dataset."
+      evidence: "native full records; supplier specification and matching provider reference"
+    - id: dq_measurement
+      applies_to: "all quantities"
+      requirement: "Retain raw original units, calibration, detection limits, temporal coverage and uncertainty; no factory quantities or grades are supplied by this PCR. Actual absence requires configuration/measurement evidence and not_applicable explanation, not a guessed zero."
+      evidence: "calibration and source records; complete coverage matrix"
+    - id: dq_history
+      applies_to: "all stocks and services"
+      requirement: "Complete lot genealogy and per-exchange vectors must connect generation, drying, transport, WIP, first release, FG, returns and incremental rework; do not erase burdens at a waste or calendar boundary."
+      evidence: "stock and vector audit; original cohort Q_c and return links"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "List every real exchange and its provider/measurement status, including conditional species and packages. Unknown VOC, coolant, contamination or upstream drying burden remains explicit; investigate balances and missing routes before asserting completeness."
+      evidence: "site diagram; complete meter/material/emission reconciliation"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference and all exchanges"
+    rule: "Confirm one non-pellet untreated-wood briquette composition and mechanical-piston route, explicit finished_briquette link and Mass/kg reference. Enforce native restrictions in every card, exact current projection and fingerprints, all declared qualifiers and source links. No classification tag alone proves physical applicability."
+    source_ids:
+      - fao-briquetting-1996
+      - un-cpc3-2025
+  - rule_id: validate_quantity
+    applies_to: "all inventory rows"
+    rule: "Check one first-release Q_c and one calc_normalize per attributed numerator, no second normalisation in protocols/cards and no division for Q_c=0. Closing accepted FG is inside Q_c; shipment/reinspection never adds production. Retain all operating modes and per-exchange stock history."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: validate_balances
+    applies_to: "manufacturing and FG and consolidated gates"
+    rule: "Require independent mass/dry-wood/water/relevant-element checks, relevant energy check and each packaging identity/stock closure over the same gates. No single residual estimates two unknowns; no unknown gas composition is declared resolved by total VOC. Preserve actual receiver routes and non-additive mixture partitions."
+    source_ids:
+      - fao-briquetting-1996
+      - ilcd-attributional-2010
+  - rule_id: validate_provider
+    applies_to: "all upstream exchanges"
+    rule: "Verify upstream source, drying, transport, utilities, material and waste-treatment providers once with matching product/reference unit/state and boundary. UUID identity and engineering checks do not approve scientific applicability, translation, mapping, publication or measured factory data."
+    source_ids:
+      - ilcd-attributional-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Specified non-pellet wood fuel briquette supply at first-release gate with disclosed attributable ex-works services"
+  allowed_use: "Matching composition/route/moisture/quality/site/time and independently compatible provider/boundary"
+  excluded_use: "Fuel-use combustion; useful-heat equivalence; pellet or loose-waste substitution; zero-burden residue; automatic biogenic neutrality/credits; treating draft guidance as approval"
+  required_metadata: "All section 3 qualifiers; actual source/route/provider/period; first-release cohort and original Q_c; stock and service boundary; actual specification"
+  required_quality_disclosure: "Raw evidence and coverage; uncertain identities/providers/speciation; actual collection/allocated values; source independence; complete stock vectors; allocation sensitivity; no numerical defaults"
+  update_trigger: "Feedstock/source-treatment, press route, thermal drying location/fuel, cooling system, additive, packaging, provider, quality gate or material/emission identity changes"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Ver.3.0 Structure 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "39281/39282/39283 mutually distinct product-form classification; no manufacturing, allocation or mapping approval"
+  - id: "fao-briquetting-1996"
+    type: "handbook"
+    reference: "Grover and Mishra, FAO/RWEDP Field Document 46, Biomass Briquetting: Technology and Practices, April 1996, §§3–4 and adjacent screw/piston/pellet contrasts, Table 4.1 and Fig.4.1. https://www.fao.org/4/ad579e/ad579e00.pdf"
+    used_for: "Preparation and mechanical-piston distinction; conditional binderless compaction and cooling context; route examples not numerical defaults or allocation rules"
+  - id: "cfn-mobile-2023"
+    type: "handbook"
+    reference: "C.F. Nielsen, Mechanical Briquetting Presses: Mobile Briquetting Plant, 2023 brochure, complete single page and table footnote. https://cfnielsen.com/wp-content/uploads/2024/03/7.-Mobile-Briquetting-Plant2023.pdf"
+    used_for: "Actual modern mechanical press/feeding/cooling-line configuration; capacities conditional; MDF/mixed feed examples excluded"
+  - id: "cfn-saw-2023"
+    type: "handbook"
+    reference: "C.F. Nielsen, Briquette Saw BS350, 2023 brochure, complete single page including layout/table. https://cfnielsen.com/wp-content/uploads/2024/11/BS350-briquetting-saw-brochure-2023_CFN.pdf"
+    used_for: "Cooling before sizing, suction and internal sawdust return, optional rejection/weighing and foil packing, pneumatic actuation; no fixed line length or pack mass imposed"
+  - id: "ilcd-attributional-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA—Detailed guidance, first edition March 2010, §§7.9.2–7.9.3, printed pp.255–272 including sawmill and transport examples and common-gate counterexample. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision/virtual subdivision then exchange-specific determining physical causality and only residual common-gate market value; accounting rules are explicit PCR operationalisation, not a source factory inventory"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:cf41f81f5d3fab4ba641780bd0e160e655fe3ad0f42fb44b9620d183388cb9ee"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8461"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8461
+          line: 62
+          column: 1
+        end:
+          offset: 15564
+          line: 84
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Segregated sawmill sawdust from untreated solid wood; received dry with actual source generation/collection and drying history |\n| starting_condition_role | Explicit foreground receipt interface; upstream burdens are connected rather than discarded |\n| product_classification_scope | Non-pellet wood briquettes in CPC 39282; no full-leaf coverage claim |\n| recursive_input_rule | Incoming finished briquettes are never virgin sawdust or new production. Record their original cohort and upstream provider; internal fines and rework cancel physically and inherit their vector. Purchased briquettes require an explicitly different assessed input route. |\n| upstream_dataset_requirement | One verified compatible provider per supplied exchange; include source wood production, source-process allocation, actual prior drying, collection and supply transport exactly once. Waste classification or low value never sets burdens to zero. |\n| disclosure | Disclose site/period, source moisture and composition, prior drying, all gate locations, allocation, actual process configuration, stock vectors, service cohorts, exclusions and missing provider evidence. |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete | all processes | Include all failed runs, zero-output periods, start-up/shutdown, idle, cleanup, dust capture, rework and actual losses. Missing instruments are not zero. Add every actually present material, formulation, fuel, refrigerant, water stream, package, waste and identified emission separately before the dataset can be complete. | fao-briquetting-1996; ilcd-attributional-2010 |\n| boundary_gates | all physical balances | Use identical manufacturing/FG/consolidated physical interfaces. Define V_new=Q_c+measured wrappers attached at first release; V_old is gross previously accepted material and its actual wrappers returned after rework. Manufacturing mass: opening raw/empty-package/machine-fluid stores and WIP+external mass inputs+old FG sent to rework=closing same stores and WIP+V_new+V_old returned to FG+external mass rejects/emissions. For each separate ledger preserve net wood, water and package components; Q_c excludes wrappers. Every internal transfer appears once on each side and cancels in consolidation. New Q_c is already within V_new and is not another added output. Keep gross V separate from attributed A; internal fines are not purchases/coproducts. | ilcd-attributional-2010 |\n| boundary_stock | all inventory rows | For each exchange j retain opening/closing WIP physical quantities and historical/current burden vectors by lot/stage, including source, utilities and failed work. For newly first-released cohorts A_jc includes actual current attributable records plus historical unreleased WIP burden transferred in, minus separately retained closing unreleased WIP burden, with losses/allocation retained. Accepted closing FG is already in Q_c and its production burden is not subtracted. Previously accepted FG sent through rework carries its original vector as a balanced transfer at both ends, not a second addition of historical production to A_jc; only real incremental rework/service is newly assigned to its original cohort and original Q_c. Cross-period corrections remain linked to the original lot. | ilcd-attributional-2010 |\n| boundary_service | p_service | Use gross FG mass including actual attached packaging consistently: opening gross FG+V_new+external accepted returns+V_old returned from manufacturing+actual moisture uptake+new service packaging issued=closing gross FG+gross physical dispatch+gross old FG sent to rework+actual external losses/emissions. Keep net wood/water and each packaging subledger independent; external returns include their real attached packaging. Empty service-packaging store changes are included in the separately closed packaging ledger. Closing FG is already first-released; new Q_c occurs only inside V_new. Link each physical return stock event to its original dispatch; retain both gross events for stock reconciliation. Retain the original production burden once and all actually performed original storage/handling/repacking/loading burdens on the original cohort; add actual return/inspection/repacking/rework increments once. Correct a service booking only with evidence that it was erroneous, duplicated or never performed; a physical return never cancels consumed energy/materials or actual emissions/waste. Attribute service to original cohorts with original Q_c; H allocates service and is never production. | ilcd-attributional-2010 |\n| boundary_water_heat | cooling and upstream drying | Record actual die-water recirculation, makeup, purge, evaporation and heat rejection with measured states; internal loop water is not repeated supply. No boiler, steam, purchased heat or condensate return is assumed. If such exchanges actually exist, expand the route: external condensate/heat-exchanger-water returns remain separate Product returns with measured mass/state/enthalpy and supplier water/energy agreement, not an invented negative tap-water or heat input. | fao-briquetting-1996 |\n| boundary_packaging | each packaging material | For each actual packaging material separately: opening empty + opening attached WIP + opening attached FG + opening reusable stock + purchases P + first non-purchase external physical receipts N_ext + actual external returns received ER = closing empty + closing attached WIP + closing attached FG + closing reusable stock + packaging on gross physical shipments S + external returns out EO + waste W. P is actual component procurement, including a component genuinely purchased within a whole consignment only as its non-additive share. N_ext is the actual first non-return external physical receipt without component procurement, including supplier-attached, first entrusted, borrowed or leased packaging. ER requires a linked prior external dispatch and true return; P/N_ext/ER are mutually exclusive event partitions. Opening means physically present at period start, not a current receipt. Keep measured component quantity, ownership/custody, original cohort and inherited vector separate from environmental burden: actual manufacture/supply and incremental lease/return/handling service follow one recorded provider convention, never automatically N_ext kg of new manufacture or a repeated upstream-included burden. Match N_ext once to the same external mass gate in boundary_gates/boundary_service using non-additive whole/component bridges; issue between empty stores and WIP/FG is a cancelling internal transfer, not another receipt. Internal reuse/transfers create no purchase, Q_c, automatic coproduct or credit. Each real pallet, label, strap or other additional component needs its own specific atomic physical receipt/destination interface and ledger when used; missing quantity/interface is a concrete-inventory completeness gap, not zero or a collective identity. | ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 9
+              column: 1
+            end:
+              offset: 363
+              line: 9
+              column: 69
+          text: "# Binderless wood fuel briquettes from dry untreated sawmill sawdust"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8461
+              line: 62
+              column: 1
+            end:
+              offset: 8482
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_46814"
+      family: "allocation"
+      span:
+        start:
+          offset: 46814
+          line: 547
+          column: 1
+        end:
+          offset: 49032
+          line: 556
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_goal | all processes | Use attributional accounting. First identify actual functions and separate dedicated operations or virtual subdivisions, including source sawmill, drying, briquette production and FG services. Assign each exclusive input and its embodied components to its actual recipient without allocating the entire plant by one arbitrary mass fraction. | ilcd-attributional-2010 |\n| allocation_physical | remaining multifunctional exchanges | After subdivision, determine for each remaining exchange whether a quantified physical causality actually determines its existence and quantity. Distinguish embodied wood/water, process electricity, transport and storage. A correlation with product mass, market value or heating value alone is not causality. Keep losses and non-valued outputs in the relationship; wet mass, dry wood, time or energy cannot be freely chosen as alternative whole-process keys. | ilcd-attributional-2010 |\n| allocation_residual | genuinely residual shared exchanges | Only the unresolved remainder after the preceding steps may use contemporaneous quantities and market values in the actual conditions at one common allocation gate. Remove downstream drying/packing/transport value when reconciling a later quoted price back to that gate. Document quantities, prices, currency/date and uncertainty and test sensitivity. A negative-value treatment function requires explicit functional/boundary review; do not invent a positive product price, fixed ratio or substitution credit. | ilcd-attributional-2010 |\n| allocation_recycle | fines rejects and returns | Internal compatible fines retain their load vector and circulation energy; no second raw purchase, avoided burden or new reference output is created. Externally sent rejects have actual treatment/provider destinations. Document any real saleable coproduct and reassess allocation before use; a waste flow name never proves zero burden or environmental credit. Keep biogenic uptake, stored carbon and actual species releases distinct, without automatic carbon neutrality. | ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 9
+              column: 1
+            end:
+              offset: 363
+              line: 9
+              column: 69
+          text: "# Binderless wood fuel briquettes from dry untreated sawmill sawdust"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 46814
+              line: 547
+              column: 1
+            end:
+              offset: 46854
+              line: 547
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_68362"
+      family: "validation"
+      span:
+        start:
+          offset: 68362
+          line: 594
+          column: 1
+        end:
+          offset: 70048
+          line: 603
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_identity | reference and all exchanges | Confirm one non-pellet untreated-wood briquette composition and mechanical-piston route, explicit finished_briquette link and Mass/kg reference. Enforce native restrictions in every card, exact current projection and fingerprints, all declared qualifiers and source links. No classification tag alone proves physical applicability. | fao-briquetting-1996; un-cpc3-2025 |\n| validate_quantity | all inventory rows | Check one first-release Q_c and one calc_normalize per attributed numerator, no second normalisation in protocols/cards and no division for Q_c=0. Closing accepted FG is inside Q_c; shipment/reinspection never adds production. Retain all operating modes and per-exchange stock history. | ilcd-attributional-2010 |\n| validate_balances | manufacturing and FG and consolidated gates | Require independent mass/dry-wood/water/relevant-element checks, relevant energy check and each packaging identity/stock closure over the same gates. No single residual estimates two unknowns; no unknown gas composition is declared resolved by total VOC. Preserve actual receiver routes and non-additive mixture partitions. | fao-briquetting-1996; ilcd-attributional-2010 |\n| validate_provider | all upstream exchanges | Verify upstream source, drying, transport, utilities, material and waste-treatment providers once with matching product/reference unit/state and boundary. UUID identity and engineering checks do not approve scientific applicability, translation, mapping, publication or measured factory data. | ilcd-attributional-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 9
+              column: 1
+            end:
+              offset: 363
+              line: 9
+              column: 69
+          text: "# Binderless wood fuel briquettes from dry untreated sawmill sawdust"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 68362
+              line: 594
+              column: 1
+            end:
+              offset: 68384
+              line: 594
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 9799
+          line: 77
+          column: 1
+        end:
+          offset: 10209
+          line: 77
+          column: 411
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_gates"
+      identity_kind: "explicit"
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 10210
+          line: 78
+          column: 1
+        end:
+          offset: 11032
+          line: 78
+          column: 823
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 11033
+          line: 79
+          column: 1
+        end:
+          offset: 11894
+          line: 79
+          column: 862
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_service"
+      identity_kind: "explicit"
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 11895
+          line: 80
+          column: 1
+        end:
+          offset: 13155
+          line: 80
+          column: 1261
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_water_heat"
+      identity_kind: "explicit"
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 13156
+          line: 81
+          column: 1
+        end:
+          offset: 13705
+          line: 81
+          column: 550
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "boundary_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 13706
+          line: 82
+          column: 1
+        end:
+          offset: 15562
+          line: 82
+          column: 1857
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_goal"
+      identity_kind: "explicit"
+      unit_id: "normative_46814"
+      source_span:
+        start:
+          offset: 46927
+          line: 551
+          column: 1
+        end:
+          offset: 47331
+          line: 551
+          column: 405
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_46814"
+      source_span:
+        start:
+          offset: 47332
+          line: 552
+          column: 1
+        end:
+          offset: 47880
+          line: 552
+          column: 549
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_46814"
+      source_span:
+        start:
+          offset: 47881
+          line: 553
+          column: 1
+        end:
+          offset: 48480
+          line: 553
+          column: 600
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_recycle"
+      identity_kind: "explicit"
+      unit_id: "normative_46814"
+      source_span:
+        start:
+          offset: 48481
+          line: 554
+          column: 1
+        end:
+          offset: 49030
+          line: 554
+          column: 550
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_68362"
+      source_span:
+        start:
+          offset: 68457
+          line: 598
+          column: 1
+        end:
+          offset: 68879
+          line: 598
+          column: 423
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_quantity"
+      identity_kind: "explicit"
+      unit_id: "normative_68362"
+      source_span:
+        start:
+          offset: 68880
+          line: 599
+          column: 1
+        end:
+          offset: 69236
+          line: 599
+          column: 357
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_68362"
+      source_span:
+        start:
+          offset: 69237
+          line: 600
+          column: 1
+        end:
+          offset: 69678
+          line: 600
+          column: 442
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_provider"
+      identity_kind: "explicit"
+      unit_id: "normative_68362"
+      source_span:
+        start:
+          offset: 69679
+          line: 601
+          column: 1
+        end:
+          offset: 70046
+          line: 601
+          column: 368
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 8461
+          line: 62
+          column: 1
+        end:
+          offset: 8482
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8461"
+      source_span:
+        start:
+          offset: 8510
+          line: 66
+          column: 1
+        end:
+          offset: 9726
+          line: 73
+          column: 222
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_46814"
+      source_span:
+        start:
+          offset: 46814
+          line: 547
+          column: 1
+        end:
+          offset: 46854
+          line: 547
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_68362"
+      source_span:
+        start:
+          offset: 68362
+          line: 594
+          column: 1
+        end:
+          offset: 68384
+          line: 594
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cf41f81f5d3fab4ba641780bd0e160e655fe3ad0f42fb44b9620d183388cb9ee"
+  generated_content_sha256: "sha256:2ef7d9b380df667e5be625d986ebb91290a1b3207f7d5c2e9d232c08f38eceec"

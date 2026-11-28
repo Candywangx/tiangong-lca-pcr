@@ -11,7 +11,7 @@ import { LIBRARY_FORMAT_VERSION, sqliteDatabase, sha256, hashFile, metadataDiges
 
 import type { DatabaseSync } from "node:sqlite";
 import { isUnknownRecord } from "../../packages/pcr-core/src/types.ts";
-import type { OfflineManifest, OfflineSnapshot } from "../../packages/pcr-core/src/types.ts";
+import type { OfflineManifest, OfflineSnapshot, PcrRecord } from "../../packages/pcr-core/src/types.ts";
 import type { SnapshotTable } from "../../packages/pcr-core/src/offline-library.ts";
 
 export interface OfflineLibraryBuildOptions { root: string; output: string; version: string; sourceCommit?: string | null }
@@ -72,6 +72,7 @@ export function buildOfflineLibrary({ root, output, version, sourceCommit = null
     const aliases = readPcrIdAliases({ root });
     const entries = readPcrDistributionCatalog({ root });
     let materialCount = 0;
+    const verifiedPcrs = new Map<string, PcrRecord>();
     withPcrReadContextSession({ root, context, read: () => {
       for (const [position, entry] of entries.entries()) {
         const snapshot = readPcrDistributionSnapshot({ root, pcrId: entry.id, context });
@@ -81,6 +82,7 @@ export function buildOfflineLibrary({ root, output, version, sourceCommit = null
           materialCount++;
           if (snapshot.fingerprint.status !== "current" || !snapshot.fingerprint.schema_valid || snapshot.completenessIssues.length) throw new Error(`Invalid material projection: ${entry.id}`);
         }
+        verifiedPcrs.set(pcr.id, pcr);
         const value = JSON.stringify(pcr);
         database.prepare("INSERT INTO records VALUES (?, ?, ?, ?, ?)").run(pcr.id, pcr.record_kind, position, value, sha256(value));
         putFile(`${entry.path}/manifest.yaml`, snapshot.manifestBytes);
@@ -96,7 +98,7 @@ export function buildOfflineLibrary({ root, output, version, sourceCommit = null
         if (!match) throw new Error(`Unsupported coverage path: ${relative}`);
         const system = match[1] ?? ""; const classificationVersion = match[2] ?? "";
         const snapshot = readClassificationCoverageSnapshot({ root, system, version: classificationVersion });
-        verifyDistributionCoverage({ root, snapshot, context });
+        verifyDistributionCoverage({ root, snapshot, context, verifiedPcrs });
         putJson("coverage", `${system}:${classificationVersion}`, snapshot);
         putFile(relative);
         for (const source of Object.values(snapshot.document.source)) if (source?.path) putFile(source.path);

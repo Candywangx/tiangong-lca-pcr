@@ -93,7 +93,7 @@ export async function withSiteExportServer<T>(root:string,callback:(origin:strin
  const providerIdentity=readIdentityJson(canonical,'generated/version.json');assert.ok(object(providerIdentity)&&typeof providerIdentity.sourceCommit==='string');
  const providerRuntime=verifyProviderRuntimeExport(canonical,providerIdentity.sourceCommit);
  if(providerRuntime)verifyProviderRuntimeSource(providerRuntimeSourceRoot(import.meta.url),providerRuntime,providerIdentity.sourceCommit);
- const providerMiddleware=createProviderMiddleware(providerRuntime?.schemaVersion===2?readIdentityJson(canonical,NAVIGATION_BINDING_FILE):undefined);
+ const providerMiddleware=createProviderMiddleware(providerRuntime!==undefined&&Object.hasOwn(providerRuntime,'navigationBinding')?readIdentityJson(canonical,NAVIGATION_BINDING_FILE):undefined);
  const server=createServer(async(request,response)=>{try{
   const raw=(request.url??'/').split('?')[0]!;const decoded=decodeURIComponent(raw);
   if(!decoded.startsWith('/')||decoded.includes('\\')||decoded.includes('\0')||decoded.split('/').some(segment=>segment==='.'||segment==='..')||/%(?:2f|5c)/iu.test(raw)){response.writeHead(403);response.end('Forbidden');return;}
@@ -441,15 +441,32 @@ export async function checkBlockedStorageLanguagePreference(browser:Browser,orig
   }finally{trace.stop();}
  }finally{await blocked.close();}
 }
-
-interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
+export interface ChapterCompatibilityEvidence {javascriptEnabled:boolean;engine:string;language:string;oldPath:string;target:string;fragment:string;checks:string[];documentRequests:string[];screenshot:string}
+export function publishedCompatibilitySamples(proof:ProviderRuntime,language:string):ProviderRuntime['routes']{
+ const first=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(first,'Published compatibility requires both languages');
+ const selected=[first],moves=proof.identityMoves?.filter(move=>move.from.startsWith('/'+language+'/'))??[];
+ if(moves.length){
+  const root=proof.routes.find(route=>route.from===moves[0]!.from);assert.ok(root,'Identity move requires root browser coverage');selected.push(root);
+  const chapter=proof.routes.find(route=>moves.some(move=>route.from.startsWith(move.from+'chapters/')));if(chapter)selected.push(chapter);
+ }
+ return selected.filter((row,index)=>selected.findIndex(other=>other.from===row.from)===index);
+}
+export function assertPublishedCompatibilityCoverage(proof:ProviderRuntime,engines:readonly SiteBrowserEngine[],results:readonly ChapterCompatibilityEvidence[]):void {
+ const expected:string[]=[];
+ const key=(row:Pick<ChapterCompatibilityEvidence,'engine'|'language'|'oldPath'|'target'|'javascriptEnabled'|'fragment'>)=>JSON.stringify([row.engine,row.language,row.oldPath,row.target,row.javascriptEnabled,row.fragment]);
+ for(const engine of engines)for(const language of ['en','zh'])for(const row of publishedCompatibilitySamples(proof,language)){
+  for(const fragment of ['', '#'+encodeURIComponent(row.anchor)])expected.push(key({engine,language,oldPath:row.from,target:row.to,javascriptEnabled:true,fragment}));
+  expected.push(key({engine,language,oldPath:row.from,target:row.to,javascriptEnabled:false,fragment:'#'+encodeURIComponent(row.anchor)}));
+ }
+ assert.deepEqual(results.map(key).sort(),expected.sort(),'Selected engines must cover every sampled bilingual route, both JavaScript fragments and native access exactly once');
+}
 export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserEngine,origin:string,proof:ProviderRuntime,report:string):Promise<ChapterCompatibilityEvidence[]>{
  const results:ChapterCompatibilityEvidence[]=[];
  for(const language of ['en','zh']){
-  const row=proof.routes.find(route=>route.from.startsWith('/'+language+'/'));assert.ok(row,'Published compatibility requires both languages');
+  for(const [sample,row] of publishedCompatibilitySamples(proof,language).entries()){
   for(const fragment of ['', '#'+encodeURIComponent(row.anchor)]){
    const context=await browser.newContext({viewport:{width:1440,height:1000},locale:language==='zh'?'zh-CN':'en-US'}),page=await context.newPage();const settled=currentNetworkIdle(page);
-   const evidence:BrowserEvidence={engine,engineVersion:browser.version(),viewport:'desktop',route:{kind:'pcr',locale:language==='zh'?'zh':'en',path:row.from},assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${engine}-chapter-${language}-${fragment?'fragment':'default'}.png`};
+   const evidence:BrowserEvidence={engine,engineVersion:browser.version(),viewport:'desktop',route:{kind:'pcr',locale:language==='zh'?'zh':'en',path:row.from},assertions:[],errors:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[],screenshot:`${engine}-chapter-${language}-${sample}-${fragment?'fragment':'default'}.png`};
    const consoleErrors:{text:string;url:string}[]=[],documents:string[]=[];const trace=observeSiteRequests(page,{engine,viewport:'desktop'},evidence.requestFailures,evidence.prefetchUrls);
    page.on('pageerror',error=>evidence.errors.push('pageerror: '+error.message));page.on('console',event=>{if(event.type()==='error')consoleErrors.push({text:event.text(),url:event.location().url});});page.on('response',response=>{if(response.status()>=400)evidence.errors.push(`HTTP ${response.status()}: ${response.url()}`);});page.on('request',request=>{if(request.isNavigationRequest()&&request.resourceType()==='document'&&request.frame()===page.mainFrame())documents.push(request.url());});
    const query:string='?compat=%E7%AB%A0%E8%8A%82&repeat=a+b&repeat=%2F&empty=';const expected:string=origin+row.to+query+(fragment||'#'+encodeURIComponent(row.anchor));
@@ -466,7 +483,8 @@ export async function checkPublishedChapters(browser:Browser,engine:SiteBrowserE
    }catch(error){writeFileSync(path.join(report,evidence.screenshot+'.json'),JSON.stringify({source:proof.sourceCommit,evidence,consoleErrors,documentRequests:documents,error:message(error)},null,2)+'\n');try{await page.screenshot({path:path.join(report,evidence.screenshot)});}catch{}throw error;}finally{trace.stop();await context.close();}
   }
   const native=await browser.newContext({javaScriptEnabled:false,locale:language==='zh'?'zh-CN':'en-US'});
-  try{const page=await native.newPage(),response=await page.goto(origin+row.from+'?native=1#'+encodeURIComponent(row.anchor));assert.equal(response?.status(),200);assert.equal(new URL(page.url()).pathname,row.from);assert.equal(new URL(page.url()).search,'?native=1');assert.ok(await page.evaluate(anchor=>!!document.getElementById(anchor),row.anchor),'Native rewritten content retains the published anchor');const screenshot=`${engine}-chapter-${language}-native.png`;await page.screenshot({path:path.join(report,screenshot)});results.push({javascriptEnabled:false,engine,language,oldPath:row.from,target:row.to,fragment:'#'+encodeURIComponent(row.anchor),checks:['JavaScript disabled: rewritten HTML and published explicit fragment available','query and original document URL retained; no fragment-free automatic scroll claimed'],documentRequests:[response!.url()],screenshot});}finally{await native.close();}
+  try{const page=await native.newPage(),response=await page.goto(origin+row.from+'?native=1#'+encodeURIComponent(row.anchor));assert.equal(response?.status(),200);assert.equal(new URL(page.url()).pathname,row.from);assert.equal(new URL(page.url()).search,'?native=1');assert.ok(await page.evaluate(anchor=>!!document.getElementById(anchor),row.anchor),'Native rewritten content retains the published anchor');const screenshot=`${engine}-chapter-${language}-${sample}-native.png`;await page.screenshot({path:path.join(report,screenshot)});results.push({javascriptEnabled:false,engine,language,oldPath:row.from,target:row.to,fragment:'#'+encodeURIComponent(row.anchor),checks:['JavaScript disabled: rewritten HTML and published explicit fragment available','query and original document URL retained; no fragment-free automatic scroll claimed'],documentRequests:[response!.url()],screenshot});}finally{await native.close();}
+  }
  }
  return results;
 }
@@ -506,7 +524,7 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
  const receipt={schemaVersion:1,operation:'existing-export-browser-qualification',startedAt:new Date().toISOString(),engines:selectedEngines,source:exported.source,export:{root:exported.root,treeSha256:exported.treeSha256,files:exported.files.length,bytes:exported.bytes,unchangedAfterCheck:false},toolSha256:hash(readFileSync(fileURLToPath(import.meta.url))),routes:exported.routes,availability:exported.availability,playwrightVersion:'1.65.0',staticRouteAliases:exported.staticRouteAliases,nativeDownloadNames:nativeSamples.map(item=>item.name),nativeDownloads,results,languagePreferences,chapterCompatibility,publishedChapterHttp,pagePrefetchHttp,inlineManifestAvailable:inlineSamples.some(item=>item.name==='manifest.yaml'),inlineManifestDownloads,inlineDownloadNames:inlineSamples.map(item=>item.name),inlineDownloads,status:'running',completedAt:'',failure:''};
  try {const samples=scanDownloads(exported,true);nativeSamples=samples.native;inlineSamples=samples.inline;receipt.nativeDownloadNames=nativeSamples.map(item=>item.name);receipt.inlineDownloadNames=inlineSamples.map(item=>item.name);receipt.inlineManifestAvailable=inlineSamples.some(item=>item.name==='manifest.yaml');requireNativeSamples(nativeSamples);await withSiteExportServer(exported.root,async origin=>{
   const boundSource=exported.source.sourceCommit;assert.ok(typeof boundSource==='string');const boundProvider=verifyProviderRuntimeExport(exported.root,boundSource);
-  if(boundProvider?.schemaVersion===2){
+  if(boundProvider!==undefined&&Object.hasOwn(boundProvider,'navigationBinding')){
    const navigation=verifyNavigationTrees(exported.root,boundSource,true)!;
    const prefetch=navigationWebProof(navigation).samples.filter(sample=>prefetchRequestPath(sample.path));
    await checkPagePrefetchResponses(origin,prefetch);pagePrefetchHttp.push(...prefetch);
@@ -531,7 +549,8 @@ export async function qualifySiteBrowser(options:SiteBrowserOptions){
     await checkLanguagePreferences(browser,origin,size,documentPath,languageCodes,evidence);
    }}finally{await browser.close();}
   }
- });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;if(publishedChapterHttp.length)assert.equal(chapterCompatibility.length,selectedEngines.length*6,'Selected engines must check bilingual chapter fragments/defaults and native access');assert.equal(nativeDownloads.length,selectedEngines.length*3,'Selected engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
+  if(boundProvider)assertPublishedCompatibilityCoverage(boundProvider,selectedEngines,chapterCompatibility);
+ });const after=inspectSiteExport(exported.root);assert.equal(after.treeSha256,exported.treeSha256,'Export changed during browser qualification');receipt.export.unchangedAfterCheck=true;assert.equal(nativeDownloads.length,selectedEngines.length*3,'Selected engines must each verify all three native filenames');assert.ok(results.every(result=>!result.failure),`${results.filter(result=>result.failure).length} browser case(s) failed: ${results.find(result=>result.failure)?.failure}`);receipt.status='passed';return receipt;
  }catch(error){receipt.status='failed';receipt.failure=message(error);throw error;}finally{receipt.completedAt=new Date().toISOString();writeFileSync(path.join(report,'report.json'),JSON.stringify(receipt,null,2)+'\n');}
 }
 export async function siteBrowserMain(args:readonly string[]){const options=parseSiteBrowserArguments(args);if(options==='help'){process.stdout.write('Usage: node scripts/engineering/site-browser.ts --root <existing export> --report <new evidence directory>\n');return;}const receipt=await qualifySiteBrowser(options);process.stdout.write(JSON.stringify({status:receipt.status,sourceCommit:receipt.source.sourceCommit,report:path.join(options.report,'report.json'),cases:receipt.results.length})+'\n');}

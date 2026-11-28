@@ -19,8 +19,8 @@ checkPaths:
   - packages/pcr-core/schemas/guidance-output.schema.json
   - builder/lib/markdown-projection.ts
   - builder/lib/structured-yaml-projection.ts
-lastReviewedAt: 2026-10-04
-lastReviewedCommit: c3c064909877180563ebfe9f2ad09ea88faf3167
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: 822b710cf5c463d1eccbe15346ccc05b46b5543d
 related:
   - agentic-consumption.md
   - authoring-guide.md

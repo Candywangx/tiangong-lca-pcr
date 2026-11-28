@@ -1,10 +1,1459 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39283"
-  title: "Non-agglomerated wood waste and scrap"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.non-agglomerated-wood-waste-and-scrap"
+  classification_refs: "CPC 3.0 39283; narrower; no accepted mapping implied"
+  covered_products: "Separately collected untreated green Nordic spruce kerf sawdust; one declared acceptance specification"
+  excluded_products: "Pellets; briquettes; coarse chips; shavings; wood flour; mixed/treated/glued wood residues; finished lumber"
+  representative_product: "Loose non-agglomerated green Nordic spruce sawdust at first net quality release"
+  production_route: "Green sawlog receipt and origin burden; debarking as actually required; electrical sawing/edging/trimming; separate collection; installed screening/aspiration; first release; associated bulk supply services"
+  market_state: "Bulk loose fine sawdust; natural measured moisture; no added binder; no industrial drying or chemical treatment"
+functional_unit:
+  what: "Supply segregated non-agglomerated green Nordic spruce sawdust for a declared subsequent use"
+  how_much: "1 kg net newly first-quality-released sawdust at its measured release moisture"
+  how_well: "Document actual species/origin; untreated clean wood; fine kerf morphology; particle-size and contamination acceptance; distinguish chips/shavings"
+  how_long_or_cycle: "One first-release cohort with subsequent attributed supply services; no downstream useful-heat, lifetime or substitution equivalence"
+  reference_flow_link: "sawdust_release"
+system_boundary:
+  rules:
+    - rule_id: b_origin
+      applies_to: "spruce_logs; log_road_freight"
+      rule: "Retain full source sawing, debarking when actual and clean segregation. Use exactly one inherited source burden per material portion; supplier included transport/debarking is not entered again. Lumber-only downstream drying/planing/painting does not burden the already separated green sawdust without evidence."
+      source_ids:
+        - metsa-renko-sawmill
+        - corrim-northern-lumber-2025
+    - rule_id: b_first_release
+      applies_to: "all inventory rows"
+      rule: "Production runs to the first accepted net sawdust gate Q_c. Maintain separate post-release service records for storage, temporary containers, handling, loading and dispatch and attribute them to the original cohort Q_c. The internal release transfer cancels in the combined physical gate. Closing FG already includes current Q_c; do not add it again as production. For each measured component k the production equation is O_WIP,k + fresh_input_k = C_WIP,k + new_release_k + joint_output_k + production_waste_k + production_emission_k. Release dry wood and water use the measured release state; closing FG is not an extra production output."
+      source_ids: []
+    - rule_id: b_failures
+      applies_to: "all inventory rows"
+      rule: "Include failed lots, zero-output intervals, start/stop, idle, cleanup, screening rejects and actual rework. Opening/closing WIP carries an exchange-by-exchange inherited burden vector, measured material/water state and unresolved history; never replace it with zero or a universal scalar. Internal rework/collector return pairs have equal physical amounts and inherited vectors and no new purchase/output."
+      source_ids: []
+    - rule_id: b_services
+      applies_to: "all inventory rows"
+      rule: "Track gross physical shipments H_c separately from attributable service burden. Opening/closing FG retains original first-release mass, original burden vector and later changes. Returns link the original dispatch/reverse service and add only real incremental inspection/rework/handling; neither return nor reinspection creates production Q. Attach later services to the original Q_c once; if cohort histories cannot be reconstructed retain pending completeness. For the same component k: O_FG,k + new_release_k + external_return_k = C_FG,k + gross_shipment_k + service_waste_k + service_emission_k. Substitute the production equation and cancel new_release_k once for the combined gate; do not add it or closing FG again. Keep original first-release Q separate from later moisture changes. Independent evidence resolves real dry-matter loss, evaporated water and any reaction oxygen/water; one residual cannot fit multiple unknowns."
+      source_ids: []
+    - rule_id: b_species
+      applies_to: "all inventory rows"
+      rule: "Retain full physical wood, bark, water, auxiliary and relevant element/species balances independently of allocated burden. Captured particles, escaped dust and water loss have distinct destinations. No automatic biogenic neutrality, avoided lumber/fuel, recycled-content credit or carbon-storage credit is allowed. Add any actual missing material/fuel/chemical/packaging/emission as its own specific exchange before complete-dataset use."
+      source_ids:
+        - usda-wood-handbook-2021
+        - ilcd-allocation-2010
+boundary_abstraction:
+  declared_starting_condition: "Untreated green Nordic spruce sawlogs at a documented source/receipt gate; bark and prior debarking status declared"
+  starting_condition_role: "Full source-sawmill foreground with inherited forestry/harvest/transport boundary; not purchased finished sawdust repackaging"
+  product_classification_scope: "Only the fine loose green spruce sawdust subset of CPC 39283; neighbouring material forms are distinct"
+  recursive_input_rule: "No same-category purchased sawdust is in the declared route. If actually imported it requires a separate supplier-gate exchange and scope assessment; never erase supplier burden or add it on top of the same log-origin wood."
+  upstream_dataset_requirement: "Source-specific sawlog forestry/harvest and actual transport/debarking boundaries; single provider per exchange; compatible electricity/water/auxiliary/transport and waste treatment"
+  disclosure: "Production/service gates; actual stages; all failures and stock histories; supplier boundaries; allocation; quantities; exclusions; unknown identities and amounts"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Wood material"
+    uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Nordic spruce identity and source traceability"
+    - "sawlog supplier gate and inherited burden"
+    - "green untreated state"
+    - "fine kerf morphology and sieve distribution/test"
+    - "measured moisture and wet/dry basis"
+    - "bark/soil/chemical contamination acceptance"
+    - "no industrial drying/binder/agglomeration"
+    - "first-release cohort and unique release event"
+    - "net mass and container tare"
+    - "opening/closing WIP and finished stock"
+    - "actual separation/control route"
+    - "site geography and electricity voltage/mix"
+    - "coproduct status and exchange-specific allocation"
+    - "physical destinations and background-provider compatibility"
+    - "associated storage/loading/dispatch service boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "1 kg net first-released sawdust; collect Q_c by calibrated tare-corrected weighing in cp_release. Every inventory row is per 1 kg reference flow. No per-item mass or volume-density assumption is used."
+  - id: moisture_basis
+    applies_to: "spruce_logs; sawdust_release; green_lumber; spruce_chips; sold_bark; rejected_sawdust; bark_waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each actual stream and stock moisture. w=(m_w-m_d)/m_w; u=(m_w-m_d)/m_d; m_d=m_w*(1-w)=m_w/(1+u). Convert percentages to fractions. Record water separately; no common species density or target moisture (usda-wood-handbook-2021)."
+  - id: electricity_units
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter kWh and convert by 3.6 MJ/kWh before attribution and normalization. Actual supply voltage/geography/provider must match. Laboratory sample drying does not establish factory thermal drying."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "Declared row unit"
+    rule: "Retain original meter unit and conversion evidence. Integrate an actual rate over time; never multiply an already integrated liquid/gas volume by time again. Any volume-to-mass conversion uses independently measured density for that material and physical state, not a secondary native coefficient or water density for another liquid."
+  - id: unique_release
+    applies_to: "sawdust_release"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q_c sums unique new first releases of cohort c; finished closing stock is already part of Q_c. Gross dispatch H_c, internal passes, reinspection, returns and retained packaging are not production denominators. Q_c=0 retains actual burdens and yields no unit result."
+process_map:
+  - id: sawdust_supply
+    name: "Source sawing, separate collection, first release and attributed supply services"
+    inclusion: "required"
+    inclusion_condition: "One declared green Nordic spruce stream; actual installed preparation/control stages"
+    role: "Aggregated foreground with separate production and service ledgers"
+    quantitative_reference: "1 kg first-released net sawdust"
+process_inventory:
+  - id: sawdust_supply
+    label: "Source sawing, separate collection, first release and attributed supply services"
+    inputs:
+      product:
+        - row_id: spruce_logs
+          role: "Nordic spruce sawlogs with bark"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One physical supply of untreated green Nordic spruce sawlogs, with bark separately quantified in the received whole-log mass. The native Product flow has no fixed species, form, dimensions, treatment, moisture, route, geography or provider; its CPC 31 label is a broad locator, not evidence of a log or sawdust specification. Bind this exchange only to documented same-species green sawlogs. Attach forestry, harvest and source-gate burdens once; cp_origin identifies whether inbound road freight and prior debarking are already included. Do not add a purchased-sawdust background to the same wood. No plant drying, impregnation or lumber finishing is inherited by green sawdust without a demonstrated causal relationship."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_origin
+              source_ids:
+                - metsa-renko-sawmill
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: electricity
+          role: "Electricity for sawing and supply services"
+          name: "Low-voltage alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "User-side electricity for debarking, sawing, edging, trimming, segregated conveyance, any installed screen/aspiration, storage, handling and loading. Meter production and post-release service phases separately, including failed runs, starts, stops, idle periods, cleanup and repeated work. Declare actual voltage, country, grid mix and losses/provider gate. The CN-specific low-voltage identity cannot represent a Nordic site; identity/provider matching remains required. No fuel, steam or heat exchange is implied by this electrical route."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: log_road_freight
+          role: "Inbound road haulage of sawlogs"
+          name: "Freight Truck"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d55f1329-cd61-44c0-8000-9367d38d5634"
+          property_unit: "Goods transport (mass*distance) / t*km"
+          description: "Conditional external truck service only for the portion between the declared forest/source gate and mill gate not already included in spruce_logs. Record actual loaded and empty legs, payload, distance, moisture, truck technology and provider reference. Retain the whole service purchase; do not also enter that carrier’s fuel as an additional foreground input. Other transport modes need separate atomic service exchanges and evidence. The native Product identity denotes generic road freight service measured by goods transport (mass*distance), not purchase of a truck or proof of Nordic geography, a vehicle class, supplier or site performance. Its real reference unit is t*km: convert raw kg*km to t*km by dividing by 1000 once before attribution and the sole cohort normalization; already measured t*km is not converted again. Record the actual carrier convention for loaded payload and empty/return legs; zero cargo on an empty leg does not establish zero service burden. Include the carrier service once and do not add its owned fuel or emissions again."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_origin
+              source_ids: []
+            ranges: []
+        - row_id: mineral_oil
+          role: "Purchased mineral hydraulic lubricating oil"
+          name: "Petroleum mineral hydraulic lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional one entire purchased mineral-oil formulation for the actual hydraulic/lubrication circuit, including its supplied additives once. Record grade, supplier composition, oil charge and stock changes. The PAO full-synthesis candidate is incompatible and is not adopted. Oil in a sealed circulating system is not bought on every circulation; make-up, retained charge, drained oil, leaks and contaminated solid carriers are separate subaccounts. An actual emulsion, grease, biobased oil or other chemical requires its own atomic purchase and fate rows before completeness can be claimed."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aux
+              source_ids: []
+            ranges: []
+        - row_id: tap_water
+          role: "Municipal water for actual washing or dust control"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional treated municipal potable supply at user/plant gate for actual saw lubrication water, dust suppression or washdown. Native water treatment and source vary geographically; do not use this Product flow as raw groundwater abstraction, steam or wastewater. All properties were considered: Mass is the reference; the secondary Volume coefficient is not a site density measurement. Record total supplied water and its measured fate, not only retained water. Lab oven drying of samples is a measurement activity, not industrial drying of the supplied sawdust."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: saw_blade
+          role: "Purchased steel band-saw blade"
+          name: "Steel saw blades or shear knives"
+          flow_type: "product"
+          flow_ref:
+            uuid: "970801c9-08c1-4d9c-999d-4b66609430be"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One supplied steel band-saw blade used for actual wood blank preparation, within the native global auxiliary sawing/shearing cutting-consumable scope. This is neither a stone diamond wire nor a complete sawmill machine. Record purchased article mass, alloy/coating and supplier manufacturing burden; do not add its steel composition as a second purchase. Track installed opening/closing blades, sharpening, wear and scrap by service actually supplied. The native record contains no wear rate and establishes no supplier quantity or lifetime."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aux
+              source_ids: []
+            ranges: []
+        - row_id: pp_bag_purchase
+          role: "Temporary segregation bulk bag purchase"
+          name: "Woven polypropylene bulk bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional one entire supplied woven polypropylene bulk bag used for temporary segregation or transfer; the declared final product remains loose bulk sawdust without a sealed retail package or compaction. Confirm fabric, lining and fittings of the actual whole article, measured mass and provider. A 25 kg seed-bag identity does not establish this bag. Count newly purchased articles only here; external returned bags are physical returns with their retained historical service burden, not another purchase. Internal reuse is not fresh input. Different container or separate liner/tie purchases require their own rows."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: oxygen_uptake
+          role: "Actual oxygen consumption in wood storage"
+          name: "Oxygen consumed from ambient air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional ordinary molecular O2 (CAS 7782-44-7) actually taken from ambient air by demonstrated biological oxidation during storage. This is neither purchased industrial oxygen nor total ventilating air. Independently establish process/species stoichiometry or measurement, total mass, phase/cohort and fate; no oxygen demand is invented from a carbon residual. Include any real reaction water separately from pre-existing wood moisture using independent process evidence. Without actual transformation evidence retain the occurrence/amount as unresolved or documented absent, not an automatic reaction."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: rain_ingress
+          role: "Actual precipitation entering exposed wood storage"
+          name: "Rainwater entering sawdust storage"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional ordinary liquid precipitation actually crossing into the wood/handling boundary at an exposed stage. Record the measured ingress water and its retention, collected runoff or evaporation, separately from municipal supply and inherited wood moisture. Covered storage may document physical absence; weather data alone does not establish the amount entering a pile. This is not direct freshwater abstraction, purchased tap water or a second supply of the same water."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: sawdust_release
+          role: "First-released loose green Nordic spruce sawdust"
+          name: "Wood material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d07bf4c9-7cd0-46ad-a6b3-2fd11fe08f98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only newly first-quality-released net loose sawdust from the segregated green Nordic spruce sawing stream, before chemical treatment, drying or agglomeration. Exclude bark, coarse chips, planer shavings, rejected fractions and bag tare from Q_c; measure moisture and size distribution with the same lot. Native species, product form, dimensions, treatment, moisture, route, geography and provider are unspecified; this Product/Mass locator is restricted by this complete description and required qualifiers, not a verified sawdust supplier background. CPC 31 is broader than this 39283 subset and is not a physical contradiction in a form-unspecified locator. Closing finished stock already contains its share of Q_c. Dispatch, reinspection and re-release never create a second quantity of production."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - metsa-renko-sawmill
+                - sodra-sawdust
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: green_lumber
+          role: "Joint-stage green spruce sawn lumber"
+          name: "Sawnwood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f15bb061-fd78-47b3-9fc2-216d58b7f9fb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual untreated rough-sawn Nordic spruce boards/planks thicker than 6 mm at the green, undried sawmill separation gate; weigh their own wet and dry masses. The native Product flow is Mass-based green undried coniferous sawnwood at sawmill gate. Its preserved historical “other goods” classification is provenance, not a conflicting treatment or physical form; the active classification is coniferous sawnwood. Do not include kiln-dried, planed or impregnated lumber at this gate. Later lumber-specific operations are exclusive to lumber and do not enlarge the sawdust numerator. This is an actual whole co-product output in the unallocated physical account, never multiplied by a burden share."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_joint
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: spruce_chips
+          role: "Separately collected green spruce sawmill chips"
+          name: "Green Nordic spruce sawmill chip"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual coarse chip co-product generated by the source sawmill, separated from the fine sawdust reference stream. Measure whole wet and oven-dry masses, bark contamination and distinct particle morphology; downstream pulping is outside this boundary. A Volume-based Wood Chip record does not establish a mass-reference link or a bulk/solid conversion. Keep this physically specific mass exchange unbound until the provider unit convention and same-state conversion are evidenced; never reclassify chips as sawdust to fill a UUID."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_joint
+              source_ids:
+                - metsa-renko-sawmill
+                - sodra-sawdust
+            ranges: []
+        - row_id: sold_bark
+          role: "Marketed fresh spruce bark"
+          name: "Fresh Nordic spruce bark"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional separately marketed fresh debarking co-product with evidenced function and actual common-gate status. Keep whole bark mass and actual price/status records. Mutually exclusive with bark_waste for each portion; the native Waste-flow bark identity is not used as a Product-flow sale. Internal bark burning is outside this electrical foreground route and requires separately assessed boiler inputs, emissions and supplied heat rather than a credit."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_joint
+              source_ids:
+                - metsa-renko-sawmill
+                - ilcd-allocation-2010
+            ranges: []
+        - row_id: pp_bag_return
+          role: "Empty reusable bulk bag returned externally"
+          name: "Empty woven polypropylene bulk bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional physical return of that specific empty bag to its external owner after service; reconcile its historical use/ownership and mass. This is a container transfer with no co-product allocation revenue or avoided-bag credit. Internal transfer to the next batch cancels within the boundary and is not this external output. Attached bags sent with gross physical dispatch are a separate S term of cp_pack, not a new sawdust product or a second whole bag purchase."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_sawdust
+          role: "Rejected clean untreated sawdust for off-site recovery"
+          name: "sawdust waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e1a44d20-d968-4d64-bd7c-253a1441ab35"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only clean untreated sawdust actually classified as waste and transferred for documented off-site combustion/recovery, consistent with the native “untreated, comb/rec”, at-plant Waste-flow definition. Fine particles captured into this stream are not also emitted PM or accepted Q_c. Specify Nordic spruce, green moisture, collection stage, rejection reason, wet/dry mass, receiver and treatment; native properties are otherwise unspecified and do not prescribe quantities. Contaminated preservative/adhesive wood, landfill-only routes, coarse chips and sold sawdust are not represented by this restricted waste row. Rework that remains internal is not external waste."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fates
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: bark_waste
+          role: "Debarking residue handled as waste"
+          name: "Bark"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a2536c07-fbe1-4a12-90fb-21bd2e99b74e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional fresh spruce debarking residue leaving the plant as a Waste flow, consistent with the native global at-plant debarking residue definition. The native source fixes neither allocation nor quantity nor treatment; keep actual receiver/status and wet/dry mass. Do not bind sold_bark to this Waste-flow identity or infer combustion and credit. Keep bark carried on logs and residual bark in chips/sawdust in the wood-component ledger so separation is not double counted."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fates
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: aqueous_waste
+          role: "Collected sawmill washdown wastewater"
+          name: "Sawmill washdown wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional one actual collected aqueous waste mixture sent to a documented treatment provider, including entrained wood/soil/oil as measured composition subaccounts. Record whole wastewater once; constituent masses are not additional whole waste exports. Recovered dry screenings already removed from the water are separate physical streams. COD, BOD and total organic carbon are analytical indicators, not a named chemical or measured wood mass. Direct environmental discharge requires separate real species and receiving-medium exchanges and prior route assessment; it cannot be hidden in this treatment transfer."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: used_oil
+          role: "Drained spent hydraulic lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional petroleum-based or synthetic lubricant used and contaminated through operation, at the point of generation. This native Waste flow leaves treatment unspecified; document actual receiver and treatment rather than presume regeneration, combustion or disposal. Weigh the drained whole oil mixture once, reconcile retained charge/make-up/leaks and its composition, and do not count a washwater-contained portion again as a standalone full oil export."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aux
+              source_ids: []
+            ranges: []
+        - row_id: spent_blade
+          role: "Retired steel band-saw blade"
+          name: "Worn steel band-saw blade"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual retired steel band-saw blade sent off-site; record alloy/coating, attached contamination and receiver. Track remaining installed stock and off-site sharpening separately. The whole worn blade and its steel composition are one export, not two. No recovered-steel credit or assumed cutting life applies."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aux
+              source_ids: []
+            ranges: []
+        - row_id: spent_pp_bag
+          role: "Discarded temporary segregation bag"
+          name: "Discarded woven polypropylene bulk bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional discarded whole woven polypropylene bulk bag of the same actual construction, excluding separately removed sawdust and oil. Record contamination and receiver treatment; no generic resin recovery or bag reuse credit. This is the W term of the separate packaging ledger and is not net sawdust production."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual escaped wood particulate with aerodynamic diameter at or below 2.5 micrometres. Native Elementary/Mass flow is emissions to air, unspecified, without a specific height/geography; declare the actual receptor and use a more specific verified compartment if required by the assessment. Collect measured source/control-specific cumulative totals and form disjoint bins only for the same sampling conditions. Captured sawdust is material retained in product, rework or waste and is excluded here. Retain production and post-release phase/cohort flags. No native emission factor or dust-generation fraction is supplied."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: pmcoarse
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual escaped wood particulate above 2.5 and at or below 10 micrometres. Native Elementary/Mass flow is emissions to air, unspecified, without a specific height/geography; declare the actual receptor and use a more specific verified compartment if required by the assessment. Collect measured source/control-specific cumulative totals and form disjoint bins only for the same sampling conditions. Captured sawdust is material retained in product, rework or waste and is excluded here. Retain production and post-release phase/cohort flags. No native emission factor or dust-generation fraction is supplied."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: pmlarge
+          role: "particles (> PM10)"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a70a-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual escaped wood particulate above 10 micrometres. Native Elementary/Mass flow is emissions to air, unspecified, without a specific height/geography; declare the actual receptor and use a more specific verified compartment if required by the assessment. Collect measured source/control-specific cumulative totals and form disjoint bins only for the same sampling conditions. Captured sawdust is material retained in product, rework or waste and is excluded here. Retain production and post-release phase/cohort flags. No native emission factor or dust-generation fraction is supplied."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: water_vapour
+          role: "Water evaporated to ambient air"
+          name: "water vapour"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual H2O, CAS 7732-18-5, emitted as vapour to ambient air, unspecified; native reference is Mass/kg. The broad synonym list includes isotope/phase terms but does not establish tritiated water, heavy water, ice, a water discharge or purchased steam. Restrict this row to ordinary non-isotopically enriched water vapour. Separate wood moisture loss from dry wood loss and from liquid washwater. Evaporation must have an independent water balance or measurement; never fit evaporation and biological dry loss from one residual. No dryer, boiler, condensate return or purchased heat is presumed. The candidate’s synonym list mixes ordinary water with heavy/tritiated water and other states. Its correct ordinary-water CAS alone does not resolve that native ambiguity; no Flow UUID is adopted. Require ordinary H2O vapour identity and compatible native record before binding."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - usda-wood-handbook-2021
+            ranges: []
+        - row_id: bio_co2
+          role: "carbon dioxide (biogenic)"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual species-resolved carbon dioxide (biogenic) emission to ambient air, unspecified, from the measured green-wood processing/storage phase; no onsite combustion is assumed. C mass = 12/44 of CO2 mass. Verify the native species/CAS and actual carbon origin, stage, receptor, control and sampling basis; a VOC or total-carbon indicator is not the mass of this species. Include only measured or independently evidenced applicable emissions, with unknown occurrence/amount disclosed rather than set to zero. These are real physical species in the unallocated balance; allocated burden attribution is a distinct account. The identity establishes neither an emission factor nor climate neutrality. Require ordinary biogenic CO2 gas, CAS 124-38-9. The candidate’s synonym list additionally includes dry ice, ionic and isotope terms; without resolving those form restrictions no Flow UUID is adopted."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: bio_ch4
+          role: "methane (biogenic)"
+          name: "methane (biogenic)"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual species-resolved methane (biogenic) emission to ambient air, unspecified, from the measured green-wood processing/storage phase; no onsite combustion is assumed. C mass = 12/16 of CH4 mass. Verify the native species/CAS and actual carbon origin, stage, receptor, control and sampling basis; a VOC or total-carbon indicator is not the mass of this species. Include only measured or independently evidenced applicable emissions, with unknown occurrence/amount disclosed rather than set to zero. These are real physical species in the unallocated balance; allocated burden attribution is a distinct account. The identity establishes neither an emission factor nor climate neutrality. Require CH4 gas, CAS 74-82-8, with evidenced biogenic carbon. The candidate’s synonym list contains chemically incompatible graphite/carbon-black/formaldehyde names. Do not disregard those conflicts on basename/CAS alone; no Flow UUID is adopted."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: methanol_air
+          role: "methanol"
+          name: "methanol"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual species-resolved methanol emission to ambient air, unspecified, from the measured green-wood processing/storage phase; no onsite combustion is assumed. C mass = 12/32 of CH3OH mass. Verify the native species/CAS and actual carbon origin, stage, receptor, control and sampling basis; a VOC or total-carbon indicator is not the mass of this species. Include only measured or independently evidenced applicable emissions, with unknown occurrence/amount disclosed rather than set to zero. These are real physical species in the unallocated balance; allocated burden attribution is a distinct account. The identity establishes neither an emission factor nor climate neutrality. Require CH3OH, CAS 67-56-1. The candidate’s synonym list also includes methanol-water mixtures and sodium methoxide; no Flow UUID is adopted until those chemical-form restrictions are resolved. The reported methanol species mass excludes carrier water."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+        - row_id: alpha_pinene_air
+          role: "Alpha-pinene from actual green spruce emissions"
+          name: "Alpha-pinene to ambient air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional chemically identified alpha-pinene emitted to ambient air by actual sawing or storage. Distinguish beta-pinene and each other real terpene as separate atomic emissions if present. The returned (1s)-(-)-alpha-pinene record fixes an enantiomer; an unresolved enantiomeric composition cannot be bound to it merely because alpha-pinene is detected. Retain measured speciation, molecular mass, carbon fraction, time, medium and control; neither total VOC nor a carbon-balance residual may be assigned to alpha-pinene. Unknown emissions remain gaps."
+          amount:
+            expression: "Undivided attributable A_i divided once by original first-release Q_c using the sole section 8 cohort calculation; physical A_i is unallocated V_i and burden attribution is separate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids:
+                - corrim-northern-lumber-2025
+            ranges: []
+allocation_rules:
+  - rule_id: a_context
+    applies_to: "all inventory rows"
+    rule: "This is an attributional production method. Industrial descriptions establish actual joint stages and physical states, not an LCA allocation approval. Apply the hierarchy below for each real multifunctional stage and each affected exchange; a category label or low sawdust price never establishes zero burden (ilcd-allocation-2010)."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: a_subdivide
+    applies_to: "all inventory rows"
+    rule: "First assign exclusive operations, supplies, emissions and actual waste treatment to the function they serve using independent metering or defensible virtual subdivision. Sawdust-only collection/screening and its service burdens belong to sawdust; downstream lumber drying/planing belongs to lumber. Justify remaining indivisible joint stages."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: a_causal
+    applies_to: "all inventory rows"
+    rule: "For each remaining exchange identify a determining physical causal relationship and document why changes in each output/function drive that exchange. Evaluate product-related material/element contents separately from process-related power, auxiliaries and emissions. A mass, volume, processing-time or other ratio is allowed only where causality for that specific exchange is evidenced; the existence of a dry mass balance alone does not establish one allocation key for everything."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: a_residual
+    applies_to: "all inventory rows"
+    rule: "Only where a remaining exchange has no supported determining physical relation may the residual joint burden use actual contemporaneous market values at the same joint-process gate and condition. Record traded quantities, prices, currency, period, moisture/grade, unpackaged/packed state and deduction of downstream transport/conditioning/packaging. Shares sum to one across actual cofunctions; document zero/negative value or untraded conditions, missing evidence and sensitivity instead of applying a fixed proportion or switching freely between physical and economic methods."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: a_physical
+    applies_to: "all inventory rows"
+    rule: "Maintain unallocated physical output V_i, dry wood/water/element accounts and stock vectors separately from burden assignment. Whole lumber/chips/bark output and material balances are never multiplied by sawdust burden shares. No avoided-product, recovered-energy or recycling credit follows from residue status. Purchased supplier burden is inherited once; genuine waste/end-of-life status needs a separately evidenced applicable boundary rather than a default zero."
+    source_ids:
+      - ilcd-allocation-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_origin
+      process_id: "sawdust_supply"
+      flow_role: "spruce_logs; log_road_freight"
+      record_type: "receipt and source record"
+      raw_fields: "supplier; lot; Nordic spruce trace; whole-log wet mass; bark; moisture; original units; source gate; forestry/harvest burden vector; upstream debarking/haulage inclusion; actual road legs/payload/km; carrier loaded/empty/return-leg convention; original kg*km or t*km and one-time conversion; provider reference; opening/closing log stock"
+      collection_method: "Weigh net receipts and sampled wet/oven-dry components; read exact supplier reference and gate documentation; reconcile road service without duplicate provider fuel/background. Convert raw kg*km to the exact native t*km by dividing by 1000 once before attribution; retain already measured t*km unchanged and do not infer zero burden for empty legs."
+      unit: "kg; t*km"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_release
+      process_id: "sawdust_supply"
+      flow_role: "sawdust_release"
+      record_type: "first-release quality and mass record"
+      raw_fields: "cohort c; unique new release id/time; gross/tare/net wet mass; wet/dry moisture basis; sieve result/morphology; species/contamination acceptance; first-release decision; rejected/reworked lot links; opening/closing WIP and FG; original release mass"
+      collection_method: "Calibrated net weighing at the first accepted supply-material gate; pair representative moisture samples and actual acceptance tests; reject duplicate release events, dispatched old stock and packaging tare."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_joint
+      process_id: "sawdust_supply"
+      flow_role: "green_lumber; spruce_chips; sold_bark"
+      record_type: "joint-stage output and status record"
+      raw_fields: "stage; lot; species; wet/dry mass; water; bark; measured output form; gate; co-product/waste status; actual function; price/currency/period; dedicated and joint meter records; physical causality evidence"
+      collection_method: "Separately weigh each unallocated joint output at its true common gate and sample moisture; document exclusive operations, causal relationships and only necessary same-gate residual market values."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "sawdust_supply"
+      flow_role: "electricity"
+      record_type: "raw meter record"
+      raw_fields: "meter id; original kWh; voltage; geography/grid/provider; stage; cohort; run/failure/start/stop/idle/cleanup; timestamps; allocation evidence; WIP inherited vector"
+      collection_method: "Read calibrated electricity meters before division; reconcile stage/service submeters with bills and real allocation; include unproductive operation and energy in rework."
+      unit: "kWh; MJ"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_aux
+      process_id: "sawdust_supply"
+      flow_role: "mineral_oil; saw_blade; used_oil; spent_blade"
+      record_type: "supply use and fate record"
+      raw_fields: "article/formulation; supplier/grade/composition; whole supplied mass; original unit; opening/closing stores and installed charge; purchases; drains; leaks; stock history; sharpening; receiver; service cohort; actual composition partitions"
+      collection_method: "Weigh or use traceable whole-product supply records; determine actual use from stock and installed-article changes; measure any volume density at actual material/state; preserve formulations and nonduplicated fate subaccounts."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_water
+      process_id: "sawdust_supply"
+      flow_role: "tap_water; aqueous_waste; water_vapour; rain_ingress"
+      record_type: "water and aqueous fate record"
+      raw_fields: "supply meter; density and temperature if volumetric; interval/total or rate; wood water samples; liquid waste whole mass; composition/solids; retained water; evaporation evidence; WIP/FG moisture; actual rain ingress; phase/cohort; treatment receiver"
+      collection_method: "Meter supplied water and weigh waste or convert independently measured same-state liquid volume; keep already integrated volumes distinct from rates; reconcile wood water, liquid and vapour independently of dry wood loss. Lab moisture assay conditions are method evidence, not an industrial dryer."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_pack
+      process_id: "sawdust_supply"
+      flow_role: "pp_bag_purchase; pp_bag_return; spent_pp_bag; every actual first nonpurchase article interface"
+      record_type: "each physical packaging article ledger"
+      raw_fields: "article p; construction/provider; measured net article mass; opening empty/attached WIP/attached FG/reusable; P_p; first nonpurchase N_ext,p; true ER_p and original outward dispatch; exact receipt ID/time/origin and custody; specific material/form/type and measured atomic input interface; owner and inherited unused-stock vector; one actual provider; closing same stocks; S_p on gross dispatch; EO_p; W_p; cohort; internal reuse; inherited service history"
+      collection_method: "Trace each actual whole bag and location with weighing and counts; distinguish new purchases, first nonpurchase physical ingress, internal reuse and true external returns as mutually exclusive events; add the specific actual atomic receipt and measure its whole physical quantity separately from procurement. Reconcile all opening/closing states and gross outward legs under the complete independent equation, retaining the owner/vector and one provider burden once without a second manufacture purchase."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_fates
+      process_id: "sawdust_supply"
+      flow_role: "rejected_sawdust; bark_waste"
+      record_type: "waste and rework fate record"
+      raw_fields: "lot; phase; original rejected state; wet/dry/bark/water mass; captured dust; waste/sale/return fate; receiver/treatment; WIP/FG history; mutually exclusive portions; contamination tests"
+      collection_method: "Weigh each real segregated fate; match receiver manifests and internal return endpoints; clean untreated sawdust combustion/recovery only uses the specified Waste flow. Add a specific actual incompatible fate row rather than use the wrong identity."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "sawdust_supply"
+      flow_role: "pm25; pmcoarse; pmlarge; bio_co2; bio_ch4; methanol_air; alpha_pinene_air; oxygen_uptake"
+      record_type: "species-resolved monitoring record"
+      raw_fields: "real species/CAS/stereochemistry; medium; carbon origin; stage/cohort; controls; sampling area/time; concentration; actual rate or integrated volume; temperature/pressure/dry-wet basis; cumulative particle cuts; captured fractions; uncertainty/detection limits"
+      collection_method: "Use source/control-matched measurements or independently justified applicable species factors and measured activity; calculate real species amounts with their own units. Check actual native species and air compartment; do not replace chemical identity with VOC/COD/carbon residuals."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_stocks
+      process_id: "sawdust_supply"
+      flow_role: "all inventory rows"
+      record_type: "stock and internal return ledger"
+      raw_fields: "cohort; opening/closing WIP and FG; each material/water/auxiliary component; each inherited exchange vector; new inputs; internal return pair; unreleased/failed lot; historical missing burden; physical residual; uncertainty"
+      collection_method: "Inventory physical stocks and reconcile both endpoints of every internal transfer before allocation; retain exchange-specific historical vectors. Keep opening FG out of new Q and closing released FG within Q."
+      unit: "kg"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+    - protocol_id: cp_services
+      process_id: "sawdust_supply"
+      flow_role: "all inventory rows"
+      record_type: "post-release cohort service ledger"
+      raw_fields: "original cohort c and Q_c; release gate/time; opening/closing FG state and vector; gross dispatch H_c; container tare; returned shipment/original reversal links; storage duration; water change; handling/loading/inspection/rework raw resource and fate records"
+      collection_method: "Track actual post-release storage, containment, handling and loading separately by original cohort; allocate real service activity to its original cohort without dividing by gross dispatch or counted handling events. Preserve historical burden and actual incremental returned-goods work."
+      unit: "kg; actual row units"
+      frequency: "Each lot and meter/operation interval; repeated stock checks"
+      temporal_coverage: "One declared representative period covering actual seasons, failures, idle and rework; preserve linked cohort history"
+      site_scope: "One declared sawmill and segregated spruce stream; original cohort supply services"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; source records; acceptance; representative sampling; provider gates; explicit missing histories and uncertainty"
+  calculation_rules:
+    - id: prepare_numerator
+      applies_to: "all inventory rows"
+      rule: "Convert raw units and integrate only real rates before attribution. Assemble each raw total, opening/closing WIP exchange vector and actual incremental work without dividing. Independently meter/subdivide exclusive burdens, then apply a_causal and only necessary a_residual to remaining joint burdens. A_i is that undivided attributable burden/activity amount; for physical product/waste/species reporting A_i=V_i, the unallocated whole physical amount. Preserve both views and their distinct meanings. Do not reallocate an inherited provider burden or scale the physical balance by burden shares."
+      inputs:
+        - cp_origin
+        - cp_joint
+        - cp_energy
+        - cp_aux
+        - cp_water
+        - cp_pack
+        - cp_fates
+        - cp_emissions
+        - cp_stocks
+        - cp_services
+      output: "A_i in its declared row unit; independent V_i and burden vectors"
+      source_ids:
+        - ilcd-allocation-2010
+    - id: normalize_cohort
+      applies_to: "all inventory rows"
+      rule: "x_i = A_i / Q_c; Q_c is the unique newly first-released net sawdust mass in kg of original cohort c. Reference sawdust output is 1 kg. Apply exactly once after prepare_numerator; for several cohorts divide the sum of compatible attributable numerators by their matched sum of Q_c, never average already divided ratios. Q_c=0 retains raw burdens with no unit result. Post-release services attach to original Q_c and are never divided by H_c."
+      inputs:
+        - A_i
+        - Q_c
+        - cp_release
+        - cp_services
+      output: "Exchange per 1 kg reference flow; separate unallocated physical and attributed burden views"
+      source_ids: []
+    - id: wood_water
+      applies_to: "spruce_logs; sawdust_release; green_lumber; spruce_chips; sold_bark; rejected_sawdust; bark_waste"
+      rule: "w=(m_w-m_d)/m_w; u=(m_w-m_d)/m_d; m_d=m_w*(1-w)=m_w/(1+u). Use fractions and matched stream/stock samples; m_water=m_w-m_d. Sample the actual wood and distinguish bark/soil/oil where present; no generic density or moisture target."
+      inputs:
+        - m_w
+        - m_d
+        - cp_origin
+        - cp_release
+        - cp_joint
+        - cp_fates
+        - cp_stocks
+      output: "Independent dry wood and water masses"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: physical_gates
+      applies_to: "all inventory rows"
+      rule: "Apply the production, service and combined component equations in section 6 with the same physical terms and measured states. Release cancels once in the combined gate. Independently evidence dry wood loss and water loss; one residual cannot solve both. Whole mixture exports include their measured constituents and are not added to them. Retain unresolved balance with uncertainty."
+      inputs:
+        - cp_origin
+        - cp_release
+        - cp_joint
+        - cp_water
+        - cp_fates
+        - cp_emissions
+        - cp_stocks
+        - cp_services
+      output: "Unallocated component gate reconciliation and explicit residuals"
+      source_ids:
+        - usda-wood-handbook-2021
+    - id: packaging_balance
+      applies_to: "pp_bag_purchase; pp_bag_return; spent_pp_bag; every actual first nonpurchase article interface"
+      rule: "For each article p: O_empty,p + O_WIP,p + O_FG,p + O_reusable,p + P_p + N_ext,p + ER_p = C_empty,p + C_WIP,p + C_FG,p + C_reusable,p + S_p + EO_p + W_p. Locations must not overlap. N_ext,p is the measured actual first nonpurchase input defined in section 6 and cp_pack, not a compensating residual; P_p/N_ext,p/true ER_p never duplicate the same receipt. Preserve the specific atomic interface, owner and inherited vector and one actual provider once. Internal reuse cancels; gross physical shipment packaging S_p is independent of Q_c and P_p. No purchase is inferred from handling counts or returned bags."
+      inputs:
+        - cp_pack
+        - cp_services
+        - cp_stocks
+      output: "Each complete independent packaging mass ledger"
+      source_ids: []
+    - id: particle_intervals
+      applies_to: "pm25; pmcoarse; pmlarge"
+      rule: "PM_fine=PM2.5; PM_coarse=PM10-PM2.5; PM_large=PM_total-PM10, only for the same source/time/control/measurement basis. A negative interval is inconsistent evidence. Cumulative totals and captured solids are not additional escaped particulate exchanges."
+      inputs:
+        - cp_emissions
+      output: "Three nonoverlapping air particle intervals"
+      source_ids: []
+    - id: carbon_species
+      applies_to: "bio_co2; bio_ch4; methanol_air; alpha_pinene_air"
+      rule: "Material C uses actual measured dry-component carbon fraction. Resolve true species and carbon origin independently: C_CO2=(12/44)*m_CO2; C_CH4=(12/16)*m_CH4; C_methanol=(12/32)*m_methanol. Use independently known molecular formula/composition for each other real species. Reconcile carbon in wood/bark/stock, dust, liquids and gases; no forced neutrality, default carbon fraction, assumed gas partition or offset."
+      inputs:
+        - cp_origin
+        - cp_joint
+        - cp_emissions
+        - cp_fates
+        - cp_stocks
+        - cp_services
+      output: "Unallocated carbon balance with species and origin evidence"
+      source_ids: []
+    - id: service_attribution
+      applies_to: "all inventory rows"
+      rule: "For each original cohort retain Q_c, old burden vector and actual gross H_c. Record only additional real service resources/losses after release and link external returns to original dispatch and any actual service reversal. Transfer historical vectors, subtract only the burden portion actually transferred out of the relevant account, and add incremental work once. Missing history prevents a completed cohort burden; it does not create zero burden or new Q. Feed the undivided attributable service numerator into the same normalize_cohort once."
+      inputs:
+        - cp_services
+        - cp_stocks
+        - cp_release
+      output: "Original-cohort service attribution without new production"
+      source_ids:
+        - ilcd-allocation-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Match one actual atomic exchange, native type/species/route/form/moisture/geography/medium and exact property-unit chain. Preserve full restrictions in descriptions. An unbound auxiliary remains specific and pending; provider compatibility is independently verified."
+      evidence: "cp_origin; cp_aux; cp_emissions; exact native and provider documents"
+    - id: dq_core
+      applies_to: "sawdust_release; spruce_logs"
+      requirement: "Prove segregated Nordic spruce green sawdust from actual sawlogs and first acceptance. Generic Wood material identity cannot replace actual species, morphology, contamination and moisture evidence. Incompatible or missing core evidence blocks complete dataset use."
+      evidence: "cp_origin; cp_release; supplier and acceptance tests"
+    - id: dq_measurement
+      applies_to: "all inventory rows"
+      requirement: "Calibrated original units; representative per-stream wet/oven-dry measurements; phase/cohort coverage; one Q; no default per-piece mass/density/yield. Preserve all failed and zero-output intervals."
+      evidence: "cp_release; cp_energy; cp_stocks"
+    - id: dq_allocation
+      applies_to: "all inventory rows"
+      requirement: "Independent exclusive/virtual subdivision then exchange-specific physical causality and only unavoidable residual common-gate contemporaneous market value. Physical balance and burdens remain distinct; no fixed credit/share."
+      evidence: "cp_joint; ILCD sections 7.9.2–7.9.3; attribution evidence"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Include actual unlisted supplies, species, fates and all stock histories as separate atomic rows. Unsupported core route or unknown physical fate remains incomplete. Aux UUID/provider and future site measurements are ordinary gaps, never fabricated values or automatic methodology promotion."
+      evidence: "cp_fates; cp_services; cp_water; explicit gap and coverage record"
+    - id: dq_sources
+      applies_to: "all inventory rows"
+      requirement: "Primary industrial contexts are not a single factory/order and are not numerical templates. CORRIM northern mixed-species survey and Södra published moisture/energy/ash do not establish this cohort’s quantities. Preserve conditions and contrary examples."
+      evidence: "Declared sources; site primary records; state-specific uncertainty"
+validation_rules:
+  - rule_id: v_context
+    applies_to: "all inventory rows"
+    rule: "The following requirements concern a concrete dataset. Builder structural/measurement success verifies only declared relationships and never supplies missing plant evidence, scientific review, translation review or accepted classification mapping."
+    source_ids: []
+  - rule_id: v_reference
+    applies_to: "sawdust_release; spruce_logs"
+    rule: "Require all reference qualifiers and one unique Product output of 1 kg linked to sawdust_release. Confirm actual clean green Nordic spruce kerf sawdust, not a chip/shaving/pellet/briquette/treated composite. Verify the broad locator’s restrictions and actual core supplier/acceptance evidence before complete-dataset use."
+    source_ids:
+      - un-cpc3-2025
+      - metsa-renko-sawmill
+      - sodra-sawdust
+  - rule_id: v_denominator
+    applies_to: "all inventory rows"
+    rule: "Verify raw original units, prepare_numerator attribution and one normalize_cohort division by the original first-release Q_c. Closing released FG is already counted; gross shipments H_c and packaging are not new production. Q_c=0 retains burden without unit output. Collection/aggregation/cards must not divide again."
+    source_ids: []
+  - rule_id: v_gates
+    applies_to: "all inventory rows"
+    rule: "Check the same unallocated production, service and combined wood/bark/water/auxiliary/element equations; cancel the internal Q transfer, preserve opening/closing WIP and FG vectors and each return pair. Resolve physical mass, true chemical species/reaction water and relevant elements independently; no dual-unknown residual fitting."
+    source_ids:
+      - usda-wood-handbook-2021
+  - rule_id: v_fates
+    applies_to: "all inventory rows"
+    rule: "Check mutually exclusive accepted/rework/waste/coproduct portions, each complete packaging ledger and actual external provider. Reconcile whole mixed exports with non-additive constituent ledgers. Captured dust is not emitted PM; cumulative particle cuts cannot overlap. Confirm air medium, actual molecular species/CAS and carbon origin; total VOC/COD is no named species."
+    source_ids: []
+  - rule_id: v_burden
+    applies_to: "all inventory rows"
+    rule: "Verify origin inherited once, lumber-exclusive stages excluded unless causally justified, exchange-specific attribution hierarchy and same-gate residual values only when necessary. Check conservation of allocated burdens across all functions independently of full physical outputs. No neutrality or recovery/substitution credit."
+    source_ids:
+      - ilcd-allocation-2010
+  - rule_id: v_pending
+    applies_to: "all inventory rows"
+    rule: "Any real core identity/terminal-route mismatch, missing causal/market evidence required for attribution, unknown stock burden history, unresolved material/emission fate or unsupported unit conversion keeps the affected dataset incomplete. Preserve ordinary auxiliary UUID/provider/measurement gaps explicitly; neither a generic UUID nor a structural pass clears them. A real boiler/dryer/treated-wood or other unsupported route requires scope assessment and complete additional atomic inventory first."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_production_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply of the declared green loose Nordic spruce sawdust cohort for separate downstream use; reporting at first release with original-cohort service attribution"
+  excluded_use: "Pellet/briquette/wood-flour manufacture; delivered useful heat; generic wood waste; treated/composite residues; unsupported species/state substitution; automatic zero-burden or recovery-credit model"
+  required_metadata: "All reference qualifiers; first Q gate and cohort; gross H and service gate; source/background boundaries; unallocated quantities; allocation by exchange; complete stock vectors; provider/identity and sampling evidence"
+  required_quality_disclosure: "Scope of actual site/period; ordinary unresolved auxiliary identities/providers; missing core evidence or burden/stock/fate histories; measurement uncertainty; species coverage; source applicability; true incomplete-dataset holds"
+  update_trigger: "Changed species, moisture state, particle morphology, chemical treatment, agglomeration, origin burden, actual energy/control route, co-product status/causality/prices, first-release gate, stock/service handling or provider reference"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025; group 3928 and subclasses 39281–39283. https://unstats.un.org/unsd/classifications/Econ/cpc"
+    used_for: "Classification-form context only; non-agglomerated sawdust subset, distinct pellet/briquette neighbours; not canonical identity or accepted mapping"
+  - id: "metsa-renko-sawmill"
+    type: "literature"
+    reference: "Metsä Fibre, Renko sawmill, sections describing Nordic spruce and bioproducts; publisher HTML snapshot 26 October 2026. https://www.metsagroup.com/metsafibre/about-metsafibre/sawn-timber-production/renko-sawmill/"
+    used_for: "Primary actual spruce sawing origin and sawdust/bark/chip by-product context; not a common factory dataset with Södra or quantified burden"
+  - id: "sodra-sawdust"
+    type: "literature"
+    reference: "Södra, Sawdust, Industry and FAQ: sawdust and separate larger-fraction wood chips; publisher HTML snapshot 26 October 2026. https://www.sodra.com/en/global/products/bioproducts/sawdust/"
+    used_for: "Primary wet-sawdust supply and fraction separation; no published moisture/energy/ash number adopted as specification, factor or amount"
+  - id: "corrim-northern-lumber-2025"
+    type: "literature"
+    reference: "CORRIM, Life Cycle Assessment of Softwood Lumber Production – Northern Region, revision 22 July 2025; pp.14,16,19–22; sections 3.2.4, 3.2.6, 4.3.1, 4.6–4.9. https://corrim.org/wp-content/uploads/2025/07/LCA-Report-Northern-Lumber-Report-07222025.pdf"
+    used_for: "Independent mixed-species sawmill joint stages, wet/dry physical accounting, control/emission and waste context; numerical yield/density/moisture and uniform mass-allocation case are not transferred"
+  - id: "usda-wood-handbook-2021"
+    type: "handbook"
+    reference: "USDA Forest Products Laboratory, Wood handbook—wood as an engineering material, FPL-GTR-282 (2021), Chapter 4 pp.4-1–4-2; Chapter 13 p.13-2. https://www.govinfo.gov/content/pkg/GOVPUB-A13-PURL-gpo158673/pdf/GOVPUB-A13-PURL-gpo158673.pdf"
+    used_for: "Wet/dry wood-moisture equations, variable species states and representative oven-dry measurement; no fixed sawdust moisture/density or plant energy assumption"
+  - id: "ilcd-allocation-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment – Detailed guidance, first edition March 2010; sections 7.9.2–7.9.3, printed pp.255–272, PDF pp.275–292. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional exclusive/virtual subdivision, exchange-specific determining physical causality and only necessary residual common-gate actual-state market value; general method independent of industrial process evidence"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:aa709e95bf72723c256295077affbd22b359ecd7eeaef92accfc483ff8458149"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7581"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7581
+          line: 62
+          column: 1
+        end:
+          offset: 11866
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Untreated green Nordic spruce sawlogs at a documented source/receipt gate; bark and prior debarking status declared |\n| starting_condition_role | Full source-sawmill foreground with inherited forestry/harvest/transport boundary; not purchased finished sawdust repackaging |\n| product_classification_scope | Only the fine loose green spruce sawdust subset of CPC 39283; neighbouring material forms are distinct |\n| recursive_input_rule | No same-category purchased sawdust is in the declared route. If actually imported it requires a separate supplier-gate exchange and scope assessment; never erase supplier burden or add it on top of the same log-origin wood. |\n| upstream_dataset_requirement | Source-specific sawlog forestry/harvest and actual transport/debarking boundaries; single provider per exchange; compatible electricity/water/auxiliary/transport and waste treatment |\n| disclosure | Production/service gates; actual stages; all failures and stock histories; supplier boundaries; allocation; quantities; exclusions; unknown identities and amounts |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_origin | spruce_logs; log_road_freight | Retain full source sawing, debarking when actual and clean segregation. Use exactly one inherited source burden per material portion; supplier included transport/debarking is not entered again. Lumber-only downstream drying/planing/painting does not burden the already separated green sawdust without evidence. | metsa-renko-sawmill; corrim-northern-lumber-2025 |\n| b_first_release | all inventory rows | Production runs to the first accepted net sawdust gate Q_c. Maintain separate post-release service records for storage, temporary containers, handling, loading and dispatch and attribute them to the original cohort Q_c. The internal release transfer cancels in the combined physical gate. Closing FG already includes current Q_c; do not add it again as production. For each measured component k the production equation is O_WIP,k + fresh_input_k = C_WIP,k + new_release_k + joint_output_k + production_waste_k + production_emission_k. Release dry wood and water use the measured release state; closing FG is not an extra production output. |  |\n| b_failures | all inventory rows | Include failed lots, zero-output intervals, start/stop, idle, cleanup, screening rejects and actual rework. Opening/closing WIP carries an exchange-by-exchange inherited burden vector, measured material/water state and unresolved history; never replace it with zero or a universal scalar. Internal rework/collector return pairs have equal physical amounts and inherited vectors and no new purchase/output. |  |\n| b_services | all inventory rows | Track gross physical shipments H_c separately from attributable service burden. Opening/closing FG retains original first-release mass, original burden vector and later changes. Returns link the original dispatch/reverse service and add only real incremental inspection/rework/handling; neither return nor reinspection creates production Q. Attach later services to the original Q_c once; if cohort histories cannot be reconstructed retain pending completeness. For the same component k: O_FG,k + new_release_k + external_return_k = C_FG,k + gross_shipment_k + service_waste_k + service_emission_k. Substitute the production equation and cancel new_release_k once for the combined gate; do not add it or closing FG again. Keep original first-release Q separate from later moisture changes. Independent evidence resolves real dry-matter loss, evaporated water and any reaction oxygen/water; one residual cannot fit multiple unknowns. |  |\n| b_species | all inventory rows | Retain full physical wood, bark, water, auxiliary and relevant element/species balances independently of allocated burden. Captured particles, escaped dust and water loss have distinct destinations. No automatic biogenic neutrality, avoided lumber/fuel, recycled-content credit or carbon-storage credit is allowed. Add any actual missing material/fuel/chemical/packaging/emission as its own specific exchange before complete-dataset use. | usda-wood-handbook-2021; ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 245
+              line: 9
+              column: 1
+            end:
+              offset: 307
+              line: 9
+              column: 63
+          text: "# Non-agglomerated green Nordic spruce sawdust from sawmilling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7581
+              line: 62
+              column: 1
+            end:
+              offset: 7602
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_51559"
+      family: "allocation"
+      span:
+        start:
+          offset: 51559
+          line: 537
+          column: 1
+        end:
+          offset: 54183
+          line: 547
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_context | all inventory rows | This is an attributional production method. Industrial descriptions establish actual joint stages and physical states, not an LCA allocation approval. Apply the hierarchy below for each real multifunctional stage and each affected exchange; a category label or low sawdust price never establishes zero burden (ilcd-allocation-2010). | ilcd-allocation-2010 |\n| a_subdivide | all inventory rows | First assign exclusive operations, supplies, emissions and actual waste treatment to the function they serve using independent metering or defensible virtual subdivision. Sawdust-only collection/screening and its service burdens belong to sawdust; downstream lumber drying/planing belongs to lumber. Justify remaining indivisible joint stages. | ilcd-allocation-2010 |\n| a_causal | all inventory rows | For each remaining exchange identify a determining physical causal relationship and document why changes in each output/function drive that exchange. Evaluate product-related material/element contents separately from process-related power, auxiliaries and emissions. A mass, volume, processing-time or other ratio is allowed only where causality for that specific exchange is evidenced; the existence of a dry mass balance alone does not establish one allocation key for everything. | ilcd-allocation-2010 |\n| a_residual | all inventory rows | Only where a remaining exchange has no supported determining physical relation may the residual joint burden use actual contemporaneous market values at the same joint-process gate and condition. Record traded quantities, prices, currency, period, moisture/grade, unpackaged/packed state and deduction of downstream transport/conditioning/packaging. Shares sum to one across actual cofunctions; document zero/negative value or untraded conditions, missing evidence and sensitivity instead of applying a fixed proportion or switching freely between physical and economic methods. | ilcd-allocation-2010 |\n| a_physical | all inventory rows | Maintain unallocated physical output V_i, dry wood/water/element accounts and stock vectors separately from burden assignment. Whole lumber/chips/bark output and material balances are never multiplied by sawdust burden shares. No avoided-product, recovered-energy or recycling credit follows from residue status. Purchased supplier burden is inherited once; genuine waste/end-of-life status needs a separately evidenced applicable boundary rather than a default zero. | ilcd-allocation-2010 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 245
+              line: 9
+              column: 1
+            end:
+              offset: 307
+              line: 9
+              column: 63
+          text: "# Non-agglomerated green Nordic spruce sawdust from sawmilling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 51559
+              line: 537
+              column: 1
+            end:
+              offset: 51599
+              line: 537
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_74038"
+      family: "validation"
+      span:
+        start:
+          offset: 74038
+          line: 591
+          column: 1
+        end:
+          offset: 76943
+          line: 603
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_context | all inventory rows | The following requirements concern a concrete dataset. Builder structural/measurement success verifies only declared relationships and never supplies missing plant evidence, scientific review, translation review or accepted classification mapping. |  |\n| v_reference | sawdust_release; spruce_logs | Require all reference qualifiers and one unique Product output of 1 kg linked to sawdust_release. Confirm actual clean green Nordic spruce kerf sawdust, not a chip/shaving/pellet/briquette/treated composite. Verify the broad locator’s restrictions and actual core supplier/acceptance evidence before complete-dataset use. | un-cpc3-2025; metsa-renko-sawmill; sodra-sawdust |\n| v_denominator | all inventory rows | Verify raw original units, prepare_numerator attribution and one normalize_cohort division by the original first-release Q_c. Closing released FG is already counted; gross shipments H_c and packaging are not new production. Q_c=0 retains burden without unit output. Collection/aggregation/cards must not divide again. |  |\n| v_gates | all inventory rows | Check the same unallocated production, service and combined wood/bark/water/auxiliary/element equations; cancel the internal Q transfer, preserve opening/closing WIP and FG vectors and each return pair. Resolve physical mass, true chemical species/reaction water and relevant elements independently; no dual-unknown residual fitting. | usda-wood-handbook-2021 |\n| v_fates | all inventory rows | Check mutually exclusive accepted/rework/waste/coproduct portions, each complete packaging ledger and actual external provider. Reconcile whole mixed exports with non-additive constituent ledgers. Captured dust is not emitted PM; cumulative particle cuts cannot overlap. Confirm air medium, actual molecular species/CAS and carbon origin; total VOC/COD is no named species. |  |\n| v_burden | all inventory rows | Verify origin inherited once, lumber-exclusive stages excluded unless causally justified, exchange-specific attribution hierarchy and same-gate residual values only when necessary. Check conservation of allocated burdens across all functions independently of full physical outputs. No neutrality or recovery/substitution credit. | ilcd-allocation-2010 |\n| v_pending | all inventory rows | Any real core identity/terminal-route mismatch, missing causal/market evidence required for attribution, unknown stock burden history, unresolved material/emission fate or unsupported unit conversion keeps the affected dataset incomplete. Preserve ordinary auxiliary UUID/provider/measurement gaps explicitly; neither a generic UUID nor a structural pass clears them. A real boiler/dryer/treated-wood or other unsupported route requires scope assessment and complete additional atomic inventory first. |  |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 245
+              line: 9
+              column: 1
+            end:
+              offset: 307
+              line: 9
+              column: 63
+          text: "# Non-agglomerated green Nordic spruce sawdust from sawmilling"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 74038
+              line: 591
+              column: 1
+            end:
+              offset: 74060
+              line: 591
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_origin"
+      identity_kind: "explicit"
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 8826
+          line: 77
+          column: 1
+        end:
+          offset: 9234
+          line: 77
+          column: 409
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_first_release"
+      identity_kind: "explicit"
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 9235
+          line: 78
+          column: 1
+        end:
+          offset: 9920
+          line: 78
+          column: 686
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_failures"
+      identity_kind: "explicit"
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 9921
+          line: 79
+          column: 1
+        end:
+          offset: 10367
+          line: 79
+          column: 447
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_services"
+      identity_kind: "explicit"
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 10368
+          line: 80
+          column: 1
+        end:
+          offset: 11341
+          line: 80
+          column: 974
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_species"
+      identity_kind: "explicit"
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 11342
+          line: 81
+          column: 1
+        end:
+          offset: 11864
+          line: 81
+          column: 523
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_context"
+      identity_kind: "explicit"
+      unit_id: "normative_51559"
+      source_span:
+        start:
+          offset: 51672
+          line: 541
+          column: 1
+        end:
+          offset: 52064
+          line: 541
+          column: 393
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_51559"
+      source_span:
+        start:
+          offset: 52065
+          line: 542
+          column: 1
+        end:
+          offset: 52470
+          line: 542
+          column: 406
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_causal"
+      identity_kind: "explicit"
+      unit_id: "normative_51559"
+      source_span:
+        start:
+          offset: 52471
+          line: 543
+          column: 1
+        end:
+          offset: 53012
+          line: 543
+          column: 542
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_51559"
+      source_span:
+        start:
+          offset: 53013
+          line: 544
+          column: 1
+        end:
+          offset: 53652
+          line: 544
+          column: 640
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_51559"
+      source_span:
+        start:
+          offset: 53653
+          line: 545
+          column: 1
+        end:
+          offset: 54181
+          line: 545
+          column: 529
+    - pointer: "/validation_rules/0"
+      rule_id: "v_context"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 74133
+          line: 595
+          column: 1
+        end:
+          offset: 74420
+          line: 595
+          column: 288
+    - pointer: "/validation_rules/1"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 74421
+          line: 596
+          column: 1
+        end:
+          offset: 74842
+          line: 596
+          column: 422
+    - pointer: "/validation_rules/2"
+      rule_id: "v_denominator"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 74843
+          line: 597
+          column: 1
+        end:
+          offset: 75204
+          line: 597
+          column: 362
+    - pointer: "/validation_rules/3"
+      rule_id: "v_gates"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 75205
+          line: 598
+          column: 1
+        end:
+          offset: 75599
+          line: 598
+          column: 395
+    - pointer: "/validation_rules/4"
+      rule_id: "v_fates"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 75600
+          line: 599
+          column: 1
+        end:
+          offset: 76011
+          line: 599
+          column: 412
+    - pointer: "/validation_rules/5"
+      rule_id: "v_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 76012
+          line: 600
+          column: 1
+        end:
+          offset: 76399
+          line: 600
+          column: 388
+    - pointer: "/validation_rules/6"
+      rule_id: "v_pending"
+      identity_kind: "explicit"
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 76400
+          line: 601
+          column: 1
+        end:
+          offset: 76941
+          line: 601
+          column: 542
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 7581
+          line: 62
+          column: 1
+        end:
+          offset: 7602
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7581"
+      source_span:
+        start:
+          offset: 7630
+          line: 66
+          column: 1
+        end:
+          offset: 8753
+          line: 73
+          column: 180
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_51559"
+      source_span:
+        start:
+          offset: 51559
+          line: 537
+          column: 1
+        end:
+          offset: 51599
+          line: 537
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_74038"
+      source_span:
+        start:
+          offset: 74038
+          line: 591
+          column: 1
+        end:
+          offset: 74060
+          line: 591
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aa709e95bf72723c256295077affbd22b359ecd7eeaef92accfc483ff8458149"
+  generated_content_sha256: "sha256:f4a380c57691f6b6334188798e5cd03ee93f959ec85b1a67090d8d5c49f16eed"

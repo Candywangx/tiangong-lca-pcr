@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-24
+lastReviewedAt: 2026-11-28
 lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
+lastReviewedCommit: 822b710cf5c463d1eccbe15346ccc05b46b5543d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -274,6 +274,25 @@ PCR document slugs retain semantic domain/subdomain/record identity under
 `docs/pcr/`. Exceptionally long documents may have stable subpages with a complete
 chapter inventory. All normative content remains in the HTML of those pages.
 
+An explicitly reviewed restoration of an existing PCR ID may move a candidate's
+document root. Provider proof version 2 binds a bounded, one-to-one `identityMoves`
+list inside the same source-owned `published-chapters.json` import closure. Each
+move is an exact same-language PCR document-root pair; only its root and immediate
+chapter URLs may target the declared restored root or its immediate chapters.
+Root routes are mandatory. Foreign roots, language changes, duplicate targets,
+chains, cycles and nested arbitrary paths fail qualification. The existing route,
+file-size and full-site budgets are unchanged. Version 1 sealed products retain
+their original same-record chapter contract.
+
+The original-ID review in `docs/reviews/pcr149-original-ids-20261127/` binds the
+139 source methods to their restored identities and preserves 278 bilingual
+document URLs plus all prior chapter aliases and their anchor requirements.
+The exporter and sealer check actual destination HTML, not merely route metadata;
+browser qualification checks query/fragment and navigation behavior. These are
+website compatibility routes, not accepted classification edges or PCR aliases.
+Current raw downloads expose the restored source files; historical draft bytes
+remain reconstructible from the review's pinned Git source and four-file hashes.
+
 Each real document has its own canonical URL. Hreflang lists only verified,
 existing counterparts at the same version. Current complete public candidates
 may be indexed with their status visible. Scaffolds, unavailable translations,
@@ -427,11 +446,11 @@ deadline, cleanup and atomic handoff remain enforced. The export uses two static
 with at most one static page render in flight per worker. Its 4 GB Node heap
 ceiling per process and 6 GB process-tree memory guard remain unchanged; a heap ceiling is not proof of total resident memory.
 
-The hosted web build sets `PCR_SOURCE_VERIFY_WORKERS=2` for verification of
+The hosted web build sets `PCR_SOURCE_VERIFY_WORKERS=4` (supported values `1` through `4`) for verification of
 independent source documents. Each admitted document still undergoes the complete
 Markdown inventory, rendered-block, link, source-marker and ordering checks.
-Two Node child processes inherit the build environment and its per-process heap
-limit. The existing process-tree RSS check includes the parent and both children.
+Worker Node child processes inherit the build environment and apply a bounded per-process heap
+limit (`--max-old-space-size=2048` when more than two workers are selected). The existing process-tree RSS check includes the parent and all active children.
 The verifier waits for all assigned documents and child shutdown before continuing
 with the global export checks. It reports document validation errors in source
 order. An unset value or `1` runs the serial verification path.
@@ -833,6 +852,8 @@ only. Coverage never substitutes for the actual build time/RSS/provider gates.
 Reviewed published continuation URLs remain accessible through exact GET/HEAD middleware rewrites. `middleware.ts` and the source-owned chapter mapping preserve original query strings; an existing fragment remains browser-owned. The complete target body is served under the old URL. JavaScript uses supported native history to normalize to the target and preserve an explicit fragment or select the published first anchor. Without JavaScript, explicit source fragments remain usable; fragment-free requests do not claim automatic chapter scrolling. Unknown routes, other methods and RSC assets retain their existing routing.
 
 `generated/provider-runtime.json` seals the exact middleware/import closure and routes to the product source. Export verification requires real target/default anchors, and the separate published-source anchor ledger requires every retained historical content anchor. Anchor checks use a dependency-free scanner for generated HTML below 25,000,000 UTF-8 bytes and at most 1,000 open elements: only first id attributes in the ordinary document tree count, with emitted character references decoded once. Quoted attribute text, comments, raw-text payloads, inert template content and foreign SVG/MathML descendants cannot supply chapter anchors. Unsupported malformed structure, declarative shadow templates or ambiguous character references fail closed; this scanner does not claim general browser error-recovery compatibility. The product archive and probe bind the proof. Provider import compares the actual regular source bytes before handoff and again before the atomic swap; a missing/substituted runtime fails. Historical immutable artifacts without this profile remain readable. Raw TypeScript export remains prohibited. New root middleware belongs to strict TypeScript and measured coverage inventories.
+
+Provider runtime profile version 3 binds identity restorations and packed navigation in the same source closure. It requires both `identityMoves` and `navigationBinding`, the original middleware files and both navigation runtime files. Readers retain version 1 and each historical version 2 profile. Capability checks use the declared fields, so an identity-only version 2 profile does not require packed navigation. Source verification normalizes only the export-bound navigation receipt, while retaining every identity move.
 
 Provider CLI discovery/compilation and sealed-browser simulation are evidence for their respective scopes. They do not assert live production adoption; deployment and live acceptance still require the existing release authority.
 

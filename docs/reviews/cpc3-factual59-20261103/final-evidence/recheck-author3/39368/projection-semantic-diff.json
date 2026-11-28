@@ -1,0 +1,41 @@
+[
+  {
+    "pointer": "/dataset_production/calculation_rules/3/inputs",
+    "before": [
+      "event-specific material form type direction and measured kg",
+      "same-gate stocks",
+      "history"
+    ],
+    "after": [
+      "event-specific material form type direction and measured kg",
+      "same-gate stocks",
+      "history",
+      "independently measured actual F_in_k/F_out_k and paired cross-ledger IDs"
+    ]
+  },
+  {
+    "pointer": "/dataset_production/calculation_rules/3/rule",
+    "before": "opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k; P is true purchase; N_ext is all first nonpurchase external physical receipts; ER has prior external dispatch; classify events mutually exclusively. Include all empty/raw/WIP/FG/reusable stocks once. Internal issues cancel and original manufacture is charged once independently of receipt classification.",
+    "after": "opening_k + P_k + N_ext_k + ER_k + F_in_k = closing_k + grossS_k + EO_k + W_k + F_out_k; P is true purchase; N_ext is all first nonpurchase external physical receipts; ER has prior external dispatch; classify events mutually exclusively. Include all empty/raw/WIP/FG/reusable stocks once. Internal issues cancel and original manufacture is charged once independently of receipt classification."
+  },
+  {
+    "pointer": "/dataset_production/collection_protocols/10/collection_method",
+    "before": "Weigh and identify every actual component event using its specific receipt or movement interface. Distinguish true purchase from all first nonpurchase external receipts and genuine returns; internally issued quantity is paired and cancels. Close each material at one gate; no guessed item kg.",
+    "after": "Weigh and identify every actual component event using its specific receipt or movement interface. Distinguish true purchase from all first nonpurchase external receipts and genuine returns; internally issued quantity is paired and cancels. Close each material at one gate; no guessed item kg. Collect actual change legs independently without overlap with receipt/outlet classes; preserve whole contaminated W once and its non-additive child accounts."
+  },
+  {
+    "pointer": "/dataset_production/collection_protocols/10/raw_fields",
+    "before": "component identity and material; form and type; exact direction P N_ext ER grossS EO or W; event id; gross tare and measured net kg; ownership; supplier included scope; first external receipt or prior external dispatch id; raw WIP FG reusable opening and closing location; original cohort; per-exchange vector; incremental rental return cleaning",
+    "after": "component identity and material; form and type; exact direction P N_ext ER grossS EO or W; event id; gross tare and measured net kg; ownership; supplier included scope; first external receipt or prior external dispatch id; raw WIP FG reusable opening and closing location; original cohort; per-exchange vector; incremental rental return cleaning; independently measured F_in_k/F_out_k material/water/species/phase leg and paired cross-ledger event IDs"
+  },
+  {
+    "pointer": "/system_boundary/rules/6/rule",
+    "before": "For each concrete component k close opening_k + P_k + N_ext_k + ER_k = closing_k + grossS_k + EO_k + W_k at the same physical gate. Opening/closing includes empty stock, components attached to raw/WIP, attached FG and reusable stock without overlap. P means real purchases only. N_ext means all first external nonpurchase physical receipts including supplier-included packaging and first entrusted, borrowed or leased receipt. ER requires the same identified component to have an earlier external dispatch. These three ingress classes are mutually exclusive; opening stock cannot replace current receipts. Record actual material/form/type/direction and independently measured quantity for every event through its specific atomic receipt card/interface. Missing an actual interface makes that concrete package incomplete; do not just add a symbol or reuse a purchase UUID blindly. Internal issues/reuse cancel. grossS follows gross shipments, never Q or economic allocation. Measured transformation/moisture changes need separately identified physical legs.",
+    "after": "For each concrete component k close opening_k + P_k + N_ext_k + ER_k + F_in_k = closing_k + grossS_k + EO_k + W_k + F_out_k at the same physical gate. Opening/closing includes empty stock, components attached to raw/WIP, attached FG and reusable stock without overlap. P means real purchases only. N_ext means all first external nonpurchase physical receipts including supplier-included packaging and first entrusted, borrowed or leased receipt. ER requires the same identified component to have an earlier external dispatch. These three ingress classes are mutually exclusive; opening stock cannot replace current receipts. Record actual material/form/type/direction and independently measured quantity for every event through its specific atomic receipt card/interface. Missing an actual interface makes that concrete package incomplete; do not just add a symbol or reuse a purchase UUID blindly. Internal issues/reuse cancel. grossS follows gross shipments, never Q or economic allocation. F_in_k/F_out_k are these independently measured and separately identified actual material/water/species or phase-transfer legs crossing this same component gate; exclude quantities already in P_k/N_ext_k/ER_k or grossS_k/EO_k/W_k. Include actual retained contamination or moisture changes without assuming their presence. Pair internal cross-ledger legs and cancel them only at the combined gate. Whole contaminated W_k remains one measured outlet with non-additive component/content partitions and one provider. A genuinely new retained-material input is still an input, not an X deduction; X removes only an exact OTHER duplicate on the same side. No reaction yield, water uptake or loss quantity is defaulted."
+  },
+  {
+    "pointer": "/validation_rules/3/rule",
+    "before": "Recalculate opening + P + N_ext + ER = closing + grossS + EO + W for each concrete material/form/type at one gate. P is purchase only; N_ext includes supplier-included and first entrusted/borrowed/leased receipts; ER requires original external dispatch. Events are disjoint. Opening does not replace current receipts; internal raw/WIP/FG issues/reuse cancel. Require actual specific receipt interface and measured kg for every event; missing interface makes that data package incomplete. Audit ownership/original cohort/inherited vector/provider-included manufacture and incremental rental/return service separately with one burden owner; no zero burden/new Q/credit inference.",
+    "after": "Recalculate opening + P + N_ext + ER + F_in = closing + grossS + EO + W + F_out for each concrete material/form/type at one gate. P is purchase only; N_ext includes supplier-included and first entrusted/borrowed/leased receipts; ER requires original external dispatch. Events are disjoint. Opening does not replace current receipts; internal raw/WIP/FG issues/reuse cancel. Require actual specific receipt interface and measured kg for every event; missing interface makes that data package incomplete. Audit ownership/original cohort/inherited vector/provider-included manufacture and incremental rental/return service separately with one burden owner; no zero burden/new Q/credit inference."
+  }
+]

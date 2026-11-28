@@ -29,8 +29,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: 822b710cf5c463d1eccbe15346ccc05b46b5543d
 lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
@@ -95,6 +95,12 @@ Rules:
   `7d0a48078779e09b3ca6aadf1b0bd619505303a4` and upgrade those records in place. Preserve narrower
   product and process boundaries in methodology and mappings; do not create replacement IDs for them.
   See `docs/adr/2026-11-27-restore-cpc3-original-pcr-identities.md` for the audited identity restoration.
+- The 149 existing methods reviewed for PR #167 reuse their retained original IDs and directories where
+  classification acceptance is supported. The 139 accepted restorations, ten held drafts (eleven codes),
+  source snapshots and item decisions are recorded in
+  `docs/reviews/pcr149-original-ids-20261127/README.md`. Do not recreate the removed candidate IDs or
+  count a held `classification_refs` entry as an accepted mapping. Website URL compatibility is separate
+  from PCR identity and cannot turn a retired candidate URL into another canonical PCR.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.
@@ -360,7 +366,11 @@ Full mode requires all eight fresh source-bound shard receipts, independent
 full-corpus reproducibility and authenticated coverage measurements. A proven
 current-PCR-only data lane retains whole-library contracts, changed-record
 semantic/projection checks and complete fresh sealed-product acceptance; full
-code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+code coverage is explicitly unmeasured. Pull-request-only `docs-only` and
+`pr-code` lanes run fail-closed reduced gates (contracts or contracts plus all
+eight test shards without web/product sealing) when changes stay strictly inside
+non-web, non-release documentation or builder/CLI/viewer/skill/test surfaces;
+unknown/shared/web/release changes, `ci:full`, every `main` push and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.
