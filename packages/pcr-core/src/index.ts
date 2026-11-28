@@ -402,32 +402,108 @@ export function resolveClassification({ root, system, version, code, context = n
   });
 }
 
-export function verifyDistributionCoverage({ root, snapshot, context }: { root: string; snapshot: CoverageSnapshot; context?: PcrReadContext | null | undefined }): void {
+interface ParsedCanonicalMappingSource {
+  readonly mappingFile: MappingDocument;
+  readonly mappingsByCode: Map<string, UnknownRecord[]>;
+  readonly bytes: Buffer;
+}
+
+export function verifyDistributionCoverage({
+  root,
+  snapshot,
+  context,
+  verifiedPcrs,
+}: {
+  root: string;
+  snapshot: CoverageSnapshot;
+  context?: PcrReadContext | null | undefined;
+  verifiedPcrs?: ReadonlyMap<string, PcrRecord> | null | undefined;
+}): void {
   const coverageIndex = snapshot.document;
-  for (const entry of coverageIndex.entries) {
-    if (entry.coverage_status === "mapped" || entry.legacy_reference) {
-      resolveClassificationWithCoverage({ root, system: String(coverageIndex.classification_system).toLowerCase(),
-        version: String(coverageIndex.classification_version), code: String(entry.code), coverageIndex, context });
-    }
+  const system = String(coverageIndex.classification_system).toLowerCase();
+  const version = String(coverageIndex.classification_version);
+  const activeEntries = coverageIndex.entries.filter(
+    (entry) => entry.coverage_status === "mapped" || entry.legacy_reference,
+  );
+  if (activeEntries.length === 0) return;
+  const firstCode = String(activeEntries[0]!.code);
+  const loadedMapping = loadCanonicalClassificationMappingSource({
+    root,
+    system,
+    version,
+    code: firstCode,
+  });
+  for (const entry of activeEntries) {
+    resolveClassificationWithCoverage({
+      root,
+      system,
+      version,
+      code: String(entry.code),
+      coverageIndex,
+      coverageEntry: entry,
+      loadedMapping,
+      verifiedPcrs,
+      context,
+    });
+  }
+  // Confirm the canonical mapping file remained byte-identical across the batch.
+  const currentBytes = readCanonicalClassificationMappingBytes({
+    root,
+    system,
+    version,
+    code: firstCode,
+  });
+  if (!currentBytes.equals(loadedMapping.bytes)) {
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code: firstCode,
+      issue: "canonical mapping source changed during distribution coverage verification",
+    });
   }
 }
 
-function resolveClassificationWithCoverage({ root, system, version, code, coverageIndex, context = null }: ClassificationOptions & { coverageIndex: CoverageDocument }) {
-  const coverage = coverageIndex.entries.find(
+function resolveClassificationWithCoverage({
+  root,
+  system,
+  version,
+  code,
+  coverageIndex,
+  coverageEntry = null,
+  loadedMapping = null,
+  verifiedPcrs = null,
+  context = null,
+}: ClassificationOptions & {
+  coverageIndex: CoverageDocument;
+  coverageEntry?: CoverageEntry | null;
+  loadedMapping?: ParsedCanonicalMappingSource | null;
+  verifiedPcrs?: ReadonlyMap<string, PcrRecord> | null | undefined;
+}) {
+  const coverage = coverageEntry ?? coverageIndex.entries.find(
     (candidate) => String(candidate.code) === String(code),
   );
   if (!coverage) {
     throw new PcrClassificationCodeUnknownError({ system, version, code });
   }
+  const resolveVerifiedPcr = (pcrId: string): PcrRecord => {
+    const cached = verifiedPcrs?.get(pcrId);
+    if (cached) {
+      throwIfLegacyPcrId({ root: requiredRoot(root, context), pcrId, context });
+      return cached;
+    }
+    return getPcrById({ root, pcrId, context });
+  };
   if (coverage.coverage_status === "mapped") {
-    const canonical = readCanonicalClassificationMapping({
-      root,
-      system,
-      version,
-      code,
-    });
+    const canonical = loadedMapping
+      ? selectCanonicalClassificationMapping({ loadedMapping, system, version, code })
+      : readCanonicalClassificationMapping({
+          root,
+          system,
+          version,
+          code,
+        });
     assertCoverageMappingMatchesCanonical({ coverage, canonical, system, version, code });
-    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id, context });
+    const pcr = resolveVerifiedPcr(canonical.mapping.pcr_id);
     if (pcr.record_kind !== "methodology") {
       throw invalidCoverageResolution({
         system,
@@ -448,12 +524,14 @@ function resolveClassificationWithCoverage({ root, system, version, code, covera
   }
 
   if (coverage.legacy_reference) {
-    const canonical = readCanonicalClassificationMapping({
-      root,
-      system,
-      version,
-      code,
-    });
+    const canonical = loadedMapping
+      ? selectCanonicalClassificationMapping({ loadedMapping, system, version, code })
+      : readCanonicalClassificationMapping({
+          root,
+          system,
+          version,
+          code,
+        });
     if (canonical.mapping.pcr_id !== coverage.legacy_reference.pcr_id) {
       throw invalidCoverageResolution({
         system,
@@ -462,7 +540,7 @@ function resolveClassificationWithCoverage({ root, system, version, code, covera
         issue: `legacy reference ${coverage.legacy_reference.pcr_id} does not match canonical mapping ${canonical.mapping.pcr_id}`,
       });
     }
-    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id, context });
+    const pcr = resolveVerifiedPcr(canonical.mapping.pcr_id);
     if (pcr.record_kind !== "legacy_scaffold_reference") {
       throw invalidCoverageResolution({
         system,
@@ -497,7 +575,7 @@ function resolveClassificationWithCoverage({ root, system, version, code, covera
   };
 }
 
-function readCanonicalClassificationMapping({ root, system, version, code }: ClassificationOptions): CanonicalMapping {
+function readCanonicalClassificationMappingBytes({ root, system, version, code }: ClassificationOptions): Buffer {
   const normalizedRoot = path.resolve(root);
   const mappingPath = path.join(
     normalizedRoot,
@@ -505,14 +583,39 @@ function readCanonicalClassificationMapping({ root, system, version, code }: Cla
     `${system}-${version}-to-pcr.yaml`,
   );
   const mappingRelativePath = toPosix(path.relative(normalizedRoot, mappingPath));
-  let rawMapping: unknown;
   try {
-    const mappingBytes = pcrSource(root)?.readFile(mappingRelativePath) ?? readControlledRepositoryFileBytes({
+    return pcrSource(root)?.readFile(mappingRelativePath) ?? readControlledRepositoryFileBytes({
       root: normalizedRoot,
       filePath: mappingPath,
       relativePath: mappingRelativePath,
       label: "classification mapping",
     });
+  } catch (error) {
+    if (error instanceof PcrClassificationMappingError) {
+      throw error;
+    }
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code,
+      issue:
+        `canonical mapping source ${mappingRelativePath} could not be read safely ` +
+        `(${error instanceof Error ? error.message : String(error)})`,
+    });
+  }
+}
+
+function loadCanonicalClassificationMappingSource({ root, system, version, code }: ClassificationOptions): ParsedCanonicalMappingSource {
+  const normalizedRoot = path.resolve(root);
+  const mappingPath = path.join(
+    normalizedRoot,
+    "classifications/mappings",
+    `${system}-${version}-to-pcr.yaml`,
+  );
+  const mappingRelativePath = toPosix(path.relative(normalizedRoot, mappingPath));
+  const mappingBytes = readCanonicalClassificationMappingBytes({ root, system, version, code });
+  let rawMapping: unknown;
+  try {
     rawMapping = parseYaml(new TextDecoder("utf-8", { fatal: true }).decode(mappingBytes));
   } catch (error) {
     if (error instanceof PcrClassificationMappingError) {
@@ -528,9 +631,29 @@ function readCanonicalClassificationMapping({ root, system, version, code }: Cla
     });
   }
   const mappingFile = checkedMappingDocument(rawMapping, { system, version, code });
-  const matches = (mappingFile.mappings ?? []).filter(
-    (entry) => String(entry.code) === String(code),
-  );
+  const mappingsByCode = new Map<string, UnknownRecord[]>();
+  for (const entry of mappingFile.mappings ?? []) {
+    const entryCode = String(entry.code);
+    const bucket = mappingsByCode.get(entryCode);
+    if (bucket) bucket.push(entry);
+    else mappingsByCode.set(entryCode, [entry]);
+  }
+  return { mappingFile, mappingsByCode, bytes: mappingBytes };
+}
+
+function selectCanonicalClassificationMapping({
+  loadedMapping,
+  system,
+  version,
+  code,
+}: {
+  loadedMapping: ParsedCanonicalMappingSource;
+  system: string;
+  version: string;
+  code: string;
+}): CanonicalMapping {
+  const { mappingFile, mappingsByCode } = loadedMapping;
+  const matches = mappingsByCode.get(String(code)) ?? [];
   if (matches.length === 0) {
     throw new Error(`No PCR mapping found for ${system}:${version}:${code}`);
   }
@@ -560,6 +683,11 @@ function readCanonicalClassificationMapping({ root, system, version, code }: Cla
   const acceptance = mapping.acceptance;
   if (!isRecord(acceptance)) throw new PcrClassificationMappingError({ system, version, code, issue: "selected mapping requires acceptance" });
   return { mappingFile, mapping: { ...mapping, pcr_id: mapping.pcr_id, mapping_type: mapping.mapping_type, acceptance } };
+}
+
+function readCanonicalClassificationMapping({ root, system, version, code }: ClassificationOptions): CanonicalMapping {
+  const loadedMapping = loadCanonicalClassificationMappingSource({ root, system, version, code });
+  return selectCanonicalClassificationMapping({ loadedMapping, system, version, code });
 }
 
 function checkedMappingDocument(value: unknown, { system, version, code }: Omit<ClassificationOptions, "root" | "context">): MappingDocument {

@@ -283,3 +283,49 @@ test('complete guidance rejects each missing normative family instead of synthes
     }
   }
 });
+
+test('normative compiler preserves exact spans across bare headings, fences, and conservative fallback markers', () => {
+  const markdown = [
+    '# Method',
+    '',
+    'Retain the method preamble.',
+    '',
+    '##',
+    '',
+    'Untrusted empty heading body.',
+    '',
+    '## Background notes',
+    '',
+    '```md',
+    '## Allocation',
+    '- Fenced fake rule must stay ignored.',
+    '```',
+    '',
+    '~~~text',
+    'Still fenced.',
+    '~~~',
+    '',
+    '## Reference links',
+    '',
+    '[ref]: https://example.com/spec',
+    '',
+    '## Allocation',
+    '',
+    '- Subdivide using [ref].',
+    '',
+    '## Validation rules',
+    '',
+    '- Reject missing evidence.',
+    '',
+  ].join('\n');
+  const projected = compileNormativeProjection(markdown);
+  assert.deepEqual(projected.allocationRules.map(rule => rule.rule), ['Subdivide using [ref].']);
+  assert.deepEqual(projected.validationRules.map(rule => rule.rule), ['Reject missing evidence.']);
+  assert.equal(projected.context.units.length, 2);
+  for (const unit of projected.context.units) {
+    assert.equal(unit.markdown, markdown.slice(unit.span.start.offset, unit.span.end.offset));
+    for (const ancestor of unit.ancestor_context) {
+      assert.equal(ancestor.markdown, markdown.slice(ancestor.span.start.offset, ancestor.span.end.offset));
+    }
+  }
+});

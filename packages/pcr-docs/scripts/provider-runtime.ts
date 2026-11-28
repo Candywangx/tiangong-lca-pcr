@@ -9,7 +9,8 @@ export const PROVIDER_RUNTIME_FILE='generated/provider-runtime.json';
 export const PROVIDER_RUNTIME_PATHS=['middleware.ts','packages/pcr-docs/lib/chapter-compatibility.ts','packages/pcr-docs/compatibility/published-chapters.json'] as const;
 export const PACKED_CHAPTERS_PATH='packages/pcr-docs/compatibility/packed-chapters.json';
 export const NAVIGATION_RUNTIME_PATHS=['packages/pcr-docs/lib/navigation-trees.ts','packages/pcr-docs/lib/navigation-binding.d.ts'] as const;
-export interface ProviderRuntime {schemaVersion:1|2;sourceCommit:string;files:{path:string;bytes:number;sha256:string}[];routes:{from:string;to:string;anchor:string}[];navigationBinding?:{path:string;bytes:number;sha256:string}|null}
+export interface IdentityMove {from:string;to:string}
+export interface ProviderRuntime {schemaVersion:1|2|3;sourceCommit:string;files:{path:string;bytes:number;sha256:string}[];routes:{from:string;to:string;anchor:string}[];identityMoves?:IdentityMove[];navigationBinding?:{path:string;bytes:number;sha256:string}|null}
 function record(value:unknown):Record<string,unknown>{assert(value&&typeof value==='object'&&!Array.isArray(value),'Invalid provider runtime object');return value as Record<string,unknown>;}
 function exact(value:Record<string,unknown>,keys:string[]){assert.deepEqual(Object.keys(value).sort(),keys.sort(),'Invalid provider runtime fields');}
 const hash=(bytes:Buffer)=>'sha256:'+createHash('sha256').update(bytes).digest('hex');
@@ -18,27 +19,50 @@ function regular(root:string,relative:string,limit=Number.MAX_SAFE_INTEGER):Buff
  const before=fs.lstatSync(file);assert(before.isFile()&&!before.isSymbolicLink()&&before.size<=limit,'Provider runtime must be a bounded regular file');
  const fd=fs.openSync(file,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW??0));try{const bytes=fs.readFileSync(fd),after=fs.fstatSync(fd);assert.equal(after.ino,before.ino);assert.equal(after.dev,before.dev);assert.equal(after.size,before.size);assert.equal(after.mtimeMs,before.mtimeMs);return bytes;}finally{fs.closeSync(fd);}
 }
-function routeRows(value:unknown):ProviderRuntime['routes']{
+function identityMoveRows(value:unknown):IdentityMove[]{
+ assert(Array.isArray(value)&&value.length>0&&value.length<=400,'Invalid identity move count');
+ const rows=value.map(raw=>{const row=record(raw);exact(row,['from','to']);
+  assert(typeof row.from==='string'&&typeof row.to==='string'&&row.from!==row.to,'Invalid identity move');
+  for(const url of [row.from,row.to])assert(/^\/(?:en|zh)\/docs\/pcr\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+\/$/u.test(url),'Invalid identity document root');
+  assert.equal(row.from.split('/')[1],row.to.split('/')[1],'Identity move changes language');
+  return{from:row.from,to:row.to};});
+ const from=new Set(rows.map(row=>row.from)),to=new Set(rows.map(row=>row.to));
+ assert.equal(from.size,rows.length);assert.equal(to.size,rows.length);assert(rows.every(row=>!from.has(row.to)),'Identity moves cannot chain or cycle');
+ assert.deepEqual(rows.map(row=>row.from),rows.map(row=>row.from).sort());return rows;
+}
+function routeRows(value:unknown,moves:IdentityMove[]=[]):ProviderRuntime['routes']{
  assert(Array.isArray(value)&&value.length>0&&value.length<2000,'Invalid compatibility route count');
  const rows=value.map(raw=>{const row=record(raw);exact(row,['from','to','anchor']);assert(typeof row.from==='string'&&typeof row.to==='string'&&typeof row.anchor==='string');
   for(const url of [row.from,row.to]){assert(/^\/(?:en|zh)\/docs\/pcr\//u.test(url)&&url.endsWith('/')&&!/[?#\\\u0000-\u001f]/u.test(url));const parsed=new URL(url,'https://pcr.tiangong.earth');assert.equal(parsed.pathname,url);const decoded=decodeURIComponent(url);assert(!/%(?:2f|5c)/iu.test(url)&&!decoded.split('/').some(segment=>segment==='.'||segment==='..'));}
-  const owner=row.from.split('/chapters/');assert.equal(owner.length,2);assert(owner[1]&&owner[1].split('/').length===2);assert(row.to===owner[0]+'/'||row.to.startsWith(owner[0]+'/chapters/'));assert(row.anchor.length>0&&row.anchor.length<2000&&!/[\u0000-\u001f]/u.test(row.anchor));return{from:row.from,to:row.to,anchor:row.anchor};});
+  const owner=row.from.split('/chapters/');assert(owner.length===1||owner.length===2);if(owner.length===2)assert(owner[1]&&owner[1].split('/').length===2);
+  const sourceRoot=owner.length===1?row.from:owner[0]+'/';const move=moves.find(item=>item.from===sourceRoot);
+  if(owner.length===1)assert(move,'Document-root alias requires an explicit identity move');
+  const targetRoot=move?.to??sourceRoot;assert(row.to===targetRoot||row.to.startsWith(targetRoot+'chapters/')&&row.to.slice((targetRoot+'chapters/').length).split('/').length===2,'Route leaves its declared identity boundary');
+  assert(row.anchor.length>0&&row.anchor.length<2000&&!/[\u0000-\u001f]/u.test(row.anchor));return{from:row.from,to:row.to,anchor:row.anchor};});
  const sources=new Set(rows.map(row=>row.from));assert.equal(sources.size,rows.length);assert(rows.every(row=>!sources.has(row.to)),'Compatibility routes cannot cycle');assert.deepEqual(rows.map(row=>row.from),rows.map(row=>row.from).sort());return rows;
 }
 export function parseProviderRuntime(value:unknown,sourceCommit:string):ProviderRuntime{
- assert(/^[a-f0-9]{40}$/u.test(sourceCommit));const proof=record(value);assert(proof.schemaVersion===1||proof.schemaVersion===2);exact(proof,['schemaVersion','sourceCommit','files','routes',...(proof.schemaVersion===2?['navigationBinding']:[])]);assert.equal(proof.sourceCommit,sourceCommit);assert(Array.isArray(proof.files));const extra=proof.schemaVersion===2?NAVIGATION_RUNTIME_PATHS.length:0;assert(proof.files.length===PROVIDER_RUNTIME_PATHS.length+extra||proof.files.length===PROVIDER_RUNTIME_PATHS.length+extra+1);
- const expectedPaths:readonly string[]=[...PROVIDER_RUNTIME_PATHS,...(proof.files.length===PROVIDER_RUNTIME_PATHS.length+extra+1?[PACKED_CHAPTERS_PATH]:[]),...(proof.schemaVersion===2?NAVIGATION_RUNTIME_PATHS:[])];
+ assert(/^[a-f0-9]{40}$/u.test(sourceCommit));const proof=record(value);assert(proof.schemaVersion===1||proof.schemaVersion===2||proof.schemaVersion===3);
+ const navigation=Object.hasOwn(proof,'navigationBinding'),identity=Object.hasOwn(proof,'identityMoves');
+ assert(proof.schemaVersion===1?!navigation&&!identity:proof.schemaVersion===2?navigation!==identity:navigation&&identity,'Invalid provider runtime capability version');
+ exact(proof,['schemaVersion','sourceCommit','files','routes',...(navigation?['navigationBinding']:[]),...(identity?['identityMoves']:[])]);assert.equal(proof.sourceCommit,sourceCommit);assert(Array.isArray(proof.files));
+ const baseLength=PROVIDER_RUNTIME_PATHS.length+(navigation?NAVIGATION_RUNTIME_PATHS.length:0);assert(proof.files.length===baseLength||proof.files.length===baseLength+1);
+ const expectedPaths:readonly string[]=[...PROVIDER_RUNTIME_PATHS,...(proof.files.length===baseLength+1?[PACKED_CHAPTERS_PATH]:[]),...(navigation?NAVIGATION_RUNTIME_PATHS:[])];
  const files=proof.files.map((raw,index)=>{const file=record(raw);exact(file,['path','bytes','sha256']);assert.equal(file.path,expectedPaths[index]);assert(typeof file.bytes==='number'&&Number.isSafeInteger(file.bytes)&&file.bytes>0&&file.bytes<1_000_000);assert(typeof file.sha256==='string'&&/^sha256:[a-f0-9]{64}$/u.test(file.sha256));return{path:expectedPaths[index]!,bytes:file.bytes,sha256:file.sha256};});
- let navigationBinding:ProviderRuntime['navigationBinding'];if(proof.schemaVersion===2){if(proof.navigationBinding===null)navigationBinding=null;else{const binding=record(proof.navigationBinding);exact(binding,['path','bytes','sha256']);assert.equal(binding.path,NAVIGATION_BINDING_FILE);assert(typeof binding.bytes==='number'&&Number.isSafeInteger(binding.bytes)&&binding.bytes>0&&binding.bytes<=4096&&typeof binding.sha256==='string'&&/^sha256:[a-f0-9]{64}$/.test(binding.sha256));navigationBinding={path:NAVIGATION_BINDING_FILE,bytes:binding.bytes,sha256:binding.sha256};}}
- return{schemaVersion:proof.schemaVersion,sourceCommit,files,routes:routeRows(proof.routes),...(proof.schemaVersion===2?{navigationBinding:navigationBinding??null}:{})};
+ let navigationBinding:ProviderRuntime['navigationBinding'];if(navigation){if(proof.navigationBinding===null)navigationBinding=null;else{const binding=record(proof.navigationBinding);exact(binding,['path','bytes','sha256']);assert.equal(binding.path,NAVIGATION_BINDING_FILE);assert(typeof binding.bytes==='number'&&Number.isSafeInteger(binding.bytes)&&binding.bytes>0&&binding.bytes<=4096&&typeof binding.sha256==='string'&&/^sha256:[a-f0-9]{64}$/.test(binding.sha256));navigationBinding={path:NAVIGATION_BINDING_FILE,bytes:binding.bytes,sha256:binding.sha256};}}
+ const moves=identity?identityMoveRows(proof.identityMoves):undefined,routes=routeRows(proof.routes,moves);
+ if(moves)for(const move of moves)assert(routes.some(row=>row.from===move.from&&row.to===move.to),'Identity move lacks its exact root route');
+ return{schemaVersion:proof.schemaVersion,sourceCommit,files,routes,...(navigation?{navigationBinding:navigationBinding??null}:{}),...(moves?{identityMoves:moves}:{})};
 }
 export function createProviderRuntime(root:string,sourceCommit:string):ProviderRuntime|undefined{
  const present=PROVIDER_RUNTIME_PATHS.map(file=>fs.existsSync(path.join(root,file)));if(!present.some(Boolean))return undefined;assert(present.every(Boolean),'Incomplete provider runtime closure');
- const navigation=NAVIGATION_RUNTIME_PATHS.map(file=>fs.existsSync(path.join(root,file)));assert(navigation.every(Boolean)||navigation.every(present=>!present),'Incomplete navigation runtime closure');
- const sourcePaths:readonly string[]=[...PROVIDER_RUNTIME_PATHS,...(fs.existsSync(path.join(root,PACKED_CHAPTERS_PATH))?[PACKED_CHAPTERS_PATH]:[]),...(navigation.every(Boolean)?NAVIGATION_RUNTIME_PATHS:[])];
+ const navigation=NAVIGATION_RUNTIME_PATHS.map(file=>fs.existsSync(path.join(root,file)));assert(navigation.every(Boolean)||navigation.every(present=>!present),'Incomplete navigation runtime closure');const hasNavigation=navigation.every(Boolean);
+ const sourcePaths:readonly string[]=[...PROVIDER_RUNTIME_PATHS,...(fs.existsSync(path.join(root,PACKED_CHAPTERS_PATH))?[PACKED_CHAPTERS_PATH]:[]),...(hasNavigation?NAVIGATION_RUNTIME_PATHS:[])];
  const files=sourcePaths.map(file=>{const bytes=regular(root,file);return{path:file,bytes:bytes.length,sha256:hash(bytes)};});
- const mapping=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);exact(mapping,['schemaVersion','entries']);assert.equal(mapping.schemaVersion,1);
- const routes=[...routeRows(mapping.entries)];
+ const mapping=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);assert(mapping.schemaVersion===1||mapping.schemaVersion===2);exact(mapping,mapping.schemaVersion===1?['schemaVersion','entries']:['schemaVersion','entries','identityMoves']);
+ const hasIdentity=mapping.schemaVersion===2;
+ const moves=hasIdentity?identityMoveRows(mapping.identityMoves):[];
+ const routes=[...routeRows(mapping.entries,moves)];
  if(sourcePaths.includes(PACKED_CHAPTERS_PATH)){
   const packed=record(JSON.parse(regular(root,PACKED_CHAPTERS_PATH).toString('utf8')) as unknown);
   exact(packed,['schemaVersion','baselineCommit','documents']);assert.equal(packed.schemaVersion,1);assert(typeof packed.baselineCommit==='string'&&/^[a-f0-9]{40}$/u.test(packed.baselineCommit)&&Array.isArray(packed.documents));
@@ -46,17 +70,17 @@ export function createProviderRuntime(root:string,sourceCommit:string):ProviderR
   for(const raw of packed.documents){const document=record(raw);exact(document,['sourcePath','sourceSha256','entries']);
    assert(typeof document.sourcePath==='string'&&/^library\/pcrs\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+\/pcr\.(?:en-US|zh-CN)\.md$/u.test(document.sourcePath)&&!sources.has(document.sourcePath));sources.add(document.sourcePath);
    assert.equal(hash(regular(root,document.sourcePath)),document.sourceSha256,'Packed chapter source changed; review retained routes before regeneration');
-   routes.push(...routeRows(document.entries));
+   routes.push(...routeRows(document.entries,moves));
   }
  }
  routes.sort((a,b)=>a.from<b.from?-1:a.from>b.from?1:0);
- return parseProviderRuntime({schemaVersion:navigation.every(Boolean)?2:1,sourceCommit,files,routes,...(navigation.every(Boolean)?{navigationBinding:null}:{})},sourceCommit);
+ return parseProviderRuntime({schemaVersion:hasNavigation&&hasIdentity?3:hasNavigation||hasIdentity?2:1,sourceCommit,files,routes,...(hasNavigation?{navigationBinding:null}:{}),...(hasIdentity?{identityMoves:mapping.identityMoves}:{})},sourceCommit);
 }
-export function verifyProviderRuntimeSource(root:string,proof:ProviderRuntime|undefined,sourceCommit:string):void{assert.deepEqual(createProviderRuntime(root,sourceCommit),proof?.schemaVersion===2?{...proof,navigationBinding:null}:proof,'Provider runtime differs from sealed source proof');}
+export function verifyProviderRuntimeSource(root:string,proof:ProviderRuntime|undefined,sourceCommit:string):void{assert.deepEqual(createProviderRuntime(root,sourceCommit),proof&&Object.hasOwn(proof,'navigationBinding')?{...proof,navigationBinding:null}:proof,'Provider runtime differs from sealed source proof');}
 export function verifyProviderRuntimeExport(out:string,sourceCommit:string,expected?:ProviderRuntime):ProviderRuntime|undefined{
  const file=path.join(out,PROVIDER_RUNTIME_FILE);if(!fs.existsSync(file)){assert.equal(expected,undefined,'Missing provider runtime proof');return undefined;}
- const proof=parseProviderRuntime(JSON.parse(regular(out,PROVIDER_RUNTIME_FILE).toString('utf8')) as unknown,sourceCommit);if(expected)assert.deepEqual(proof.schemaVersion===2?{...proof,navigationBinding:null}:proof,expected.schemaVersion===2?{...expected,navigationBinding:null}:expected,'Export provider runtime differs from source');
- if(proof.schemaVersion===2){assert(proof.navigationBinding,'Unbound navigation runtime');const binding=regular(out,NAVIGATION_BINDING_FILE,4096);assert.equal(binding.length,proof.navigationBinding.bytes);assert.equal(hash(binding),proof.navigationBinding.sha256);verifyNavigationTrees(out,sourceCommit,true);}
+ const proof=parseProviderRuntime(JSON.parse(regular(out,PROVIDER_RUNTIME_FILE).toString('utf8')) as unknown,sourceCommit);if(expected)assert.deepEqual(Object.hasOwn(proof,'navigationBinding')?{...proof,navigationBinding:null}:proof,Object.hasOwn(expected,'navigationBinding')?{...expected,navigationBinding:null}:expected,'Export provider runtime differs from source');
+ if(Object.hasOwn(proof,'navigationBinding')){assert(proof.navigationBinding,'Unbound navigation runtime');const binding=regular(out,NAVIGATION_BINDING_FILE,4096);assert.equal(binding.length,proof.navigationBinding.bytes);assert.equal(hash(binding),proof.navigationBinding.sha256);verifyNavigationTrees(out,sourceCommit,true);}
  const targets=new Map<string,Set<string>>();
  for(const route of proof.routes){assert(!fs.existsSync(path.join(out,decodeURIComponent(route.from.slice(1)),'index.html')),'Old compatibility URL must not shadow a current page');let anchors=targets.get(route.to);if(!anchors){const html=regular(out,decodeURIComponent(route.to.slice(1))+'index.html');anchors=htmlAnchors(html.toString('utf8'));targets.set(route.to,anchors);}assert(anchors.has(route.anchor),'Published default chapter anchor missing: '+route.from);}
  return proof;
@@ -160,7 +184,7 @@ export function htmlAnchors(html:string):Set<string>{
 }
 export function verifyProviderRuntimeInventory(value:unknown,sourceCommit:string,files:readonly {path:string;bytes:number;sha256?:string}[]):ProviderRuntime{
  const proof=parseProviderRuntime(value,sourceCommit),paths=new Set(files.map(file=>file.path));
- if(proof.schemaVersion===2){assert(proof.navigationBinding,'Unbound archived navigation runtime');const file=files.find(file=>file.path===NAVIGATION_BINDING_FILE);assert(file&&file.bytes===proof.navigationBinding.bytes&&'sha256:'+file.sha256?.replace(/^sha256:/,'')===proof.navigationBinding.sha256,'Archived navigation binding differs');}
+ if(Object.hasOwn(proof,'navigationBinding')){assert(proof.navigationBinding,'Unbound archived navigation runtime');const file=files.find(file=>file.path===NAVIGATION_BINDING_FILE);assert(file&&file.bytes===proof.navigationBinding.bytes&&'sha256:'+file.sha256?.replace(/^sha256:/,'')===proof.navigationBinding.sha256,'Archived navigation binding differs');}
  for(const row of proof.routes){assert(paths.has(decodeURIComponent(row.to.slice(1))+'index.html'),'Missing archived compatibility target');assert(!paths.has(decodeURIComponent(row.from.slice(1))+'index.html'),'Archived old route shadows current page');}
  return proof;
 }
@@ -168,7 +192,7 @@ export function verifyProviderRuntimeInventory(value:unknown,sourceCommit:string
 /** The published anchor ledger is source evidence, not runtime routing data. */
 export function verifyPublishedChapterAnchors(root:string,out:string,proof:ProviderRuntime|undefined):void {
  if(!proof)return;
- const raw=record(JSON.parse(regular(root,'packages/pcr-docs/compatibility/published-chapter-anchors.json').toString('utf8')) as unknown);exact(raw,['schemaVersion','baseline','requirements']);assert.equal(raw.schemaVersion,1);assert(typeof raw.baseline==='string'&&Array.isArray(raw.requirements));const published=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);const publishedRoutes=routeRows(published.entries);assert.equal(raw.requirements.length,publishedRoutes.length);const publishedSources=new Set(publishedRoutes.map(row=>row.from));
+ const raw=record(JSON.parse(regular(root,'packages/pcr-docs/compatibility/published-chapter-anchors.json').toString('utf8')) as unknown);exact(raw,['schemaVersion','baseline','requirements']);assert.equal(raw.schemaVersion,1);assert(typeof raw.baseline==='string'&&Array.isArray(raw.requirements));const published=record(JSON.parse(regular(root,PROVIDER_RUNTIME_PATHS[2]).toString('utf8')) as unknown);const publishedRoutes=routeRows(published.entries,published.schemaVersion===2?identityMoveRows(published.identityMoves):[]);assert.equal(raw.requirements.length,publishedRoutes.length);const publishedSources=new Set(publishedRoutes.map(row=>row.from));
  const routes=new Map(proof.routes.map(row=>[row.from,row])),seen=new Set<string>(),targets=new Map<string,Set<string>>();
  for(const item of raw.requirements){const row=record(item);exact(row,['from','anchors']);assert(typeof row.from==='string'&&publishedSources.has(row.from)&&!seen.has(row.from)&&Array.isArray(row.anchors)&&row.anchors.length>0);seen.add(row.from);const route=routes.get(row.from);assert(route,'Published anchor route lacks compatibility');let anchors=targets.get(route.to);if(!anchors){anchors=htmlAnchors(regular(out,decodeURIComponent(route.to.slice(1))+'index.html').toString('utf8'));targets.set(route.to,anchors);}for(const anchor of row.anchors)assert(typeof anchor==='string'&&anchors.has(anchor),'Published chapter anchor missing: '+row.from+'#'+String(anchor));}
  if(fs.existsSync(path.join(root,PACKED_CHAPTERS_PATH))){

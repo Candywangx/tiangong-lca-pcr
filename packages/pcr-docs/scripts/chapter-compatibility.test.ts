@@ -1,6 +1,7 @@
 import { middleware } from '../../../middleware.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import published from '../compatibility/published-chapters.json' with {type:'json'};
 import fs from 'node:fs';
 import path from 'node:path';
 import { CHAPTER_ALIASES, PUBLISHED_CHAPTER_ALIASES, readingTarget, aliasesForTarget, compatibilityDestination, rewriteChapterRequest } from '../lib/chapter-compatibility.ts';
@@ -11,7 +12,7 @@ import {providerRuntimeSourceRoot,createProviderRuntime} from './provider-runtim
 import {readPcrCatalogPage} from '../../pcr-core/src/index.ts';
 
 test('published chapter routes restore exact query and fragment in both languages', () => {
-  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,342);assert.equal(CHAPTER_ALIASES.length,541);
+  assert.equal(PUBLISHED_CHAPTER_ALIASES.length,648);assert.equal(CHAPTER_ALIASES.length,847);
   for (const language of ['en','zh']) {
     const entry=CHAPTER_ALIASES.find(row=>row.from.startsWith('/'+language+'/'))!;
     const query='?q=%E7%AB%A0%E8%8A%82&q=a+b&raw=%2f&empty=';
@@ -32,8 +33,9 @@ test('only exact old document paths can rewrite, without source mutation or open
   for(const pathname of ['/','/en/','/unknown/','/generated/raw/a','/_next/static/a.js',entry.from+'index.txt',entry.from+'__next._full.txt',entry.from.replace('/chapters/','/%2fchapters/'),entry.to])
     assert.equal(rewriteChapterRequest(new Request('https://example.org'+pathname)),undefined);
   assert.equal(compatibilityDestination('https://example.org'+entry.from,[]),undefined);
-  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,541);
-  for(const row of CHAPTER_ALIASES){assert.ok(row.to.startsWith(row.from.split('/chapters/')[0]!+'/'));assert.ok(row.anchor);assert.ok(!CHAPTER_ALIASES.some(other=>other.from===row.to));}
+  assert.equal(new Set(CHAPTER_ALIASES.map(row=>row.from)).size,847);
+  assert.equal(published.identityMoves.length,306);
+  for(const row of CHAPTER_ALIASES){const move=published.identityMoves.find(item=>row.from===item.from||row.from.startsWith(item.from+'chapters/'));assert.ok(row.to.startsWith(move?.to??row.from.split('/chapters/')[0]!+'/'));assert.ok(row.anchor);assert.ok(!CHAPTER_ALIASES.some(other=>other.from===row.to));}
 });
 
 test('actual EdgeOne entry point delegates exact aliases and leaves other requests untouched', async()=>{

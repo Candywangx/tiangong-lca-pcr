@@ -1,14 +1,19 @@
 /** Presentation labels only; canonical PCR identities and source text remain unchanged. */
 const zh: Readonly<Record<string,string>> = {
-  "rental-services-of-transport-vehicles-with-operators": "带操作人员的运输工具租赁服务",
+  "construction-services": "施工服务",
+  "electricity-gas-and-water-distribution-on-own-account": "电力、燃气和水的自营分配服务",
+  "postal-and-courier-services": "邮政和快递服务",
+  "supporting-transport-services": "运输支持服务",
+
   "distributive-trade-services-accommodation-food-and-beverage-serving-ser-18ff339a": "批发零售、住宿餐饮、运输及公用事业配送服务",
   "wholesale-trade-services-not-on-a-fee-or-contract-basis": "非按收费或合同提供的批发贸易服务",
   "accommodation-food-and-beverage-services": "住宿和餐饮服务",
   "passenger-transport-services": "旅客运输服务",
   "freight-transport-services": "货物运输服务",
-  "chemicals": "化学品",
-  "pharmaceutical-ingredients": "药用成分",
+  "rental-services-of-transport-vehicles-with-operators": "带操作人员的运输工具租赁服务",
   "rubber-and-plastics-products": "橡胶和塑料制品",
+  "pharmaceutical-ingredients": "药用成分",
+  "chemicals": "化学品",
   "agriculture-forestry-and-fishery-products": "农业、林业和渔业产品",
   "audio-original-assets": "录音原作资产",
   "basic-chemicals": "基础化学品",
@@ -20,7 +25,6 @@ const zh: Readonly<Record<string,string>> = {
   "coal-and-peat": "煤和泥炭",
   "community-social-and-personal-services": "社区、社会和个人服务",
   constructions: "建筑物和工程结构",
-  "construction-services": "施工服务",
   "constructions-and-construction-services": "建筑工程和施工服务",
   "creative-original-assets": "创作原作资产",
   "crude-petroleum-and-natural-gas": "原油和天然气",
@@ -39,7 +43,6 @@ const zh: Readonly<Record<string,string>> = {
     "焦炉产品、精炼石油产品和核燃料",
   "dairy-products-and-egg-products": "乳制品和蛋制品",
   "electrical-machinery-and-apparatus": "电气机械和设备",
-  "electricity-gas-and-water-distribution-on-own-account": "电力、燃气和水的自营分配服务",
   "electricity-town-gas-steam-and-hot-water": "电力、城市燃气、蒸汽和热水",
   "fabricated-metal-products-except-machinery-and-equipment":
     "金属制品（机械设备除外）",
@@ -64,7 +67,6 @@ const zh: Readonly<Record<string,string>> = {
   "metal-products-machinery-and-equipment": "金属产品、机械和设备",
   "office-accounting-and-computing-machinery": "办公、会计和计算设备",
   "ores-and-minerals-electricity-gas-and-water": "矿石、矿物、电力、燃气和水",
-  "postal-and-courier-services": "邮政和快递服务",
   "other-chemical-products-man-made-fibres": "其他化学品和人造纤维",
   "other-transportable-goods-except-metal-products-machinery-and-equipment":
     "其他可运输货物（金属产品和机械设备除外）",
@@ -72,13 +74,15 @@ const zh: Readonly<Record<string,string>> = {
     "农业、园艺和商品蔬菜种植产品",
   "products-of-wood-cork-straw-and-plaiting-materials":
     "木材、软木、秸秆和编织材料制品",
+  "professional-technical-and-business-services-except-research-developmen-146375cf":
+    "专业、技术和商务服务（研发、法律和会计服务除外）",
   "pulp-paper-and-paper-products-printed-matter-and-related-articles":
     "纸浆、纸及纸制品、印刷品和相关产品",
   "radio-television-and-communication-equipment-and-apparatus":
     "广播、电视和通信设备",
   "research-and-development-services": "研发服务",
+  "recreational-cultural-and-sporting-services": "娱乐、文化和体育服务",
   "special-purpose-machinery": "专用机械",
-  "supporting-transport-services": "运输支持服务",
   "telecommunications-broadcasting-and-information-supply-services":
     "电信、广播和信息提供服务",
   "textile-articles-other-than-apparel": "服装以外的纺织制品",
@@ -86,8 +90,13 @@ const zh: Readonly<Record<string,string>> = {
   "wastes-or-scraps": "废物或废料",
   "yarn-and-thread-woven-and-tufted-textile-fabrics": "纱线、机织和簇绒织物",
 };
+const en: Readonly<Record<string,string>> = {
+  "professional-technical-and-business-services-except-research-developmen-146375cf":
+    "Professional, technical and business services (except research, development, legal and accounting services)",
+};
 export function categoryTitle(slug: string, language: string) {
   if (language === "zh-CN" && zh[slug]) return zh[slug]!;
+  if (language === "en-US" && en[slug]) return en[slug]!;
   return slug
     .split("-")
     .map((word) => word[0]?.toUpperCase() + word.slice(1))

@@ -221,8 +221,8 @@ export function createWebProbes({ webDir, includeHomes = true, requireAliases }:
       manifest: describe("/" + STATIC_ROUTE_ALIASES_FILE, STATIC_ROUTE_ALIASES_FILE), pairs }, identity);
   }
   const providerRuntime = verifyProviderRuntimeExport(webDir, identity.sourceCommit);
-  const navigation=verifyNavigationTrees(webDir,identity.sourceCommit,providerRuntime?.schemaVersion===2);
-  if(navigation&&providerRuntime?.schemaVersion!==2)fail('PCR_WEB_NAVIGATION_RUNTIME','Packed navigation requires its sealed source-owned runtime.');
+  const navigation=verifyNavigationTrees(webDir,identity.sourceCommit,providerRuntime!==undefined&&Object.hasOwn(providerRuntime,'navigationBinding'));
+  if(navigation&&(providerRuntime===undefined||!Object.hasOwn(providerRuntime,'navigationBinding')))fail('PCR_WEB_NAVIGATION_RUNTIME','Packed navigation requires its sealed source-owned runtime.');
   return { identity: identityFields(identity), counts,
     ...(navigation?{navigation:navigationWebProof(navigation)}:{}),
     ...(providerRuntime ? {providerRuntime: describe("/" + PROVIDER_RUNTIME_FILE, PROVIDER_RUNTIME_FILE)} : {}),

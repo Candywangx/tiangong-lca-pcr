@@ -66,7 +66,7 @@ test('always-present aggregate requires the entire declared graph and trusted wo
 });
 test('full-lane tests are complete, isolated, receipt-bound and include uninstrumented corpus',()=>{
  assert.deepEqual(object(object(job('test-shards').strategy).matrix).shard,SHARD_NAMES);
- assert.equal(job('test-shards').if,"needs.plan.outputs.mode == 'full'");
+ assert.equal(job('test-shards').if,"needs.plan.outputs.mode == 'full' || needs.plan.outputs.mode == 'pr-code'");
  const command=text(step('test-shards','Execute exactly the frozen shard').run);
  assert.match(command,/if \[ "\$SHARD" = corpus \]/u);assert.match(command,/--qualification-plan .* --selection "\$SHARD" -- node/u);
  const docs=text(step('web-build','Build and verify the full static library').run);

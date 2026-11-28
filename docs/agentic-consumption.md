@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
-lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: a292457a5d5e91943da74122293ed4b958c0331f
+lastReviewedNote: "PCR #201 reviewed the coordinated 0.4.13 version and its three package mirrors for the combined methodology library, immutable release workflow and production website."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

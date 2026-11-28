@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
-lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: a292457a5d5e91943da74122293ed4b958c0331f
+lastReviewedNote: "PCR #201 reviewed the coordinated 0.4.13 version and its three package mirrors for the combined methodology library, immutable release workflow and production website."
 ---
 
 # TianGong LCA PCR Library
@@ -123,10 +123,8 @@ the complete coverage targets from fresh report paths.
 CI retains the stable `validate` aggregate check and separates full source tests
 into eight complete, source-bound shards. Full-corpus reproducibility remains a
 mandatory separate gate; `npm run test:offline:portable` runs compact real offline
-contracts on supported platforms. Proven current-PCR-only changes can select a
-reduced data lane with full global contracts and complete fresh sealed-product
-acceptance; its full code coverage is explicitly unmeasured. Every reusable
-release qualification selects full mode, even with an empty product tag. See
+contracts on supported platforms. Proven current-PCR-only changes can select a reduced `data` lane with full global contracts and complete fresh sealed-product
+acceptance; its full code coverage is explicitly unmeasured. Pull requests touching only governance/documentation files can select the fail-closed `docs-only` lane, and code-only PRs outside documentation-site/core/release/workflow boundaries can select the `pr-code` lane (`full` tests and coverage without rebuilding the full static site); pushes to `main`, `ci:full`-labeled PRs, and every reusable release qualification always select `full` mode, even with an empty product tag. See
 [CI qualification lanes](docs/typescript-engineering.md#ci-qualification-lanes)
 for allowed changes, evidence binding and complete-attempt retry requirements.
 The required `web-build` and `documentation` jobs separate the complete instrumented

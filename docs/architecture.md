@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
-lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: a292457a5d5e91943da74122293ed4b958c0331f
+lastReviewedNote: "PCR #201 reviewed the coordinated 0.4.13 version and its three package mirrors for the combined methodology library, immutable release workflow and production website."
 ---
 
 # PCR 资料库架构
@@ -41,6 +41,9 @@ lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native 
 
 PR #31 的 60 份 CPC 61 方法学在原有 scaffold 的 PCR id 和目录内升级，保留各自的范围、
 参考流及映射关系。范围与身份对照见 [CPC 61 原 ID 升级记录](cpc61-original-identity-restoration.md)。
+
+本批 60 份 CPC 61 方法学在原有 scaffold 的 PCR id 和目录内升级，保留各自的范围、
+参考流及映射关系。
 
 ## 项目定位
 

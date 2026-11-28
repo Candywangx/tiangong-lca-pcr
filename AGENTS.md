@@ -29,9 +29,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
-lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: a292457a5d5e91943da74122293ed4b958c0331f
+lastReviewedNote: "PCR #201 reviewed the coordinated 0.4.13 version and its three package mirrors for the combined methodology library, immutable release workflow and production website."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -99,6 +99,16 @@ Rules:
 - The 60 CPC 61 methods in PR #31 upgrade their original scaffold ids and semantic directories from the
   CPC 3.0 leaf-slug inventory. Keep each method's specific scope, reference flow and accepted mapping relation;
   do not recreate replacement ids for this batch. See `docs/cpc61-original-identity-restoration.md`.
+- The frozen 115 CPC section 3 methods retain the original IDs and directories from baseline
+  `7d0a48078779e09b3ca6aadf1b0bd619505303a4` and upgrade those records in place. Preserve narrower
+  product and process boundaries in methodology and mappings; do not create replacement IDs for them.
+  See `docs/adr/2026-11-27-restore-cpc3-original-pcr-identities.md` for the audited identity restoration.
+- The 149 existing methods reviewed for PR #167 reuse their retained original IDs and directories where
+  classification acceptance is supported. The 139 accepted restorations, ten held drafts (eleven codes),
+  source snapshots and item decisions are recorded in
+  `docs/reviews/pcr149-original-ids-20261127/README.md`. Do not recreate the removed candidate IDs or
+  count a held `classification_refs` entry as an accepted mapping. Website URL compatibility is separate
+  from PCR identity and cannot turn a retired candidate URL into another canonical PCR.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.
@@ -305,8 +315,10 @@ Published chapter aliases use the exact source-owned root `middleware.ts` profil
 `generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
 anchors and the importer rechecks actual source bytes before atomic handoff. Provider profile 2
 adds bounded, content-addressed Next tree packs and a verified compilation binding; the source-owned
-handler restores original navigation URLs and bytes. Other navigation files and all source downloads
-retain their physical contracts. Native history normalization
+handler restores original navigation URLs and bytes. When the physical file budget requires it, the
+[bounded page-prefetch exception](docs/pcr-documentation-site-contract.md) also permits packing up to
+600 eligible `__PAGE__.txt` responses under `/en/docs/` and `/zh/docs/`, preserving their original URLs
+and bytes. Other navigation files and all source downloads retain their physical contracts. Native history normalization
 and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
@@ -362,7 +374,11 @@ Full mode requires all eight fresh source-bound shard receipts, independent
 full-corpus reproducibility and authenticated coverage measurements. A proven
 current-PCR-only data lane retains whole-library contracts, changed-record
 semantic/projection checks and complete fresh sealed-product acceptance; full
-code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+code coverage is explicitly unmeasured. Pull-request-only `docs-only` and
+`pr-code` lanes run fail-closed reduced gates (contracts or contracts plus all
+eight test shards without web/product sealing) when changes stay strictly inside
+non-web, non-release documentation or builder/CLI/viewer/skill/test surfaces;
+unknown/shared/web/release changes, `ci:full`, every `main` push and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.

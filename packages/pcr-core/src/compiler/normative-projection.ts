@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import type { Nodes, Table, TableCell } from 'mdast';
 import {
-  compileMarkdownSourceDocument, contextForSpan, sectionForSpan,
+  compileNormativeMarkdownDocument, contextForSpan, sectionForSpan,
   type SourceHeading, type SourceSpan,
 } from './source-context.ts';
 
@@ -121,7 +121,7 @@ const familyOptions = {
  * sections; extraction and identity remain scoped to the original H2.
  * The flattened display strings make no assertion of scientific applicability. */
 export function compileNormativeProjection(markdown: string): NormativeProjection {
-  const { index, tree } = compileMarkdownSourceDocument(markdown);
+  const { index, tree } = compileNormativeMarkdownDocument(markdown, (title) => sectionFamily(title) !== null);
   const source = index.source;
   const arrays: Record<NormativeFamily, NormativeRule[]> = { system_boundary: [], allocation: [], validation: [] };
   const authoredIds: Record<NormativeFamily, Map<string, SourceSpan>> = {
@@ -168,7 +168,8 @@ export function compileNormativeProjection(markdown: string): NormativeProjectio
   function add(unit: NormativeUnit, node: Nodes, rule: string, explicit = '', appliesTo = '', sources: string[] = []): void {
     if (!rule) return;
     const family = unit.family;
-    const sourceSpan = span(node);
+    const local = contextForSpan(index, selection(node));
+    const sourceSpan = local.selected.span;
     const explicitId = normalizeId(explicit);
     if (explicit.trim() && !explicitId) throw new NormativeProjectionError('INVALID_EXPLICIT_RULE_ID', family, explicit, [sourceSpan]);
     if (explicitId) {
@@ -177,7 +178,6 @@ export function compileNormativeProjection(markdown: string): NormativeProjectio
       authoredIds[family].set(explicitId, sourceSpan);
     }
     pending.push({ unit, node, rule, explicitId, appliesTo, sources, sourceSpan });
-    const local = contextForSpan(index, selection(node));
     for (const diagnostic of local.diagnostics) {
       if (diagnostic.code === 'AMBIGUOUS_PROSE_ATTACHMENT') diagnose(unit, node, diagnostic.code, diagnostic.message);
     }

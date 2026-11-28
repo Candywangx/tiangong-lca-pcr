@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import {createServer} from 'node:http';
 import {chromium,firefox,webkit} from 'playwright';
 import type {Browser} from 'playwright';
-import {checkBlockedStorageLanguage} from '../../scripts/engineering/site-browser.ts';
+import {checkBlockedStorageLanguagePreference} from '../../scripts/engineering/site-browser.ts';
 
 // A real HTTP fetch begins when the selector opens, after initial lifecycle idle.
 // Hold it across the old harness's click; the fixed harness must finish it first.
@@ -46,8 +46,8 @@ async function probe(engine:'chromium'|'firefox'|'webkit',failResponse:boolean,s
   browser=await {chromium,firefox,webkit}[engine].launch({headless:true});
   const ownedBrowser=browser;
   signal.addEventListener('abort',()=>{release();void ownedBrowser.close();},{once:true});
-  const evidence:Parameters<typeof checkBlockedStorageLanguage>[4]={engine,viewport:'desktop',checks:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[]};
-  const operation=checkBlockedStorageLanguage(browser,`http://127.0.0.1:${address.port}`,{width:1440,height:1000},{en:'en-US',zh:'zh-CN'},evidence);
+  const evidence:Parameters<typeof checkBlockedStorageLanguagePreference>[4]={engine,viewport:'desktop',checks:[],ignoredPrefetchAborts:[],requestFailures:[],prefetchUrls:[]};
+  const operation=checkBlockedStorageLanguagePreference(browser,`http://127.0.0.1:${address.port}`,{width:1440,height:1000},{en:'en-US',zh:'zh-CN'},evidence);
   const outcome=operation.then(()=>({error:null}),(error:unknown)=>({error}));
   await Promise.race([requested,outcome.then(()=>{throw Error('Probe ended before the held request started');})]);
   // The response is deliberately later than both Playwright's click and the

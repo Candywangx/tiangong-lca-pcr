@@ -151,3 +151,15 @@ test('capacity fallback restores only the designated page prefetches with the or
   assert.throws(()=>verifyNavigationTrees(out,source,true),/Page prefetch inventory/);
  }finally{fs.rmSync(out,{recursive:true,force:true});}
 });
+
+test('identity-only version two skips navigation planning while combined version three requires binding',()=>{
+ const out=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'navigation-capability-')));fs.mkdirSync(path.join(out,'generated'));
+ try{const provider=path.join(out,'generated/provider-runtime.json'),identity={sourceCommit:source,identityMoves:[{from:'/en/docs/pcr/a/b/old/',to:'/en/docs/pcr/a/b/current/'}]};
+  fs.writeFileSync(provider,JSON.stringify({schemaVersion:2,...identity}));
+  assert.equal(planNavigationTrees(out,source,navigationFiles(out)),undefined);
+  fs.writeFileSync(provider,JSON.stringify({schemaVersion:2,sourceCommit:source}));
+  assert.throws(()=>planNavigationTrees(out,source,navigationFiles(out)),/fresh unbound profile/);
+  fs.writeFileSync(provider,JSON.stringify({schemaVersion:3,...identity}));
+  assert.throws(()=>planNavigationTrees(out,source,navigationFiles(out)),/fresh unbound profile/);
+ }finally{fs.rmSync(out,{recursive:true,force:true});}
+});
