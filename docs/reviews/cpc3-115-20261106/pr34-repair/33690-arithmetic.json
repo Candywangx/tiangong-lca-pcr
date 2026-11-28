@@ -1,0 +1,317 @@
+{
+  "code": "33690",
+  "reviewer": "codex-primary-controller /root",
+  "at_utc": "2026-11-10T08:59:17.836Z",
+  "evidence_kind": "synthetic_arithmetic_counterexamples_not_empirical_study_data",
+  "current_source_hashes": {
+    "manifest.yaml": "442d377994db5e8f422358dc2a49d7fa9c3cd01c4e63d0912e00af67bcd683a6",
+    "pcr.en-US.md": "c2b2411ff428edb76a66f13a88176bca3f6a19110091601f8e4ebe4870699b89",
+    "pcr.zh-CN.md": "032ab5dec12a1c2285167009dee86028b0780b83b53e4ef941aa12fcde00f292",
+    "structured.yaml": "655f134d84a5fa6e9e870a9784b9fbe038209bf944c19e8f32419014fc7227a7"
+  },
+  "author_commit": "161cf857a02591c0674ca3dc3c98dc7218848f19",
+  "complete_inputs_and_derivations": [
+    {
+      "case": "100/60/30/10 plus real net returns",
+      "synthetic_only": true,
+      "basis": "kg net wet aqueous residue at original first receiver-ready release; burden in arbitrary accounting units",
+      "inputs": {
+        "unique_event_masses_kg": [
+          40,
+          60
+        ],
+        "gross_dispatch_kg": 80,
+        "genuine_returned_kg": 20,
+        "D_new_net_externally_retained_kg": 60,
+        "FG_new_ready_at_cutoff_kg": 30,
+        "L_new_irreversible_loss_kg": 10,
+        "attributable_burden_units": 100
+      },
+      "derivation": [
+        "Q = 40 + 60 = 100 kg independently from event records",
+        "D_new = 80 - 20 = 60 kg; returned parcels are already included in final on-site states",
+        "Q = 60 + 30 + 10 = 100 kg; residual = 0 kg",
+        "100 burden units / original Q 100 kg = 1 burden unit/kg",
+        "D_new + FG_new = 90 kg omits 10 kg; using it as denominator gives 100/90 = 1.111111 burden unit/kg"
+      ],
+      "results": {
+        "Q_kg": 100,
+        "complete_state_sum_kg": 100,
+        "residual_kg": 0,
+        "correct_intensity_units_per_kg": 1,
+        "wrong_two_term_denominator_kg": 90,
+        "wrong_intensity_units_per_kg": 1.1111111111111112
+      },
+      "rejects": [
+        "Reducing Q by actual loss",
+        "Adding return or re-release movements as new acceptance",
+        "Adding Q as another physical output"
+      ]
+    },
+    {
+      "case": "opening already-released FG and original old denominator",
+      "synthetic_only": true,
+      "inputs": {
+        "opening_old_FG_kg": 40,
+        "original_old_cohort_Q_kg": 200,
+        "old_gross_dispatch_kg": 25,
+        "old_returns_kg": 5,
+        "old_closing_ready_FG_kg": 15,
+        "old_loss_kg": 5,
+        "new_first_release_Q_kg": 100,
+        "new_D_FG_L_kg": [
+          60,
+          30,
+          10
+        ],
+        "later_old_cohort_service_units": 40
+      },
+      "derivation": [
+        "Old opening FG 40 = net external old delivery (25 - 5) + old closing FG 15 + old loss 5",
+        "New event Q remains 100 kg; total 80 kg external delivery includes 20 kg old and 60 kg new, not 80 kg new acceptance",
+        "Current physical account: old opening 40 + new first-released material 100 = external 80 + closing FG 45 + loss 15 = 140 kg",
+        "Original old Q is 200 kg from its original event cohort; opening 40 kg is its remaining subset",
+        "Old later service 40 / original old Q 200 = 0.2 unit/kg; dividing by new Q 100 gives false 0.4, and dividing by opening subset 40 gives false 1.0"
+      ],
+      "results": {
+        "new_Q_kg": 100,
+        "old_state_residual_kg": 0,
+        "combined_current_physical_residual_kg": 0,
+        "old_service_correct_units_per_kg": 0.2,
+        "wrong_new_Q_intensity": 0.4,
+        "wrong_opening_FG_intensity": 1
+      }
+    },
+    {
+      "case": "accepted material returned to WIP and released again",
+      "synthetic_only": true,
+      "inputs": {
+        "original_unique_first_event_kg": 100,
+        "cutoff_A": {
+          "D_new_kg": 60,
+          "FG_new_kg": 20,
+          "L_new_accepted_WIP_kg": 15,
+          "L_new_loss_kg": 5
+        },
+        "later_WIP_fates": {
+          "re_release_to_ready_FG_kg": 10,
+          "additional_loss_kg": 5,
+          "remaining_accepted_WIP_kg": 0
+        },
+        "initial_burden_units": 100,
+        "additional_rework_service_units": 10
+      },
+      "derivation": [
+        "Cut-off A: Q = 60 + 20 + (15 accepted WIP + 5 loss) = 100 kg",
+        "Accepted WIP 15 = re-released 10 + additional loss 5; this is a subsequent fate transition, not a new first event",
+        "Cut-off B: Q = 60 + (20 + 10) + (5 + 5) = 100 kg; accepted WIP = 0",
+        "Repeated release of 10 kg does not change Q to 110 kg",
+        "Corrected original burden = 100 + 10 = 110 units, divided by original Q 100 kg gives 1.1 unit/kg; false repeated-event denominator 110 gives 1.0"
+      ],
+      "results": {
+        "cutoff_A_Q_kg": 100,
+        "cutoff_B_Q_kg": 100,
+        "cutoff_B_D_FG_L_kg": [
+          60,
+          30,
+          10
+        ],
+        "new_acceptance_from_re_release_kg": 0,
+        "corrected_intensity_units_per_kg": 1.1,
+        "wrong_re_release_denominator_kg": 110,
+        "wrong_intensity_units_per_kg": 1
+      }
+    },
+    {
+      "case": "conditional two-term bridge",
+      "synthetic_only": true,
+      "inputs": {
+        "independently_measured_first_event_Q_kg": 100,
+        "D_new_kg": 60,
+        "FG_new_kg": 40,
+        "loss_kg": 0,
+        "disposal_kg": 0,
+        "downgraded_kg": 0,
+        "quarantine_kg": 0,
+        "accepted_WIP_kg": 0,
+        "other_destinations_kg": 0,
+        "zero_state_evidence_assumption": "Complete synthetic parcel genealogy with every other destination evidenced absent; not actual study evidence"
+      },
+      "derivation": [
+        "L_new = 0 + 0 + 0 + 0 + 0 + 0 = 0 kg",
+        "Only in this evidenced-zero scenario Q 100 = D_new 60 + FG_new 40",
+        "Q remains independently measured, not inferred from the bridge"
+      ],
+      "results": {
+        "state_residual_kg": 0,
+        "two_term_allowed_in_this_synthetic_case": true
+      }
+    },
+    {
+      "case": "wet-mass changes keep physical and original-event accounts separate",
+      "synthetic_only": true,
+      "inputs": {
+        "first_event_Q_kg": 100,
+        "separately_measured_post_event_added_water_kg": 5,
+        "physical_dispatch_kg": 65,
+        "dispatch_original_accepted_material_kg": 60,
+        "dispatch_newly_added_water_kg": 5,
+        "physical_closing_accepted_FG_kg": 30,
+        "original_accepted_water_lost_kg": 10
+      },
+      "derivation": [
+        "Actual physical material ledger: original 100 + added water 5 = actual dispatch 65 + actual closing FG 30 + actual loss 10 = 105 kg",
+        "Original accepted-material event ledger: Q 100 = D_new 60 + FG_new 30 + L_new loss 10 = 100 kg",
+        "The separately added 5 kg is a measured exchange and cannot increase Q or original-material D_new",
+        "Do not restore surviving accepted 90 kg to 100 kg while also adding 10 kg loss; that false ledger gives 110 kg",
+        "Actual species/element ledgers and time-referenced nuclide/activity evidence remain separate; no isotope, half-life, mass/activity factor or operating parameter is assumed"
+      ],
+      "results": {
+        "physical_ledger_residual_kg": 0,
+        "event_ledger_residual_kg": 0,
+        "wrong_restored_survivor_plus_loss_kg": 110
+      }
+    },
+    {
+      "case": "failed work before any first release preserves Q0",
+      "synthetic_only": true,
+      "inputs": {
+        "first_release_events": [],
+        "failed_characterization_service_units": 8,
+        "opening_or_unreleased_WIP": "actual physical quantity and inherited vectors retained without invented accepted mass"
+      },
+      "derivation": [
+        "Q = sum(empty first-release events) = 0",
+        "The 8 units of actual failed/Q0 service remain in raw/cohort records",
+        "8/0 is unavailable, never a normalized unit result or a zero-burden record",
+        "Only a later genuine first receiver-ready release can establish its first Q; prior accepted WIP is handled by the separate re-release case"
+      ],
+      "results": {
+        "Q_kg": 0,
+        "raw_failed_service_units_retained": 8,
+        "normalized_result": null
+      }
+    }
+  ],
+  "case_payload_sha256": "92023531cf9740148663d5ac30520fa32e4a89809a7a784e2eca8114cc38c98d",
+  "additional_basis_and_negative_cases": {
+    "example_limit": "Illustrative accounting inputs only, no actual radioactive inventory, emission, processing instruction, quantitative default, site qualification or scientific approval."
+  },
+  "independently_recomputed_checks": [
+    {
+      "case": "first_events",
+      "left_terms": [
+        40,
+        60
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "100event=60net+30FG+10loss",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_stock",
+      "left_terms": [
+        40
+      ],
+      "right_terms": [
+        20,
+        15,
+        5
+      ],
+      "formula": "old40=net20+FG15+loss5",
+      "recomputed_left": 40,
+      "recomputed_right": 40,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "combined_physical",
+      "left_terms": [
+        40,
+        100
+      ],
+      "right_terms": [
+        80,
+        45,
+        15
+      ],
+      "formula": "physical140; newQ100 excludesoldstock",
+      "recomputed_left": 140,
+      "recomputed_right": 140,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "rework_transition",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "15acceptedWIP becomes10FG+5loss;no newQ",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "water_physical",
+      "left_terms": [
+        100,
+        5
+      ],
+      "right_terms": [
+        65,
+        30,
+        10
+      ],
+      "formula": "physical105 with addedwater",
+      "recomputed_left": 105,
+      "recomputed_right": 105,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "origin_event",
+      "left_terms": [
+        100
+      ],
+      "right_terms": [
+        60,
+        30,
+        10
+      ],
+      "formula": "origin100; do not restore surviving90 and also addloss10",
+      "recomputed_left": 100,
+      "recomputed_right": 100,
+      "residual": 0,
+      "passed": true
+    },
+    {
+      "case": "old_service",
+      "left_terms": [
+        0.2
+      ],
+      "right_terms": [
+        0.2
+      ],
+      "formula": "useoriginal200 notopening40/new100",
+      "recomputed_left": 0.2,
+      "recomputed_right": 0.2,
+      "residual": 0,
+      "passed": true
+    }
+  ],
+  "readable_source_context": "readable-source-evidence.json",
+  "limitations": "These inputs test declared boundaries, original event/cohort quantities and complete destinations. They do not establish plant values, physical operating parameters, native applicability or scientific approval."
+}

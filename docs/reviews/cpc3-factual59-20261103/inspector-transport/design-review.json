@@ -1,0 +1,137 @@
+{
+  "verdict": "conditionally_accept_design_with_required_boundary_details",
+  "scope": "Independent read-only preimplementation design review; no production code or worktree writes",
+  "sourceCommit": "ecee0961f16f59d568f18aabe33b55ec49620b33",
+  "design": {
+    "file": "../inspector-transport-design.md",
+    "sha256": "sha256:26aee756e3e2d22bc6feb5efd78d335ffb56bc674bd8766af8ee78e5ce30ee1b",
+    "latestClarification": "Root message adds literal strings and literal object keys; dictionary only profitable repeated strings/keys, deterministic first-appearance pruning; included in this review."
+  },
+  "representationDecision": {
+    "entity": "Derived inspector browser transport",
+    "role": "Stable read-only UI boundary",
+    "freedom": "F3 versioned contracted representation",
+    "truth": "No methodology/source/translation/publication authority",
+    "assessment": "Generic typed tokens with one shared strings/keys dictionary are unambiguous and sufficiently narrow. Literal fallback is a reasonable smaller refinement; no need for semantic field elision, content schema change, runtime compression dependency or new routing capability."
+  },
+  "requirements": [
+    {
+      "id": "R1",
+      "priority": "must-before-code-acceptance",
+      "rule": "Validate and charge the whole encoded pack in a non-materializing first pass, then materialize only the selected record or validated complete pack. No decoded object/array tree, spread, flatMap or expanded JSON.stringify before the shared restored-byte guard passes.",
+      "evidence": "record-data.ts public decode currently selects after validating every v1 entry; retain full-pack rejection semantics for v2."
+    },
+    {
+      "id": "R2",
+      "priority": "must-before-code-acceptance",
+      "rule": "Restored size means exact UTF8 JSON serialization of the canonical v1 envelope (including all rows, record keys, brackets, commas, object key quotes/escapes, colons and wrapper fields). Dictionary costs cache UTF8(JSON.stringify(string)); charge each occurrence, not each unique string. Null/booleans/finite numbers use their exact JSON rendering; reject as soon as charged bytes >=25000000. Use safe, saturating arithmetic.",
+      "counterexample": {
+        "records": 32,
+        "sharedAsciiStringBytes": 900000,
+        "encodedPhysicalBytes": 900686,
+        "restoredV1Bytes": 28800757,
+        "note": "Constructive design illustration only, not PCR or plant data; physical fits ordinary1MB target while restoredpack exceeds25MB."
+      }
+    },
+    {
+      "id": "R3",
+      "priority": "must-before-code-acceptance",
+      "rule": "Writer must measure candidate restored bytes before calling a strict encoder that can throw for expansion. If pending exists and candidate physical>1000000 OR restored>=25000000 OR count>32, flush pending then recompute the singleton. Do not swallow malformed-input failures as capacity splits. Never emit a selected encoding that its public decoder rejects; one oversized physical record retains existing <25MB physical requirement and stays whole."
+    },
+    {
+      "id": "R4",
+      "priority": "must-before-code-acceptance",
+      "rule": "Grammar: null/boolean/literal-string pass as values; bare numbers are only safe integer refs0<=id<dictionary.length; actual number token is exactly[0,finite-number]; array is[1,...encoded-values]; object is[2,(literal-string|reference),encoded-value,...] with odd length. Reject unknown tags, wrong arity, raw objects, undefined, NaN/Infinity, float/negative/out-of-range refs, missing values, mixed token kinds and unsupported versions. Decoded manifest/structured roots must be objects, not arrays/scalars."
+    },
+    {
+      "id": "R5",
+      "priority": "must-before-code-acceptance",
+      "rule": "Dictionary strings and record keys are distinct; record keys nonempty, max32. Object keys are decoded then checked by Set<string>, covering mixed literal/ref collisions. Materialize with Object.fromEntries or Object.defineProperty own enumerable data properties, never target[key]=value on ordinary {} for __proto__. Test __proto__,constructor,prototype,toString,empty keys,numeric-like keys,Unicode and nested objects; preserve native Object.entries/JSON.stringify ordering."
+    },
+    {
+      "id": "R6",
+      "priority": "must-before-code-acceptance",
+      "rule": "Set an explicit shared nesting bound and check it before recursive descent in encoder/preflight/materializer. Confirm every actual current/history record is below it, and test exactly-at/one-past with controlled errors instead of RangeError. Iterative preflight is also acceptable. Physical JSON parsing already occurs before decode; this guard limits decoded expansion, not all response.json memory."
+    },
+    {
+      "id": "R7",
+      "priority": "must-before-code-acceptance",
+      "rule": "Frequency/first-appearance/ID pruning must be deterministic. Count both key and value occurrences, including literal-escaping UTF8 bytes and decimal reference widths/dictionary framing. Two rounds may be a conservative heuristic, not a global optimality claim. Final v1/v2 selection compares complete actual UTF8 serialized bytes, with v1 on ties. Validate v1 first and preserve its bytes for nonbeneficial cases."
+    },
+    {
+      "id": "R8",
+      "priority": "must-before-code-acceptance",
+      "rule": "Retain unkeyed and schema1 reads and exact missing-key/unknown-version/retry behavior. New artifacts ship their decoder. Old decoder accepting new schema2 is not promised; historical bytes/readers remain unchanged. Verify all1600 actual records through unchanged public decode entrypoint with exact serialized record identity, and run shipped-export comparison plus Root fresh full validation/docs build."
+    }
+  ],
+  "observedEvidence": {
+    "sourceBindings": [
+      {
+        "repoPath": "packages/pcr-docs/lib/record-data.ts",
+        "sha256": "sha256:69ba1ae3a46eaef71ec5efbe5b590e5660edddf91d53f8c1a646f9ff5e67d201"
+      },
+      {
+        "repoPath": "packages/pcr-docs/scripts/record-data-packs.ts",
+        "sha256": "sha256:53d529031bc3f7527d787d4a7cf3ef95b4418838ca5e0568f4db38d566d9cbc6"
+      },
+      {
+        "repoPath": "packages/pcr-docs/scripts/record-data-packs.test.ts",
+        "sha256": "sha256:5e13a18b80b7226e889301c88893b2722a1b1fdadfbb6e337c792329f8b48f03"
+      },
+      {
+        "repoPath": "packages/pcr-docs/components/data-inspector.tsx",
+        "sha256": "sha256:09541db77aff37b9bc77e3813024cefc13e64e6c34cacd196fb340a4c9fa2d30"
+      },
+      {
+        "repoPath": "packages/pcr-docs/scripts/verify.ts",
+        "sha256": "sha256:d690d011f86ca26998d695d5e87bcf6316ef41764fbf04f29ae8cc4eaf31d3bd"
+      },
+      {
+        "repoPath": "packages/pcr-docs/lib/site-contracts.ts",
+        "sha256": "sha256:9dbca4764eb6ff7bb1c19fdbc6f532d6c3321b96cfa3424860ed9bafc7c55479"
+      },
+      {
+        "repoPath": "packages/pcr-docs/lib/types.ts",
+        "sha256": "sha256:230cd5409fdc718be2ee3e63f211f61ef95ba749e3ff0ff035f5d6b1bcc35cd5"
+      },
+      {
+        "repoPath": "packages/pcr-docs/scripts/generate.ts",
+        "sha256": "sha256:bc62ca6af6c496ddfc78ccd7d1ecc7873be9f845de9062aa336f0c8508fad07a"
+      },
+      {
+        "repoPath": "docs/pcr-documentation-site-contract.md",
+        "sha256": "sha256:1069e5c3959efd9bbc66f3545269a62556221b5b23a68f577edc435def65b618"
+      }
+    ],
+    "rootPrototype": {
+      "sha256": "sha256:7830c75a44216582993faf60609cac99e4375ccf31f9cb78019b43a62b6d2ca5",
+      "reportedFiles": 106,
+      "reportedPhysicalBytes": 100420469,
+      "reportedLargestRestoredV1": 2300616,
+      "reportedExactSerializations": true,
+      "execution": "Root feasibility probe, not this reviewer or production decoder validation",
+      "caution": "Original probe used UTF16 .length for v1/v2 selection and no untrusted-token/expansion guards; Root confirmed correcting actual UTF8 selection and remeasuring literal variant. Do not treat prior108files/19999estimate as new production qualification."
+    },
+    "ourReadback": {
+      "actualGeneratedRecords": 1600,
+      "currentRecords": 1600,
+      "historicalRecords": 0,
+      "all1600ExactSourceHashesMatchRetainedProbe": true,
+      "sourceRecordHashListSha256": "sha256:2f9488e7bce0d4592503f102bcce9d3bc408c1910ae6a543e7d539be4bd56cfe",
+      "actualMaxValueDepth": 11,
+      "scope": "Hash/JSON depth transport corpus readback only, no outside59 methodology review"
+    },
+    "syntheticCounterexample": {
+      "physicalBytes": 900686,
+      "restoredV1Bytes": 28800757
+    }
+  },
+  "minimality": "No smaller viable scheme has independent measured evidence here. A key-only dictionary or compressed JSON would need separate feasibility proof and can add ambiguity/runtime/browser complexity. The proposed literal branch removes avoidable dictionary overhead without changing semantic schema.",
+  "limits": [
+    "No new codec or production tests exist in reviewed source; required conditions are implementation acceptance criteria, not claims of existing passing behavior.",
+    "No builder/generator/normal validation/browser suite was executed by this review.",
+    "No physical fetch-size enforcement is added by decode(value): response.json already parsed the physical JSON. Existing hosting physical-file guard remains separate.",
+    "Final file count remains Root fresh build evidence; the feasibility estimate has only one file of margin under strict <20000 and can be affected by final encoding selection/guards.",
+    "Root is solely responsible for serial integration and fresh final source qualification."
+  ]
+}

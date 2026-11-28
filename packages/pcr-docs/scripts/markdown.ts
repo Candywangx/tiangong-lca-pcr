@@ -16,7 +16,6 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import GithubSlugger from "github-slugger";
-import { parseHTML } from "linkedom";
 import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
 
 function nodeDataProperties(data:unknown):Properties|undefined {
@@ -25,7 +24,7 @@ function nodeDataProperties(data:unknown):Properties|undefined {
  return value as Properties;
 }
 
-const parser = unified().use(remarkParse).use(remarkGfm);
+const parser = unified().use(remarkParse).use(remarkGfm).freeze();
 const sanitizer = {
   ...defaultSchema,
   clobber: [],
@@ -37,8 +36,9 @@ const sanitizer = {
 const converter = unified()
   .use(remarkRehype, { allowDangerousHtml: true, clobberPrefix: "pcr-note-" })
   .use(rehypeRaw)
-  .use(rehypeSanitize, sanitizer);
-const serializer = unified().use(rehypeStringify);
+  .use(rehypeSanitize, sanitizer)
+  .freeze();
+const serializer = unified().use(rehypeStringify).freeze();
 const blockTags = new Set([
   "p",
   "div",
@@ -164,6 +164,22 @@ function literalHtml(node: AstNode, topLevel: boolean) {
 
 function html(nodes: readonly HastContent[]) {
   return String(serializer.stringify({ type: "root", children: [...nodes] }));
+}
+
+function hastVisibleText(node: HastRoot | HastContent): string {
+  if (node.type === "text") return node.value;
+  if (node.type !== "element") return "";
+  const props = node.properties;
+  if (
+    props?.dataFootnoteRef !== undefined ||
+    props?.dataFootnoteBackref !== undefined
+  )
+    return "";
+  if (node.tagName === "img") {
+    return typeof props?.alt === "string" ? props.alt : "";
+  }
+  const value = node.children.map(hastVisibleText).join("");
+  return blockTags.has(node.tagName) ? "\n" + value + "\n" : value;
 }
 
 function visitHast(node: HastRoot | HastContent, action:(node:HastRoot|HastContent)=>void):void { action(node);if("children" in node)for(const child of node.children)visitHast(child,action); }
@@ -390,11 +406,8 @@ export function renderMarkdown(
     visitHast({ type:"root", children: group.nodes }, (node) => {
       if (node.type === "element" && node.properties.id) anchors.push(String(node.properties.id));
       if (node.type === "element" && /^h[2-6]$/u.test(node.tagName)) {
-        const parsed = parseHTML("<div>" + html([node]) + "</div>");
         toc.push({
-          title: normalizeText(
-            visibleText(parsed.document.querySelector("div")),
-          ),
+          title: normalizeText(hastVisibleText(node)),
           url: "#" + node.properties!.id,
           depth: Number(node.tagName!.slice(1)),
         });
@@ -440,11 +453,14 @@ export function renderMarkdown(
     };
   });
   const renderedIds = parts.flatMap((part) => part.sourceNodeIds);
+  const renderedIdSet = new Set<string>();
+  const duplicates: string[] = [];
+  for (const id of renderedIds) {
+    if (renderedIdSet.has(id)) duplicates.push(id);
+    else renderedIdSet.add(id);
+  }
   const missing = [...inventory.keys()].filter(
-    (id) => !renderedIds.includes(id),
-  );
-  const duplicates = renderedIds.filter(
-    (id, index) => renderedIds.indexOf(id) !== index,
+    (id) => !renderedIdSet.has(id),
   );
   if (missing.length || duplicates.length)
     throw new Error(

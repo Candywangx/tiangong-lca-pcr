@@ -27,6 +27,7 @@ concurrency:
 env:
   CI_EVENT_NAME: ${{ github.event_name }}
   CI_WORKFLOW_INPUTS: ${{ toJSON(inputs) }}
+  CI_FORCE_FULL: ${{ contains(github.event.pull_request.labels.*.name, 'ci:full') }}
   CI_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
   CI_HEAD_SHA: ${{ github.sha }}
 
@@ -52,7 +53,7 @@ jobs:
           node scripts/engineering/ci-plan.ts plan "$RUNNER_TEMP/pcr-plan/ci.json"
           mode=$(jq -r '.mode' "$RUNNER_TEMP/pcr-plan/ci.json")
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
-          if [ "$mode" = full ]; then
+          if [ "$mode" = full ] || [ "$mode" = pr-code ]; then
             node scripts/engineering/qualification-plan.ts plan "$RUNNER_TEMP/pcr-plan/qualification.json"
           fi
       - name: Preserve the exact qualification plan
@@ -100,6 +101,7 @@ jobs:
           npm run migration:check
           npm run typecheck:all
       - name: Validate complete library contracts
+        if: needs.plan.outputs.mode != 'docs-only'
         run: |
           evidence="$RUNNER_TEMP/pcr-content-contracts"
           mkdir -p "$evidence"
@@ -121,10 +123,15 @@ jobs:
           fi
           exit "$validation_status"
       - name: Verify changed canonical records
+        if: needs.plan.outputs.mode != 'docs-only'
         run: node scripts/engineering/ci-content.ts "$RUNNER_TEMP/pcr-plan/ci.json" "$RUNNER_TEMP/pcr-content-contracts/selected-content.json"
       - name: Verify emitted TypeScript engineering tests
-        if: needs.plan.outputs.mode == 'full'
+        if: needs.plan.outputs.mode == 'full' || needs.plan.outputs.mode == 'pr-code'
         run: npm run test:engineering:compiled
+      - name: Record docs-only contract evidence
+        if: needs.plan.outputs.mode == 'docs-only'
+        run: |
+          printf 'Docs-only PR lane: runtime, migration, and strict typechecks passed.\n' > "$RUNNER_TEMP/pcr-content-contracts/validation.log"
       - name: Preserve content qualification evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -136,7 +143,7 @@ jobs:
 
   test-shards:
     needs: plan
-    if: needs.plan.outputs.mode == 'full'
+    if: needs.plan.outputs.mode == 'full' || needs.plan.outputs.mode == 'pr-code'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
@@ -192,9 +199,10 @@ jobs:
       - name: Execute exactly the frozen shard
         env:
           SHARD: ${{ matrix.shard }}
+          CI_PLAN_MODE: ${{ needs.plan.outputs.mode }}
         run: |
           mkdir -p "$RUNNER_TEMP/pcr-receipts"
-          if [ "$SHARD" = corpus ]; then
+          if [ "$SHARD" = corpus ] || [ "$CI_PLAN_MODE" != full ]; then
             node scripts/engineering/qualification-plan.ts run "$RUNNER_TEMP/pcr-plan/qualification.json" "$SHARD" "$RUNNER_TEMP/pcr-receipts/$SHARD.json"
           else
             node scripts/engineering/coverage.ts collect "$RUNNER_TEMP/pcr-coverage" --qualification-plan "$RUNNER_TEMP/pcr-plan/qualification.json" --selection "$SHARD" -- node scripts/engineering/qualification-plan.ts run "$RUNNER_TEMP/pcr-plan/qualification.json" "$SHARD" "$RUNNER_TEMP/pcr-receipts/$SHARD.json"
@@ -208,7 +216,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - name: Preserve isolated raw coverage inputs
-        if: always() && matrix.shard != 'corpus'
+        if: always() && matrix.shard != 'corpus' && needs.plan.outputs.mode == 'full'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: pcr-coverage-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -227,6 +235,7 @@ jobs:
 
   web-build:
     needs: plan
+    if: needs.plan.outputs.mode == 'full' || needs.plan.outputs.mode == 'data'
     runs-on: ubuntu-latest
     # Instrumented full export runs here; EdgeOne only imports the sealed archive.
     timeout-minutes: 120
@@ -290,7 +299,7 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: '1'
           PCR_DOCS_GENERATE_WORKERS: '2'
-          PCR_SOURCE_VERIFY_WORKERS: '2'
+          PCR_SOURCE_VERIFY_WORKERS: '4'
           PCR_BUILD_RELOCATE: '1'
           PCR_EDGEONE_PREBUILT_ASSETS: '1'
           # Public ownership markers already served by the production site.
@@ -328,6 +337,7 @@ jobs:
 
   documentation:
     needs: [plan, web-build]
+    if: needs.plan.outputs.mode == 'full' || needs.plan.outputs.mode == 'data'
     runs-on: ubuntu-latest
     # Sealing consumes the exact verified web export; it never rebuilds Next.
     timeout-minutes: 120
@@ -413,7 +423,8 @@ jobs:
             arch: arm64
           - os: windows-latest
             arch: x64
-          - os: macos-latest
+          # Use the explicit ARM64 image after repeated runner-allocation failures on macos-latest.
+          - os: macos-15
             arch: arm64
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
@@ -454,7 +465,7 @@ jobs:
             arch: arm64
           - os: windows-latest
             arch: x64
-          - os: macos-latest
+          - os: macos-15
             arch: arm64
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30

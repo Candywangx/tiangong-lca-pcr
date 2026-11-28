@@ -29,8 +29,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 431558ce053d7184a42be9624229fb3e38f9cd65
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: 822b710cf5c463d1eccbe15346ccc05b46b5543d
 lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 ---
 
@@ -91,9 +91,16 @@ Rules:
 - Do not use CPC, HS, ISIC, NAICS, or another external classification system as the canonical PCR directory tree.
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
-- The 60 CPC 61 methods upgrade their original scaffold ids and semantic directories from the
-  CPC 3.0 leaf-slug inventory. Keep each method's specific scope, reference flow and accepted mapping relation;
-  do not recreate replacement ids for this batch.
+- The frozen 115 CPC section 3 methods retain the original IDs and directories from baseline
+  `7d0a48078779e09b3ca6aadf1b0bd619505303a4` and upgrade those records in place. Preserve narrower
+  product and process boundaries in methodology and mappings; do not create replacement IDs for them.
+  See `docs/adr/2026-11-27-restore-cpc3-original-pcr-identities.md` for the audited identity restoration.
+- The 149 existing methods reviewed for PR #167 reuse their retained original IDs and directories where
+  classification acceptance is supported. The 139 accepted restorations, ten held drafts (eleven codes),
+  source snapshots and item decisions are recorded in
+  `docs/reviews/pcr149-original-ids-20261127/README.md`. Do not recreate the removed candidate IDs or
+  count a held `classification_refs` entry as an accepted mapping. Website URL compatibility is separate
+  from PCR identity and cannot turn a retired candidate URL into another canonical PCR.
 - After publication, the top-level four files are the current consumer-facing release. Open later work with
   `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
   content in place.
@@ -187,19 +194,28 @@ lifecycle, revise, and publish mutations use per-PCR lock/journal/stage/backup s
 `library/.pcr-builder-state/`; recover interrupted state with `pcr:recover`, and use `--force-stale-lock` only after
 confirming no writer is active.
 
-Local batch production uses the `goal:*` Harness commands and persistent state under
-`library/.pcr-builder-state/goals/<goal-id>/`. Authors must be durable visible Codex app-server tasks, one PCR per
-independent worktree; never fall back to hidden agents or shared-directory writers. Synthetic dirty baselines may
-include only configured repository roots and exact untracked allowlists without changing the user's real index or
-branch. Author commits are limited to one PCR's four canonical files. Shared mappings, aliases, indexes, catalog,
-coverage, viewer derivatives, and accepted-mapping ADRs are updated only by serial integration snapshots and land
-through exact-byte compare-and-swap. `goal:stop` preserves worktrees and results.
+Local batch production may use a native Codex workflow or goal with a durable controller ledger. Use visible,
+recoverable authors and one independent worktree per PCR. Record the CPC coordinate, source baseline, worktree,
+author task and turn, and exact author commit. Bind the four author files and independent review to exact-byte
+SHA-256 digests. For review handoff, provide reachable author commits or downloadable four-file snapshots with a
+manifest linking each original commit and file digest. For retained historical records, identify the available
+retained bytes and any unavailable original author snapshots explicitly.
+
+The controller independently verifies each candidate, integrates serially, and records the exact integration commit,
+final file hashes, and qualification run and artifacts. Only the controller updates shared mappings, aliases,
+indexes, catalog, coverage, viewer derivatives and accepted-mapping decisions. Recheck the integration baseline
+and shared files before advancing delivery. Preserve worktrees and evidence on interruption.
+
+The existing `goal:*` Harness remains available for explicitly selected Harness runs. Its state lives under
+`library/.pcr-builder-state/goals/<goal-id>/`. Synthetic dirty baselines may include only configured repository
+roots and exact untracked allowlists without changing the user's real index or branch. Author commits are limited
+to one PCR's four canonical files. `goal:stop` preserves worktrees and results.
 
 Builder measurement inspection reuses canonical reference, inventory, collection and calculation rules in both languages.
 General lint is report-only for measurement findings. `pcr:check` enforces a complete, finite measurement check on
 one explicitly selected current/revision workspace; unresolved relationships require review. Symbolic machine mass M
 is valid with a collection method, scope and conversion; PCR methodology never invents a per-machine weight.
-New untouched Goal tasks pin authoring contract 2 at dispatch. Finalized UUID receipts are hash-bound in Goal events;
+New untouched Harness Goal tasks pin authoring contract 2 at dispatch. Finalized UUID receipts are hash-bound in Goal events;
 `goal:prepare-report` preserves the author's draft, assembles only uniquely derivable receipt fields, performs actual
 PCR/sync/evidence checks and returns a report reference. Intake verifies the reference before independent acceptance.
 Existing authors without that contract, released PCRs, quarantined results and exhausted repair budgets retain their
@@ -289,7 +305,12 @@ required; declared optional language artifacts are verified and preserved.
 
 Published chapter aliases use the exact source-owned root `middleware.ts` profile. The sealed
 `generated/provider-runtime.json` binds its import closure and routes; export checks preserve published
-anchors and the importer rechecks actual source bytes before atomic handoff. Native history normalization
+anchors and the importer rechecks actual source bytes before atomic handoff. Provider profile 2
+adds bounded, content-addressed Next tree packs and a verified compilation binding; the source-owned
+handler restores original navigation URLs and bytes. When the physical file budget requires it, the
+[bounded page-prefetch exception](docs/pcr-documentation-site-contract.md) also permits packing up to
+600 eligible `__PAGE__.txt` responses under `/en/docs/` and `/zh/docs/`, preserving their original URLs
+and bytes. Other navigation files and all source downloads retain their physical contracts. Native history normalization
 and provider compilation do not authorize deployment or promote methodology states.
 
 Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
@@ -345,7 +366,11 @@ Full mode requires all eight fresh source-bound shard receipts, independent
 full-corpus reproducibility and authenticated coverage measurements. A proven
 current-PCR-only data lane retains whole-library contracts, changed-record
 semantic/projection checks and complete fresh sealed-product acceptance; full
-code coverage is explicitly unmeasured. Unknown/shared/runtime changes and every
+code coverage is explicitly unmeasured. Pull-request-only `docs-only` and
+`pr-code` lanes run fail-closed reduced gates (contracts or contracts plus all
+eight test shards without web/product sealing) when changes stay strictly inside
+non-web, non-release documentation or builder/CLI/viewer/skill/test surfaces;
+unknown/shared/web/release changes, `ci:full`, every `main` push and every
 reusable release invocation select full mode, including empty product tags.
 Do not satisfy a failed qualification with prior-attempt shard artifacts or
 report compact portable tests as complete corpus qualification.

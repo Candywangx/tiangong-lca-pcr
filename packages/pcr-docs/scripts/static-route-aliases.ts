@@ -214,8 +214,14 @@ export function prepareStaticRouteAliases(out: string, expectedSourceCommit: str
   requireThat(indexes.length === pairs.length && indexes.every(index => sources.has(path.posix.join(path.posix.dirname(index), fullName))), 'Static route alias preparation has an unpaired index.txt.');
   pairs.sort((a, b) => a.source < b.source ? -1 : a.source > b.source ? 1 : 0);
   const manifest: StaticRouteAliases = { schemaVersion: 1, sourceCommit: expectedSourceCommit, pairs }, bytes = boundedManifest(manifest);
-  const navigation=planNavigationTrees(out,expectedSourceCommit,[...files].map(([path,stat])=>({path,bytes:stat.size})));
-  requireThat(files.size - pairs.length + 1 - (navigation?.removed.length??0) + (navigation?.added.length??0) < maximumFiles, 'Prepared static route alias export exceeds the file limit.');
+  const inventory=[...files].map(([path,stat])=>({path,bytes:stat.size}));
+  const treePlan=planNavigationTrees(out,expectedSourceCommit,inventory);
+  // Reserve the routing-only edgeone.json added during sealing of provider exports.
+  const sealedFiles=(plan:typeof treePlan)=>files.size-pairs.length+1-(plan?.removed.length??0)+(plan?.added.length??0)+Number(treePlan!==undefined);
+  const navigation=treePlan&&sealedFiles(treePlan)>=maximumFiles
+    ?planNavigationTrees(out,expectedSourceCommit,inventory,true)
+    :treePlan;
+  requireThat(sealedFiles(navigation)<maximumFiles, `Prepared static route alias export exceeds the file limit (${sealedFiles(navigation)} files).`);
   // Recheck the complete baseline after comparison and before the first mutation.
   requireThat(JSON.stringify([...files].map(([relative, stat]) => [relative, identity(stat)]))
     === JSON.stringify([...layout(out)].map(([relative, stat]) => [relative, identity(stat)])), 'Static route alias export changed before preparation.');

@@ -8,7 +8,7 @@ import {createServer} from 'node:http';
 import {gzipSync} from 'node:zlib';
 import {prepareStaticRouteAliases} from './static-route-aliases.ts';
 import {verifyNavigationTrees,planNavigationTrees,applyNavigationPlan,navigationFiles,navigationWebProof,navigationProbeFiles} from './navigation-tree-export.ts';
-import {createNavigationHandler,readNavigationBinding,readNavigationManifest,readNavigationPack,verifyNavigationRow,treeRequestPath} from '../lib/navigation-trees.ts';
+import {createNavigationHandler,readNavigationBinding,readNavigationManifest,readNavigationPack,verifyNavigationRow,treeRequestPath,PREFETCH_NAME,prefetchRequestPath} from '../lib/navigation-trees.ts';
 const hash=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const source='a'.repeat(40),url='/en/docs/pcr/a/b/c/__next._tree.txt',body=Buffer.from('0:{"tree":"完整😀"}\n');
 function fixture(){
@@ -38,7 +38,7 @@ test('binding and request paths reject foreign URLs, noncanonical paths and unbo
  for(const value of ['/generated/raw/__next._tree.txt','/_next/__next._tree.txt','/a%2fb/__next._tree.txt','/a/../__next._tree.txt','//__next._tree.txt','/__next._tree.txt?x=1','/__next._full.txt'])assert.equal(treeRequestPath(value),undefined);
 });
 test('preparation restores every original tree and independently checks physical route coverage',()=>{
- const out=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'navigation-export-')));
+ const out=fs.mkdtempSync(path.join(os.tmpdir(),'navigation-export-'));
  const put=(name:string,body:string|Buffer)=>{const file=path.join(out,name);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,body);};
  try{
   put('generated/provider-runtime.json',JSON.stringify({schemaVersion:2,sourceCommit:source,navigationBinding:null}));
@@ -53,7 +53,7 @@ test('real gzip fetch retains compressed Content-Length while restoring bounded 
  try{const address=server.address();assert.ok(address&&typeof address==='object');const response=await createNavigationHandler(f.binding)(new Request(`http://127.0.0.1:${address.port}`+url));assert.equal(response?.status,200);assert.deepEqual(Buffer.from(await response!.arrayBuffer()),body);}finally{server.closeAllConnections();await new Promise<void>(resolve=>server.close(()=>resolve()));}
 });
 test('a changed original cannot be removed or rebound after planning',()=>{
- const out=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'navigation-cas-')));fs.mkdirSync(path.join(out,'generated'));
+ const out=fs.mkdtempSync(path.join(os.tmpdir(),'navigation-cas-'));fs.mkdirSync(path.join(out,'generated'));
  try{fs.writeFileSync(path.join(out,'generated/provider-runtime.json'),JSON.stringify({schemaVersion:2,sourceCommit:source,navigationBinding:null}));fs.writeFileSync(path.join(out,'index.txt'),'index');fs.writeFileSync(path.join(out,'__next._tree.txt'),'ORIGINAL');
   const plan=planNavigationTrees(out,source,navigationFiles(out))!;fs.writeFileSync(path.join(out,'__next._tree.txt'),'MODIFIED');
   assert.throws(()=>applyNavigationPlan(out,plan),/changed/);assert.equal(fs.readFileSync(path.join(out,'__next._tree.txt'),'utf8'),'MODIFIED');assert.equal(fs.existsSync(path.join(out,'generated/navigation-binding.json')),false);
@@ -84,7 +84,7 @@ test('failed manifest and hostile network responses fail closed and permit retry
  for(const mode of ['status','mime','length','oversize','truncated','redirect'] as const){const f=fixture();let invalid=true;const loader:typeof fetch=async(input,init)=>{if(!invalid)return f.loader(input,init);if(mode==='redirect')throw new Error('redirect refused');return new Response(mode==='oversize'?Buffer.concat([f.manifest,Buffer.from('x')]):mode==='truncated'?f.manifest.subarray(1):f.manifest,{status:mode==='status'?500:200,headers:{'content-type':mode==='mime'?'text/html':'application/json',...(mode==='length'?{'content-length':'1'}:{})}});};const handler=createNavigationHandler(f.binding,loader);const failed=await handler(new Request('https://example.test'+url));assert.equal(failed?.status,503);assert.equal(failed?.headers.get('cache-control'),'no-store');invalid=false;assert.equal((await handler(new Request('https://example.test'+url)))?.status,200);}
 });
 test('complete namespace and bounded product proofs reject missing, extra and substituted artifacts',()=>{
- const out=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'navigation-proof-')));const put=(name:string,value:string)=>{const file=path.join(out,name);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,value);};
+ const out=fs.mkdtempSync(path.join(os.tmpdir(),'navigation-proof-'));const put=(name:string,value:string)=>{const file=path.join(out,name);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,value);};
  try{put('generated/provider-runtime.json',JSON.stringify({schemaVersion:2,sourceCommit:source,navigationBinding:null}));for(const prefix of ['','en/docs/pcr/','zh/docs/pcr/']){put(prefix+'index.txt','full');put(prefix+'__next._full.txt','full');put(prefix+'__next._tree.txt','tree');}
   prepareStaticRouteAliases(out,source);const verified=verifyNavigationTrees(out,source,true)!,proof=navigationWebProof(verified);assert.equal(navigationProbeFiles(proof).length,verified.manifest.packs.length+2);
   assert.throws(()=>navigationProbeFiles({...proof,binding:{...proof.binding,path:'/foreign'}}));assert.throws(()=>navigationProbeFiles({...proof,packs:Array(17).fill(proof.packs[0])}));assert.throws(()=>navigationProbeFiles({...proof,samples:[]}));assert.throws(()=>verifyNavigationTrees(out,'b'.repeat(40),true));
@@ -97,4 +97,57 @@ test('complete namespace and bounded product proofs reject missing, extra and su
 test('early rejected HTTP responses release their bodies and abort fetch signals',async()=>{
  for(const mode of ['status','mime','length'] as const){const f=fixture();let cancelled=false,signal:AbortSignal|null|undefined;const loader:typeof fetch=async(_input,init)=>{signal=init?.signal;return new Response(new ReadableStream({cancel(){cancelled=true;}}),{status:mode==='status'?500:200,headers:{'content-type':mode==='mime'?'text/html':'application/json',...(mode==='length'?{'content-length':'1'}:{})}});};
  assert.equal((await createNavigationHandler(f.binding,loader)(new Request('https://example.test'+url)))?.status,503);assert.equal(cancelled,true);assert.equal(signal?.aborted,true);}
+});
+
+test('capacity fallback restores only the designated page prefetches with the original URL spelling',async()=>{
+ const out=fs.mkdtempSync(path.join(os.tmpdir(),'navigation-prefetch-'));
+ function put(name:string,body:string|Buffer){
+  const file=path.join(out,name);
+  fs.mkdirSync(path.dirname(file),{recursive:true});
+  fs.writeFileSync(file,body);
+ }
+ const prefixes=['','en/docs/pcr/','zh/docs/pcr/','en/docs/pcr/physical/'];
+ const name='en/docs/pcr/'+PREFETCH_NAME,physical='en/docs/pcr/physical/'+PREFETCH_NAME;
+ try{
+  put('generated/provider-runtime.json',JSON.stringify({schemaVersion:2,sourceCommit:source,navigationBinding:null}));
+  for(const prefix of prefixes){put(prefix+'index.txt','complete');put(prefix+'__next._tree.txt','tree:'+prefix);}
+  put(name,body);
+  put('zh/docs/pcr/'+PREFETCH_NAME,'zh page');
+  put(physical,Buffer.alloc(1_000_001));
+  put('en/docs/pcr/__next._head.txt','untouched');
+  const plan=planNavigationTrees(out,source,navigationFiles(out),true)!;
+  assert.equal(plan.binding.schemaVersion,2);
+  assert(!plan.removed.includes(physical));
+  applyNavigationPlan(out,plan);
+  const checked=verifyNavigationTrees(out,source,true)!;
+  const proof=navigationWebProof(checked);
+  assert.equal(proof.samples.length,5);
+  assert.equal(navigationProbeFiles(proof).length,plan.added.length);
+  assert.equal(fs.existsSync(path.join(out,name)),false);
+  assert.equal(fs.statSync(path.join(out,physical)).size,1_000_001);
+  assert.equal(fs.readFileSync(path.join(out,'en/docs/pcr/__next._head.txt'),'utf8'),'untouched');
+  const calls:string[]=[];
+  const handler=createNavigationHandler(checked.binding,async input=>{
+   const pathname=new URL(String(input)).pathname;
+   calls.push(pathname);
+   return new Response(fs.readFileSync(path.join(out,pathname)),{headers:{'content-type':'application/json'}});
+  });
+  const origin='https://example.test/';
+  assert.equal(await handler(new Request(origin+physical)),undefined);
+  assert.deepEqual(calls,[]);
+  for(const url of [origin+name,origin+'en/docs/pcr/'+encodeURIComponent(PREFETCH_NAME)+'?_rsc=a']){
+   const response=await handler(new Request(url));assert.ok(response);
+   assert.equal(response.status,200);assert.deepEqual(Buffer.from(await response.arrayBuffer()),body);
+  }
+  const head=await handler(new Request(origin+name,{method:'HEAD'}));
+  assert.equal(head?.headers.get('content-length'),String(body.length));
+  assert.equal((await head?.arrayBuffer())?.byteLength,0);
+  assert.equal(calls.length,2);
+  assert.equal(prefetchRequestPath('/generated/raw/'+PREFETCH_NAME),undefined);
+  assert.equal(prefetchRequestPath('/en/docs/pcr/__next._head.txt'),undefined);
+  put(name,'shadow');
+  assert.throws(()=>verifyNavigationTrees(out,source,true),/Page prefetch inventory/);
+  fs.unlinkSync(path.join(out,name));fs.unlinkSync(path.join(out,physical));
+  assert.throws(()=>verifyNavigationTrees(out,source,true),/Page prefetch inventory/);
+ }finally{fs.rmSync(out,{recursive:true,force:true});}
 });

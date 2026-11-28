@@ -8,8 +8,9 @@ export interface SourceVerificationRun extends SourceVerificationContext {
   readonly origin: string;
   readonly out: string;
 }
+export type SourceVerifyWorkerCount = 1 | 2 | 3 | 4;
 export interface SourceWorkerOptions {
-  readonly workers?: 1 | 2;
+  readonly workers?: SourceVerifyWorkerCount;
   readonly workerFile?: URL;
   readonly createChild?: typeof fork;
 }
@@ -21,32 +22,41 @@ interface ChildState {
   index: number | undefined;
 }
 
-export function parseSourceVerifyWorkers(raw: string | undefined): 1 | 2 {
+export function parseSourceVerifyWorkers(raw: string | undefined): SourceVerifyWorkerCount {
   if (raw === undefined || raw === "1") return 1;
   if (raw === "2") return 2;
-  throw new Error("PCR_SOURCE_VERIFY_WORKERS must be 1 or 2");
+  if (raw === "3") return 3;
+  if (raw === "4") return 4;
+  throw new Error("PCR_SOURCE_VERIFY_WORKERS must be 1, 2, 3, or 4");
 }
 
-/** Retain ordinary serial verification unless the caller explicitly selects two children. */
-export async function verifySourceDocuments(context: SourceVerificationRun, workers: 1 | 2): Promise<void> {
+/** Retain ordinary serial verification unless the caller explicitly selects child workers. */
+export async function verifySourceDocuments(context: SourceVerificationRun, workers: SourceVerifyWorkerCount): Promise<void> {
   if (workers === 1) {
     for (const source of context.documents) verifySourceDocument(source, context);
     return;
   }
   if (context.documents.length) {
-    await runSourceVerificationPool(context);
-    console.log(JSON.stringify({event: "source-document-verification", documents: context.documents.length, workers: 2}));
+    await runSourceVerificationPool(context, { workers });
+    console.log(JSON.stringify({event: "source-document-verification", documents: context.documents.length, workers}));
   }
 }
 
 /** Options expose the child boundary to owner tests without adding a runtime file override. */
 export async function runSourceVerificationPool(context: SourceVerificationRun, options: SourceWorkerOptions = {}): Promise<void> {
   const workerCount = options.workers ?? 2;
-  if (workerCount !== 1 && workerCount !== 2) throw new Error("Invalid source verification pool size");
+  if (workerCount !== 1 && workerCount !== 2 && workerCount !== 3 && workerCount !== 4) throw new Error("Invalid source verification pool size");
   if (!context.documents.length) return;
   const workerFile = options.workerFile ?? new URL(import.meta.url.endsWith(".js") ? "./verify-source-worker.js" : "./verify-source-worker.ts", import.meta.url);
   const createChild = options.createChild ?? fork;
   const pages = context.manifest.pages.map(page => ({url: page.url, sourcePath: page.sourcePath, sourceNodeIds: page.sourceNodeIds}));
+  const pageUrlsBySourcePath = new Map<string, string[]>();
+  for (const page of context.manifest.pages) {
+    if (!page.sourcePath) continue;
+    const urls = pageUrlsBySourcePath.get(page.sourcePath);
+    if (urls) urls.push(page.url);
+    else pageUrlsBySourcePath.set(page.sourcePath, [page.url]);
+  }
   const links = context.report.links.map(link => ({source: link.source, original: link.original, target: link.target}));
   const children: ChildState[] = [];
   const outcomes = new Map<number, Error | undefined>();
@@ -85,7 +95,7 @@ export async function runSourceVerificationPool(context: SourceVerificationRun, 
     while (state.ready && state.index === undefined && next < context.documents.length && next <= firstFailure && !infrastructureFailure) {
       const index = next++;
       const source = context.documents[index]!;
-      if (context.manifest.pages.some(page => page.sourcePath === source.sourcePath && context.parsed.has(page.url))) {
+      if ((pageUrlsBySourcePath.get(source.sourcePath) ?? []).some(url => context.parsed.has(url))) {
         try { verifySourceDocument(source, context); complete(index); }
         catch (error) { complete(index, error instanceof Error ? error : new Error(String(error))); }
       } else {
@@ -125,10 +135,11 @@ export async function runSourceVerificationPool(context: SourceVerificationRun, 
     } catch (error) { rejectInfrastructure(error instanceof Error ? error : new Error(String(error))); }
   }
   try {
+    const childHeapMb = workerCount > 2 ? 2048 : 4096;
     for (let number = 0; number < workerCount; number++) {
       const child = createChild(workerFile, [], {serialization: "advanced", stdio: ["ignore", "inherit", "inherit", "ipc"],
         env: {...process.env, NODE_OPTIONS: buildNodeOptions(process.env.NODE_OPTIONS)},
-        execArgv: [...process.execArgv, "--max-old-space-size=4096"]});
+        execArgv: [...process.execArgv, `--max-old-space-size=${childHeapMb}`]});
       const state: ChildState = {child, ready: false, closed: false, index: undefined,
         joined: new Promise(resolve => child.once("close", code => {
           state.closed = true;

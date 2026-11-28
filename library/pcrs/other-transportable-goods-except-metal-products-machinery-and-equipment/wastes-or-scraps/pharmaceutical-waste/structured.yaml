@@ -1,10 +1,1133 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39931"
-  title: "Pharmaceutical waste"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.pharmaceutical-waste"
+  classification_refs: "CPC 3.0:39931, Pharmaceutical waste; accepted narrower relation under docs/adr/2026-11-22-accept-cpc-39931-expired-pharmacy-owned-paracetamol-tablets.md"
+  covered_products: "Expired pharmacy-owned paracetamol-only whole tablets, one finished formulation and original lot per cohort, first documented internal destruction-stream transfer"
+  excluded_products: "Other drugs/forms; patient returns; manufacturing rejects; saleable/quarantined stock without demonstrated unfitness and discard; biological/infectious/hazardous waste; API; empty packs; solvents; sludge; disposal services"
+  representative_product: "One actual expired paracetamol-only tablet lot with a documented stock-to-destruction-stream transfer; no public qualifying sample or quantity is asserted"
+  production_route: "Trace original procurement and stock history; verify expiry and discard decision; record stock removal, net-mass determination and first internal segregation handover; separately link any subsequent custody work"
+  market_state: "Waste whole tablets in their recorded original containment, withheld from medicinal supply; no deblistering or reformulation is presumed"
+functional_unit:
+  what: "Traceable expired paracetamol-only tablet material first handed from pharmacy stock into its segregated destruction stream"
+  how_much: "1 kg net whole-tablet mass excluding all packaging and containers"
+  how_well: "Same finished formulation identity/lot, expiry and discard decision, actual internal handover, lawful non-biological/non-infectious non-hazardous determination for the actual site and period; no therapeutic equivalence"
+  how_long_or_cycle: "One unique first recorded waste handover; later custody uses the original cohort rather than creating new production"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: b_origin
+      applies_to: "segregation"
+      rule: "Establish own-stock origin, expiry, unfitness, discard and actual recorded internal receipt separately. A receiving custodian and designated area suffice for the internal gate only when recorded. No factory rejection record or consumer-return study proves this route."
+      source_ids:
+        - psi-medicine-disposal
+        - oleary-pharmacy-audit-2026
+        - wco-hs30-2022
+    - rule_id: b_operations
+      applies_to: "segregation"
+      rule: "Include actual stock verification, segregation, weighing, handling, necessary containment, attributable lighting/HVAC, cleaning, failed/zero-release operations and standby within the declared gate. Preserve real stage records. No deblistering, grinding, drying, chemical conversion, pathogen treatment or active-substance recovery is part of this route."
+      source_ids:
+        - psi-medicine-disposal
+        - ilcd-lca-detailed-2010
+    - rule_id: b_release
+      applies_to: "reference_product"
+      rule: "Count Q once at first qualified internal handover. Pre-release stock plus incoming stock equals closing pre-release stock plus Q plus disjoint other outflows. Segregated stock plus Q and actual returns equals closing segregated stock plus gross dispatch and disjoint other outflows. Cancel internal Q when combining gates; neither closing stock nor external dispatch is new Q."
+      source_ids:
+        - psi-medicine-disposal
+        - ilcd-lca-detailed-2010
+    - rule_id: b_pack
+      applies_to: "all inventory rows"
+      rule: "For EACH actual pack/container/pallet component at one physical gate, opening + P + N_ext + ER = closing + grossS + EO + W. Include empty, attached pre-release, attached segregated and reusable stocks. P is true purchase including articles included in a whole purchase price; N_ext is first external non-purchased receipt, including accompanying, borrowed, rented or free-transfer articles whether or not supplier data cover them; ER requires a traceable earlier outward dispatch of the same item. Classes are mutually exclusive; internal issues/reuse cancel."
+      source_ids:
+        - ilcd-lca-detailed-2010
+    - rule_id: b_interfaces
+      applies_to: "all inventory rows"
+      rule: "The conditional cards are not a complete site BOM. Determine each actual original medicine-pack component and any specialised bin body, lid, liner, closure or pallet separately; install its concrete atomic receipt/output or stock interface and measured quantity before dataset completeness. A PE bag is neither evidence of a compliant bin nor a substitute for one. Missing original packaging cannot be hidden inside net Q, a generic collection row or a symbolic balance."
+      source_ids:
+        - psi-medicine-disposal
+        - ilcd-lca-detailed-2010
+    - rule_id: b_custody
+      applies_to: "all inventory rows"
+      rule: "Link physical receipts, ownership, original item/cohort and exchange-level carried burdens. Assign actual purchase, transport, rental or other services once; absent supplier inclusion evidence is a gap. A return/first non-purchased receipt is not automatically virgin manufacture, zero burden or a credit. Gross throughput and the environmental supply-demand vector are different accounts."
+      source_ids:
+        - ilcd-lca-detailed-2010
+    - rule_id: b_destination
+      applies_to: "segregation"
+      rule: "Base scope ends at internal segregation. An explicitly declared later storage/packing/dispatch extension retains original cohort mass Qc and adds only actual incremental work; H is service activity, never production. Collection, treatment and final disposal remain separately linked downstream services, not demonstrated by internal designation. Do not presume destruction performance, off-site receipt or an avoided-product credit."
+      source_ids:
+        - psi-medicine-disposal
+        - ilcd-lca-detailed-2010
+boundary_abstraction:
+  declared_starting_condition: "Own-stock expired finished tablets at recorded discard decision, with procurement, stock and packaging history linked"
+  starting_condition_role: "foreground_gate_input"
+  product_classification_scope: "CPC 3.0:39931; narrower single-product expired own-stock route"
+  recursive_input_rule: "Internal same-lot movements cancel. Transfer, ownership change, resale, reinspection and previously dispatched returns do not create a second reference release or another medicine-production process."
+  upstream_dataset_requirement: "Preserve original medicine and packaging supplier/system-model provenance, stock burdens and included service scopes; declare how original burdens are attributed rather than assuming waste is burden-free or remanufacturing the medicine."
+  disclosure: "Exact discard and first internal receiving gate; real packaging, utilities, stock and inherited burdens; optional custody scope and its original cohort; missing qualification and foreground evidence"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Expired paracetamol-only tablets"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Verifiable finished formulation identity (brand and authorisation or product-specification identifier"
+    - "sole active substance and dosage form)"
+    - "without manufacturing proportions"
+    - "labelled strength"
+    - "whole-tablet form and lot"
+    - "original supplier"
+    - "stock ownership and no patient-return/manufacturing-reject origin"
+    - "expiry and discard decision"
+    - "actual site/country/period"
+    - "existing documentation needed for waste/hazard determination"
+    - "original packaging and all actual components"
+    - "non-destructive measured net mass or independently measured same-lot whole-tablet mass with counts"
+    - "method and uncertainty"
+    - "first handover event"
+    - "receiving internal custodian and designated location"
+    - "opening/closing stocks and prior dispatch/return history"
+    - "provider-included scopes and inherited burdens"
+    - "actual utilities"
+    - containment
+    - "residual destinations and any later custody extension"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Q is net same-lot whole-tablet mass at the first documented qualified internal waste handover. Use cp_release calibrated gross minus independently evidenced component tares, or count times independently measured same-lot finished-tablet unit mass. Record method, uncertainty and representativeness without opening waste solely for this model. Nominal active strength, cost, pack count or a mixed-bin weight is not net medicine mass."
+  - id: raw_units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Actual declared property"
+      uuid: ""
+    required_unit: "kg; MJ"
+    rule: "Collect raw totals and event records. Convert original units before attribution and the sole division by Q. Volume-to-mass needs independently measured state-specific density; integrate actual rates once and never multiply an integrated total by time again."
+  - id: electricity_unit
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Collect metered kWh and use 1 kWh = 3.6 MJ. Energy is the metering property; the actual supplier flow, its native reference property and provider remain independently unbound until verified. Sharing an energy unit group does not prove net calorific value."
+  - id: composition
+    applies_to: "expired_tablets_in; tablet_fragments; tablet_washwater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Full tablet mass includes excipients and actual moisture. Assayed active mass is a non-additive subledger. Do not infer formulation, degradation, density or a named emission from label strength, COD/BOD, total dust or an unexplained balance residual."
+process_map:
+  - id: segregation
+    name: "Own-stock expiry designation through first internal destruction-stream handover"
+    inclusion: "required"
+    inclusion_condition: "Actual qualifying single-product own-stock cohort"
+    role: "foreground"
+    quantitative_reference: "reference_product"
+process_inventory:
+  - id: segregation
+    label: "Own-stock expiry designation through first internal destruction-stream handover"
+    inputs:
+      product:
+        - row_id: expired_tablets_in
+          role: "Expired own-stock whole tablets"
+          name: "Expired paracetamol-only tablets"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the same-lot expired tablets leaving own stock, with original procurement and carried exchange burdens. This is a stock transfer, not a new API/excipient purchase. Preserve the verifiable finished formulation identity, corresponding upstream dataset and original pack history; no manufacturing recipe or ingredient proportions are required at this handover gate. Use existing product/safety documentation for classification; unresolved product identity or native-flow applicability remains explicit."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_history
+              source_ids:
+                - psi-medicine-disposal
+            ranges: []
+        - row_id: electricity
+          role: "Metered electricity"
+          name: "Grid electricity at the actual pharmacy"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Conditional actual meter/submeter consumption for segregation, weighing, attributable lighting/HVAC, standby and cleanup. Record voltage, country, provider and supply boundary. Meter Energy is not the still-unverified native property of a supplier flow; rated power alone is not a consumption measurement."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: tap_water
+          role: "Water for actual cleaning"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual piped treated water, not pharmaceutical purified water, raw abstraction or steam. Native Mass is the reference; its secondary Volume conversion is not independently measured site density. Verify supplier and treatment scope; count water already inside a purchased cleaning preparation only as a non-additive constituent."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: pe_bag_receipts
+          role: "Conditional PE bag receipts"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actually present polyethylene bag article. The native Product identity/CAS9002-88-4 does not specify grade, dimensions, layers, supplier or suitability. Partition each external physical receipt into P, N_ext or ER and record stock and supplier scope. Do not apply a virgin-production provider to all gross returns/reuse."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: paper_label_receipts
+          role: "Conditional printed paper label receipts"
+          name: "Paper label"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3bea7a-9e89-4f50-a065-79feaac682db"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual whole printed paper sticker. Native production mix at plant GLO does not establish actual provider or adhesive chemistry. Record all physical receipts including supplier-accompanying labels with no separate invoice; include printing/adhesive once within the acquired article unless actually made separately."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "First internally handed-over expired tablet material"
+          name: "Expired paracetamol-only tablets"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The sole reference output is net whole-tablet mass first recorded as physically received into the segregated destruction stream. Exclude all packaging. Require the actual discard, internal custodian/location, stock-removal and mass records; internal designation is not proof of off-site receipt or destruction. Reinspection and later dispatch create no second Q."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - psi-medicine-disposal
+            ranges: []
+        - row_id: pe_bag_dispatch
+          role: "PE bag on actual gross external dispatch"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only in an explicitly declared custody extension with actual external dispatch. Record grossS for the same bag article, separate from net tablets Q, and retain inherited supply once. This is a packaging movement, not another co-product or new bag production. At the base internal gate retained bags remain closing stock."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: pe_bag_external_return
+          role: "PE bag returned to its external owner"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual EO, disjoint from grossS and W, with prior receipt, recipient and any genuine incremental transport/cleaning/rental service. A later inbound ER requires its own traceable prior outward dispatch of that same item. Ownership does not erase physical flow or establish a credit."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: paper_label_dispatch
+          role: "Paper label accompanying actual dispatch"
+          name: "Paper label"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3bea7a-9e89-4f50-a065-79feaac682db"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual grossS in a declared custody extension. Include inherited attached and newly applied labels separately by event, without a second original-article purchase. At the base internal gate retained labels stay in closing stock. Any real owner return needs its own disjoint concrete destination interface."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+      waste:
+        - row_id: tablet_fragments
+          role: "Separately removed same-formulation fragments"
+          name: "Expired paracetamol-tablet fragments"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a separately weighed actual residual leaving to a documented waste receiver. Same-consignment fragments already in Q are not an extra output. Keep the finished formulation identity, whole-fragment mass, contamination and destination; pure paracetamol emission identity is not a whole-fragment identity."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: tablet_washwater
+          role: "Actual tablet-contaminated cleaning effluent"
+          name: "Paracetamol-tablet cleaning effluent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual whole aqueous effluent with measured mass and treatment receiver. Retain separately analysed water and chemicals as non-additive subledgers. No cleaning, formulation dissolution or on-site treatment is prescribed; if actually present within scope, complete its specific inputs and outputs before claiming coverage."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: pe_bag_waste
+          role: "Used contaminated PE bag"
+          name: "Tablet-contaminated polyethylene bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual component W. Measure bag material separately from adhering medicine and link its real waste destination. The new-bag Product UUID is not a contaminated Waste-flow identity; medicine adhering to it belongs once in the medicine ledger. No default recovery credit."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+        - row_id: paper_label_waste
+          role: "Removed used paper label"
+          name: "Used printed paper adhesive label"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual discarded labels, with whole-article mass, actual contamination and receiver. Supplier-included print/adhesive is not purchased twice. Retained attached labels are stock or dispatch, not simultaneously W. A virgin-label Product identity does not establish its Waste identity."
+          amount:
+            expression: "Measured attributable quantity per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ilcd-lca-detailed-2010
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: a_scope
+    applies_to: "all inventory rows"
+    rule: "Apply attributional foreground accounting. There is no intended co-product here; packaging movements and custody are not new tablet production. Original purchase price or an accounting write-off does not determine environmental burden allocation."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: a_separate
+    applies_to: "segregation"
+    rule: "Assign dedicated records and subdivide physically or virtually first. For remaining shared exchanges demonstrate their determining physical causality to actual co-functions. Only a genuinely unresolved remainder uses contemporaneous market values at the same process gate and physical state. Common mass/revenue alone is not causality; no free choice of allocation ratio."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: a_history
+    applies_to: "expired_tablets_in"
+    rule: "Retain original medicine and packaging production/procurement burdens under their declared upstream system model. Expiry and discard do not establish either automatic full burden transfer or zero burden. Bind every carried exchange vector once; missing upstream history or allocation basis is explicit uncertainty, not new ingredient buying."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: a_cohorts
+    applies_to: "all inventory rows"
+    rule: "Preserve opening/closing pre-release and segregated-stock vectors and every failed, zero-release, idle and cleanup record. Later services/returns use original Qc, not new Q. A Q=0 cohort retains its raw loads without a per-kg result; do not shift them to unrelated successful cohorts."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: a_services
+    applies_to: "all inventory rows"
+    rule: "P/N_ext/ER classify physical receipts independently from environmental burdens. Retain owner, provider scope and original cohort; count actual procurement, transport, cleaning, rental and other incremental services once. No-invoice receipt and supplier omissions both require investigation. Do not multiply gross packaging reuse by a new-article provider or duplicate supplier-included services."
+    source_ids:
+      - ilcd-lca-detailed-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_history
+      process_id: "segregation"
+      flow_role: "expired_tablets_in"
+      record_type: "stock_history"
+      raw_fields: "product; finished_formulation_identity; authorisation_or_specification_id; upstream_dataset_ref; existing_safety_documents; labelled_strength; tablet_form; original_lot; supplier; ownership; original_receipt; expiry; discard_decision; patient_return_exclusion; opening_stock; closing_stock; inherited_vector_i; provider_scope_i"
+      collection_method: "Obtain original procurement/stock and pharmacist disposition records, preserving original packaging, finished formulation identity and exchange-level upstream provenance. Verify brand, authorisation/specification identifier, sole active substance and dosage form against existing records and compatible upstream data; do not require quantitative manufacturing proportions. Raw totals for per 1 kg reference flow; no division here."
+      unit: "kg"
+      frequency: "each lot and movement"
+      temporal_coverage: "procurement history through reporting close"
+      site_scope: "actual pharmacy and original supplier"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original records; actual site/period waste determination; linked upstream system model"
+    - protocol_id: cp_release
+      process_id: "segregation"
+      flow_role: "reference_product"
+      record_type: "internal_handover_weighing"
+      raw_fields: "lot; expiry; discard; stock_removal; receiving_custodian; designated_location; event_time; first_event_id; gross; each_component_tare; count_if_used; same_lot_finished_unit_mass_if_used; net; Q; Qc; opening_stock; closing_stock; grossS; actual_return; prior_dispatch; calibration; uncertainty"
+      collection_method: "Reconcile actual stock removal and internal receipt with a calibrated non-destructive net-mass record. Alternatively use count times independently measured same-lot finished-tablet mass with representative sampling and uncertainty. Do not derive mass from active strength/cost/bin gross. Raw totals for per 1 kg reference flow; no division here."
+      unit: "kg"
+      frequency: "each first handover and custody event"
+      temporal_coverage: "opening through close including zero-release periods"
+      site_scope: "actual pharmacy stock and segregated receiving gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "internal event record; pharmacist discard decision; expiry; calibrated gross/tare or same-lot finished-mass basis; actual qualification"
+    - protocol_id: cp_pack
+      process_id: "segregation"
+      flow_role: "individual component interfaces"
+      record_type: "component_custody"
+      raw_fields: "component_id; material; form; direction; event; owner; lot; opening_empty; opening_attached_pre_release; opening_attached_segregated; opening_reusable; P; N_ext; ER; prior_outward_dispatch; closing; grossS; EO; W; measured_mass; supplier_scope_i; inherited_vector_i; incremental_service_i"
+      collection_method: "Determine actual original pack and every containment component individually. Reconcile calibrated weights or traceable measured BOM with all receipts, including first non-purchases irrespective of supplier coverage and same-item returns. Install every actual atomic interface. Raw totals for per 1 kg reference flow; internal issues/reuse cancel; no division here."
+      unit: "kg"
+      frequency: "each receipt, movement, discard and stock count"
+      temporal_coverage: "opening through close; full original item lineage for returns"
+      site_scope: "same component-specific physical gate and any declared custody extension"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "measured BOM; receipts; ownership and invoices/whole-price scope; prior dispatch; supplier inclusion and missing-data disclosure"
+    - protocol_id: cp_utilities
+      process_id: "segregation"
+      flow_role: "electricity; tap_water"
+      record_type: "metered_activity"
+      raw_fields: "stage; lot; meter_start; meter_end; raw_unit; rate_time_if_used; density_if_needed; provider; voltage; geography; included_scope; standby; failed_operations; cleanup; service_H; original_Qc"
+      collection_method: "Record actual meters, supplier activity and justified dedicated/shared-stage assignment. Distinguish metered Energy from supplier-native flow property. No rated-power or generic density substitution. Raw totals for per 1 kg reference flow; no division here."
+      unit: "kWh; kg"
+      frequency: "each stage and meter interval"
+      temporal_coverage: "full campaign and any declared custody extension"
+      site_scope: "actual pharmacy and supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; supplier/context compatibility; allocation evidence; actual measured density if needed"
+    - protocol_id: cp_residuals
+      process_id: "segregation"
+      flow_role: "tablet_fragments; tablet_washwater"
+      record_type: "residual_transfer"
+      raw_fields: "material; lot; event; whole_mass; measured_water; actual_assay_and_basis; contamination; receiver; treatment_boundary; sample_mass; inherited_vector_i"
+      collection_method: "Independently weigh every actual residual and identify its real receiver; reconcile non-additive whole-material and analysed-component views. COD/BOD or dust alone is not a named chemical emission. Raw totals for per 1 kg reference flow; no division here."
+      unit: "kg"
+      frequency: "each actual residual transfer"
+      temporal_coverage: "all relevant operations and cleanup through close"
+      site_scope: "actual source and residual receiving gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scales; analysis method/basis; transfer documentation; destination and completeness evidence"
+    - protocol_id: cp_services
+      process_id: "segregation"
+      flow_role: "later custody"
+      record_type: "cohort_service"
+      raw_fields: "original_first_event; Qc; H; raw_exchange_i; prior_dispatch; actual_return; opening_stock_i; closing_stock_i; inherited_vector_i; included_scope_i"
+      collection_method: "Only for an explicitly declared extension: retain original cohort and actual incremental storage, handling, dispatch or return work. An inherited supply is not a second purchase. Raw totals for per 1 kg reference flow of original Qc; no division here."
+      unit: "actual service unit; kg"
+      frequency: "each actual service event"
+      temporal_coverage: "first internal handover through declared custody close"
+      site_scope: "actual custodian and declared extension"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "first-event lineage; real service records; provider inclusion; incremental measurements"
+  calculation_rules:
+    - id: c_raw
+      applies_to: "all inventory rows"
+      rule: "Convert original units; 1 kWh = 3.6 MJ. Integrate true rates once. Volume-to-mass requires independently measured density for that actual state. Preserve raw totals and uncertainty."
+      inputs:
+        - raw_records
+        - unit_chain
+        - density_if_used
+      output: "raw_totals_i"
+      source_ids:
+        - ilcd-lca-detailed-2010
+    - id: c_mass
+      applies_to: "reference_product"
+      rule: "For each first qualified event, q_event = gross minus all independently measured component tares, OR count times independently measured same-lot finished-tablet unit mass; record the chosen method, never add the two estimates. Q is the sum of unique first-event net masses for the defined same-product cohort. Neither nominal strength nor costs convert counts to medicine kg."
+      inputs:
+        - cp_release
+        - cp_pack
+      output: "Q"
+      source_ids:
+        - psi-medicine-disposal
+    - id: c_tablets
+      applies_to: "expired_tablets_in; reference_product"
+      rule: "Pre-release gate: opening_pre + incoming_stock = closing_pre + Q + other_pre_out. Segregated custody gate: opening_seg + Q + true_return = closing_seg + grossS + other_seg_out. Other outflows are disjoint actual residuals with their compositions measured. Q cancels on combination. Previously released returns and reinspection create no new Q; preserve original cohort and all physical mass."
+      inputs:
+        - cp_history
+        - cp_release
+        - cp_residuals
+        - cp_services
+      output: "medicine_reconciliation"
+      source_ids:
+        - ilcd-lca-detailed-2010
+    - id: c_components
+      applies_to: "all inventory rows"
+      rule: "For EACH component: opening + P + N_ext + ER = closing + grossS + EO + W, including empty/attached/reusable stocks. Receipt classes and destination classes are mutually exclusive; ER requires prior same-item outward dispatch. Internal issues/reuse cancel. Missing real interface/quantity is incomplete; no balancing plug or omitted non-purchased article."
+      inputs:
+        - cp_pack
+        - cp_release
+        - cp_services
+      output: "component_reconciliation"
+      source_ids:
+        - ilcd-lca-detailed-2010
+    - id: c_vectors
+      applies_to: "all inventory rows"
+      rule: "For each original cohort and exchange i: opening carried vector + actual carried-in vector + genuinely new attributable vector = closing vector + assigned reference vector A_i + identified other-destination vector. Deduplicate provider-included scope once. Apply dedicated/subdivided records, then determining physical causality, then only unresolved same-gate/state/time market-value remainder. Physical throughput is not automatically new procurement burden."
+      inputs:
+        - cp_history
+        - cp_pack
+        - cp_utilities
+        - cp_residuals
+        - cp_services
+      output: "A_i"
+      source_ids:
+        - ilcd-lca-detailed-2010
+    - id: c_normalize
+      applies_to: "all inventory rows"
+      rule: "a_i = A_i / Q for Q>0, once after raw conversion, attribution and reconciliation. The reference output is 1 kg. Q=0 retains raw burdens with no unit result. A later custody profile uses original Qc, with actual increments added before this sole division or reported once as a separate increment; H is never production. For a physical interface numerator use its measured raw G_i in place of A_i in this same normalisation step, retaining g_i = G_i / Q separately from environmental demand a_i. Never add these two views or attach virgin supply to gross throughput; never divide already-normalised values again."
+      inputs:
+        - A_i
+        - G_i
+        - Q
+        - Qc
+        - cp_release
+        - cp_services
+      output: "a_i; g_i"
+      source_ids:
+        - ilcd-lca-detailed-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference_product"
+      requirement: "Require the actual single-product/lot expiry, discard and own-stock-to-segregated-stream intersection. Broad audit categories are not proof that this medicine met it."
+      evidence: "Original procurement, expiry and internal custody records; oleary-pharmacy-audit-2026 limitations"
+    - id: dq_gate
+      applies_to: "reference_product"
+      requirement: "Require site/period-specific lawful waste and non-hazardous qualification; no hazard/safety approval follows from CPC, non-biological naming or a finite measurement check. Internal receipt is not external collection."
+      evidence: "Actual competent determination and recorded internal gate; psi-medicine-disposal; wco-hs30-2022"
+    - id: dq_mass
+      applies_to: "reference_product"
+      requirement: "Calibrated net whole-tablet mass or independently supported same-lot finished-mass conversion; all packaging excluded and uncertainty retained. No public kilogram case is supplied."
+      evidence: "cp_release raw records; oleary-pharmacy-audit-2026 quantity limits"
+    - id: dq_complete
+      applies_to: "all inventory rows"
+      requirement: "Every actual original package, specialised containment, utility, cleaning preparation, residual and real species requires its own atomic interface or explicit measured stock account. The initial map is not a cut-off."
+      evidence: "Actual full BOM and event inventory; component and material closure"
+    - id: dq_lineage
+      applies_to: "all inventory rows"
+      requirement: "Carry original stock/item/provider burdens through all gates and actual returns. Keep genuine incremental services, failures, standby and cleanup without double procurement."
+      evidence: "Exchange-vector and original-dispatch lineage; ilcd-lca-detailed-2010"
+    - id: dq_native
+      applies_to: "all inventory rows"
+      requirement: "Verify actual type, physical state, supply context, property and unit chain; exact native Chinese names where available. Metering identity does not fix a supplier's native reference property."
+      evidence: "Original native identities and independent supplier context"
+validation_rules:
+  - rule_id: v_applicability
+    applies_to: "reference_product"
+    rule: "Require the same-product expired own-stock cohort, actual discard, internal segregation receipt and site/period qualification. Unused, near-expiry, quality-hold or uncollected status alone cannot pass. Excluded origins and biological/infectious/hazardous material cannot use this method."
+    source_ids:
+      - psi-medicine-disposal
+      - wco-hs30-2022
+      - oleary-pharmacy-audit-2026
+  - rule_id: v_reference
+    applies_to: "reference_product"
+    rule: "Require one linked Product output at 1 kg net whole-tablet mass with a unique first-event denominator. Resolve its precise native identity before a completed dataset claim; clinical waste, generic waste and an API elementary emission are not substitutes. Verify the same-lot mass basis for any count conversion."
+    source_ids:
+      - wco-hs30-2022
+      - oleary-pharmacy-audit-2026
+  - rule_id: v_stock
+    applies_to: "all inventory rows"
+    rule: "Check pre-release, segregated and combined physical gates with Q cancelling internally. Closing stock and gross dispatch are not extra production; return/reinspection retains original cohort and no new Q. Check analysed constituents independently, without fitting several unknowns to one residual."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: v_pack
+    applies_to: "all inventory rows"
+    rule: "Check EACH original pack/container/pallet component and concrete atomic interfaces, including P, first N_ext whether covered by supplier data or not, and same-item traceable ER. Enforce opening+P+N_ext+ER=closing+grossS+EO+W with empty/attached/reusable stocks and cancelling internal transfers. Missing quantities/interfaces cannot pass by symbols."
+    source_ids:
+      - psi-medicine-disposal
+      - ilcd-lca-detailed-2010
+  - rule_id: v_burden
+    applies_to: "all inventory rows"
+    rule: "Verify provider scope, inherited vectors and real incremental procurement/transport/service burdens exactly once. No automatic zero burden, virgin manufacture on gross throughput, or credit. Check subdivision, determining physical causality and only residual same-gate/state/time economic allocation."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: v_calculation
+    applies_to: "all inventory rows"
+    rule: "Require raw collection, unit/rate/density conversion and attribution before sole A_i/Q division. Q=0 retains loads; service extensions use original Qc and never H as production. Check native property/unit compatibility separately from electricity metering."
+    source_ids:
+      - ilcd-lca-detailed-2010
+  - rule_id: v_destination
+    applies_to: "all inventory rows"
+    rule: "Keep internal gate, off-site dispatch and downstream treatment distinct. Reconcile whole effluent versus constituent analyses as non-additive and one provider per actual exchange. Real residuals/releases need actual destinations/species/compartments; no disposal effectiveness or default emission is inferred."
+    source_ids:
+      - psi-medicine-disposal
+      - ilcd-lca-detailed-2010
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset only after all applicability, native-identity and evidence requirements are met"
+  allowed_use: "Same-product expired own-stock tablets at documented first internal destruction-stream handover, with original burden model and declared incremental scope"
+  excluded_use: "Other medicines/forms/origins; therapeutic use; safe/legal handling certification; biological/infectious/hazardous waste; treatment/disposal or active-substance recovery service; automatic zero-burden or avoided-product credits"
+  required_metadata: "Finished formulation identity/authorisation or specification/lot and expiry, corresponding upstream data and existing classification documentation, without manufacturing proportions; stock origin and discard; internal custodian/location/time; actual qualification; net-mass method and uncertainty; full packaging/BOM and custody; Q and any later original Qc; raw/normalised separation; site/period/provider and upstream allocation provenance"
+  required_quality_disclosure: "Public evidence does not establish this product-specific subgroup or net kg; reference Product UUID and actual site data unresolved; conditional component identities do not establish occurrence; original packaging and real services need full coverage; candidate guidance does not imply scientific/translation approval"
+  update_trigger: "New original subgroup/lot/mass/pack or custody evidence; changed waste determination, site/period or supplier; corrected native identities/property chains; new actual exchange or revised upstream system model"
+data_sources:
+  - id: "unsd-cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver.3.0 Explanatory Notes, 30 June 2025, p.205; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Frozen 39931 identity and neighbouring categories; name-only entry does not establish hazard status"
+  - id: "unsd-cpc3-notes-2026"
+    type: "official_guidance"
+    reference: "UNSD, CPC explanatory notes, 23 October 2026, CPC3!A1940:D1940; https://unsdsna.azure-api.net/files/pages/cpc/CPC_Ver3_Exp_Notes_2026-10-23_for_Website.xlsx"
+    used_for: "Latest original 39931 correspondence to HS2022 3006.92; classification corroboration only, no change to frozen coordinate"
+  - id: "wco-hs30-2022"
+    type: "official_guidance"
+    reference: "WCO, HS2022 Chapter 30, Note 4(k), PDF p.2, and 3006.92, p.4; https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0630_2022e.pdf"
+    used_for: "Unfitness for original purpose, including expiry, distinguishes waste pharmaceuticals from medicinal goods; not a hazard or actual-discard determination"
+  - id: "psi-medicine-disposal"
+    type: "official_guidance"
+    reference: "Pharmaceutical Society of Ireland, Guidelines on the Disposal of Medicinal Products for a Retail Pharmacy Business, introduction and §§3.1.3–3.1.5; https://www.psi.ie/practice-supports/guidance-and-guidelines-pharmacists-and-pharmacies/guidelines-disposal-medicinal"
+    used_for: "Qualitative pharmacy stock segregation, designated custody and assessment context; basis for a derived documented internal gate, not proof of an actual transfer or an LCA mass factor; verify actual applicable place/date obligations"
+  - id: "oleary-pharmacy-audit-2026"
+    type: "literature"
+    reference: "O'Leary et al., Unused and expired medicines waste in Ireland – an audit of medicines returned to and generated in community pharmacies, Irish Journal of Medical Science 195, 2853–2864, 2026, Methods, Results and Figs. 3 and 4; https://doi.org/10.1007/s11845-026-04436-6"
+    used_for: "Original April/May 2025 audit separates own-stock waste/expiry from returns and documents on-site designation; does not identify this product-specific intersection, finished-tablet mass or a completed kilogram dataset; costs and unit counts are not LCA factors"
+  - id: "ilcd-lca-detailed-2010"
+    type: "handbook"
+    reference: "European Commission JRC, ILCD Handbook, General guide for LCA, Detailed guidance, March 2010, §§7.9.2–7.9.3, printed pp.255–272; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "General attributional subdivision, determining-physical-causality and residual same-gate/state economic hierarchy; balances/protocols are explicit method derivations here, not reported pharmacy factors or a waste exemption"
+  - id: "waghmare-expired-tablets-2026"
+    type: "literature"
+    reference: "Waghmare Rohit and Bharatee Chaudhari, Comparative Evaluation Test of Fresh & Expired Pharmaceutical Tablets, Asian Journal of Pharmaceutical Research and Development 14(5), 8–13, 2026, publisher abstract; https://doi.org/10.22270/ajprd.v14i5.1860"
+    used_for: "Independent original evidence for the expired paracetamol-tablet physical state only; not specific finished formulation identity, same pharmacy/lot/strength, own-stock discard or disposal proof; no test conditions, clinical conclusions, residual recovery or use advice adopted"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:96b6b99377f23ed5985f9097aac468ad3cd6a4256c8f239fd0eaaadbc87a35e6"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_9094"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 9094
+          line: 67
+          column: 1
+        end:
+          offset: 13696
+          line: 90
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Own-stock expired finished tablets at recorded discard decision, with procurement, stock and packaging history linked |\n| starting_condition_role | foreground_gate_input |\n| product_classification_scope | CPC 3.0:39931; narrower single-product expired own-stock route |\n| recursive_input_rule | Internal same-lot movements cancel. Transfer, ownership change, resale, reinspection and previously dispatched returns do not create a second reference release or another medicine-production process. |\n| upstream_dataset_requirement | Preserve original medicine and packaging supplier/system-model provenance, stock burdens and included service scopes; declare how original burdens are attributed rather than assuming waste is burden-free or remanufacturing the medicine. |\n| disclosure | Exact discard and first internal receiving gate; real packaging, utilities, stock and inherited burdens; optional custody scope and its original cohort; missing qualification and foreground evidence |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| b_origin | segregation | Establish own-stock origin, expiry, unfitness, discard and actual recorded internal receipt separately. A receiving custodian and designated area suffice for the internal gate only when recorded. No factory rejection record or consumer-return study proves this route. | `psi-medicine-disposal`; `oleary-pharmacy-audit-2026`; `wco-hs30-2022` |\n| b_operations | segregation | Include actual stock verification, segregation, weighing, handling, necessary containment, attributable lighting/HVAC, cleaning, failed/zero-release operations and standby within the declared gate. Preserve real stage records. No deblistering, grinding, drying, chemical conversion, pathogen treatment or active-substance recovery is part of this route. | `psi-medicine-disposal`; `ilcd-lca-detailed-2010` |\n| b_release | reference_product | Count Q once at first qualified internal handover. Pre-release stock plus incoming stock equals closing pre-release stock plus Q plus disjoint other outflows. Segregated stock plus Q and actual returns equals closing segregated stock plus gross dispatch and disjoint other outflows. Cancel internal Q when combining gates; neither closing stock nor external dispatch is new Q. | `psi-medicine-disposal`; `ilcd-lca-detailed-2010` |\n| b_pack | all inventory rows | For EACH actual pack/container/pallet component at one physical gate, opening + P + N_ext + ER = closing + grossS + EO + W. Include empty, attached pre-release, attached segregated and reusable stocks. P is true purchase including articles included in a whole purchase price; N_ext is first external non-purchased receipt, including accompanying, borrowed, rented or free-transfer articles whether or not supplier data cover them; ER requires a traceable earlier outward dispatch of the same item. Classes are mutually exclusive; internal issues/reuse cancel. | `ilcd-lca-detailed-2010` |\n| b_interfaces | all inventory rows | The conditional cards are not a complete site BOM. Determine each actual original medicine-pack component and any specialised bin body, lid, liner, closure or pallet separately; install its concrete atomic receipt/output or stock interface and measured quantity before dataset completeness. A PE bag is neither evidence of a compliant bin nor a substitute for one. Missing original packaging cannot be hidden inside net Q, a generic collection row or a symbolic balance. | `psi-medicine-disposal`; `ilcd-lca-detailed-2010` |\n| b_custody | all inventory rows | Link physical receipts, ownership, original item/cohort and exchange-level carried burdens. Assign actual purchase, transport, rental or other services once; absent supplier inclusion evidence is a gap. A return/first non-purchased receipt is not automatically virgin manufacture, zero burden or a credit. Gross throughput and the environmental supply-demand vector are different accounts. | `ilcd-lca-detailed-2010` |\n| b_destination | segregation | Base scope ends at internal segregation. An explicitly declared later storage/packing/dispatch extension retains original cohort mass Qc and adds only actual incremental work; H is service activity, never production. Collection, treatment and final disposal remain separately linked downstream services, not demonstrated by internal designation. Do not presume destruction performance, off-site receipt or an avoided-product credit. | `psi-medicine-disposal`; `ilcd-lca-detailed-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 228
+              line: 9
+              column: 1
+            end:
+              offset: 327
+              line: 9
+              column: 100
+          text: "# Pharmaceutical waste: expired pharmacy-owned paracetamol tablets at first internal waste handover"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 9094
+              line: 67
+              column: 1
+            end:
+              offset: 9115
+              line: 67
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26763"
+      family: "allocation"
+      span:
+        start:
+          offset: 26763
+          line: 317
+          column: 1
+        end:
+          offset: 28832
+          line: 327
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| a_scope | all inventory rows | Apply attributional foreground accounting. There is no intended co-product here; packaging movements and custody are not new tablet production. Original purchase price or an accounting write-off does not determine environmental burden allocation. | `ilcd-lca-detailed-2010` |\n| a_separate | segregation | Assign dedicated records and subdivide physically or virtually first. For remaining shared exchanges demonstrate their determining physical causality to actual co-functions. Only a genuinely unresolved remainder uses contemporaneous market values at the same process gate and physical state. Common mass/revenue alone is not causality; no free choice of allocation ratio. | `ilcd-lca-detailed-2010` |\n| a_history | expired_tablets_in | Retain original medicine and packaging production/procurement burdens under their declared upstream system model. Expiry and discard do not establish either automatic full burden transfer or zero burden. Bind every carried exchange vector once; missing upstream history or allocation basis is explicit uncertainty, not new ingredient buying. | `ilcd-lca-detailed-2010` |\n| a_cohorts | all inventory rows | Preserve opening/closing pre-release and segregated-stock vectors and every failed, zero-release, idle and cleanup record. Later services/returns use original Qc, not new Q. A Q=0 cohort retains its raw loads without a per-kg result; do not shift them to unrelated successful cohorts. | `ilcd-lca-detailed-2010` |\n| a_services | all inventory rows | P/N_ext/ER classify physical receipts independently from environmental burdens. Retain owner, provider scope and original cohort; count actual procurement, transport, cleaning, rental and other incremental services once. No-invoice receipt and supplier omissions both require investigation. Do not multiply gross packaging reuse by a new-article provider or duplicate supplier-included services. | `ilcd-lca-detailed-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 228
+              line: 9
+              column: 1
+            end:
+              offset: 327
+              line: 9
+              column: 100
+          text: "# Pharmaceutical waste: expired pharmacy-owned paracetamol tablets at first internal waste handover"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26763
+              line: 317
+              column: 1
+            end:
+              offset: 26803
+              line: 317
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_40256"
+      family: "validation"
+      span:
+        start:
+          offset: 40256
+          line: 364
+          column: 1
+        end:
+          offset: 43041
+          line: 376
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| v_applicability | reference_product | Require the same-product expired own-stock cohort, actual discard, internal segregation receipt and site/period qualification. Unused, near-expiry, quality-hold or uncollected status alone cannot pass. Excluded origins and biological/infectious/hazardous material cannot use this method. | `psi-medicine-disposal`; `wco-hs30-2022`; `oleary-pharmacy-audit-2026` |\n| v_reference | reference_product | Require one linked Product output at 1 kg net whole-tablet mass with a unique first-event denominator. Resolve its precise native identity before a completed dataset claim; clinical waste, generic waste and an API elementary emission are not substitutes. Verify the same-lot mass basis for any count conversion. | `wco-hs30-2022`; `oleary-pharmacy-audit-2026` |\n| v_stock | all inventory rows | Check pre-release, segregated and combined physical gates with Q cancelling internally. Closing stock and gross dispatch are not extra production; return/reinspection retains original cohort and no new Q. Check analysed constituents independently, without fitting several unknowns to one residual. | `ilcd-lca-detailed-2010` |\n| v_pack | all inventory rows | Check EACH original pack/container/pallet component and concrete atomic interfaces, including P, first N_ext whether covered by supplier data or not, and same-item traceable ER. Enforce opening+P+N_ext+ER=closing+grossS+EO+W with empty/attached/reusable stocks and cancelling internal transfers. Missing quantities/interfaces cannot pass by symbols. | `psi-medicine-disposal`; `ilcd-lca-detailed-2010` |\n| v_burden | all inventory rows | Verify provider scope, inherited vectors and real incremental procurement/transport/service burdens exactly once. No automatic zero burden, virgin manufacture on gross throughput, or credit. Check subdivision, determining physical causality and only residual same-gate/state/time economic allocation. | `ilcd-lca-detailed-2010` |\n| v_calculation | all inventory rows | Require raw collection, unit/rate/density conversion and attribution before sole A_i/Q division. Q=0 retains loads; service extensions use original Qc and never H as production. Check native property/unit compatibility separately from electricity metering. | `ilcd-lca-detailed-2010` |\n| v_destination | all inventory rows | Keep internal gate, off-site dispatch and downstream treatment distinct. Reconcile whole effluent versus constituent analyses as non-additive and one provider per actual exchange. Real residuals/releases need actual destinations/species/compartments; no disposal effectiveness or default emission is inferred. | `psi-medicine-disposal`; `ilcd-lca-detailed-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 228
+              line: 9
+              column: 1
+            end:
+              offset: 327
+              line: 9
+              column: 100
+          text: "# Pharmaceutical waste: expired pharmacy-owned paracetamol tablets at first internal waste handover"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 40256
+              line: 364
+              column: 1
+            end:
+              offset: 40278
+              line: 364
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "b_origin"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 10264
+          line: 82
+          column: 1
+        end:
+          offset: 10633
+          line: 82
+          column: 370
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "b_operations"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 10634
+          line: 83
+          column: 1
+        end:
+          offset: 11072
+          line: 83
+          column: 439
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "b_release"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 11073
+          line: 84
+          column: 1
+        end:
+          offset: 11537
+          line: 84
+          column: 465
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "b_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 11538
+          line: 85
+          column: 1
+        end:
+          offset: 12158
+          line: 85
+          column: 621
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "b_interfaces"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 12159
+          line: 86
+          column: 1
+        end:
+          offset: 12721
+          line: 86
+          column: 563
+    - pointer: "/system_boundary/rules/5"
+      rule_id: "b_custody"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 12722
+          line: 87
+          column: 1
+        end:
+          offset: 13175
+          line: 87
+          column: 454
+    - pointer: "/system_boundary/rules/6"
+      rule_id: "b_destination"
+      identity_kind: "explicit"
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 13176
+          line: 88
+          column: 1
+        end:
+          offset: 13694
+          line: 88
+          column: 519
+    - pointer: "/allocation_rules/0"
+      rule_id: "a_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_26763"
+      source_span:
+        start:
+          offset: 26876
+          line: 321
+          column: 1
+        end:
+          offset: 27184
+          line: 321
+          column: 309
+    - pointer: "/allocation_rules/1"
+      rule_id: "a_separate"
+      identity_kind: "explicit"
+      unit_id: "normative_26763"
+      source_span:
+        start:
+          offset: 27185
+          line: 322
+          column: 1
+        end:
+          offset: 27614
+          line: 322
+          column: 430
+    - pointer: "/allocation_rules/2"
+      rule_id: "a_history"
+      identity_kind: "explicit"
+      unit_id: "normative_26763"
+      source_span:
+        start:
+          offset: 27615
+          line: 323
+          column: 1
+        end:
+          offset: 28020
+          line: 323
+          column: 406
+    - pointer: "/allocation_rules/3"
+      rule_id: "a_cohorts"
+      identity_kind: "explicit"
+      unit_id: "normative_26763"
+      source_span:
+        start:
+          offset: 28021
+          line: 324
+          column: 1
+        end:
+          offset: 28369
+          line: 324
+          column: 349
+    - pointer: "/allocation_rules/4"
+      rule_id: "a_services"
+      identity_kind: "explicit"
+      unit_id: "normative_26763"
+      source_span:
+        start:
+          offset: 28370
+          line: 325
+          column: 1
+        end:
+          offset: 28830
+          line: 325
+          column: 461
+    - pointer: "/validation_rules/0"
+      rule_id: "v_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 40351
+          line: 368
+          column: 1
+        end:
+          offset: 40753
+          line: 368
+          column: 403
+    - pointer: "/validation_rules/1"
+      rule_id: "v_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 40754
+          line: 369
+          column: 1
+        end:
+          offset: 41151
+          line: 369
+          column: 398
+    - pointer: "/validation_rules/2"
+      rule_id: "v_stock"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 41152
+          line: 370
+          column: 1
+        end:
+          offset: 41511
+          line: 370
+          column: 360
+    - pointer: "/validation_rules/3"
+      rule_id: "v_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 41512
+          line: 371
+          column: 1
+        end:
+          offset: 41947
+          line: 371
+          column: 436
+    - pointer: "/validation_rules/4"
+      rule_id: "v_burden"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 41948
+          line: 372
+          column: 1
+        end:
+          offset: 42311
+          line: 372
+          column: 364
+    - pointer: "/validation_rules/5"
+      rule_id: "v_calculation"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 42312
+          line: 373
+          column: 1
+        end:
+          offset: 42636
+          line: 373
+          column: 325
+    - pointer: "/validation_rules/6"
+      rule_id: "v_destination"
+      identity_kind: "explicit"
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 42637
+          line: 374
+          column: 1
+        end:
+          offset: 43039
+          line: 374
+          column: 403
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 9094
+          line: 67
+          column: 1
+        end:
+          offset: 9115
+          line: 67
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_9094"
+      source_span:
+        start:
+          offset: 9143
+          line: 71
+          column: 1
+        end:
+          offset: 10191
+          line: 78
+          column: 216
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26763"
+      source_span:
+        start:
+          offset: 26763
+          line: 317
+          column: 1
+        end:
+          offset: 26803
+          line: 317
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_40256"
+      source_span:
+        start:
+          offset: 40256
+          line: 364
+          column: 1
+        end:
+          offset: 40278
+          line: 364
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:96b6b99377f23ed5985f9097aac468ad3cd6a4256c8f239fd0eaaadbc87a35e6"
+  generated_content_sha256: "sha256:49514681f78bf48ea519fd0ebc481007eb869afe3bf909ef5682330f207acdd2"

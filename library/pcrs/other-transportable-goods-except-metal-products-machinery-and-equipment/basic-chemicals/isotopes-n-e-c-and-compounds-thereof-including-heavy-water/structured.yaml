@@ -1,10 +1,1076 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34260"
-  title: "Isotopes n.e.c. and compounds thereof (including heavy water)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.isotopes-n-e-c-and-compounds-thereof-including-heavy-water"
+  classification_refs: "CPC 3.0 34260, accepted narrower relation for the labelled powder under docs/adr/2026-11-22-accept-cpc-34260-carbon-13-labelled-calcium-carbonate-powder.md"
+  covered_products: "Chemically finished carbon-13-labelled calcium carbonate powder in its declared solid state, assigned once to its first documented finished-product quality release"
+  excluded_products: "Previously released bulk at retail splitting; resale; natural-range carbonate reference materials; ordinary carbonate; other isotopes/compounds; formulations; nuclear/radioactive products; internal preparation routes"
+  representative_product: "Calcium carbonate-13C, Sigma 492027, CAS287389-46-2; CIL CLM-7564 corroborates a corresponding single substance, not a shared lot or factory"
+  production_route: "Closed-box chemically finished supply, lot identity/quality assessment and first quality release only; no onsite transformation assumed"
+  market_state: "Finished solid powder at the documented first quality-release gate; net whole chemical mass, excluding packaging and withdrawn samples"
+functional_unit:
+  what: "Provide the specified carbon-13-labelled calcium carbonate powder at its first finished-product quality release"
+  how_much: "1 kg net whole released chemical product"
+  how_well: "Actual lot specification and certificate must define labelled chemical identity, assay separately from carbon isotope atom fraction, physical state, method and uncertainty; the catalogue 99 atom percent is not chemical purity"
+  how_long_or_cycle: "One declared lot cohort and accounting period; no lifetime service equivalence or release renewal on retest"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_release
+      applies_to: "all datasets"
+      rule: "Require original lot release history and responsible release authority; trace outsourced quality work and its actual handover. Receipt, on-demand packing and post-release retest do not create production. A batch certificate alone needs history corroboration. Preserve the historical distinction between quality release and retest; trace whether the source supplier already released the lot earlier, rather than assuming the current seller certificate date is first release."
+      source_ids:
+        - sigma-carbonate-492027
+        - sigma-product-dating-2016
+        - cil-retest-2025
+    - rule_id: boundary_blackbox
+      applies_to: "all datasets"
+      rule: "Retain inherited supplier burdens once and local activities separately. Use closed-box supply without acquiring internal preparation instructions; reject a whole-product footprint when upstream coverage is unknown."
+      source_ids:
+        - eu-pef-2021-corrected
+    - rule_id: boundary_physical
+      applies_to: "all datasets"
+      rule: "Use two adjacent chemical ledgers and one declared entity boundary per physical packaging pool if present. Actual location controls physical stocks: an offsite owned object cannot be both dispatched and inside closing stock. Reconcile all incoming, outgoing and stored mass without treating imbalance as an emission."
+      source_ids:
+        - eu-pef-2021-corrected
+    - rule_id: boundary_packaging
+      applies_to: "all datasets"
+      rule: "Identify each actual body, closure and outer packaging component separately before inventory completion; do not infer material, mass or burden from a catalogue pack size. For each component distinguish purchase, first non-purchase external receipt and the proven return of the same object previously dispatched from this site. Include actual incurred procurement, transport and service burdens once even if supplier coverage is absent."
+      source_ids:
+        - sigma-carbonate-492027
+        - eu-pef-2021-corrected
+    - rule_id: boundary_completeness
+      applies_to: "all datasets"
+      rule: "Audit actual quality services, inbound logistics, storage, utilities, samples, packaging, waste and environmental releases. Add one atomic card for each evidenced exchange absent below; no unspecified collection card or invented default. Empty sections mean unassessed coverage until a justified absence record exists."
+      source_ids:
+        - eu-pef-2021-corrected
+boundary_abstraction:
+  declared_starting_condition: "Chemically finished labelled powder received with documented lot identity and never-prior-released status, plus actual associated packaging at the named receiving/quality-release location"
+  starting_condition_role: "Purchased same-category technosphere starting material with inherited environmental burdens; not burden-free raw matter"
+  product_classification_scope: "Only the documented labelled-carbonate first-release subset of CPC 34260; the classification does not prescribe a production route"
+  recursive_input_rule: "Resolve finished same-category supply through one compatible closed-box supplier environmental dataset; record its actual gate and release status, prevent self-link/cycles and do not reconstruct internal isotope preparation"
+  upstream_dataset_requirement: "Product/grade/lot-compatible environmental dataset with reference mass, geography, time, boundary, packaging, transport, quality-service coverage and uncertainty; distinguish missing data from zero and separate upstream from local burden"
+  disclosure: "Downstream first-quality-release gate only; cradle-to-gate claims require the verified closed-box upstream chain and complete environmental/packaging audit; already released purchases cannot create Q"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Carbon-13-labelled calcium carbonate powder"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Labelled identity and isotope"
+    - "actual supplier/manufacturer/SKU/lot"
+    - "solid state"
+    - "separate assay and isotope atom-fraction methods/bases/uncertainties"
+    - "actual CoA and applicable SDS"
+    - "evidence of never-prior-released status and responsible first release"
+    - "outsourced supplier and handover"
+    - "net chemical mass/tare and withdrawn samples"
+    - "first-release cohort Q and period"
+    - "pre/post-release stocks and returns"
+    - "packaging component identities/masses/ownership/coverage"
+    - "upstream environmental dataset gate/quantity/geography/period"
+    - "quality-service and transport envelopes"
+    - "actual utilities"
+    - "waste and unresolved coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh the same-lot whole chemical net mass by calibrated mass records or supported gross-minus-component-tare records using cp_mass. Define Q as positive net mass first released in this cohort/period; a shipping weight or container count does not replace Q."
+  - id: isotope_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Keep isotope atom fraction, chemical assay and whole product mass separate. Never multiply net product mass by 99 atom percent, a delta value or an assumed chemical purity. Do not convert this denominator to mass of carbon-13."
+  - id: small_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain traceable balances, precision and uncertainty. Convert g to kg by 0.001; sales pack size is not a measured lot mass or a manufacturing batch size. Samples removed before release are not part of Q."
+  - id: electricity_basis
+    applies_to: "release_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: "f6811440-ee37-11de-8a39-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Preserve meter readings in kWh; 1 kWh = 3.6 MJ in Units of energy. This technical property describes measurement only. Verify each chosen supplier flow's own property chain before linking; common energy units do not prove net calorific value or supplier compatibility. This measurement support points to Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66."
+process_map:
+  - id: first_release
+    name: "Chemically finished powder receipt and first quality release"
+    inclusion: "required"
+    inclusion_condition: "Only a traceable never-prior-released cohort; no onsite chemical transformation; failure of release-history evidence makes this boundary inapplicable"
+    role: "Downstream release foreground, closed-box supplier upstream"
+    quantitative_reference: "reference_product"
+  - id: released_stock
+    name: "Released-product stock and subsequent service account"
+    inclusion: "conditional"
+    inclusion_condition: "Actual post-release stock, return, external receipt, dispatch or attributable service; retain original lot cohort"
+    role: "Separate downstream follow-through; no new production Q"
+    quantitative_reference: "released_dispatch; physical D only, not a second functional reference"
+process_inventory:
+  - id: first_release
+    label: "Chemically finished powder receipt and first quality release"
+    inputs:
+      product:
+        - row_id: received_powder
+          role: "Received labelled chemical"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual external receipts of the whole chemically finished labelled powder. Preserve source lot, prior release status, actual packaging and associated supplier burden. Non-purchase receipts also carry their provenance and remaining inherited burden; purchase cost does not define physical mass. This card counts first external never-released receipts only, excluding genuine sample returns in the separate unreleased_sample_return card. I is the sum of these mutually exclusive inputs; do not repeat material or upstream burden."
+          amount:
+            expression: "Collected same-cohort received net chemical mass attributable to the reference output after cp_mass and cp_burdens reconciliation; exclude internal recirculation and already released stock from the new production account."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - sigma-carbonate-492027
+                - cil-carbonate-sds-2017
+            ranges: []
+        - row_id: unreleased_sample_return
+          role: "Returned unreleased external sample"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a documented unchanged never-released sample returning from its actual external quality-service custodian. Record it as an explicit subgroup of I; preserve the previous sample-outward linkage and bring back only remaining burden. It is not a new supplier manufacturing input."
+          amount:
+            expression: "Collected actual return mass in cp_samples, normalized only under the original cohort rule; retain raw mass when Q is zero."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_samples
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+        - row_id: release_electricity
+          role: "Attributable metered electricity"
+          name: "Electricity supplied to the quality-release site"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / kWh"
+          description: "Apply only where actual electricity is attributable to receiving, quality assessment and pre-release storage. Record the actual meter and supplier scope, including shared allocation evidence; supplier-inclusive external quality services must not be counted again locally."
+          amount:
+            expression: "Collected attributable metered electricity for this released cohort; preserve opening/closing readings, dates, meter scope and cp_burdens allocation before division by Q. Unknown consumption is not zero."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_activity
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "First released chemical"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The unique reference output is net whole powder crossing the first quality-release gate. Exclude retained or consumed samples and unreleased material. Later retail packing or shipment does not generate another reference output."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - sigma-carbonate-492027
+                - naviaux-calcite-2019
+            ranges: []
+        - row_id: unreleased_return
+          role: "Unreleased chemical returned externally"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Apply only to actual unreleased chemically unchanged powder returned to the supplier. This is an external product transfer with an exclusive burden transfer, not Q, a co-product credit, a negative waste or a fictional yield improvement."
+          amount:
+            expression: "Collected actual unreleased return mass assigned separately from Q and physical waste; identify the recipient and remaining burden using cp_burdens."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+        - row_id: unreleased_sample_out
+          role: "Unreleased powder sample transferred externally"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only a real physical sample crossing the declared site perimeter to an identified external quality service. Same-site withdrawal to a retained-sample cupboard is an internal move, stays in U1 and is not S. No onsite chemical transformation or consumption is introduced."
+          amount:
+            expression: "Collected gross external sample mass S in cp_samples; record custody and actual service endpoint, without counting later service waste again as W."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_samples
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+      waste:
+        - row_id: discarded_powder
+          role: "Discarded unmixed powder"
+          name: "Discarded carbon-13-labelled calcium carbonate powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Apply only to actual discarded unmixed labelled carbonate powder, including a discarded physical sample if it remains this substance. Reaction residues, liquids and mixed analytical wastes are different exchanges: require actual identity and separate cards or a verified inclusive external-service envelope."
+          amount:
+            expression: "Collected discarded net powder mass, actual recipient/treatment and remaining burden, separately from retained samples, externally returned chemical and unexplained balance differences; no assumed waste fraction."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - cil-carbonate-sds-2017
+                - eu-pef-2021-corrected
+            ranges: []
+      elementary:
+        []
+  - id: released_stock
+    label: "Released-product stock and subsequent service account"
+    inputs:
+      product:
+        - row_id: released_return
+          role: "Genuine return of released powder"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Apply only to a released lot or unchanged released sample traceable to its prior outward movement from this site. Preserve original cohort, condition, net mass and remaining incurred burden; a supplier shipment with no prior outward proof is J instead."
+          amount:
+            expression: "Collected gross received mass G and its original-cohort attribution using cp_released. G never increases Q."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_released
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+        - row_id: released_external_receipt
+          role: "Other external receipt of already released powder"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Apply to J, including purchased or non-purchased released powder not proven to be a genuine same-site return. Retain the outside origin and its own original release cohort; do not merge it into this period first-release denominator."
+          amount:
+            expression: "Collected gross external net chemical receipt J and remaining inherited burden using cp_released; no first-release allocation."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_released
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+        - row_id: postrelease_electricity
+          role: "Attributable post-release metered electricity"
+          name: "Electricity supplied to the quality-release site"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / kWh"
+          description: "Only actual post-release storage, return assessment or re-dispatch electricity not already included in another supplier/service/meter allocation. It is incremental service, not new manufacture."
+          amount:
+            expression: "Collected attributable post-release electricity using cp_released_activity; retain actual amount at zero current Q and assign only to its original cohort or a separately disclosed service result."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_released_activity
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_dispatch
+          role: "Actual outward dispatch of released powder"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Apply to actual D sales/transfer movements of released powder, including re-dispatch of proven returns. Preserve original cohort and transfer remaining burden once. This physical outgoing product is not reference_product and does not recreate Q."
+          amount:
+            expression: "Collected gross outward net chemical mass D using cp_released; track original cohort even when current Q is zero."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_released
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+        - row_id: released_sample_out
+          role: "Released powder sample transferred externally"
+          name: "Carbon-13-labelled calcium carbonate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only an actual released sample sent outside the site for a documented quality service or retest. Classify this once within L rather than D. Same-site retained samples remain R1; unchanged later sample return belongs to G with original outward proof. Service consumption/waste must have a documented endpoint in its own envelope, not a second onsite waste entry."
+          amount:
+            expression: "Collected actual external sample mass using cp_released and cp_samples; retain original cohort and original upstream burden without renewal on retest."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_released
+              source_ids:
+                - eu-pef-2021-corrected
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "first_release"
+    rule: "Separate cohorts, supplier envelopes and locally metered activities before allocation. For genuinely shared quality/storage/transport activities document the causal driver; use subdivision first, then a justified physical relationship, then another justified relationship with sensitivity. Do not invent economic fractions or allocate by isotope atom fraction."
+    source_ids:
+      - eu-pef-2021-corrected
+  - rule_id: allocation_history
+    applies_to: "all datasets"
+    rule: "Reconcile historical environmental burden separately from physical mass: opening carryover plus external incoming remaining incurred share plus genuinely new burden equals current attribution plus closing carryover plus mutually exclusive external transfer/other attribution. Apply per original object, lot cohort and exchange; a return brings back only its remaining share, never a second full manufacturing burden."
+    source_ids:
+      - eu-pef-2021-corrected
+  - rule_id: allocation_packaging
+    applies_to: "all datasets"
+    rule: "For each actual packaging component keep physical ownership/location, receipt, reuse and remaining burden distinct. Purchase and first non-purchase receipt are not a genuine return; missing supplier coverage requires investigation. Count each incurred purchase, transport or service once; do not divide physical movements by reuse count. Any life-sharing rule must be justified by actual service evidence; the PEF reuse example supplies no default rotation rate."
+    source_ids:
+      - eu-pef-2021-corrected
+  - rule_id: allocation_losses
+    applies_to: "all datasets"
+    rule: "Failed-lot assessment, non-recoverable losses and sample/waste treatment stay attributable under a justified cohort rule. Never assign them automatically to a fictional co-product, create an avoided-carbonate credit or transfer a burden both with returned powder and to Q. Q remains a physical net mass independent of allocation."
+    source_ids:
+      - eu-pef-2021-corrected
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_identity
+      process_id: "first_release"
+      flow_role: "identity and first release"
+      record_type: "original lot history and certificates"
+      raw_fields: "supplier/manufacturer; SKU; source/child lot genealogy; prior release status; original first release time/authority; CoA/retest/expiry; separate assay and isotope basis/method/uncertainty; SDS; outsourced service party and handover"
+      collection_method: "Match original certificate, genealogy and first-release register to actual handover; investigate whether bulk was previously released. Keep chemical assay distinct from isotope abundance. A downstream purchase paper cannot establish manufacture."
+      unit: "documentary"
+      frequency: "each lot and release decision"
+      temporal_coverage: "same cohort/period as cp_mass"
+      site_scope: "actual supplier and named releasing location"
+      aggregation_rule: "retain evidence by lot; no pooling of unlike specifications"
+      quality_evidence: "originals, responsible-party confirmation and independent applicability review"
+    - protocol_id: cp_mass
+      process_id: "first_release"
+      flow_role: "received, first released, returned and discarded chemical"
+      record_type: "two adjacent physical ledgers"
+      raw_fields: "cohort; time; gross; component tare; net kg; uncertainty; pre-release opening/receipts/closing; first release Q; samples retained/transferred/consumed; unreleased returns; waste; post-release opening/returns/closing/shipments/other disposal"
+      collection_method: "Use calibrated balances and traceable lot mass records; reconcile pre- and post-release ledgers with the same Q and mutually exclusive destinations. Investigate discrepancies without inferring emissions or re-releasing old stock."
+      unit: "kg"
+      frequency: "every physical movement and release; close each period"
+      temporal_coverage: "declared complete period and lot cohort"
+      site_scope: "declared physical boundary including identified external service custody"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, tare provenance, stocktake, release evidence, transfer tickets and reconciliation uncertainty"
+    - protocol_id: cp_activity
+      process_id: "first_release"
+      flow_role: "actual utilities and external services"
+      record_type: "meter/invoice/service coverage"
+      raw_fields: "meter id; readings; dates; kWh; supplier/voltage/geography; service identity; actual handover/sample endpoint; transport legs/distance/load; boundary; supplier dataset inclusions; allocation driver; missing fields"
+      collection_method: "Read actual utility and quality-service records; reconcile supplier-inclusive and local activities without overlap. Identify each missing atomic exchange before completion. No operational isotope preparation data requested."
+      unit: "kWh and each actual service unit separately"
+      frequency: "each record; aggregate by cohort and period"
+      temporal_coverage: "same complete period as cp_mass"
+      site_scope: "actual local and outsourced quality boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration; invoices; service declarations; supplier envelope and causal allocation evidence"
+    - protocol_id: cp_packaging
+      process_id: "first_release"
+      flow_role: "each actual packaging component"
+      record_type: "component-level physical and burden ledgers"
+      raw_fields: "body/closure/outer component identity; material; object id; unit mass; owner; location; opening; purchase; first non-purchase external receipt; genuine return tied to prior dispatch; outgoing; disposal; closing; supplier coverage; incurred procurement/transport/service and remaining burden"
+      collection_method: "Inspect actual components and weigh or use traceable component records. Each first external receipt counts regardless of purchase or supplier inclusion. A genuine return needs same-object prior outward proof. Reconcile one entity perimeter and separate cards for each identified material/component; do not invent a pool."
+      unit: "kg and count separately with measured component mass"
+      frequency: "every relevant movement and stocktake"
+      temporal_coverage: "matched period, including provenance of opening stock"
+      site_scope: "declared physical site/pool perimeter; offsite custody separate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "component specifications, weights, linked movement records, custody, invoices and supplier inclusions/exclusions"
+    - protocol_id: cp_burdens
+      process_id: "first_release"
+      flow_role: "inherited and new environmental burden"
+      record_type: "exchange-specific remaining-burden account"
+      raw_fields: "original object/lot; supplier dataset/reference quantity/gate; opening carry; incoming remaining incurred share; newly incurred burden; current attribution; closing carry; exclusive external/other attribution; uncertainty; allocation evidence"
+      collection_method: "Trace each original burden once through receipt, storage, release, return, waste and transfer. Separate included from additional packaging, transport, analysis and utility burdens. Do not charge an entire opening stock purchase again or treat first non-purchase receipt as burden-free."
+      unit: "each original exchange unit retained"
+      frequency: "each burden event; period close"
+      temporal_coverage: "same cohorts and all relevant carried history"
+      site_scope: "same chemical/component boundaries with explicit external transfers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "supplier dataset provenance and compatibility, burden-transfer ledger, completeness and double-count review"
+    - protocol_id: cp_samples
+      process_id: "first_release"
+      flow_role: "actual external samples and same-site retains"
+      record_type: "sample custody ledger"
+      raw_fields: "original lot/cohort; pre/post-release status; dispatch/return id and times; custodian/site boundary; external net mass; retained-stock location; actual analytical endpoint; service-included waste/burden"
+      collection_method: "Distinguish onsite retention from external transfer; weigh each actual outward/return movement. Unreleased return is a separate subgroup of I; unchanged released return is G. At external consumption use the documented service endpoint; no onsite transformation or invented loss."
+      unit: "kg"
+      frequency: "each actual sample movement and stocktake"
+      temporal_coverage: "original cohort through actual endpoint"
+      site_scope: "physical site perimeter, external service custody separately identified"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "custody tickets; calibration; lot history; service endpoint and inclusion proof"
+    - protocol_id: cp_released
+      process_id: "released_stock"
+      flow_role: "G, J, D and actual released sample removal"
+      record_type: "original-cohort post-release physical and burden ledger"
+      raw_fields: "lot and original release Q_origin; R0; internal current Q; G and prior outward proof; J and outside provenance; R1; D; actual L endpoint; component tare; uncertainty; inherited remaining burden"
+      collection_method: "Reconcile each gross physical movement and stock; never infer Q from G/J/D. Retained samples stay R1. Keep J separate by its outside original cohort and preserve burden history. Record raw quantities if current Q is zero."
+      unit: "kg"
+      frequency: "every actual post-release movement and period close"
+      temporal_coverage: "original cohort, including later zero-release periods"
+      site_scope: "same declared perimeter as chemical stocks; external custody explicit"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "original release genealogy; inventory; linked return/outward tickets; burden-transfer receipts"
+    - protocol_id: cp_released_activity
+      process_id: "released_stock"
+      flow_role: "actual subsequent utilities and services"
+      record_type: "original-cohort incremental service account"
+      raw_fields: "original cohort; actual kWh; meter/readings/dates; electricity supplier; actual service/transport/packaging exchanges; causal attribution; upstream inclusions; current Q; original Q_origin; missing fields"
+      collection_method: "Measure later-service increments separately from release-stage and supplier-inclusive activities. Assign each incurred exchange once to the original cohort; do not treat lack of current release as zero activity. Keep a separate service result if original denominator is unavailable."
+      unit: "kWh and each actual service unit separately"
+      frequency: "each record and period close"
+      temporal_coverage: "later periods tied to original release cohort"
+      site_scope: "actual downstream stock/service site and identified external envelopes"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter and invoice evidence; causal attribution; original denominator and double-count audit"
+  calculation_rules:
+    - id: normalize_release
+      applies_to: "all inventory rows"
+      rule: "For positive eligible first-release Q, divide only its attributable release-cohort exchanges by Q kg; preserve numerator units and the 1 kg reference denominator. G/J/D and later-service exchanges do not enter a new production account. With current Q zero or missing, retain actual unnormalized mass and burden records, never divide by Q and never discard incremental services. Link later increments to their original cohort; normalization is permitted only against that cohort’s verified positive original release mass Q_origin, kept separate by cohort. If Q_origin is unavailable, disclose a separate unnormalized service result and unresolved denominator; no completed normalized dataset."
+      inputs:
+        - cp_mass
+        - cp_activity
+        - cp_burdens
+        - cp_released
+        - cp_released_activity
+      output: "exchange per 1 kg reference flow"
+      source_ids:
+        - eu-pef-2021-corrected
+    - id: prerelease_balance
+      applies_to: "all datasets"
+      rule: "U0 + I = Q + U1 + S + W + T. U0/U1 include all inside-perimeter pre-release chemical stock, including same-site retained samples; internal moves do not change them. I is gross actual external never-prior-released receipt, with unreleased sample returns in a separately identified subgroup; S is gross actual external sample transfer, not onsite retention or consumption. W is actual other outward chemical waste/loss; T is unreleased external product transfer. Record each external sample endpoint in cp_samples; do not count service waste in both S and W. Investigate residual against measurement uncertainty."
+      inputs:
+        - cp_mass
+        - cp_identity
+        - cp_samples
+      output: "pre-release physical closure"
+      source_ids: []
+    - id: postrelease_balance
+      applies_to: "all datasets"
+      rule: "R0 + Q + G + J = R1 + D + L. R0/R1 are released opening/closing stocks; G is genuine old released-product return; J is other external already-released receipt; D is actual outward shipment/transfer; L is other actual documented outward released-material removal, including external samples, with each endpoint separate from D. Same-site retained released samples remain in R1; no onsite transformation is assumed. Q leaves the pre-account and enters this post-account identically and cancels when combined. R0, G, J and D never create Q."
+      inputs:
+        - cp_mass
+        - cp_identity
+        - cp_released
+        - cp_samples
+      output: "post-release and combined physical closure"
+      source_ids: []
+    - id: component_balance
+      applies_to: "actual packaging components"
+      rule: "For each component, opening + purchased first receipt + first non-purchase external receipt + proven same-object return = closing inside the declared perimeter + actual outward movement + disposal + other documented removal. Internal moves cancel; classify each external receipt once. Counts convert to mass only using the measured same-component unit mass. Reusable offsite objects are outside inside-stock counts."
+      inputs:
+        - cp_packaging
+      output: "component physical closure without invented quantities"
+      source_ids:
+        - eu-pef-2021-corrected
+    - id: burden_balance
+      applies_to: "all datasets"
+      rule: "Opening carry + external incoming remaining incurred share + genuinely new burden = current attribution + closing carry + mutually exclusive external transfer/other attribution. Reconcile in each original exchange unit, per original object and cohort. Preserve chemical and packaging history separately; no repeated full background burden on return, retest or repacking."
+      inputs:
+        - cp_burdens
+        - cp_packaging
+      output: "once-only environmental burden closure"
+      source_ids:
+        - eu-pef-2021-corrected
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference_product"
+      requirement: "Require exact labelled product flow and verified native property/unit chain before actual linking; ordinary carbonate is not equivalent. Keep lot composition and atom fraction separately."
+      evidence: "Original supplier lot records and direct flow read; sigma-carbonate-492027; cil-carbonate-sds-2017"
+    - id: dq_gate
+      applies_to: "first_release"
+      requirement: "Prove never-prior-released status, actual first release responsibility and outsourced handover. Do not infer an eligible site or production route from sale or retest policy."
+      evidence: "cp_identity; original release genealogy"
+    - id: dq_inventory
+      applies_to: "all datasets"
+      requirement: "Resolve packaging components, service envelopes and every actual environmental exchange; distinguish missing, justified absence and measured zero. No inferred emission factors, operating conditions, yields or quantitative ranges."
+      evidence: "cp_activity; cp_packaging; cp_burdens; supplier dataset audit"
+    - id: dq_services
+      applies_to: "released_stock"
+      requirement: "Retain raw G/J/D/L, stocks and incremental services at zero current Q; attribute only to the original cohort and a verified positive Q_origin or disclose an unnormalized service result. Conditional card exclusion needs actual absence evidence, not a guessed zero."
+      evidence: "cp_released; cp_released_activity; cp_samples"
+    - id: dq_time
+      applies_to: "all datasets"
+      requirement: "Declare actual period/geography/technology, meter and mass uncertainty and sampling/retention status; a historical SDS or support XML is not a current platform/lot observation."
+      evidence: "cp_identity; cp_mass; source editions and supplier compatibility assessment"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "all datasets"
+    rule: "Reject labelled-product modelling with ordinary carbonate/calcite identity or natural-range reference carbonate. Verify one exact reference output, native property/unit support and all required qualifiers; missing product UUID remains a linking gap."
+    source_ids:
+      - wco-hs2022-ch28
+      - sigma-carbonate-492027
+      - iaea-610
+  - rule_id: validation_gate
+    applies_to: "all datasets"
+    rule: "Reject first-release applicability if actual lot history cannot establish Q or shows already released bulk. Packing on demand, a new vial, purchase, resale or re-test cannot renew Q or upstream manufacturing burden. Require responsible-party and actual outsourced-handover evidence."
+    source_ids:
+      - sigma-carbonate-492027
+      - cil-retest-2025
+  - rule_id: validation_mass
+    applies_to: "all datasets"
+    rule: "Require Q greater than zero and both chemical ledgers to close within documented uncertainty; cancel Q across accounts. Keep retained samples, returned chemical, waste and released stock mutually exclusive. An unclosed difference is a finding, not an emission or new product."
+    source_ids: []
+  - rule_id: validation_packaging
+    applies_to: "all datasets"
+    rule: "Require actual component identities, atomic cards, physical stocks/movements and inherited/new burden coverage. Distinguish purchase, first non-purchase receipt and proven genuine return regardless of supplier inclusion. Missing supplier evidence blocks completeness rather than erasing the exchange."
+    source_ids:
+      - eu-pef-2021-corrected
+  - rule_id: validation_burdens
+    applies_to: "all datasets"
+    rule: "Require product-compatible closed-box upstream coverage and separate once-only chemical/packaging history balances; reconcile local and outsourced activities. No full-footprint, usable background or zero-burden claim while coverage gaps persist. Numeric closure does not establish allocation validity or scientific approval."
+    source_ids:
+      - eu-pef-2021-corrected
+  - rule_id: validation_services
+    applies_to: "all datasets"
+    rule: "Require gross G/J/D and external sample interfaces when they occur; preserve same-site retained sample stocks. Reject current-period division at zero Q, lost incremental services, cohort mixing or renewed full background burdens on old returned/retested stock. A separate downstream service account never creates Q."
+    source_ids:
+      - cil-retest-2025
+      - eu-pef-2021-corrected
+  - rule_id: validation_units
+    applies_to: "all datasets"
+    rule: "Reject isotope atom percent as whole-product mass fraction and unverified supplier-energy property inference. Check kilogram conversion, net mass/tare, actual Q and each numerator's unit independently."
+    source_ids:
+      - sigma-carbonate-492027
+published_dataset_profile:
+  dataset_role: "Conditional prospective foreground methodology; a completed independently reviewed dataset may serve as secondary_dataset or background_dataset only for its declared gate"
+  downstream_use: "Exact labelled-carbonate supply modelling after first-release applicability, UUID, upstream and inventory completeness are independently established"
+  allowed_use: "Prepare collection and review evidence; subsequently link only the exact compatible product/gate and disclose remaining uncertainty"
+  excluded_use: "Current incomplete inventories as completed backgrounds; classification-wide manufacture; retail splitting as new production; internal isotope preparation instructions; radioactive/nuclear use; ordinary-carbonate substitution; automatic PEF conformity"
+  required_metadata: "All reference qualifiers; lot genealogy and responsible release; Q; boundaries and two stock ledgers; native flow/property/units; supplier and service envelopes; component/burden ledgers; period/geography; allocation and uncertainty"
+  required_quality_disclosure: "Separate structural checks, unresolved flow/packaging/supplier/gate evidence, scientific review and empirical qualification. Authored rules and source identities are not observed factory data or methodology approval."
+  update_trigger: "Verified lot release/certificate or actual gate changes; direct flow identities; supplier/component/service coverage; route/specification or period/geography changes; independent review"
+data_sources:
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3 explanatory notes, 30 June 2025, PDF p161; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Frozen 34260 title and neighbours 34240 / 34250 / 3427; no product process or quantity."
+  - id: "unsd-cpc3-2026"
+    type: "official_guidance"
+    reference: "UNSD CPC3 explanatory notes, 23 October 2026, CPC3 row 1429 A:D; https://unsdsna.azure-api.net/files/pages/cpc/CPC_Ver3_Exp_Notes_2026-10-23_for_Website.xlsx"
+    used_for: "Same 34260 title and HS 2022 heading 2845 linkage. Supplemental classification context only; no frozen-source mutation."
+  - id: "wco-hs2022-ch28"
+    type: "official_guidance"
+    reference: "WCO HS 2022 chapter 28, Note 6 final paragraph, heading 28.45; https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0628_2022e.pdf?la=en"
+    used_for: "Tariff identity distinction for modified isotopic composition; no isotope preparation or process data."
+  - id: "sigma-carbonate-492027"
+    type: "handbook"
+    reference: "Sigma-Aldrich calcium carbonate-13C, product 492027, product page accessed 22 November 2026; https://www.sigmaaldrich.com/US/en/product/aldrich/492027"
+    used_for: "Labelled chemical identity, solid state and catalogue 99 atom-percent specification; product-specific Packaging section allows on-demand packing from bulk. No actual lot, chemical assay, first release, container material or manufacturing burden."
+  - id: "naviaux-calcite-2019"
+    type: "literature"
+    reference: "Naviaux et al. (2019), Temperature dependence of calcite dissolution kinetics in seawater, Methods §2, PDF p3; https://par.nsf.gov/servlets/purl/10123239"
+    used_for: "Independent actual purchase of labelled powder SKU 492027. Only this purchase observation is used; postpurchase laboratory sample preparation/dissolution is outside the release boundary. No first-release, manufacturing inventory or second-supplier evidence."
+  - id: "cil-carbonate-sds-2017"
+    type: "handbook"
+    reference: "CIL CALCIUM CARBONATE (13C, 99%), CLM-7564 SDS, v3.0, 23 May 2017, §§1–3 and physical-state fields §9; https://isotope.com/product/attachment/CLM-7564-1/SDS%20-%20CLM-7564.pdf"
+    used_for: "Corresponding labelled single substance and solid powder; not classified under the stated systems in this edition. Unlabelled CAS/EC entries are expressly qualified in the original. No lot certificate, current universal hazard assurance, chemical purity assay, first release or environmental inventory."
+  - id: "sigma-product-dating-2016"
+    type: "handbook"
+    reference: "Sigma-Aldrich, Product Dating Information Statement, 9 March 2016, p1 introductory paragraph and Recommended Retest Dated Products; https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/178/822/product-dating-information-statement.pdf"
+    used_for: "Historical general quality-date definitions: quality release follows analytical compliance review; later retest dates may change. Distinguishes events, not an actual 492027 batch certificate, original manufacturer first release, current universal policy or environmental inventory; source-supplier prior release remains to be traced."
+  - id: "cil-retest-2025"
+    type: "handbook"
+    reference: "Jeffrey Drew, CIL North America ISO Quality Manager, Implementation of Retest and Expiration Dates on Certificates of Analysis, 15 July 2025, p1; https://isotope.com/content/files/images/retest%20and%20expiration%20dates%20on%20coas%20july%202025.pdf"
+    used_for: "Distinguishes retest and expiry dates for unopened correctly stored material; post-2023 CoA policy is not a specific batch history, actual expiry, new production or environmental dataset."
+  - id: "iaea-610"
+    type: "official_guidance"
+    reference: "IAEA-610 carbonate reference material, product description and stable-isotope reference information; https://analytical-reference-materials.iaea.org/iaea-610"
+    used_for: "Natural-range isotope-calibration carbonate counterexample: metrological status or delta value alone does not identify a deliberately labelled compound. Not a substitute flow."
+  - id: "eu-pef-2021-corrected"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, consolidated corrected 23 May 2022, Annex I §§3.2.1–3.2.2,4.2,4.3,4.4.9,4.5 (reference PDF p33; reuse p79; allocation p87); https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02021H2279-20211230"
+    used_for: "General reference/boundary/completeness/allocation/reuse principles only. The two chemical ledgers and object/cohort burden ledger are this PCR's declared accounting requirements, not quoted EU formulas. No product-specific inventory, rotation count, burden factor or PEF approval is inferred."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:9947198d54fa046afd41eda8abe1bb8aecade27e8e842b76268221f8f69d8f9c"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_7614"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 7614
+          line: 62
+          column: 1
+        end:
+          offset: 11196
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Chemically finished labelled powder received with documented lot identity and never-prior-released status, plus actual associated packaging at the named receiving/quality-release location |\n| starting_condition_role | Purchased same-category technosphere starting material with inherited environmental burdens; not burden-free raw matter |\n| product_classification_scope | Only the documented labelled-carbonate first-release subset of CPC 34260; the classification does not prescribe a production route |\n| recursive_input_rule | Resolve finished same-category supply through one compatible closed-box supplier environmental dataset; record its actual gate and release status, prevent self-link/cycles and do not reconstruct internal isotope preparation |\n| upstream_dataset_requirement | Product/grade/lot-compatible environmental dataset with reference mass, geography, time, boundary, packaging, transport, quality-service coverage and uncertainty; distinguish missing data from zero and separate upstream from local burden |\n| disclosure | Downstream first-quality-release gate only; cradle-to-gate claims require the verified closed-box upstream chain and complete environmental/packaging audit; already released purchases cannot create Q |\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_release | all datasets | Require original lot release history and responsible release authority; trace outsourced quality work and its actual handover. Receipt, on-demand packing and post-release retest do not create production. A batch certificate alone needs history corroboration. Preserve the historical distinction between quality release and retest; trace whether the source supplier already released the lot earlier, rather than assuming the current seller certificate date is first release. | sigma-carbonate-492027; sigma-product-dating-2016; cil-retest-2025 |\n| boundary_blackbox | all datasets | Retain inherited supplier burdens once and local activities separately. Use closed-box supply without acquiring internal preparation instructions; reject a whole-product footprint when upstream coverage is unknown. | eu-pef-2021-corrected |\n| boundary_physical | all datasets | Use two adjacent chemical ledgers and one declared entity boundary per physical packaging pool if present. Actual location controls physical stocks: an offsite owned object cannot be both dispatched and inside closing stock. Reconcile all incoming, outgoing and stored mass without treating imbalance as an emission. | eu-pef-2021-corrected |\n| boundary_packaging | all datasets | Identify each actual body, closure and outer packaging component separately before inventory completion; do not infer material, mass or burden from a catalogue pack size. For each component distinguish purchase, first non-purchase external receipt and the proven return of the same object previously dispatched from this site. Include actual incurred procurement, transport and service burdens once even if supplier coverage is absent. | sigma-carbonate-492027; eu-pef-2021-corrected |\n| boundary_completeness | all datasets | Audit actual quality services, inbound logistics, storage, utilities, samples, packaging, waste and environmental releases. Add one atomic card for each evidenced exchange absent below; no unspecified collection card or invented default. Empty sections mean unassessed coverage until a justified absence record exists. | eu-pef-2021-corrected |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 10
+              column: 1
+            end:
+              offset: 365
+              line: 10
+              column: 71
+          text: "# Carbon-13-labelled calcium carbonate powder at first quality release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 7614
+              line: 62
+              column: 1
+            end:
+              offset: 7635
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_26812"
+      family: "allocation"
+      span:
+        start:
+          offset: 26812
+          line: 316
+          column: 1
+        end:
+          offset: 28757
+          line: 325
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_subdivide | first_release | Separate cohorts, supplier envelopes and locally metered activities before allocation. For genuinely shared quality/storage/transport activities document the causal driver; use subdivision first, then a justified physical relationship, then another justified relationship with sensitivity. Do not invent economic fractions or allocate by isotope atom fraction. | eu-pef-2021-corrected |\n| allocation_history | all datasets | Reconcile historical environmental burden separately from physical mass: opening carryover plus external incoming remaining incurred share plus genuinely new burden equals current attribution plus closing carryover plus mutually exclusive external transfer/other attribution. Apply per original object, lot cohort and exchange; a return brings back only its remaining share, never a second full manufacturing burden. | eu-pef-2021-corrected |\n| allocation_packaging | all datasets | For each actual packaging component keep physical ownership/location, receipt, reuse and remaining burden distinct. Purchase and first non-purchase receipt are not a genuine return; missing supplier coverage requires investigation. Count each incurred purchase, transport or service once; do not divide physical movements by reuse count. Any life-sharing rule must be justified by actual service evidence; the PEF reuse example supplies no default rotation rate. | eu-pef-2021-corrected |\n| allocation_losses | all datasets | Failed-lot assessment, non-recoverable losses and sample/waste treatment stay attributable under a justified cohort rule. Never assign them automatically to a fictional co-product, create an avoided-carbonate credit or transfer a burden both with returned powder and to Q. Q remains a physical net mass independent of allocation. | eu-pef-2021-corrected |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 10
+              column: 1
+            end:
+              offset: 365
+              line: 10
+              column: 71
+          text: "# Carbon-13-labelled calcium carbonate powder at first quality release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 26812
+              line: 316
+              column: 1
+            end:
+              offset: 26852
+              line: 316
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_41789"
+      family: "validation"
+      span:
+        start:
+          offset: 41789
+          line: 362
+          column: 1
+        end:
+          offset: 44324
+          line: 374
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validation_identity | all datasets | Reject labelled-product modelling with ordinary carbonate/calcite identity or natural-range reference carbonate. Verify one exact reference output, native property/unit support and all required qualifiers; missing product UUID remains a linking gap. | wco-hs2022-ch28; sigma-carbonate-492027; iaea-610 |\n| validation_gate | all datasets | Reject first-release applicability if actual lot history cannot establish Q or shows already released bulk. Packing on demand, a new vial, purchase, resale or re-test cannot renew Q or upstream manufacturing burden. Require responsible-party and actual outsourced-handover evidence. | sigma-carbonate-492027; cil-retest-2025 |\n| validation_mass | all datasets | Require Q greater than zero and both chemical ledgers to close within documented uncertainty; cancel Q across accounts. Keep retained samples, returned chemical, waste and released stock mutually exclusive. An unclosed difference is a finding, not an emission or new product. | |\n| validation_packaging | all datasets | Require actual component identities, atomic cards, physical stocks/movements and inherited/new burden coverage. Distinguish purchase, first non-purchase receipt and proven genuine return regardless of supplier inclusion. Missing supplier evidence blocks completeness rather than erasing the exchange. | eu-pef-2021-corrected |\n| validation_burdens | all datasets | Require product-compatible closed-box upstream coverage and separate once-only chemical/packaging history balances; reconcile local and outsourced activities. No full-footprint, usable background or zero-burden claim while coverage gaps persist. Numeric closure does not establish allocation validity or scientific approval. | eu-pef-2021-corrected |\n| validation_services | all datasets | Require gross G/J/D and external sample interfaces when they occur; preserve same-site retained sample stocks. Reject current-period division at zero Q, lost incremental services, cohort mixing or renewed full background burdens on old returned/retested stock. A separate downstream service account never creates Q. | cil-retest-2025; eu-pef-2021-corrected |\n| validation_units | all datasets | Reject isotope atom percent as whole-product mass fraction and unverified supplier-energy property inference. Check kilogram conversion, net mass/tare, actual Q and each numerator's unit independently. | sigma-carbonate-492027 |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 295
+              line: 10
+              column: 1
+            end:
+              offset: 365
+              line: 10
+              column: 71
+          text: "# Carbon-13-labelled calcium carbonate powder at first quality release"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 41789
+              line: 362
+              column: 1
+            end:
+              offset: 41811
+              line: 362
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_release"
+      identity_kind: "explicit"
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 9046
+          line: 77
+          column: 1
+        end:
+          offset: 9626
+          line: 77
+          column: 581
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_blackbox"
+      identity_kind: "explicit"
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 9627
+          line: 78
+          column: 1
+        end:
+          offset: 9904
+          line: 78
+          column: 278
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 9905
+          line: 79
+          column: 1
+        end:
+          offset: 10284
+          line: 79
+          column: 380
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 10285
+          line: 80
+          column: 1
+        end:
+          offset: 10808
+          line: 80
+          column: 524
+    - pointer: "/system_boundary/rules/4"
+      rule_id: "boundary_completeness"
+      identity_kind: "explicit"
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 10809
+          line: 81
+          column: 1
+        end:
+          offset: 11194
+          line: 81
+          column: 386
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_subdivide"
+      identity_kind: "explicit"
+      unit_id: "normative_26812"
+      source_span:
+        start:
+          offset: 26925
+          line: 320
+          column: 1
+        end:
+          offset: 27352
+          line: 320
+          column: 428
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_history"
+      identity_kind: "explicit"
+      unit_id: "normative_26812"
+      source_span:
+        start:
+          offset: 27353
+          line: 321
+          column: 1
+        end:
+          offset: 27833
+          line: 321
+          column: 481
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_26812"
+      source_span:
+        start:
+          offset: 27834
+          line: 322
+          column: 1
+        end:
+          offset: 28362
+          line: 322
+          column: 529
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_losses"
+      identity_kind: "explicit"
+      unit_id: "normative_26812"
+      source_span:
+        start:
+          offset: 28363
+          line: 323
+          column: 1
+        end:
+          offset: 28755
+          line: 323
+          column: 393
+    - pointer: "/validation_rules/0"
+      rule_id: "validation_identity"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 41884
+          line: 366
+          column: 1
+        end:
+          offset: 42226
+          line: 366
+          column: 343
+    - pointer: "/validation_rules/1"
+      rule_id: "validation_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 42227
+          line: 367
+          column: 1
+        end:
+          offset: 42588
+          line: 367
+          column: 362
+    - pointer: "/validation_rules/2"
+      rule_id: "validation_mass"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 42589
+          line: 368
+          column: 1
+        end:
+          offset: 42903
+          line: 368
+          column: 315
+    - pointer: "/validation_rules/3"
+      rule_id: "validation_packaging"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 42904
+          line: 369
+          column: 1
+        end:
+          offset: 43270
+          line: 369
+          column: 367
+    - pointer: "/validation_rules/4"
+      rule_id: "validation_burdens"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 43271
+          line: 370
+          column: 1
+        end:
+          offset: 43659
+          line: 370
+          column: 389
+    - pointer: "/validation_rules/5"
+      rule_id: "validation_services"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 43660
+          line: 371
+          column: 1
+        end:
+          offset: 44057
+          line: 371
+          column: 398
+    - pointer: "/validation_rules/6"
+      rule_id: "validation_units"
+      identity_kind: "explicit"
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 44058
+          line: 372
+          column: 1
+        end:
+          offset: 44322
+          line: 372
+          column: 265
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 7614
+          line: 62
+          column: 1
+        end:
+          offset: 7635
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_7614"
+      source_span:
+        start:
+          offset: 7663
+          line: 66
+          column: 1
+        end:
+          offset: 8973
+          line: 73
+          column: 217
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_26812"
+      source_span:
+        start:
+          offset: 26812
+          line: 316
+          column: 1
+        end:
+          offset: 26852
+          line: 316
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_41789"
+      source_span:
+        start:
+          offset: 41789
+          line: 362
+          column: 1
+        end:
+          offset: 41811
+          line: 362
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9947198d54fa046afd41eda8abe1bb8aecade27e8e842b76268221f8f69d8f9c"
+  generated_content_sha256: "sha256:e4557b35fe1077207a2d59bb07be3927a96622892d36c952de9747356ac55183"

@@ -1,10 +1,1300 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "36260"
-  title: "Articles of apparel and clothing accessories (including gloves) of vulcanized rubber other than hard rubber"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.rubber-and-plastics-products.articles-of-apparel-and-clothing-accessories-including-gloves-of-vulcanized-rubber-othe-10c410dd"
+  classification_refs: "CPC 3.0 36260; accepted narrower scope under docs/adr/2026-11-22-accept-cpc-36260-chlorinated-natural-rubber-gloves.md"
+  covered_products: "Nonsterile unsupported chlorinated powder-free natural-rubber gloves of one declared grade"
+  excluded_products: "Other rubber apparel/accessories; hard rubber; nitrile/CR/PVC gloves; textile-supported gloves; powdered or polymer-coated gloves; sterile gloves; on-site latex compounding; solvent cement dipping"
+  representative_product: "Chlorinated powder-free natural-rubber gloves from compounded latex"
+  production_route: "Received mature compound → former cleaning → coagulant dip → latex dip → pre-leach/bead → vulcanize/post-leach → chlorinate/rinse → dry/strip/pack → quality release"
+  market_state: "Conditioned finished gloves, unpackaged net reference mass; packaging recorded separately"
+functional_unit:
+  what: "Declared natural-rubber glove barrier product at the quality-release gate"
+  how_much: "1 kg conditioned net newly quality-released gloves"
+  how_well: "Specified size, thickness, tensile/elongation and leak/barrier acceptance criteria; customer specification and actual test method identified"
+  how_long_or_cycle: "One production-release cohort; actual shelf life and intended use cycle declared, no generic durability equivalence"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "foreground_system_boundary"
+      rule: "Aggregate dipping and finishing as one foreground unit while retaining stage meters. Include cleaning, baths, leaching, curing, chlorination/rinsing, drying, stripping, quality testing and packaging, including rejects and start/stop losses."
+      source_ids:
+        - topglove-manufacture-2016
+    - rule_id: boundary_waste
+      applies_to: "foreground_system_boundary"
+      rule: "External wastewater treatment and solid-waste management burdens remain required upstream/downstream links. Do not model sewer transfer as a direct freshwater emission or omit treatment."
+      source_ids:
+        - epa-latex-1974
+    - rule_id: boundary_utilities
+      applies_to: "foreground_system_boundary"
+      rule: "Only actual on-site gas combustion and purchased electricity are represented. Internal heat/water recirculation is a physical internal ledger, not a second external exchange. Real external steam/condensate transfers require independent product rows and enthalpy/pressure/provider reconciliation."
+      source_ids:
+        - epa-gas-combustion
+boundary_abstraction:
+  declared_starting_condition: "Received matured natural-rubber compound, separate coagulant/cleaner/chlorination feeds and utilities"
+  starting_condition_role: "Foreground received-material gate; upstream compound production is inherited through a compatible provider"
+  product_classification_scope: "Only the defined glove subset within CPC36260"
+  recursive_input_rule: "No same-category finished glove is assumed as a feed. Returned goods retain origin and inherited burdens; do not reclassify them as virgin latex or count repeat release as new production."
+  upstream_dataset_requirement: "Provider must cover actual wet formulation and maturity, natural-rubber origin, compounding, supply grade, transport and reference amount; raw latex alone is incomplete"
+  disclosure: "Declare all site stages and exact handovers; imported steam/heat, on-site compounding or treatment require an expanded separate inventory before use"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Chlorinated powder-free vulcanized natural-rubber gloves"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "natural-rubber compound identity"
+    - "unsupported construction"
+    - "nonsterile state"
+    - "powder-free chlorination route"
+    - "SKU/size/thickness"
+    - "test acceptance and conditioned moisture"
+    - "release cohort/gate"
+    - "supplied solution assays"
+    - "upstream compounding provider"
+    - "utilities and external treatment boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q is newly quality-released conditioned net glove mass measured by cp_release. Weigh accepted gloves with calibrated scales excluding packaging; use measured count and lot-specific sampled net mass only when direct weighing is impractical. No invented unit weight."
+  - id: solution_basis
+    applies_to: "supplied liquid feeds"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep delivered preparation mass, active-species mass and carrier water as separate analytical ledgers. One purchased preparation crosses the inventory once. Density/assay and hydration state are measured, not defaulted."
+  - id: gas_volume
+    applies_to: "natural_gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Reconcile meter and supplier reference temperature, absolute pressure, dry/wet state, composition and compressibility before linkage; unknown compatibility remains pending."
+  - id: electricity_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: "f6811440-ee37-11de-8a39-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Meter electrical energy; use the verified energy unit group 93a60a57-a3c8-11da-a746-0800200c9a66, reference MJ and 1 kWh = 3.6 MJ. Meter energy does not establish a supplier flow or its native reference property. Verify actual geography, voltage, mix, interface and provider native property independently before linkage; never infer fuel demand or efficiency."
+process_map:
+  - id: glove_manufacture
+    name: "Dipping, curing, chlorination and finishing"
+    inclusion: "required"
+    inclusion_condition: "Declared received-compound route only"
+    role: "foreground"
+    quantitative_reference: "reference_product"
+process_inventory:
+  - id: glove_manufacture
+    label: "Dipping, curing, chlorination and finishing"
+    inputs:
+      product:
+        - row_id: latex_feed
+          role: "Purchased matured compound"
+          name: "Matured compounded natural-rubber latex, aqueous"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive one specified wet compound with supplier composition, rubber dry content, total solids, water, stabilizer and curing-system declaration. Include upstream compounding burdens; unfilled latex or dry tyre compound is not equivalent. No on-site compounding is represented."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - topglove-manufacture-2016
+                - vaisala-bath
+            ranges: []
+        - row_id: nitric_cleaner
+          role: "Nitric-acid former cleaner"
+          name: "Aqueous nitric acid former-cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record delivered solution mass and assay separately from bath dilution water. The actual supplied grade must be verified; neither a 40% nor a 50% database grade supplies a default concentration."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: alkaline_cleaner
+          role: "Alkaline former cleaner"
+          name: "Aqueous alkaline former-cleaning preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One purchased formulation per row, identified by SKU and component declaration. Do not infer sodium hydroxide, phosphate or detergent composition from the generic process description; split additional purchased preparations into separate rows."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: calcium_nitrate
+          role: "Calcium-nitrate coagulant feed"
+          name: "Calcium nitrate aqueous solution for glove coagulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Specify hydration state, calcium-nitrate assay and delivered water. Record solution as received; active salt is an analytical subledger and not a second purchased exchange. A nitrate/ammonium-nitrate fertilizer mixture is excluded."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - topglove-manufacture-2016
+                - vaisala-bath
+            ranges: []
+        - row_id: calcium_carbonate
+          role: "Calcium-carbonate release aid"
+          name: "Calcium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only actual calcium carbonate solid for the coagulant/release bath; verify grade, particle size, purity and provider. Physical identity does not establish natural versus precipitated production. If supplied as slurry, preserve water and the supplier reference basis before linkage."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: chlorine_solution
+          role: "Chlorination solution"
+          name: "Aqueous chlorine solution for glove surface chlorination"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Identify dissolved Cl2, active-chlorine analytical basis and any acid or hypochlorite reagent separately. Pure chlorine gas and sodium hypochlorite are not the whole supplied solution. Additional real reagent feeds require their own rows; no standard recipe is prescribed."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Measure electrical energy at the declared meter/interface, converting kWh to MJ once. Include boundary transformation losses once. No supply geography, voltage or mix is assumed. Meter Energy is a physical measurement basis; the electricity product UUID, provider and native reference property remain independently unresolved until compatible original records are verified."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: process_water
+          role: "Purchased process-water makeup"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Account for external makeup used in washing, bath dilution, leaching and rinsing; keep meter branches and recycled circulation distinct. Convert measured volume only with measured density and temperature. Carrier water already in purchased solutions is excluded from this input."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - topglove-manufacture-2016
+                - vaisala-bath
+            ranges: []
+        - row_id: natural_gas
+          role: "Conditional on-site gas heat"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include only if pipeline gas is actually consumed inside the boundary for ovens or hot-water heat. Reference property is Volume; document absolute pressure, temperature, dry/wet composition and compressibility and reconcile supplier/background m3. Secondary mass coefficients are not density. No default calorific value or efficiency."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: carton
+          role: "Corrugated shipping carton"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This row records actual purchases only, with each separately supplied grade/preparation kept distinct. First non-purchase receipts and genuine returns use the separate material-specific rows below; do not include them in purchases. Weigh the actual single carton and specify fibre composition, coatings and provider. The candidate with a fixed 16.6% primary/83.4% recycled fibre mixture is not assigned without matching evidence. Generic packaging collections are excluded."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: pe_film
+          role: "Conditional PE inner wrapping"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This row records actual purchases only, with each separately supplied grade/preparation kept distinct. First non-purchase receipts and genuine returns use the separate material-specific rows below; do not include them in purchases. Use only actual polyethylene film; verify grade, thickness, additives, converted-bag burdens and provider. Source classification CPC29220 conflicts with name/CAS9002-88-4/film description and remains a metadata clarification debt. This is not PET. If absent, document not applicable."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: carton_first_receipt
+          role: "First non-purchase receipt of corrugated shipping carton"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the first external non-purchase receipt, whether attached to incoming material or independently loaned or supplied free of charge. Include the physical receipt even when upstream burdens are already included in a material provider. Without proof that this same article previously left this site, it is not a return. Keep ownership and embedded upstream burden evidence separately. If absent, retain evidence of absence."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ilcd-allocation
+            ranges: []
+        - row_id: carton_true_return
+          role: "Traceable return of corrugated shipping carton"
+          name: "Corrugated shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only an actual return linked to a prior external dispatch of the same physical article from this site. Retain article/lot genealogy and prior dispatch evidence, free versus attached state and inherited burden vector. A new loan, free receipt or incoming-material wrapper without that genealogy is a first receipt. Return is not a new purchase and does not recreate virgin-production burdens. Actual return transport, cleaning and repair remain separately measured loads. If absent, retain evidence of absence."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ilcd-allocation
+            ranges: []
+        - row_id: pe_film_first_receipt
+          role: "First non-purchase receipt of polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the first external non-purchase receipt, whether attached to incoming material or independently loaned or supplied free of charge. Include the physical receipt even when upstream burdens are already included in a material provider. Without proof that this same article previously left this site, it is not a return. Keep ownership and embedded upstream burden evidence separately. If absent, retain evidence of absence."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ilcd-allocation
+            ranges: []
+        - row_id: pe_film_true_return
+          role: "Traceable return of polyethylene film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only an actual return linked to a prior external dispatch of the same physical article from this site. Retain article/lot genealogy and prior dispatch evidence, free versus attached state and inherited burden vector. A new loan, free receipt or incoming-material wrapper without that genealogy is a first receipt. Return is not a new purchase and does not recreate virgin-production burdens. Actual return transport, cleaning and repair remain separately measured loads. If absent, retain evidence of absence."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ilcd-allocation
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Newly quality-released gloves"
+          name: "Chlorinated powder-free vulcanized natural-rubber gloves"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Reference output: 1 kg of newly quality-released conditioned net glove mass, excluding all packaging. Q is new release mass for the aligned production cohort; count every lot once, and never add closing finished-goods stock to Q."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+      waste:
+        - row_id: glove_reject
+          role: "Rejected vulcanized gloves"
+          name: "Waste rubber"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual non-saleable rejects and test-consumed gloves; declare natural rubber, chlorination state, contamination and receiving treatment. A generic waste-rubber label does not verify composition or treatment compatibility. Saleable downgraded goods require a distinct product output and allocation reassessment."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - topglove-manufacture-2016
+                - ilcd-allocation
+            ranges: []
+        - row_id: latex_solid
+          role: "Separated latex skins and coagulum"
+          name: "Unvulcanized natural-rubber latex coagulum"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "One separated latex-solid stream from dip baths or spills, if actually removed. Record wet mass, dry solids, additives, contamination and receiver. Exclude solids still contained in wastewater; do not relabel this as digested municipal sludge."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - epa-latex-1974
+            ranges: []
+        - row_id: process_effluent
+          role: "Mixed process effluent to external treatment"
+          name: "Mixed latex-glove washing and leaching wastewater to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual mixed drain stream at the treatment handover, with volume, density, pH, solids, COD, nitrogen species, residual chlorine and composition-based metals. Preserve each source drain before mixing. This is a waste transfer, not an elementary water emission. Require a compatible external treatment dataset and its emissions."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - epa-latex-1974
+                - topglove-manufacture-2016
+            ranges: []
+      elementary:
+        - row_id: ammonia
+          role: "Ammonia loss"
+          name: "ammonia"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Latex stabilization or other actual ammonia source; reconcile actual nitrogen inputs, vent and fugitive loss. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - vaisala-bath
+            ranges: []
+        - row_id: chlorine_air
+          role: "Chlorine loss"
+          name: "chlorine"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual chlorination vent/fugitive Cl2 crossing outdoors after capture; distinguish chloride and hypochlorite. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: co2_fossil
+          role: "Fossil CO2"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Use measured fossil carbon balance, including noncombustion carbonate reaction where relevant; separate natural-rubber biogenic carbon. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: co2_biogenic
+          role: "Biogenic CO2"
+          name: "carbon dioxide (biogenic)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record actual biogenic oxidation or degradation only; carbon remaining in glove or waste is not immediate CO2. No GHG reporting exclusion may remove a real LCI release. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ilcd-allocation
+            ranges: []
+        - row_id: methane
+          role: "Fossil methane"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual gas leakage and incomplete combustion; do not treat total VOC as methane. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: n2o
+          role: "Nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual combustion N2O; exclude it from NOx totals. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: co
+          role: "Fossil carbon monoxide"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual fossil CO from on-site combustion; separate any proven biogenic CO into another row. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: no
+          role: "Nitrogen monoxide"
+          name: "nitrogen monoxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual NO mass, not nitrogen mass and not NO2-equivalent. Unspeciated NOx does not establish this quantity. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide"
+          name: "nitrogen dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual NO2 species mass. Do not add a NOx aggregate to separately reported NO and NO2. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: so2
+          role: "Sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual combustion SO2 or other proven source; reconcile sulfur in fuel/odorant and retained sulfur. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: pm25
+          role: "Fine particulate discharge"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only particles up to 2.5 micrometres leaving the boundary after collection, including applicable combustion fractions. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: pm25_10
+          role: "Intermediate particulate discharge"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only the nonoverlapping 2.5–10 micrometre fraction from actual handling/release; not total PM10. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: pm_over10
+          role: "Coarse particulate discharge"
+          name: "particles (> PM10)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only the greater-than-10 micrometre fraction. Collected calcium-carbonate dust returned internally is not an outdoor emission. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Net actual evaporation from baths and ovens plus applicable combustion water; distinguish solution carrier water, internal condensate and external wastewater. This row applies only if the species is present; retain measurement and non-detect evidence. Outdoor air, subcompartment unspecified. No positive default. For a known different receiving subcompartment use a matching verified flow."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - topglove-manufacture-2016
+            ranges: []
+        - row_id: formaldehyde
+          role: "Formaldehyde emission"
+          name: "formaldehyde"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual formaldehyde (CAS 50-00-0) in outdoor air, unspecified subcompartment; measured species mass only. Speciate VOC where relevant and do not add a total VOC row to its constituents."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+        - row_id: benzene
+          role: "Benzene emission"
+          name: "benzene"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual benzene (CAS 71-43-2) in outdoor air, unspecified subcompartment; measured species mass only. Speciate VOC where relevant and do not add a total VOC row to its constituents."
+          amount:
+            expression: "A_i / Q"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - epa-gas-combustion
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_order
+    applies_to: "foreground_burden_allocation"
+    rule: "Use subdivision and direct assignment first. For genuinely inseparable shared utilities, establish determining physical causality per exchange (measured heat, duty/time, throughput with evidence). Residual burdens without a causal driver use documented process-gate economic values and sensitivity analysis in this attributional model. Do not freely choose mass or revenue shares."
+    source_ids:
+      - ilcd-allocation
+  - rule_id: physical_ledger
+    applies_to: "foreground_burden_allocation"
+    rule: "Keep the unallocated physical wet/solid/water/carbon ledger separate from attributed environmental burdens. Never multiply actual coproduct mass, internal links or wastewater handover by allocation shares. Treat ordinary non-saleable rejects as waste; no avoided-product credit is assumed. Any marketed downgraded glove triggers a separate output and allocation assessment."
+    source_ids:
+      - ilcd-allocation
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_release
+      process_id: "glove_manufacture"
+      flow_role: "reference_product"
+      record_type: "batch acceptance"
+      raw_fields: "lot_id; release_event_id; size; conditioned_net_mass; accepted_count; sampled_piece_mass; moisture; scale_id; acceptance_results; WIP_open; WIP_close; FG_open; FG_close; dispatch; returns; writeoffs"
+      collection_method: "Calibrated net weighing or traceable count and lot-specific mass sampling; identify one release event per physical lot"
+      unit: "kg; Item(s)"
+      frequency: "Each lot"
+      temporal_coverage: "Complete matched production cohort"
+      site_scope: "All contributing stages and inventory stores"
+      aggregation_rule: "Retain raw release, WIP, FG and movement records only; no normalized values"
+      quality_evidence: "Scale calibration, acceptance report, lot genealogy"
+    - protocol_id: cp_materials
+      process_id: "glove_manufacture"
+      flow_role: "latex_feed; nitric_cleaner; alkaline_cleaner; calcium_nitrate; calcium_carbonate; chlorine_solution"
+      record_type: "stock and assay"
+      raw_fields: "material_id; SKU; supplier; formulation; assay_basis; dry_rubber_content; total_solids; density; water; opening; receipts; closing; returned; transfers; lot_id"
+      collection_method: "Calibrated weighing/stock records and validated chemical assays; keep baths and external feed separately Original raw aggregation constraint (collection remains undivided): Raw receipts, stock changes and assays only; no per-kg factors. The aggregation_rule reporting basis denotes the sole downstream normalize_release result, not collection-stage normalization."
+      unit: "kg; kg/kg"
+      frequency: "Each delivery/batch and bath change"
+      temporal_coverage: "Same cohort including start/stop and carryover"
+      site_scope: "Received feeds and bath/WIP stores"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "CoA/SDS, wet/dry assay, inventory reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "glove_manufacture"
+      flow_role: "electricity; process_water; natural_gas"
+      record_type: "metering"
+      raw_fields: "meter_id; opening; closing; branch; timestamp; voltage; kWh; water_volume; water_density; gas_volume; T; absolute_P; wet_dry; gas_composition; Z; heating_value_basis; heat_duty; operating_time"
+      collection_method: "Read calibrated submeter logs and supply specifications; reconcile shared meter branches and actual causal drivers. Retain raw meter increments and operating records without normalization or assumed conversion factors; the reporting basis is obtained only downstream by normalize_release."
+      unit: "kWh; m3; kg; MJ"
+      frequency: "Continuous or each shift with start/stop"
+      temporal_coverage: "Matched cohort and WIP carryover"
+      site_scope: "Site utility handovers and internal distribution"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, gas standard-volume definition, provider specification"
+    - protocol_id: cp_packaging
+      process_id: "glove_manufacture"
+      flow_role: "carton; pe_film; carton_first_receipt; carton_true_return; pe_film_first_receipt; pe_film_true_return"
+      record_type: "weighing and stock"
+      raw_fields: "material_id; SKU; article_or_lot_id; composition; unit_mass; free_open; free_close; attached_WIP_open_close; attached_FG_open_close; purchase_in; first_nonpurchase_in_free_attached; true_return_in_free_attached; prior_site_dispatch_id; ownership; upstream_burden_included; inherited_burden_vector; newly_attached; detached_to_free; gross_dispatch_attached; other_out_free_attached; scrap_free_attached; lot_id"
+      collection_method: "Weigh each actual material and separate purchase, first non-purchase receipt and proven same-article return, each in free/attached state. No movement is inferred from payment or burden inclusion. Retain raw movements undivided; normalize_release alone produces the reporting basis."
+      unit: "kg; Item(s)"
+      frequency: "Each receipt, dispatch, attachment and stock close"
+      temporal_coverage: "Matched release cohort and movement period"
+      site_scope: "Free stock and attached WIP/FG; external handovers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibrated weights, BOM, prior dispatch genealogy, loan/free-receipt records, upstream burden boundary"
+    - protocol_id: cp_wastes
+      process_id: "glove_manufacture"
+      flow_role: "glove_reject; latex_solid; process_effluent"
+      record_type: "waste handover"
+      raw_fields: "stream_id; source; wet_mass; dry_solids; volume; density; pH; COD; nitrogen_species; residual_chlorine; metals; date; receiver; treatment; stock_change"
+      collection_method: "Weigh separate solids and meter/sample each drain before actual mixing; link receiver documentation Original raw aggregation constraint (collection remains undivided): Retain raw masses, concentrations and volume/time only. The aggregation_rule reporting basis denotes the sole downstream normalize_release result, not collection-stage normalization."
+      unit: "kg; m3; mg/L"
+      frequency: "Each load; flow-proportional effluent sampling"
+      temporal_coverage: "Same cohort and waste-store movement period"
+      site_scope: "Manufacturing boundary to external treatment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Scale/weighbridge, sampling QA and treatment acceptance"
+    - protocol_id: cp_air
+      process_id: "glove_manufacture"
+      flow_role: "individual air emission rows"
+      record_type: "stack/fugitive monitoring"
+      raw_fields: "species; CAS; carbon_origin; source; concentration; gas_flow; sampling_time; temperature; pressure; moisture; oxygen_correction; capture; detection_limit; particle_cut; fossil_biogenic_carbon; boundary_location"
+      collection_method: "Measure post-control outdoor discharge with validated species/particle methods; separately assess fugitive loss and carbon/water closure Original raw aggregation constraint (collection remains undivided): Raw concentration, gas volume, state, time and detection data only. The aggregation_rule reporting basis denotes the sole downstream normalize_release result, not collection-stage normalization."
+      unit: "mg/m3; m3; h; kg"
+      frequency: "Representative operating/load and start/stop states"
+      temporal_coverage: "Same cohort with operating coverage disclosed"
+      site_scope: "Each emitting source and outdoor boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Method, calibration, blanks, uncertainty and non-detect bounds"
+  calculation_rules:
+    - id: release_gate
+      applies_to: "reference_product"
+      rule: "Q = sum of unique newly released conditioned net glove masses. Do not add FG closing stock or gross shipments. Failed/tested gloves do not enter Q. Track release cohorts through WIP; do not divide an unmatched calendar utility total by another cohort’s release."
+      inputs:
+        - cp_release
+      output: "Q"
+      source_ids:
+        - topglove-manufacture-2016
+    - id: normalize_release
+      applies_to: "all inventory rows"
+      rule: "x_i = A_i / Q; A_i is the exchange amount for the matched release cohort after stock/WIP reconciliation; retain its unallocated physical amount and separately attributed burden amount where allocation applies; x_i is the exchange per 1 kg reference flow. Normalize once only."
+      inputs:
+        - A_i
+        - Q
+        - cp_release
+      output: "x_i in row unit per kg gloves"
+      source_ids:
+        - ilcd-allocation
+    - id: wet_material_balance
+      applies_to: "physical material ledger"
+      rule: "Opening + external receipts = physical outputs + closing + measured losses. Close dry rubber, additive solids, water, carbon and relevant elements separately including bath and WIP stores. Carrier water is included once in its supplied mixture; internal recycle cancels at both ends with equal physical amount. No default yield or purity."
+      inputs:
+        - cp_materials
+        - cp_wastes
+        - cp_air
+        - cp_release
+      output: "unallocated physical ledger and residuals"
+      source_ids:
+        - vaisala-bath
+        - epa-latex-1974
+    - id: stock_burden_carryover
+      applies_to: "WIP and FG"
+      rule: "Match material and full inherited upstream/utility burdens of opening WIP to its released cohort, retain closing WIP burdens for later release, and exclude previously released FG from Q. Separately reconcile FG opening + new release + physical returns = gross dispatch + writeoffs + FG closing. Returns retain prior burdens and are not new production by relabelling."
+      inputs:
+        - cp_release
+        - cp_materials
+        - cp_utilities
+      output: "matched cohort burden ledger"
+      source_ids:
+        - ilcd-allocation
+    - id: packaging_ledger
+      applies_to: "carton; pe_film; carton_first_receipt; carton_true_return; pe_film_first_receipt; pe_film_true_return"
+      rule: "For each material separately, free opening + purchase_in_free + first_nonpurchase_in_free + true_return_in_free + detached_to_free = free closing + newly_attached + scrap_free + other_out_free. Attached opening on WIP/FG + purchase_in_attached + first_nonpurchase_in_attached + true_return_in_attached + newly_attached = attached closing on WIP/FG + gross_dispatch_attached + detached_to_free + scrap_attached + other_out_attached. Receipt categories are disjoint; attachment/detachment are internal and cancel. First non-purchase receipts remain physical inflows regardless of upstream burden inclusion. Preserve inherited burden vectors on true returns; do not add new production burdens. Identify each burden owner once, including any burdens already in the incoming-material provider. Internal reuse is neither purchase nor external receipt. Missing actual outward/waste exchanges require separate material-specific inventory cards before a completed dataset. Exclude packaging from Q; normalize once."
+      inputs:
+        - cp_packaging
+        - cp_release
+      output: "separate material/state physical and inherited burden ledgers"
+      source_ids:
+        - ilcd-allocation
+    - id: air_species_mass
+      applies_to: "individual air emission rows"
+      rule: "Integrate concentration times gas volume on identical temperature/pressure/wet-dry/oxygen bases, convert to species mass and add separately measured fugitive mass. Preserve detection uncertainty. Keep NO and NO2 separate; unknown NOx-as-NO2 equivalence is pending. Split cumulative PM only using compatible measured cuts: never sum PM2.5, total PM10 and total PM as independent fractions."
+      inputs:
+        - cp_air
+      output: "A_i"
+      source_ids:
+        - epa-gas-combustion
+  data_quality_requirements:
+    - id: identity
+      applies_to: "each supplied exchange"
+      requirement: "Verify original identity and provider quantity basis independently; a broad flow is usable only without contradictory material/route restrictions."
+      evidence: "Native records, CoA/SDS, supplier reference amount"
+    - id: coverage
+      applies_to: "all stages"
+      requirement: "Record actual present, absent, below-detection and unmeasured states separately. Add each additional chemical, packaging component, consumable, waste and emission as an atomic row. Missing measurement is not zero."
+      evidence: "Site process survey, meter/drain maps, uncertainty"
+    - id: representativeness
+      applies_to: "foreground cohort"
+      requirement: "Declare site, period, shift/load, formulation and stock coverage; historical or single-plant publications supply no general recipe, quantitative range, yield or utility factor."
+      evidence: "Actual records and source-specific limitations"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require one unique reference_product Product output consistent with the verified final product UUID, Mass/kg and required qualifiers. Impact-indicator units do not establish a physical production quantity."
+    source_ids:
+      - topglove-manufacture-2016
+  - rule_id: validate_balances
+    applies_to: "foreground_dataset_conformance"
+    rule: "Validate physical solids/water/carbon closure, WIP/FG and both packaging ledgers separately from burden allocation. Require positive Q and once-only normalization with matched cohort coverage; unexplained residuals require investigation, not an invented balancing emission."
+    source_ids:
+      - ilcd-allocation
+  - rule_id: validate_native
+    applies_to: "foreground_dataset_conformance"
+    rule: "Each assigned UUID must match type, physical identity, CAS where provided, reference property/unit and receiving medium. Recheck provider compatibility, official Chinese name and quantity definitions; unresolved relationships remain explicit and block a completed foreground package."
+    source_ids:
+      - vaisala-bath
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "A completed, independently assessed gate-specific glove production inventory with inherited upstream compound and external treatment links"
+  excluded_use: "Other glove materials/routes, whole CPC36260 coverage, medical compliance certification or equal-service comparisons without functional assessment"
+  required_metadata: "Exact product, cohort, physical scope, compound/provider, wet/dry basis, gate, stock inheritance and actual utilities"
+  required_quality_disclosure: "Measurement coverage, non-detect bounds, balances, allocation drivers, unresolved identities/provider limitations"
+  update_trigger: "Change to material, formulation, finishing, utility, gate, supplier, treatment or acceptance specification"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "[UNSD CPC 3.0 Explanatory Notes, 30 June 2025, p.177](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf)"
+    used_for: "Classification boundary only, no process method"
+  - id: "topglove-manufacture-2016"
+    type: "literature"
+    reference: "[Top Glove Introductory Document, 24 June 2016, printed pp.103–105/PDF104–106](https://links.sgx.com/FileOpen/Top%20Glove%20Corporation%20Bhd%20-%20Introductory%20Document%20%2824%20June%202016%29.ashx?App=IPO&FileID=5179)"
+    used_for: "Historical producer route B and qualitative feed/stage roles; no numeric defaults"
+  - id: "vaisala-bath"
+    type: "extension_guidance"
+    reference: "[Vaisala, Rubber Gloves Manufacturing Process, undated application note](https://www.vaisala.com/nl/node/120711)"
+    used_for: "Bath concentration monitoring and leaching makeup; diagram sequence is taken from producer, not this note; TDS not dry rubber assay"
+  - id: "epa-latex-1974"
+    type: "official_guidance"
+    reference: "[EPA440/1-74/030-a, December1974, Latex-Based Dipped Goods, printed pp.52–55](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=00000P72.TXT)"
+    used_for: "Historical qualitative latex/coagulant residue screening; no old solvent recipe, limits or quantity transferred"
+  - id: "epa-gas-combustion"
+    type: "official_guidance"
+    reference: "[EPA AP-42 1.4, Natural Gas Combustion, §1.4.3 pp.1.4-2–3, edition marked10/26, accessed2026-11-20](https://www.epa.gov/sites/default/files/2020-09/documents/1.4_natural_gas_combustion.pdf)"
+    used_for: "Conditional gas-boiler/furnace species screening only; no emission, efficiency, composition or heating-value defaults"
+  - id: "ilcd-allocation"
+    type: "official_guidance"
+    reference: "[EC JRC ILCD Handbook, Detailed Guidance, First edition March2010, §7.9.3 pp.257–258/PDF277–278](https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf)"
+    used_for: "Attributional allocation hierarchy and virtual subdivision; no fixed shares or automatic waste credit"
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:c1116f1d190c487494ff92952f0a09120fd4d3d6d2ce0a5dd0a75ba256ea25d1"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5584"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5584
+          line: 60
+          column: 1
+        end:
+          offset: 7527
+          line: 79
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Received matured natural-rubber compound, separate coagulant/cleaner/chlorination feeds and utilities |\n| starting_condition_role | Foreground received-material gate; upstream compound production is inherited through a compatible provider |\n| product_classification_scope | Only the defined glove subset within CPC36260 |\n| recursive_input_rule | No same-category finished glove is assumed as a feed. Returned goods retain origin and inherited burdens; do not reclassify them as virgin latex or count repeat release as new production. |\n| upstream_dataset_requirement | Provider must cover actual wet formulation and maturity, natural-rubber origin, compounding, supply grade, transport and reference amount; raw latex alone is incomplete |\n| disclosure | Declare all site stages and exact handovers; imported steam/heat, on-site compounding or treatment require an expanded separate inventory before use |\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `boundary_route` | Aggregate dipping and finishing as one foreground unit while retaining stage meters. Include cleaning, baths, leaching, curing, chlorination/rinsing, drying, stripping, quality testing and packaging, including rejects and start/stop losses. | `topglove-manufacture-2016` |\n| `boundary_waste` | External wastewater treatment and solid-waste management burdens remain required upstream/downstream links. Do not model sewer transfer as a direct freshwater emission or omit treatment. | `epa-latex-1974` |\n| `boundary_utilities` | Only actual on-site gas combustion and purchased electricity are represented. Internal heat/water recirculation is a physical internal ledger, not a second external exchange. Real external steam/condensate transfers require independent product rows and enthalpy/pressure/provider reconciliation. | `epa-gas-combustion` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 316
+              line: 9
+              column: 1
+            end:
+              offset: 385
+              line: 9
+              column: 70
+          text: "# Chlorinated powder-free natural-rubber gloves from compounded latex"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5584
+              line: 60
+              column: 1
+            end:
+              offset: 5605
+              line: 60
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_36494"
+      family: "allocation"
+      span:
+        start:
+          offset: 36494
+          line: 634
+          column: 1
+        end:
+          offset: 37433
+          line: 641
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `allocation_order` | Use subdivision and direct assignment first. For genuinely inseparable shared utilities, establish determining physical causality per exchange (measured heat, duty/time, throughput with evidence). Residual burdens without a causal driver use documented process-gate economic values and sensitivity analysis in this attributional model. Do not freely choose mass or revenue shares. | `ilcd-allocation` |\n| `physical_ledger` | Keep the unallocated physical wet/solid/water/carbon ledger separate from attributed environmental burdens. Never multiply actual coproduct mass, internal links or wastewater handover by allocation shares. Treat ordinary non-saleable rejects as waste; no avoided-product credit is assumed. Any marketed downgraded glove triggers a separate output and allocation assessment. | `ilcd-allocation` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 316
+              line: 9
+              column: 1
+            end:
+              offset: 385
+              line: 9
+              column: 70
+          text: "# Chlorinated powder-free natural-rubber gloves from compounded latex"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 36494
+              line: 634
+              column: 1
+            end:
+              offset: 36534
+              line: 634
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_47652"
+      family: "validation"
+      span:
+        start:
+          offset: 47652
+          line: 673
+          column: 1
+        end:
+          offset: 48637
+          line: 681
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Rule | source_ids |\n| --- | --- | --- |\n| `validate_reference` | Require one unique reference_product Product output consistent with the verified final product UUID, Mass/kg and required qualifiers. Impact-indicator units do not establish a physical production quantity. | `topglove-manufacture-2016` |\n| `validate_balances` | Validate physical solids/water/carbon closure, WIP/FG and both packaging ledgers separately from burden allocation. Require positive Q and once-only normalization with matched cohort coverage; unexplained residuals require investigation, not an invented balancing emission. | `ilcd-allocation` |\n| `validate_native` | Each assigned UUID must match type, physical identity, CAS where provided, reference property/unit and receiving medium. Recheck provider compatibility, official Chinese name and quantity definitions; unresolved relationships remain explicit and block a completed foreground package. | `vaisala-bath` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 316
+              line: 9
+              column: 1
+            end:
+              offset: 385
+              line: 9
+              column: 70
+          text: "# Chlorinated powder-free natural-rubber gloves from compounded latex"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 47652
+              line: 673
+              column: 1
+            end:
+              offset: 47674
+              line: 673
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5584"
+      source_span:
+        start:
+          offset: 6657
+          line: 75
+          column: 1
+        end:
+          offset: 6950
+          line: 75
+          column: 294
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_waste"
+      identity_kind: "explicit"
+      unit_id: "normative_5584"
+      source_span:
+        start:
+          offset: 6951
+          line: 76
+          column: 1
+        end:
+          offset: 7179
+          line: 76
+          column: 229
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_utilities"
+      identity_kind: "explicit"
+      unit_id: "normative_5584"
+      source_span:
+        start:
+          offset: 7180
+          line: 77
+          column: 1
+        end:
+          offset: 7525
+          line: 77
+          column: 346
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_order"
+      identity_kind: "explicit"
+      unit_id: "normative_36494"
+      source_span:
+        start:
+          offset: 36588
+          line: 638
+          column: 1
+        end:
+          offset: 37013
+          line: 638
+          column: 426
+    - pointer: "/allocation_rules/1"
+      rule_id: "physical_ledger"
+      identity_kind: "explicit"
+      unit_id: "normative_36494"
+      source_span:
+        start:
+          offset: 37014
+          line: 639
+          column: 1
+        end:
+          offset: 37431
+          line: 639
+          column: 418
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_47652"
+      source_span:
+        start:
+          offset: 47728
+          line: 677
+          column: 1
+        end:
+          offset: 47990
+          line: 677
+          column: 263
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balances"
+      identity_kind: "explicit"
+      unit_id: "normative_47652"
+      source_span:
+        start:
+          offset: 47991
+          line: 678
+          column: 1
+        end:
+          offset: 48310
+          line: 678
+          column: 320
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_native"
+      identity_kind: "explicit"
+      unit_id: "normative_47652"
+      source_span:
+        start:
+          offset: 48311
+          line: 679
+          column: 1
+        end:
+          offset: 48635
+          line: 679
+          column: 325
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5584"
+      source_span:
+        start:
+          offset: 5584
+          line: 60
+          column: 1
+        end:
+          offset: 5605
+          line: 60
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5584"
+      source_span:
+        start:
+          offset: 5633
+          line: 64
+          column: 1
+        end:
+          offset: 6603
+          line: 71
+          column: 166
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_36494"
+      source_span:
+        start:
+          offset: 36494
+          line: 634
+          column: 1
+        end:
+          offset: 36534
+          line: 634
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_47652"
+      source_span:
+        start:
+          offset: 47652
+          line: 673
+          column: 1
+        end:
+          offset: 47674
+          line: 673
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c1116f1d190c487494ff92952f0a09120fd4d3d6d2ce0a5dd0a75ba256ea25d1"
+  generated_content_sha256: "sha256:94c64e6fa283d2b53f82f2a681217edf356e895f6365e86e438cf643bb9d451b"

@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-11-24
-lastReviewedCommit: 1ca1e3b62ac872f1278c5e05c119c6ebaf30bcc0
+lastReviewedAt: 2026-11-28
+lastReviewedCommit: 822b710cf5c463d1eccbe15346ccc05b46b5543d
 lastReviewedNote: "PCR #187 reviewed coordinated 0.4.12 version mirrors, native constrained-resource and guard-capacity diagnostics, immutable source identity and original publication gates."
 title: Offline PCR distribution contract
 docType: contract

@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import path from 'node:path';import os from 'node:os';
 import {withNavigationCompilationBinding} from './navigation-compilation.ts';
-function fixture(){const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'nav-compile-'))),app=path.join(root,'packages/pcr-docs');fs.mkdirSync(path.join(app,'lib'),{recursive:true});fs.writeFileSync(path.join(root,'middleware.ts'),'');fs.writeFileSync(path.join(app,'lib/navigation-trees.ts'),'');return{root,app,file:path.join(app,'out/generated/navigation-binding.json')};}
+function fixture(){const root=fs.mkdtempSync(path.join(os.tmpdir(),'nav-compile-')),app=path.join(root,'packages/pcr-docs');fs.mkdirSync(path.join(app,'lib'),{recursive:true});fs.writeFileSync(path.join(root,'middleware.ts'),'');fs.writeFileSync(path.join(app,'lib/navigation-trees.ts'),'');return{root,app,file:path.join(app,'out/generated/navigation-binding.json')};}
 test('clean and failed Next compilation use only an owned temporary null slot',async()=>{const f=fixture();try{
  await withNavigationCompilationBinding(f.app,async()=>{assert.equal(fs.readFileSync(f.file,'utf8'),'null\n');});assert(!fs.existsSync(f.file));
  await assert.rejects(withNavigationCompilationBinding(f.app,async()=>{throw Error('Next failed');}),/Next failed/);assert(!fs.existsSync(f.file));

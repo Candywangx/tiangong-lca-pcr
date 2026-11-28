@@ -1,10 +1,1672 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39365"
-  title: "Waste and scrap of zinc"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.waste-and-scrap-of-zinc"
+  classification_refs: "CPC 3.0:39365, accepted narrower association for bare zinc-base alloy sheet fabrication offcuts"
+  covered_products: "One identified bare rolled Zn-Cu-Ti alloy sheet-fabrication offcut stream first released as zinc-remelt feed"
+  excluded_products: "All exclusions in Section 1; reusable intact sheet is not automatically scrap"
+  representative_product: "Source-segregated bare Zn-Cu-Ti sheet-fabrication offcuts for remelting"
+  production_route: "Burdened supplied sheet → cold shearing/notching of panel blanks → source segregation → inspection/necessary cold trimming → first feed release → actual pallet/band packing and remelter supply"
+  market_state: "Solid clean bare alloy clippings; no melting, no fixed grade or receiver acceptance assumed"
+functional_unit:
+  what: "Supply a source-traceable clean metallic Zn-base alloy feed for a specified remelting operation"
+  how_much: "1 kg net first-quality-released remelt feed"
+  how_well: "Actual lot and receiver specification jointly establish alloy, metallic form and acceptable contamination; no assumed pure Zn or recovery performance"
+  how_long_or_cycle: "One first-release event for one traceable cohort; later shipment/retest is a service"
+  reference_flow_link: "released_zinc_offcuts"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "foreground"
+      rule: "Include supplied-sheet receipt, original cold fabrication, segregated preparation, quality release, actual storage/packing/handling, inbound and outward/return transport through the declared zinc-remelter receiving gate. Keep failed and zero-output batches, start/stop, idle, cleanup and incremental rework. Included supplier history is never reset at scrap creation."
+      source_ids:
+        - rheinzink-classic-2024
+        - rheinzink-fabrication-2024
+        - basel-r4-2004
+        - ilcd-attributional-2010
+    - rule_id: boundary_internal
+      applies_to: "internal links and stock"
+      rule: "Maintain a separate gross physical V ledger and an attributable exchange-burden vector for each lot and opening/closing WIP at every gate. Transfer each vector without re-purchasing, dilution by fresh-only averaging or hidden cancellation of losses. Cancel only matching internal transfers when consolidating gates; do not cancel external waste/emissions or internal rework effort."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: boundary_fg
+      applies_to: "release and supply services"
+      rule: "Q_c is first release, not net dispatch. Closing FG already contains the same batch first-release material and must not be added to Q_c. Keep opening/closing FG, every gross shipment and external return with its original cohort and burden. H (handled/delivered mass) is a service driver only. Packing or receiver retest adds no production. Reverse a returned original delivery and add actual incremental services/rework without manufacturing new historical burden or erasing the old one."
+      source_ids:
+        - ilcd-attributional-2010
+    - rule_id: boundary_actual_exchanges
+      applies_to: "conditional and additional operations"
+      rule: "No furnace, steam, purchased heat, process gas or chemical wash is inherent in this selected dry cold route. Demonstrate actual absence instead of setting unknowns to zero. Add and query each real unlisted input, tool replacement, complete purchased formulation, fuel, refrigerant, cleaning chemical, water, wastewater, solid waste and chemical emission separately before using a package with those operations. Actual mixing from purchased ingredients requires separate purchased materials and real mixing energy/losses. Do not use “other” bundles."
+      source_ids:
+        - rheinzink-classic-2024
+        - rheinzink-fabrication-2024
+        - basel-r4-2004
+boundary_abstraction:
+  declared_starting_condition: "One supplied bare rolled Zn-base alloy sheet lot with original supplier burden, surface state, packaging and receipt inventory"
+  starting_condition_role: "Burdened intermediate material genuinely cut/notched into the mother product and segregated offcuts"
+  product_classification_scope: "Narrow clean sheet-fabrication metallic offcut subset of CPC 3.0:39365"
+  recursive_input_rule: "Do not replace the source manufacture with bought finished scrap; any actual external same-category return/feed is recorded once with its own provenance and burden and requires separate applicability review"
+  upstream_dataset_requirement: "One compatible provider per whole purchased article or service; confirm alloy/form/route/state and avoid duplicated included packaging or transport"
+  disclosure: "Report all Section 3 qualifiers and process/FG/consolidated physical gates, inherited vectors, actual allocation, omitted scope and receiver evidence"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Quality-released bare Zn-Cu-Ti alloy sheet offcuts"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "source sheet lot and supplier"
+    - "actual whole alloy designation"
+    - "Zn Cu Ti Al and other constituent analyses"
+    - "rolled flat form and dimensions"
+    - "bright-rolled bare surface and oil oxide moisture condition"
+    - "mother-product fabrication and burden origin"
+    - "cold-shear and notch configuration"
+    - "segregated traceability"
+    - "first-release gate and Q_c cohort"
+    - "actual remelter specification and dated acceptance"
+    - "package composition and tare"
+    - "factory and receiver geography"
+    - "reporting period and service routes"
+    - "upstream-provider and allocation basis"
+    - "actual flow-identity applicability"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Q_c is measured net solid feed newly first released in cohort c, after actual separately measured tare/free moisture/removal corrections; all quantities and relevant constituent subaccounts remain independently observed. Do not substitute contained Zn for whole alloy mass."
+  - id: unit_conversion
+    applies_to: "all raw numerators"
+    required_property_ref:
+      name: "original recorded property"
+      uuid: ""
+    required_unit: "recorded unit"
+    rule: "Convert actual t to kg and metered kWh to MJ using exact factors 1000 and 3.6 before attribution. Integrated volume is not multiplied by time again; integrate only a true rate. A volume-to-mass conversion requires independently measured density of that exact substance at its actual state, never water density or a fabricated sheet density. Counted packages require measured whole-article mass for the actual configuration."
+  - id: single_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "declared numerator property"
+      uuid: ""
+    required_unit: "per 1 kg reference flow"
+    rule: "Raw collection retains original units. Section 8 alone produces A_ic / Q_c once after conversion, stock inheritance and real attribution. Cards and protocol aggregation columns only identify that same final result/basis, never a second calculation. Q_c = 0 retains all real loads in a disclosed loss/carryover account and produces no unit result."
+process_map:
+  - id: source_fabrication
+    name: "Original panel-blank cold fabrication"
+    inclusion: "required"
+    inclusion_condition: "Same identified supplied sheet lot"
+    role: "Joint mother product and offcut generation"
+    quantitative_reference: "Q_c"
+  - id: feed_preparation
+    name: "Segregated feed preparation and first release"
+    inclusion: "required"
+    inclusion_condition: "Real inspection and necessary cold size trimming"
+    role: "Only first-release production gate"
+    quantitative_reference: "released_zinc_offcuts"
+  - id: supply_services
+    name: "Cohort storage packing and supply"
+    inclusion: "required"
+    inclusion_condition: "Actual route and package through receiving gate"
+    role: "Services on original cohort; H is not production"
+    quantitative_reference: "Q_c"
+process_inventory:
+  - id: source_fabrication
+    label: "Original panel-blank cold fabrication"
+    inputs:
+      product:
+        - row_id: supplied_sheet
+          role: "Whole supplied bare rolled alloy sheet"
+          name: "Bare rolled Zn-Cu-Ti alloy sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One identified bare rolled Zn-Cu-Ti alloy sheet lot, constrained by supplier declaration and actual composition. Purchase the whole alloy once; elements, residual oil and moisture are non-additive subaccounts. Inherit supplier packaging and prior burdens once. The actual product UUID remains unresolved."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source
+              source_ids:
+                - rheinzink-classic-2024
+                - rheinzink-fabrication-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Include actual alternating-current electricity for this operation, including starts, failures, idle periods and cleanup. Collect voltage, geography, period and supply mix and select a compatible provider; the product UUID is unresolved. Convert metered kWh to MJ once before attribution; do not invent transformation losses."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_source_fabrication
+              source_ids:
+                - rheinzink-fabrication-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: machine_oil
+          role: "Machinery maintenance mineral-oil lubricant"
+          name: "Formulated mineral-oil machinery lubricant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of this whole formulated mineral-oil machinery lubricant. Collect supplier product/SDS, composition, makeup, opening/closing stocks, maintenance interval and spent-oil destination; do not buy its base oil and additives again. Another actual lubricant requires its own specific card; unknown is not zero and the UUID is unresolved."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aux
+              source_ids:
+                - rheinzink-fabrication-2024
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: panel_blank
+          role: "Joint cut and notched roofing-panel blank"
+          name: "Bare zinc-alloy roofing-panel blank"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The actual mother-product output from cold sheet cutting/notching before assembly, coating, soldering or installation. Record the complete blank with its exact alloy and geometry; its specific product UUID remains unresolved. Its mass and attributable burden remain separate from scrap; no fabricated sale price or yield."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source
+              source_ids:
+                - rheinzink-fabrication-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: raw_offcuts
+          role: "Internal source-segregated solid offcuts"
+          name: "Bare zinc-alloy sheet offcuts before feed release"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Segregate this one known sheet lot at creation, before contact with other alloys, coatings or floor sweepings. Transfer measured whole offcuts and every inherited exchange-burden vector to feed_preparation. This is internal material, not a second external purchase or newly accepted Q_c. Reusable sheet remnants remain separately identified stock until genuinely designated to this offcut route."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wip_source_fabrication
+              source_ids:
+                - rheinzink-classic-2024
+                - rheinzink-fabrication-2024
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        - row_id: source_rejects
+          role: "Rejected zinc-alloy pieces"
+          name: "Rejected bare zinc-alloy sheet pieces"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure each rejected solid piece that really leaves the source process as waste, with its destination and composition. Internal rework stays internal with original burden and actual incremental processing. Do not turn rejected output into reference product or discard failure burdens."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_loss_source_fabrication
+              source_ids:
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: spent_machine_oil
+          role: "Spent machinery lubricant"
+          name: "Spent mineral-oil machinery lubricant"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual spent whole formulation from machine_oil; distinguish retained oil, stored oil, collected waste and actual spills by independent measurements. Trace the receiver and treatment, add every actual oily absorbent as its own row, and do not equate an unmeasured oil loss with an air or water emission."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aux
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        []
+  - id: feed_preparation
+    label: "Segregated feed preparation and first release"
+    inputs:
+      product:
+        - row_id: offcut_transfer
+          role: "Internal offcut transfer into preparation"
+          name: "Bare zinc-alloy sheet offcuts before feed release"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same physical transfer as raw_offcuts, with matching lot mass and exchange-specific inherited burdens; one internal link and no upstream provider added here. Inspect, manually remove actual foreign objects and make only necessary cold size cuts. No washing, chemical stripping, melting, briquetting or furnace operation is presumed."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wip_feed_preparation
+              source_ids:
+                - rheinzink-classic-2024
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Include actual alternating-current electricity for this operation, including starts, failures, idle periods and cleanup. Collect voltage, geography, period and supply mix and select a compatible provider; the product UUID is unresolved. Convert metered kWh to MJ once before attribution; do not invent transformation losses."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_feed_preparation
+              source_ids:
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_zinc_offcuts
+          role: "First quality-released net remelt feed"
+          name: "Quality-released bare Zn-Cu-Ti alloy sheet offcuts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One source-traceable bare Zn-Cu-Ti alloy sheet-offcut exchange from genuine cold shearing/notching of the mother product and segregated preparation. Net Q_c is first quality release, excluding packaging, free water and measured removed contaminants. Retained surface oxide, oil and elemental analyses are non-additive subaccounts. Receiver agreement must explicitly accept this alloy, metallic form, oil/moisture/oxide condition, size, packaging and remelting use. Pure-zinc Screen qualification does not follow. The specific product UUID remains unresolved."
+          amount:
+            expression: "1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - rheinzink-classic-2024
+                - rheinzink-fabrication-2024
+                - basel-r4-2004
+                - rema-zinc-2026
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Nonconforming segregated alloy offcuts"
+          name: "Rejected zinc-alloy remelt-feed offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual rejected whole material with its separately identified receiver/treatment route. Do not mix it into Q_c or use a generic accepted-scrap UUID to conceal contamination. Any secondary commercial output needs its own proven identity and allocation evidence."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_loss_feed_preparation
+              source_ids:
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: detached_steel
+          role: "Removed steel foreign object"
+          name: "Detached steel fragment from offcut segregation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actually observed steel foreign matter, weighed and routed separately. It is not zinc alloy mass or default loss. Split any other observed foreign material into its own specific row and query."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_loss_feed_preparation
+              source_ids:
+                - basel-r4-2004
+            ranges: []
+        - row_id: collected_fines
+          role: "Contained cold-cut alloy fines"
+          name: "Contained zinc-alloy cutting fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional actual fines from fabrication and necessary preparation; source tags partition the one total non-additively. Do not identify these alloy fines as pure zinc powder or furnace ZnO. Separate dry metal, surface oxide, oil and moisture subaccounts using independent observations."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_loss_feed_preparation
+              source_ids:
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        - row_id: metallic_zinc_air
+          role: "Verified metallic-zinc particulate to air"
+          name: "Metallic zinc particulate to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional only if actual atmospheric release and metallic Zn speciation are established. Do not rename total alloy dust, total-Zn assay, ZnO or an indoor captured residue as this species. Query each actually evidenced species and receiving compartment separately; add Cu/Ti/Al species and water releases if observed. Unmeasured release is unknown, not zero or a fitted mass-balance residual; absence needs process and measurement evidence. Capture source/preparation origin as non-additive partitions."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_loss_feed_preparation
+              source_ids:
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+  - id: supply_services
+    label: "Cohort storage packing and supply"
+    inputs:
+      product:
+        - row_id: released_transfer
+          role: "Original released cohort into supply"
+          name: "Quality-released zinc-alloy sheet offcuts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Internal transfer of the original first-release cohort and vector from released_zinc_offcuts. Opening released FG belongs to its original cohort Q_c. No second purchase, second production output or new acceptance is created by packing, shipment, arrival or retesting."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: returned_offcuts
+          role: "Returned previously released offcuts"
+          name: "Returned zinc-alloy sheet offcuts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional physical return matched to the original delivery, including its original burdens and reversal of the corresponding delivery transfer. Credit no new Q_c; add actual return transport, handling and incremental rework to the original cohort. Separate return rejection and any genuine new material addition."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: service_electricity
+          role: "Storage handling and packing electricity"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Include actual alternating-current electricity for this operation, including starts, failures, idle periods and cleanup. Collect voltage, geography, period and supply mix and select a compatible provider; the product UUID is unresolved. Convert metered kWh to MJ once before attribution; do not invent transformation losses."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_supply_services
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: road_transport
+          role: "Contracted road freight for this cohort"
+          name: "Road freight service for segregated zinc offcuts"
+          flow_type: "product"
+          property_unit: "mass*distance / t*km"
+          description: "One actual contracted transport service with route, vehicle, load and return conventions declared. Record gross physically carried payload including attached packaging, actual distance and empty-return treatment; do not replace payload with burden-allocated A_i or Q_c. Provider emissions and fuel are included once; do not also buy the same diesel or duplicate its exhaust locally. Transport identity must match the actual configuration."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_service
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: wood_pallet_received
+          role: "Wooden shipping pallet"
+          name: "Wooden shipping pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one wooden shipping pallet; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record disjoint physical receipts P+N_ext+ER once, including supplier-attached packaging. Unknown history is not zero. Manufacture is counted only within its proven burden-owner/provider scope."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pe_cover_received
+          role: "Polyethylene protective cover"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polyethylene film cover; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record disjoint physical receipts P+N_ext+ER once, including supplier-attached packaging. Unknown history is not zero. Manufacture is counted only within its proven burden-owner/provider scope."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steel_band_received
+          role: "Carbon-steel bundle strap"
+          name: "Carbon-steel packaging band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one carbon-steel packaging band; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record disjoint physical receipts P+N_ext+ER once, including supplier-attached packaging. Unknown history is not zero. Manufacture is counted only within its proven burden-owner/provider scope."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: paperboard_interleaf_received
+          role: "Solid paperboard protective interleaf"
+          name: "Solid paperboard packaging interleaf"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one solid-paperboard interleaf; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record disjoint physical receipts P+N_ext+ER once, including supplier-attached packaging. Unknown history is not zero. Manufacture is counted only within its proven burden-owner/provider scope."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pp_cover_received
+          role: "Polypropylene protective film"
+          name: "Polypropylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polypropylene packaging film; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record disjoint physical receipts P+N_ext+ER once, including supplier-attached packaging. Unknown history is not zero. Manufacture is counted only within its proven burden-owner/provider scope."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wood_pallet_dispatch
+          role: "Attached packaging sent with gross shipment — Wooden shipping pallet"
+          name: "Wooden shipping pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one wooden shipping pallet; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual gross attached dispatch S for each event; it creates neither a purchase nor new Q_c."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: wood_pallet_external_return
+          role: "Packaging returned externally — Wooden shipping pallet"
+          name: "Wooden shipping pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one wooden shipping pallet; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual separate outward return EO to the identified owner; internal reuse is not an external return."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pe_cover_dispatch
+          role: "Attached packaging sent with gross shipment — Polyethylene protective cover"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polyethylene film cover; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual gross attached dispatch S for each event; it creates neither a purchase nor new Q_c."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pe_cover_external_return
+          role: "Packaging returned externally — Polyethylene protective cover"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polyethylene film cover; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual separate outward return EO to the identified owner; internal reuse is not an external return."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steel_band_dispatch
+          role: "Attached packaging sent with gross shipment — Carbon-steel bundle strap"
+          name: "Carbon-steel packaging band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one carbon-steel packaging band; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual gross attached dispatch S for each event; it creates neither a purchase nor new Q_c."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steel_band_external_return
+          role: "Packaging returned externally — Carbon-steel bundle strap"
+          name: "Carbon-steel packaging band"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one carbon-steel packaging band; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual separate outward return EO to the identified owner; internal reuse is not an external return."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: paperboard_interleaf_dispatch
+          role: "Attached packaging sent with gross shipment — Solid paperboard protective interleaf"
+          name: "Solid paperboard packaging interleaf"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one solid-paperboard interleaf; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual gross attached dispatch S for each event; it creates neither a purchase nor new Q_c."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: paperboard_interleaf_external_return
+          role: "Packaging returned externally — Solid paperboard protective interleaf"
+          name: "Solid paperboard packaging interleaf"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one solid-paperboard interleaf; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual separate outward return EO to the identified owner; internal reuse is not an external return."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pp_cover_dispatch
+          role: "Attached packaging sent with gross shipment — Polypropylene protective film"
+          name: "Polypropylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polypropylene packaging film; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual gross attached dispatch S for each event; it creates neither a purchase nor new Q_c."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pp_cover_external_return
+          role: "Packaging returned externally — Polypropylene protective film"
+          name: "Polypropylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polypropylene packaging film; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record actual separate outward return EO to the identified owner; internal reuse is not an external return."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: delivered_offcuts
+          role: "Original released offcuts at remelter receiving gate"
+          name: "Delivered clean zinc-alloy sheet offcuts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Same quality-released cohort as released_zinc_offcuts, with original alloy and all receiver restrictions retained. Measure actual bare gross shipment/receipt separately from packaging and reconcile returns, damage and rejected delivery. Delivery/retest does not produce a second reference output; retain all prior burdens plus actual supply service. Receiver legal and acceptance status require actual dated evidence, not a current legal threshold inferred from historical guidance."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - rheinzink-classic-2024
+                - basel-r4-2004
+                - ilcd-attributional-2010
+            ranges: []
+      waste:
+        - row_id: wood_pallet_waste
+          role: "Discarded packaging — Wooden shipping pallet"
+          name: "Discarded wooden pallet"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one wooden shipping pallet; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record only the discarded counterpart W, actual contamination and destination. It is a waste exchange, not a virgin article; no automatic recovery credit."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pe_cover_waste
+          role: "Discarded packaging — Polyethylene protective cover"
+          name: "Discarded polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polyethylene film cover; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record only the discarded counterpart W, actual contamination and destination. It is a waste exchange, not a virgin article; no automatic recovery credit."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: steel_band_waste
+          role: "Discarded packaging — Carbon-steel bundle strap"
+          name: "Discarded carbon-steel packaging band"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one carbon-steel packaging band; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record only the discarded counterpart W, actual contamination and destination. It is a waste exchange, not a virgin article; no automatic recovery credit."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: paperboard_interleaf_waste
+          role: "Discarded packaging — Solid paperboard protective interleaf"
+          name: "Discarded solid paperboard interleaf"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one solid-paperboard interleaf; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record only the discarded counterpart W, actual contamination and destination. It is a waste exchange, not a virgin article; no automatic recovery credit."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: pp_cover_waste
+          role: "Discarded packaging — Polypropylene protective film"
+          name: "Discarded polypropylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conditional on actual use of one polypropylene packaging film; record its exact material, form, composition, measured mass and supplier. UUID unresolved. Preserve ownership, custody, cohort, inherited burden and provider scope through cp_pack and pack_balance. Record only the discarded counterpart W, actual contamination and destination. It is a waste exchange, not a virgin article; no automatic recovery credit."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - rheinzink-classic-2024
+                - ilcd-attributional-2010
+            ranges: []
+        - row_id: supply_rejects
+          role: "Supply-damaged rejected alloy feed"
+          name: "Supply-rejected zinc-alloy offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual irreversible rejection/loss after first release, charged to its original cohort and separately routed. Do not delete the historical first-release record, create new Q_c on reinspection, or silently exclude transport/handling failure."
+          amount:
+            expression: "Use the single normalized Section 8 result for this exchange; no further division."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fg
+              source_ids:
+                - ilcd-attributional-2010
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_goal
+    applies_to: "all modelling"
+    rule: "Use attributional accounting only. Keep original sheet/manufacturing burden once and identify actual functional outputs, value status and the true common process gate. A positive scrap value is not proof of zero history or a substitution credit. Industrial manufacturing/recycling evidence is not an allocation prescription; no EPD fixed percentage or Module D credit is imported."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_hierarchy
+    applies_to: "each exchange"
+    rule: "First directly assign dedicated functions and use feasible real/virtual subdivision. Then determine exchange-specific physical causality: embodied sheet metal follows the actual element/mass partition, whereas cutting energy is not automatically allocated by offcut mass merely because trim exists. Evaluate actual determining mechanisms for each load, including shared equipment, stock and loss treatment, with evidence. Avoid a blanket physical/economic choice or fixed allocation share."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_residual
+    applies_to: "genuinely remaining common burdens"
+    rule: "Only after documenting why the preceding steps cannot resolve the remaining load, use actual contemporary market values of actual co-functions at the same common process gate and in their actual condition. Remove downstream packing/transport/conditioning differences from later prices; do not use delivered scrap price against an unprocessed mother product. Reconcile all output shares and loss attribution to 100% of each pre-allocation exchange. Missing values remain unresolved, never invented."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: allocation_history
+    applies_to: "material loops and returns"
+    rule: "Document the modelling context and inherited upstream provider convention. This finite foreground method does not implement an infinite recycling-loop factor or assume future collection/processing efficiencies. Any whole-life recycled-allocation claim needs the actual true-joint-process and inherent-property/quality evidence required by ILCD §7.9.3 VI and annex 14.4; keep it outside the present finite result until established. Internal reuse of metal or packaging is a transfer, never a new purchase, free coproduct or automatic avoided-primary credit."
+    source_ids:
+      - ilcd-attributional-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_source
+      process_id: "source_fabrication"
+      flow_role: "whole sheet and joint panel output"
+      record_type: "lot ledger and calibrated weighing"
+      raw_fields: "sheet receipts; supplier burden; whole composition; surface oil and moisture; dimensions; mother blanks; usable remnants; failed lots; raw masses"
+      collection_method: "Trace the same lot from receipt through actual smooth-shear/notch operations and weigh every physical outlet; independently sample actual assay and contamination. Keep supplier included packaging and transport scope."
+      unit: "kg"
+      frequency: "each lot and reconciliation period"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_wip_feed_preparation
+      process_id: "feed_preparation"
+      flow_role: "internal material and WIP"
+      record_type: "physical stock and vector ledger"
+      raw_fields: "opening WIP; new receipts; internal transfer; closing WIP; rework; loss; one inherited numerator vector per lot"
+      collection_method: "Weigh and identify every internal transfer and opening/closing stock; reconcile both process sides and carry every original burden component with the same material."
+      unit: "kg"
+      frequency: "each transfer and period close"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_wip_source_fabrication
+      process_id: "source_fabrication"
+      flow_role: "internal material and WIP"
+      record_type: "physical stock and vector ledger"
+      raw_fields: "opening WIP; new receipts; internal transfer; closing WIP; rework; loss; one inherited numerator vector per lot"
+      collection_method: "Weigh and identify every internal transfer and opening/closing stock; reconcile both process sides and carry every original burden component with the same material."
+      unit: "kg"
+      frequency: "each transfer and period close"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_release
+      process_id: "feed_preparation"
+      flow_role: "first released remelt feed"
+      record_type: "scale tickets and first-release register"
+      raw_fields: "cohort c; first-release identity; gross weight; measured tare; free moisture; removed contamination; Q_c; actual Zn Cu Ti Al assay; receiver specification; date"
+      collection_method: "Use a calibrated scale and actual tare correction; independently measure any deducted moisture/contamination, keep retained oxide/oil subaccounts, and match first release to receiver requirements without counting packaging or repeat retest."
+      unit: "kg"
+      frequency: "each first release and zero-output period"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_energy_feed_preparation
+      process_id: "feed_preparation"
+      flow_role: "actual electricity"
+      record_type: "meter and time-state log"
+      raw_fields: "meter starts and ends; raw kWh; site and voltage; supply mix; operating state; idle cleanup failed-lot energy; cohort allocation"
+      collection_method: "Read actual submeter data or reconcile a disclosed shared meter with measured determining use; convert kWh to MJ once and retain actual inactivity and failed runs."
+      unit: "kWh; MJ"
+      frequency: "each run and full period"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_energy_source_fabrication
+      process_id: "source_fabrication"
+      flow_role: "actual electricity"
+      record_type: "meter and time-state log"
+      raw_fields: "meter starts and ends; raw kWh; site and voltage; supply mix; operating state; idle cleanup failed-lot energy; cohort allocation"
+      collection_method: "Read actual submeter data or reconcile a disclosed shared meter with measured determining use; convert kWh to MJ once and retain actual inactivity and failed runs."
+      unit: "kWh; MJ"
+      frequency: "each run and full period"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_energy_supply_services
+      process_id: "supply_services"
+      flow_role: "actual electricity"
+      record_type: "meter and time-state log"
+      raw_fields: "meter starts and ends; raw kWh; site and voltage; supply mix; operating state; idle cleanup failed-lot energy; cohort allocation"
+      collection_method: "Read actual submeter data or reconcile a disclosed shared meter with measured determining use; convert kWh to MJ once and retain actual inactivity and failed runs."
+      unit: "kWh; MJ"
+      frequency: "each run and full period"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_aux
+      process_id: "source_fabrication"
+      flow_role: "whole machinery lubricant"
+      record_type: "purchase stock and maintenance records"
+      raw_fields: "whole formulation id; SDS; receipts; opening and closing stock; actual makeup; retained oil; waste oil; spills; attribution"
+      collection_method: "Weigh actual whole supplied product and trace every destination. Base oil and additive assays are subaccounts; identify and add each actual waste oil or oily absorbent exchange separately before package use."
+      unit: "kg"
+      frequency: "each maintenance and period"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_loss_feed_preparation
+      process_id: "feed_preparation"
+      flow_role: "each waste and real emitted species"
+      record_type: "segregated scales sampling and emission measurement"
+      raw_fields: "row identity; source stage; gross whole waste; actual composition; free water; metallic species; receiving medium; captured versus emitted; destination; uncertainty"
+      collection_method: "Measure disjoint waste outlets and actual air/water release using appropriate independent sampling. Keep metal-element and total physical balances independent of chemical speciation; do not infer ZnO from total Zn or fit two unknowns with one residual."
+      unit: "kg"
+      frequency: "each lot and actual discharge event"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_loss_source_fabrication
+      process_id: "source_fabrication"
+      flow_role: "each waste and real emitted species"
+      record_type: "segregated scales sampling and emission measurement"
+      raw_fields: "row identity; source stage; gross whole waste; actual composition; free water; metallic species; receiving medium; captured versus emitted; destination; uncertainty"
+      collection_method: "Measure disjoint waste outlets and actual air/water release using appropriate independent sampling. Keep metal-element and total physical balances independent of chemical speciation; do not infer ZnO from total Zn or fit two unknowns with one residual."
+      unit: "kg"
+      frequency: "each lot and actual discharge event"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_fg
+      process_id: "supply_services"
+      flow_role: "released stock delivery and returns"
+      record_type: "cohort FG ledger and receiving tickets"
+      raw_fields: "original cohort; opening FG; Q_c; closing FG; gross dispatch; external returns; delivery reversal; rejection; incremental rework; original burden vectors"
+      collection_method: "Reconcile first release with every gross bare-material shipment and receipt; preserve old cohort history, reversals and actual new services through the receiving gate."
+      unit: "kg"
+      frequency: "each stock event and period close"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_pack
+      process_id: "supply_services"
+      flow_role: "each individual packaging article"
+      record_type: "article-specific physical receipt ownership stock tare and destination ledger"
+      raw_fields: "article id and specific material/form/type; Product-flow input direction; independently measured receipt quantity and original unit; measured whole unit mass; receipt id/time/origin; P; first nonpurchase N_ext; ER and same-article prior outward record; owner; custodian; burden owner; cohort; prior exchange-burden vector and unknown history; provider and included supplier package scope; opening empty raw/unused attached-WIP attached-FG and reusable; closing same states; gross S; EO; W; internal issue/reuse; actual rental return handling repair and measured replacement"
+      collection_method: "Independently weigh each actual whole article receipt and segregated discarded counterpart; retain original measurements and any measured count-to-mass conversion for its actual configuration. Classify each external receipt once as P, N_ext or genuine ER using ownership/custody and prior outward evidence; absence of a separate invoice alone does not make a purchased component nonpurchase. Use the same specific received-card interface for the same article/type, preserving separately recoverable event quantities and vectors. Track source and composition partitions non-additively; retain all opening/closing states and per-article destinations. Establish the actual burden owner and compatible provider scope, inherit existing vectors once, and include actual incremental services and replacement/reuse without duplicating whole manufacture or its components. Unknown history remains unknown."
+      unit: "kg"
+      frequency: "every receipt stock dispatch return and discard"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+    - protocol_id: cp_service
+      process_id: "supply_services"
+      flow_role: "actual freight and handling"
+      record_type: "tickets routes load and service logs"
+      raw_fields: "cohort; origin; receiver; vehicle configuration; gross carried material and packages; actual km; empty return; rejection and repeat dispatch; service provider scope"
+      collection_method: "Measure physical payload and route; select representative provider and a determining capacity constraint for shared services. Keep gross V and H separate from attributable A and first-release Q_c."
+      unit: "t*km; kg; km"
+      frequency: "each real leg and service event"
+      temporal_coverage: "Complete reporting period including opening/closing history and all failures"
+      site_scope: "Named actual site and cohort c"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Traceable original records calibrated instruments and reconciliation; unknowns explicit"
+  calculation_rules:
+    - id: norm_once
+      applies_to: "all inventory rows"
+      rule: "x_ic = A_ic / Q_c, executed once only when Q_c > 0; retain each result and its original numerator/unit lineage. Q_c = 0 carries actual burdens with no unit result. Reference output is 1 kg."
+      inputs:
+        - A_ic
+        - Q_c
+        - cp_release
+      output: "x_ic"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: attribute_raw
+      applies_to: "raw numerator before norm_once"
+      rule: "For each exchange convert actual raw units, add inherited opening-WIP burden and actual newly attributable effort, subtract only the burden actually transferred into closing WIP or a different cohort/function, and preserve all real losses. Reconcile direct assignment and approved residual allocation to the complete pre-allocation numerator."
+      inputs:
+        - "raw records"
+        - "inherited vectors"
+        - "actual allocation"
+        - cp_wip_source_fabrication
+        - cp_wip_feed_preparation
+        - cp_source
+      output: "A_ic"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: physical_gates
+      applies_to: "each material process and consolidated boundary"
+      rule: "Opening WIP + external incoming V + internal incoming V = closing WIP + external outgoing V + internal outgoing V + independently quantified physical losses. Apply total mass and separate actual Zn Cu Ti Al balances; account for independently observed oxidation oxygen and water only when real. Cancel matching internal V at consolidation; never use an allocation share to close a physical balance."
+      inputs:
+        - "gross raw masses"
+        - "independent constituent analyses"
+        - cp_source
+        - cp_wip_source_fabrication
+        - cp_wip_feed_preparation
+        - cp_loss_source_fabrication
+        - cp_loss_feed_preparation
+      output: "physical reconciliation"
+      source_ids:
+        - basel-r4-2004
+        - ilcd-attributional-2010
+    - id: fg_balance
+      applies_to: "each original cohort"
+      rule: "Opening FG + new Q_c + external returned bare feed = closing FG + gross dispatched bare feed + actual post-release rejected/lost feed. All FG terms use the same tare-free and free-moisture-corrected feed-mass basis as first release; retain a separate whole gross V ledger and observed water/contamination changes for physical transport and closure. No second addition of same-cohort closing FG to Q_c. Carry original vector for each stock and reverse matched deliveries; H remains only a service driver."
+      inputs:
+        - cp_fg
+        - Q_c
+        - "actual service records"
+      output: "cohort FG reconciliation"
+      source_ids:
+        - ilcd-attributional-2010
+    - id: pack_balance
+      applies_to: "each package material and article separately"
+      rule: "Opening empty + raw/unused + attached WIP + attached FG + reusable stock + new purchases P + first nonpurchase external receipts N_ext + external returns received ER = closing empty + raw/unused + attached WIP + attached FG + reusable stock + attached gross dispatch S + external returns sent EO + actual waste W. P includes whole-consignment purchased components without separate invoices. N_ext is independently measured first borrowed, leased, entrusted or genuinely nonpurchased supplier-attached receipt; ER requires the same identified article's prior outward dispatch. Preserve receipt id/time/origin, owner/custody, cohort, original vector, burden owner and provider scope for each physical input partition, independently of procurement and burden attribution. Internal issue/reuse cancels with its original vector retained. Incoming supplier packaging is identified within external receipts without a second manufacturing provider; whole articles and their component subaccounts are not added together. Unknown history is not zero. Retain actual rental/return/handling/repair services once. Do not put packaging into Q_c or assign automatic coproduct credit."
+      inputs:
+        - cp_pack
+        - "measured individual article mass"
+        - "whole receipt and destination records"
+      output: "separate packaging reconciliation"
+      source_ids:
+        - rheinzink-classic-2024
+        - ilcd-attributional-2010
+    - id: transport_raw
+      applies_to: "road_transport"
+      rule: "Freight activity = sum of actual carried payload in t times actual km for each leg, with observed load/empty-return convention and representative provider; allocate services by actual determining constraints before norm_once. Do not use first-release Q_c or burden A as gross payload."
+      inputs:
+        - cp_service
+        - "actual gross payload"
+        - "actual route"
+      output: "raw transport activity"
+      source_ids:
+        - ilcd-attributional-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "whole material and terminal"
+      requirement: "Prove single source and alloy-state compatibility, all required qualifiers and a real Product identity before claiming complete guidance. Unbound companion/auxiliary identities are specific gaps."
+      evidence: "Supplier documents independent assays native records and receiver agreement"
+    - id: dq_quantity
+      applies_to: "all numerators and denominators"
+      requirement: "Collect raw finite values with original units and calibrations, complete failure/idle/cleanup history and per-exchange stock inheritance; no default zero or repeated normalization."
+      evidence: "Raw ledger conversion log allocation workpaper and one normalized result"
+    - id: dq_species
+      applies_to: "composition mass and emissions"
+      requirement: "Whole alloy and whole supplied formulations are purchased once. Elements/species/water are independent non-additive subaccounts. Total mass residual cannot establish a chemical species or two missing quantities."
+      evidence: "Sampling method detection limits assay closure physical gates and uncertainty"
+    - id: dq_context
+      applies_to: "all providers and services"
+      requirement: "Confirm technology geography time voltage vehicle form and all native restrictions; preserve unresolved data. Historical EPD/basel observations are not present legal findings or plant defaults."
+      evidence: "Actual dated primary records and explicit representativeness rationale"
+validation_rules:
+  - rule_id: validate_applicability
+    applies_to: "reference and source"
+    rule: "Reject pooled/unknown alloy sources, missing qualifiers and false pure-zinc Screen claims. Verify one specific product identity and its property/unit chain; unresolved product UUIDs do not establish completed exchange-identity validation. Require actual cold fabrication, whole-alloy supply and dated receiver evidence."
+    source_ids:
+      - rheinzink-classic-2024
+      - rheinzink-fabrication-2024
+      - basel-r4-2004
+      - rema-zinc-2026
+  - rule_id: validate_measurement
+    applies_to: "all inventory"
+    rule: "Check finite same-reference bases in both languages, exact native property/unit support, every raw quantity, the one A_ic / Q_c execution, Q_c > 0, source/FG/consolidated physical and element balances, and complete stock-vector inheritance. Q_c = 0 is retained but has no unit result. Missing measurements remain unknown."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: validate_services_pack
+    applies_to: "FG and packaging"
+    rule: "Check original cohort reversals, all first-release and delivery events, every separate package balance including empty/WIP/FG/reusable opening and closing states, and physical gross payload. Reject second Q_c from closing FG, handling H, delivery or retest; reject doubled package purchase and internal-reuse credit. Verify disjoint P/N_ext/ER physical receipt quantities and each specific input interface with receipt id/time/origin, owner/custody, cohort, inherited vector, burden owner and provider scope; ER needs the same article's prior outward record. Check raw/unused opening/closing stock as well. Reject a false purchase/return for first nonpurchase receipt, unknown history set to zero, or duplicate whole/component manufacture and services."
+    source_ids:
+      - rheinzink-classic-2024
+      - ilcd-attributional-2010
+  - rule_id: validate_allocation
+    applies_to: "each attributed load"
+    rule: "Require documented dedicated assignment/subdivision, exchange-specific determining physical causality, and justified residual common-gate contemporary value when necessary. The complete assigned vectors sum to pre-allocation load; no arbitrary physical/economic switch, fixed share, invented upstream zero or automatic recycling credit."
+    source_ids:
+      - ilcd-attributional-2010
+  - rule_id: validate_actual_species
+    applies_to: "conditional/additional flows"
+    rule: "Check each real atomic formulation, waste and emission with its actual species/medium/destination. Lack of measurement is not absence. If real cleaning, combustion, hydraulic processing or other excluded route is introduced, add the actual complete inventory and review scope before use; do not hide any input/outlet in an unlisted zero or collection label."
+    source_ids:
+      - rheinzink-fabrication-2024
+      - basel-r4-2004
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Source-specific feed burden for the actual compatible zinc remelter; supply services retain original cohort"
+  allowed_use: "Only the proved bare single-alloy cold-sheet route with complete actual identity, measurements, allocation and receiver data"
+  excluded_use: "No whole-leaf coverage; no legal status certification; no pure-metal/alloy substitution; no automatic primary-zinc displacement or recycling-rate model"
+  required_metadata: "All Section 3 qualifiers and evidence of each applicable native restriction and one provider per whole exchange"
+  required_quality_disclosure: "All specific exchange UUIDs unresolved; actual alloy and receiver conditions, raw data coverage, allocation uncertainty, omitted operations, provider applicability and packaging history"
+  update_trigger: "Change in source alloy or surface, mother fabrication, preparation, receiver, package, geography, energy supply or material evidence"
+data_sources:
+  - id: "rheinzink-classic-2024"
+    type: "dataset"
+    reference: "RHEINZINK / IBU, EPD-RHE-20230365-IBA1-EN, RHEINZINK-CLASSIC bright-rolled, issued 2024-01-02, §§2.1–2.9 and 2.14; https://www.rheinzink.com/fileadmin/redaktion/RHEINZINK_GLOBAL/Downloads/Technical-Documents/epd_rheinzink-classic_bright-rolled_2024-2029.pdf"
+    used_for: "Actual whole alloy/rolled-sheet supply and original manufacture, including pre-alloy melting, mixing, solidification and rolling; dry handling; separate real packaging and cuttings to secondary melting plants. Qualitative route evidence only: no recipe/density/efficiency/Module D credit adopted."
+  - id: "rheinzink-fabrication-2024"
+    type: "handbook"
+    reference: "RHEINZINK America, Standing Seam Metal Roofing Panels, Section 07 61 13, September 2024, printed pp6–9 (full downloaded technical binder PDF pp48–51); https://www.rheinzink.us/fileadmin/redaktion/RHEINZINK_US/Downloads/Technical-Documents/Division_7_binder_Volume_10_Chapter_3_Standing_Seam_Roof_09_2024.pdf"
+    used_for: "Primary cold smooth-blade shearing/snips and rounded-notching fabrication, collection of drop-offs; separate adjacent installation, sealant, solder and coating alternatives. Not one measured same-factory order."
+  - id: "basel-r4-2004"
+    type: "official_guidance"
+    reference: "Secretariat of Basel Convention, Technical guidelines R4, adopted decision VII/14 October 2004, printed November 2010 UNEP/SBC/2010/21, §§17–26 and 63–67; https://www.doe.gov.my/wp-content/uploads/2021/07/Technical-guidelines-on-the-environmentally-sound-recycling-or-reclamation-of-metals-and-metal-compounds-R4-1.pdf"
+    used_for: "Independent known-composition prompt-scrap generation, segregation and specification-driven direct remelting; distinguish zinc sheet clippings from ash/dross, coated steel and dust. Historical technical context only; no current legal threshold or authorisation."
+  - id: "ilcd-attributional-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook General guide for LCA Detailed guidance, first edition March 2010, §§7.9.2–7.9.3 pp255–272; https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Attributional subdivision, exchange-specific determining physical causality, genuine residual common-gate market value and 100% conservation; note recycling-specific true-joint-process limits. No numerical allocation factor adopted."
+  - id: "rema-zinc-2026"
+    type: "standard"
+    reference: "ReMA ISRI Specifications, January 2026, Nonferrous Zinc, printed p12 and adjacent pp11–13; https://www.isrispecs.org/wp-content/uploads/2026/01/2026-January-ReMA_ISRI_Specifications.pdf"
+    used_for: "Counterevidence: Screen is new pure-zinc sheet/stamping scrap; alloy-specific receiver acceptance cannot be inferred. Distinguish old-zinc, die-cast, dross and mixed grades; no acceptance numeric adopted."
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, PDF pp203–204, code39365; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification meaning only; no PCR identity, methodology approval or positive mapping."
+  - id: "rheinzink-material"
+    type: "handbook"
+    reference: "RHEINZINK, Titanium zinc, https://www.rheinzink.com/products/materials-surfaces/titanium-zinc/"
+    used_for: "Confirms zinc base with added Cu/Ti for architectural alloy; base-metal purity is not finished-alloy purity. No web composition fraction, density or recycling-performance default adopted."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:fcccf846038e0b460cdea873d876901d20219440d18476d60521984ee5029da8"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_8675"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 8675
+          line: 69
+          column: 1
+        end:
+          offset: 12043
+          line: 89
+          column: 1
+      markdown: "## 5. System Boundary\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `boundary_complete` | foreground | Include supplied-sheet receipt, original cold fabrication, segregated preparation, quality release, actual storage/packing/handling, inbound and outward/return transport through the declared zinc-remelter receiving gate. Keep failed and zero-output batches, start/stop, idle, cleanup and incremental rework. Included supplier history is never reset at scrap creation. | `rheinzink-classic-2024`; `rheinzink-fabrication-2024`; `basel-r4-2004`; `ilcd-attributional-2010` |\n| `boundary_internal` | internal links and stock | Maintain a separate gross physical V ledger and an attributable exchange-burden vector for each lot and opening/closing WIP at every gate. Transfer each vector without re-purchasing, dilution by fresh-only averaging or hidden cancellation of losses. Cancel only matching internal transfers when consolidating gates; do not cancel external waste/emissions or internal rework effort. | `ilcd-attributional-2010` |\n| `boundary_fg` | release and supply services | Q_c is first release, not net dispatch. Closing FG already contains the same batch first-release material and must not be added to Q_c. Keep opening/closing FG, every gross shipment and external return with its original cohort and burden. H (handled/delivered mass) is a service driver only. Packing or receiver retest adds no production. Reverse a returned original delivery and add actual incremental services/rework without manufacturing new historical burden or erasing the old one. | `ilcd-attributional-2010` |\n| `boundary_actual_exchanges` | conditional and additional operations | No furnace, steam, purchased heat, process gas or chemical wash is inherent in this selected dry cold route. Demonstrate actual absence instead of setting unknowns to zero. Add and query each real unlisted input, tool replacement, complete purchased formulation, fuel, refrigerant, cleaning chemical, water, wastewater, solid waste and chemical emission separately before using a package with those operations. Actual mixing from purchased ingredients requires separate purchased materials and real mixing energy/losses. Do not use “other” bundles. | `rheinzink-classic-2024`; `rheinzink-fabrication-2024`; `basel-r4-2004` |\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | One supplied bare rolled Zn-base alloy sheet lot with original supplier burden, surface state, packaging and receipt inventory |\n| starting_condition_role | Burdened intermediate material genuinely cut/notched into the mother product and segregated offcuts |\n| product_classification_scope | Narrow clean sheet-fabrication metallic offcut subset of CPC 3.0:39365 |\n| recursive_input_rule | Do not replace the source manufacture with bought finished scrap; any actual external same-category return/feed is recorded once with its own provenance and burden and requires separate applicability review |\n| upstream_dataset_requirement | One compatible provider per whole purchased article or service; confirm alloy/form/route/state and avoid duplicated included packaging or transport |\n| disclosure | Report all Section 3 qualifiers and process/FG/consolidated physical gates, inherited vectors, actual allocation, omitted scope and receiver evidence |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 261
+              line: 10
+              column: 1
+            end:
+              offset: 334
+              line: 10
+              column: 74
+          text: "# Source-segregated bare Zn-Cu-Ti sheet-fabrication offcuts for remelting"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 8675
+              line: 69
+              column: 1
+            end:
+              offset: 8696
+              line: 69
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_55179"
+      family: "allocation"
+      span:
+        start:
+          offset: 55179
+          line: 739
+          column: 1
+        end:
+          offset: 57537
+          line: 748
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `allocation_goal` | all modelling | Use attributional accounting only. Keep original sheet/manufacturing burden once and identify actual functional outputs, value status and the true common process gate. A positive scrap value is not proof of zero history or a substitution credit. Industrial manufacturing/recycling evidence is not an allocation prescription; no EPD fixed percentage or Module D credit is imported. | `ilcd-attributional-2010` |\n| `allocation_hierarchy` | each exchange | First directly assign dedicated functions and use feasible real/virtual subdivision. Then determine exchange-specific physical causality: embodied sheet metal follows the actual element/mass partition, whereas cutting energy is not automatically allocated by offcut mass merely because trim exists. Evaluate actual determining mechanisms for each load, including shared equipment, stock and loss treatment, with evidence. Avoid a blanket physical/economic choice or fixed allocation share. | `ilcd-attributional-2010` |\n| `allocation_residual` | genuinely remaining common burdens | Only after documenting why the preceding steps cannot resolve the remaining load, use actual contemporary market values of actual co-functions at the same common process gate and in their actual condition. Remove downstream packing/transport/conditioning differences from later prices; do not use delivered scrap price against an unprocessed mother product. Reconcile all output shares and loss attribution to 100% of each pre-allocation exchange. Missing values remain unresolved, never invented. | `ilcd-attributional-2010` |\n| `allocation_history` | material loops and returns | Document the modelling context and inherited upstream provider convention. This finite foreground method does not implement an infinite recycling-loop factor or assume future collection/processing efficiencies. Any whole-life recycled-allocation claim needs the actual true-joint-process and inherent-property/quality evidence required by ILCD §7.9.3 VI and annex 14.4; keep it outside the present finite result until established. Internal reuse of metal or packaging is a transfer, never a new purchase, free coproduct or automatic avoided-primary credit. | `ilcd-attributional-2010` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 261
+              line: 10
+              column: 1
+            end:
+              offset: 334
+              line: 10
+              column: 74
+          text: "# Source-segregated bare Zn-Cu-Ti sheet-fabrication offcuts for remelting"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 55179
+              line: 739
+              column: 1
+            end:
+              offset: 55219
+              line: 739
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_74517"
+      family: "validation"
+      span:
+        start:
+          offset: 74517
+          line: 790
+          column: 1
+        end:
+          offset: 77216
+          line: 800
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | Applies to | Rule | source_ids |\n| --- | --- | --- | --- |\n| `validate_applicability` | reference and source | Reject pooled/unknown alloy sources, missing qualifiers and false pure-zinc Screen claims. Verify one specific product identity and its property/unit chain; unresolved product UUIDs do not establish completed exchange-identity validation. Require actual cold fabrication, whole-alloy supply and dated receiver evidence. | `rheinzink-classic-2024`; `rheinzink-fabrication-2024`; `basel-r4-2004`; `rema-zinc-2026` |\n| `validate_measurement` | all inventory | Check finite same-reference bases in both languages, exact native property/unit support, every raw quantity, the one A_ic / Q_c execution, Q_c > 0, source/FG/consolidated physical and element balances, and complete stock-vector inheritance. Q_c = 0 is retained but has no unit result. Missing measurements remain unknown. | `ilcd-attributional-2010` |\n| `validate_services_pack` | FG and packaging | Check original cohort reversals, all first-release and delivery events, every separate package balance including empty/WIP/FG/reusable opening and closing states, and physical gross payload. Reject second Q_c from closing FG, handling H, delivery or retest; reject doubled package purchase and internal-reuse credit. Verify disjoint P/N_ext/ER physical receipt quantities and each specific input interface with receipt id/time/origin, owner/custody, cohort, inherited vector, burden owner and provider scope; ER needs the same article's prior outward record. Check raw/unused opening/closing stock as well. Reject a false purchase/return for first nonpurchase receipt, unknown history set to zero, or duplicate whole/component manufacture and services. | `rheinzink-classic-2024`; `ilcd-attributional-2010` |\n| `validate_allocation` | each attributed load | Require documented dedicated assignment/subdivision, exchange-specific determining physical causality, and justified residual common-gate contemporary value when necessary. The complete assigned vectors sum to pre-allocation load; no arbitrary physical/economic switch, fixed share, invented upstream zero or automatic recycling credit. | `ilcd-attributional-2010` |\n| `validate_actual_species` | conditional/additional flows | Check each real atomic formulation, waste and emission with its actual species/medium/destination. Lack of measurement is not absence. If real cleaning, combustion, hydraulic processing or other excluded route is introduced, add the actual complete inventory and review scope before use; do not hide any input/outlet in an unlisted zero or collection label. | `rheinzink-fabrication-2024`; `basel-r4-2004` |\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 261
+              line: 10
+              column: 1
+            end:
+              offset: 334
+              line: 10
+              column: 74
+          text: "# Source-segregated bare Zn-Cu-Ti sheet-fabrication offcuts for remelting"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 74517
+              line: 790
+              column: 1
+            end:
+              offset: 74539
+              line: 790
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_8675"
+      source_span:
+        start:
+          offset: 8769
+          line: 73
+          column: 1
+        end:
+          offset: 9276
+          line: 73
+          column: 508
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_internal"
+      identity_kind: "explicit"
+      unit_id: "normative_8675"
+      source_span:
+        start:
+          offset: 9277
+          line: 74
+          column: 1
+        end:
+          offset: 9739
+          line: 74
+          column: 463
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_fg"
+      identity_kind: "explicit"
+      unit_id: "normative_8675"
+      source_span:
+        start:
+          offset: 9740
+          line: 75
+          column: 1
+        end:
+          offset: 10304
+          line: 75
+          column: 565
+    - pointer: "/system_boundary/rules/3"
+      rule_id: "boundary_actual_exchanges"
+      identity_kind: "explicit"
+      unit_id: "normative_8675"
+      source_span:
+        start:
+          offset: 10305
+          line: 76
+          column: 1
+        end:
+          offset: 11001
+          line: 76
+          column: 697
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_goal"
+      identity_kind: "explicit"
+      unit_id: "normative_55179"
+      source_span:
+        start:
+          offset: 55292
+          line: 743
+          column: 1
+        end:
+          offset: 55740
+          line: 743
+          column: 449
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_hierarchy"
+      identity_kind: "explicit"
+      unit_id: "normative_55179"
+      source_span:
+        start:
+          offset: 55741
+          line: 744
+          column: 1
+        end:
+          offset: 56303
+          line: 744
+          column: 563
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_55179"
+      source_span:
+        start:
+          offset: 56304
+          line: 745
+          column: 1
+        end:
+          offset: 56894
+          line: 745
+          column: 591
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_history"
+      identity_kind: "explicit"
+      unit_id: "normative_55179"
+      source_span:
+        start:
+          offset: 56895
+          line: 746
+          column: 1
+        end:
+          offset: 57535
+          line: 746
+          column: 641
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_applicability"
+      identity_kind: "explicit"
+      unit_id: "normative_74517"
+      source_span:
+        start:
+          offset: 74612
+          line: 794
+          column: 1
+        end:
+          offset: 75077
+          line: 794
+          column: 466
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_measurement"
+      identity_kind: "explicit"
+      unit_id: "normative_74517"
+      source_span:
+        start:
+          offset: 75078
+          line: 795
+          column: 1
+        end:
+          offset: 75472
+          line: 795
+          column: 395
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_services_pack"
+      identity_kind: "explicit"
+      unit_id: "normative_74517"
+      source_span:
+        start:
+          offset: 75473
+          line: 796
+          column: 1
+        end:
+          offset: 76329
+          line: 796
+          column: 857
+    - pointer: "/validation_rules/3"
+      rule_id: "validate_allocation"
+      identity_kind: "explicit"
+      unit_id: "normative_74517"
+      source_span:
+        start:
+          offset: 76330
+          line: 797
+          column: 1
+        end:
+          offset: 76745
+          line: 797
+          column: 416
+    - pointer: "/validation_rules/4"
+      rule_id: "validate_actual_species"
+      identity_kind: "explicit"
+      unit_id: "normative_74517"
+      source_span:
+        start:
+          offset: 76746
+          line: 798
+          column: 1
+        end:
+          offset: 77214
+          line: 798
+          column: 469
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_8675"
+      source_span:
+        start:
+          offset: 8675
+          line: 69
+          column: 1
+        end:
+          offset: 8696
+          line: 69
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_8675"
+      source_span:
+        start:
+          offset: 11029
+          line: 80
+          column: 1
+        end:
+          offset: 12041
+          line: 87
+          column: 167
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_55179"
+      source_span:
+        start:
+          offset: 55179
+          line: 739
+          column: 1
+        end:
+          offset: 55219
+          line: 739
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_74517"
+      source_span:
+        start:
+          offset: 74517
+          line: 790
+          column: 1
+        end:
+          offset: 74539
+          line: 790
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fcccf846038e0b460cdea873d876901d20219440d18476d60521984ee5029da8"
+  generated_content_sha256: "sha256:a75a2c69a1f9894061f7a2e7ccd4d1463bf43067edb248dd07ef33f685935449"

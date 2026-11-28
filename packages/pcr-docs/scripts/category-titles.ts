@@ -73,11 +73,14 @@ const zh: Readonly<Record<string,string>> = {
     "农业、园艺和商品蔬菜种植产品",
   "products-of-wood-cork-straw-and-plaiting-materials":
     "木材、软木、秸秆和编织材料制品",
+  "professional-technical-and-business-services-except-research-developmen-146375cf":
+    "专业、技术和商务服务（研发、法律和会计服务除外）",
   "pulp-paper-and-paper-products-printed-matter-and-related-articles":
     "纸浆、纸及纸制品、印刷品和相关产品",
   "radio-television-and-communication-equipment-and-apparatus":
     "广播、电视和通信设备",
   "research-and-development-services": "研发服务",
+  "recreational-cultural-and-sporting-services": "娱乐、文化和体育服务",
   "special-purpose-machinery": "专用机械",
   "telecommunications-broadcasting-and-information-supply-services":
     "电信、广播和信息提供服务",
@@ -86,8 +89,13 @@ const zh: Readonly<Record<string,string>> = {
   "wastes-or-scraps": "废物或废料",
   "yarn-and-thread-woven-and-tufted-textile-fabrics": "纱线、机织和簇绒织物",
 };
+const en: Readonly<Record<string,string>> = {
+  "professional-technical-and-business-services-except-research-developmen-146375cf":
+    "Professional, technical and business services (except research, development, legal and accounting services)",
+};
 export function categoryTitle(slug: string, language: string) {
   if (language === "zh-CN" && zh[slug]) return zh[slug]!;
+  if (language === "en-US" && en[slug]) return en[slug]!;
   return slug
     .split("-")
     .map((word) => word[0]?.toUpperCase() + word.slice(1))

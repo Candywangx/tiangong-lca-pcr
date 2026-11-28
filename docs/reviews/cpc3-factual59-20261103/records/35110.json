@@ -1,0 +1,301 @@
+{
+  "role": "Per-record frozen-source factual review and actual evidence; not final repaired-source assessment",
+  "review_source": "95bdddb739fdc4144f94a482f712bcf6d9452f4b",
+  "source_part": "part03",
+  "canonical_path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes",
+  "source_four_sha256": {
+    "manifest.yaml": "50b18b3f0fe92ab2d060cc442d734be8c912eb3f547628889b60f2df9a298db0",
+    "pcr.en-US.md": "817e4a9033eaa0e902ec1993d5cc9b23198a2b2f1bc2512bec6c9781e5ec2c92",
+    "pcr.zh-CN.md": "caa085337829b63ad8deb7c64afbecbf8f077475dae28310b92ab08cdda30809",
+    "structured.yaml": "7a782ed6fcd151b96334232c2d0179b52e0c1c08b202e66564f56b0c9073a9ed"
+  },
+  "original_private_report_sha256": "142770b8d3b3e447b321ec2a7db6f53590c8df51584fd88cca2d5a67ad404c31",
+  "full_record_review": {
+    "code": "35110",
+    "pcr_id": "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.other-chemical-products-man-made-fibres.paints-and-varnishes",
+    "path": "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes",
+    "source_commit": "95bdddb739fdc4144f94a482f712bcf6d9452f4b",
+    "source_four_sha256": {
+      "manifest.yaml": "50b18b3f0fe92ab2d060cc442d734be8c912eb3f547628889b60f2df9a298db0",
+      "pcr.en-US.md": "817e4a9033eaa0e902ec1993d5cc9b23198a2b2f1bc2512bec6c9781e5ec2c92",
+      "pcr.zh-CN.md": "caa085337829b63ad8deb7c64afbecbf8f077475dae28310b92ab08cdda30809",
+      "structured.yaml": "7a782ed6fcd151b96334232c2d0179b52e0c1c08b202e66564f56b0c9073a9ed"
+    },
+    "selection_sha_match": {
+      "manifest.yaml": false,
+      "pcr.en-US.md": true,
+      "pcr.zh-CN.md": true,
+      "structured.yaml": true
+    },
+    "actual_read_scope": {
+      "manifest": "Complete identity/status/classification/review metadata, including all unresolved-row reasons; repeated identical reasons grouped losslessly.",
+      "english": "Complete canonical EN Markdown, every card and qualifier, protocols, equations, allocation, diagnostics, source references. Exact repeated controlled fields/protocol cells factored and every unique value/row placement inspected.",
+      "chinese": "Complete canonical ZH Markdown, all prose/conditions/actions/negations, cards/names, protocol values and equations; exact repeated fixed cells grouped and row placements compared.",
+      "structured": "Entire structured YAML parsed and independently deterministically recompiled from canonical EN; source/content integrity current and byte-identical. Semantic review reads full canonical clauses represented by projection; not a claim of manually rereading every duplicated projection scalar.",
+      "complete_primary_native_review": false,
+      "limitation": "Every adopted flow identity inspected; actual supplier/site background and unresolved auxiliary identities remain unproved. Primary inspected sections and inaccessible/unread gaps are enumerated."
+    },
+    "method_read": true,
+    "review_status": "issues_confirmed_with_bounded_evidence_gaps",
+    "findings": [
+      {
+        "id": "P03-35110-01",
+        "code": "35110",
+        "severity": "P2",
+        "status": "confirmed_issue",
+        "rule": "fd_bulk_output range",
+        "en_line": 323,
+        "zh_line": 323,
+        "projection_pointer": "/process_inventory/0/outputs/product/0/amount/ranges/0/basis_kind",
+        "title": "Input-yield guardrail projects an incompatible output denominator",
+        "description": "The range is 0.90–1.00 kg bulk coating/kg total formulation inputs (line321), but basis_kind is process_output (line323) whose authored vocabulary explicitly means normalized to process output. Output/input yield 0.95 is not output/output 1.00; machine consumers receive a contradictory denominator. Provisional/QA wording does not remove this typed mismatch.",
+        "minimum_correction": "Retain the provisional input-yield diagnostic and its true input denominator outside the typed inventory range, as with other retained local diagnostics. Do not replace its true denominator with process output. Remove misleading process_output labels from input-based prose diagnostics too, without adding shared vocabulary in this scoped PCR repair. Regenerate projection.",
+        "evidence": [
+          "EN/ZH lines317–325",
+          "builder/vocab/basis-kind.yaml process_output description",
+          "Section9 lines821–895 distinguishes input ratios and final normalization"
+        ],
+        "recheck": "Root-owned correction not yet inspected."
+      },
+      {
+        "id": "P03-35110-02",
+        "code": "35110",
+        "severity": "P2",
+        "status": "confirmed_issue",
+        "rule": "section5 native identity; cw_wastewater",
+        "en_line": 108,
+        "zh_line": 108,
+        "other_occurrences": [
+          685,
+          698
+        ],
+        "title": "Wastewater generation stage is asserted without native staging evidence",
+        "description": "The canonical restriction assigns the selected UUID to generation before secondary/tertiary treatment. The fresh native record is a Waste flow with Mass referenceID1, but its route says Secondary/Tertiary Treatment and the generic comment does not establish which receiver interface or pre/post-treatment stage it represents. Thus the asserted native pre-treatment interpretation is unsupported. This does not prove the flow is already treated effluent.",
+        "minimum_correction": "Retain the conditional physical wastewater locator only if source-owner/provider evidence confirms the actual untreated receiver interface. Explicitly disclose that the Secondary/Tertiary route label leaves this interface unestablished, with actual composition/treatment acceptance, measured density when converted, and provider scope still required. Add aligned manifest interface-pending note and regenerate projection; do not auto-resolve the stage or assert treated-effluent identity.",
+        "native_evidence": {
+          "path": "docs/reviews/cpc3-factual59-20261103/native/flows/bc2cd1d5-69d5-42d7-818f-38a69ebb18ef.json",
+          "command": "tiangong-lca flow get --id <uuid> --state-code 100 --json",
+          "requested_state_code": 100,
+          "observed_at_utc": "2026-11-03T08:52:45.843Z",
+          "resolved_version": "01.01.001",
+          "resolution": "remote_supabase_latest",
+          "state_code": 100,
+          "modified_at": "2026-11-01T08:13:08.962817+00:00",
+          "original_response_sha256": "cd6e3028fb5ce4a4a71ad0c18763faf636bbcb226c3002072e69db93d1d40480"
+        },
+        "recheck": "Root independently reproduced unsupported-stage assertion; canonical correction not inspected by this reviewer."
+      }
+    ],
+    "criteria": [
+      {
+        "check_id": "F01",
+        "title": "Reference flow must select one finite product output",
+        "status": "supported",
+        "reason": "1kg net coating sold configuration; nativePaint only liquid pigmented subset; EN/ZH30–63,86–110",
+        "pointers": [
+          "EN/ZH 30–63;317–324; /reference_flow; matching unique Product output card"
+        ]
+      },
+      {
+        "check_id": "F02",
+        "title": "State and measurement basis must accompany conversions",
+        "status": "confirmed_issue",
+        "reason": "The output/input QA yield carries a contradictory process_output typed basis; actual state/property conversions otherwise qualified.",
+        "pointers": [
+          "EN/ZH sections3–6, 30–63;317–324; full native property/unit observations below",
+          "P03-35110-01"
+        ]
+      },
+      {
+        "check_id": "F03",
+        "title": "Physical conservation and environmental allocation are separate ledgers",
+        "status": "supported",
+        "reason": "Complete EN/ZH including all30cards, protocols, equations/diagnostics read; fd_bulk_output input-yield typed process_output mismatch at317–324",
+        "pointers": [
+          "EN/ZH 770–815; sections5,7–9",
+          "AP42 original2pages read/rendered; ILCD printed255–272 read. Official EIIP PDF9–16 and84 (§§2.1–2.2/5.2) read and Figure8.2-1 viewed. DOE original PDF20–22/56–60/62–64 supports actual states/return/loss distinctions; no steady-boiler example or universal return factor adopted. Capture page Description/local exhaust original body read. EU2025/2607/JRCdoi access failed; full ISO/EPD and EPA1978 source not independently obtained/read."
+        ]
+      },
+      {
+        "check_id": "F04",
+        "title": "Stocks, rejected/reworked production and packaging remain in inventory",
+        "status": "supported",
+        "reason": "Complete EN/ZH including all30cards, protocols, equations/diagnostics read; fd_bulk_output input-yield typed process_output mismatch at317–324",
+        "pointers": [
+          "EN/ZH 770–815; sections5,7–9",
+          "AP42 original2pages read/rendered; ILCD printed255–272 read. Official EIIP PDF9–16 and84 (§§2.1–2.2/5.2) read and Figure8.2-1 viewed. DOE original PDF20–22/56–60/62–64 supports actual states/return/loss distinctions; no steady-boiler example or universal return factor adopted. Capture page Description/local exhaust original body read. EU2025/2607/JRCdoi access failed; full ISO/EPD and EPA1978 source not independently obtained/read."
+        ]
+      },
+      {
+        "check_id": "F05",
+        "title": "Pollutant, water and energy bases cannot be conflated",
+        "status": "supported",
+        "reason": "Complete EN/ZH including all30cards, protocols, equations/diagnostics read; fd_bulk_output input-yield typed process_output mismatch at317–324",
+        "pointers": [
+          "EN/ZH 770–815; sections5,7–9",
+          "AP42 original2pages read/rendered; ILCD printed255–272 read. Official EIIP PDF9–16 and84 (§§2.1–2.2/5.2) read and Figure8.2-1 viewed. DOE original PDF20–22/56–60/62–64 supports actual states/return/loss distinctions; no steady-boiler example or universal return factor adopted. Capture page Description/local exhaust original body read. EU2025/2607/JRCdoi access failed; full ISO/EPD and EPA1978 source not independently obtained/read."
+        ]
+      },
+      {
+        "check_id": "F06",
+        "title": "Bilingual identity equality is necessary and bounded",
+        "status": "supported",
+        "reason": "Full bilingual meanings, conditional applicability, non-applicability/absence, native displays, units, equations and same rule/row identities reviewed. No additional material translation divergence established; translation approval is not granted.",
+        "pointers": [
+          "Complete EN/ZH sections1–11; 30–63;317–324; 770–815"
+        ]
+      },
+      {
+        "check_id": "F07",
+        "title": "UUID presence and ADR acceptance do not verify native identity",
+        "status": "confirmed_issue",
+        "reason": "All adopted full native physical identities inspected using safe root fresh readbacks, missing/changed definitions individually read and unchanged fields compared to previously read public historical originals. Exact versions/state/times/hashes below. Actual site/supplier/provider compatibility and declared unresolved auxiliary rows remain conditional. No supplier/site proof or auxiliary binding is inferred from locator validity.",
+        "pointers": [
+          "native_fresh_readback in this record",
+          "evidence/all10-native-observation-comparison.json",
+          "P03-35110-02"
+        ]
+      },
+      {
+        "check_id": "C01",
+        "title": "Accepted mapping objects and decision metadata are preserved",
+        "status": "evidence_gap",
+        "reason": "This read-only review inspects manifest and selection mapping evidence. Exhaustive baseline accepted-edge/ADR/integration equivalence is Root-owned and not claimed.",
+        "pointers": [
+          "retained-private-evidence:part03/selection.json /source_accepted_mapping; manifest classification_refs"
+        ]
+      },
+      {
+        "check_id": "C02",
+        "title": "Narrower association cannot replace a broad historical identity",
+        "status": "supported",
+        "reason": "Existing frozen canonical identity retained; method is bounded narrower coverage. No replacement/parallel PCR identity created. 35110 prior manifest-only correction is documented historical metadata, not fresh physical proof.",
+        "pointers": [
+          "retained-private-evidence:part03/selection.json /pcr_id and /metadata_correction; manifest id/classification_refs"
+        ]
+      },
+      {
+        "check_id": "C03",
+        "title": "Classification scope and chain acceptance remain explicit",
+        "status": "supported",
+        "reason": "one actual declared liquid/powder/1K/multicomponent/cooked route; all real atoms and whole-purchase composition subledgers required CPC title is category context, not whole-leaf methodology approval.",
+        "pointers": [
+          "EN/ZH sections1–2 and5; manifest classification_refs; primary source locators in notes"
+        ]
+      },
+      {
+        "check_id": "P01",
+        "title": "Hashes prove byte relationships, not complete semantics",
+        "status": "supported",
+        "reason": "Independent inspectProjectionIntegrity=current and deterministic parse/render byte-equal. Complete canonical semantic reading is a separate performed task; Schema qualification and repository-wide validation are not claimed.",
+        "pointers": [
+          "docs/reviews/cpc3-factual59-20261103/parts/part03/projection-verification.json",
+          "source_four_sha256 in this record"
+        ]
+      },
+      {
+        "check_id": "P02",
+        "title": "Candidate and translation states are truthful",
+        "status": "supported",
+        "reason": "Frozen manifest/frontmatter remain candidate/authored_methodology; Chinese aligned does not mean scientific/translation approval or publication.",
+        "pointers": [
+          "manifest status/content_maturity/translation_status/review_metadata; EN/ZH frontmatter and quality/validation/source limits"
+        ]
+      }
+    ],
+    "notes": {
+      "reference": "fp_reference_product",
+      "basis": "1kg net coating sold configuration; nativePaint only liquid pigmented subset; EN/ZH30–63,86–110",
+      "physical": "Complete EN/ZH including all30cards, protocols, equations/diagnostics read; fd_bulk_output input-yield typed process_output mismatch at317–324",
+      "scope": "one actual declared liquid/powder/1K/multicomponent/cooked route; all real atoms and whole-purchase composition subledgers required",
+      "native": "All adopted full native physical identities inspected using safe root fresh readbacks, missing/changed definitions individually read and unchanged fields compared to previously read public historical originals. Exact versions/state/times/hashes below. Actual site/supplier/provider compatibility and declared unresolved auxiliary rows remain conditional.",
+      "primary": "AP42 original2pages read/rendered; ILCD printed74–81 (§6.5.3.2) and255–272 read. Official EIIP PDF9–16 and84 (§§2.1–2.2/5.2) read and Figure8.2-1 viewed. DOE original PDF20–22/56–60/62–64 supports actual states/return/loss distinctions; no steady-boiler example or universal return factor adopted. Capture page Description/local exhaust original body read. EU2025/2607/JRCdoi access failed; full ISO/EPD not independently obtained/read. EPA1978 official publisher OCR HTML§4.8.2 printed323–328 now read for qualitative operations/raw-material names; ambiguous table layout and numerical factors not independently adopted."
+    },
+    "limits": [
+      "No actual supplier/site quantity or empirical plant-factor audit; native identity is not provider applicability.",
+      "Primary inspected source sections and unreviewed/inaccessible scope are stated in notes and docs/reviews/cpc3-factual59-20261103/parts/part03/primary-coverage.json.",
+      "Root-owned corrections, final Schema/check/validation/CI/hosted qualification and publication are not rechecked here."
+    ],
+    "missing_native_ids_in_supplied_corpora": [
+      "b2aa1a35-1823-4b13-96db-d5b89eda2db5",
+      "12525dde-1d7a-4024-9ea3-5b90912a48f8",
+      "021fbe67-2b7a-43b4-af09-4c3d62b83e3b",
+      "bc2cd1d5-69d5-42d7-818f-38a69ebb18ef"
+    ],
+    "native_fresh_readback": [
+      {
+        "uuid": "12525dde-1d7a-4024-9ea3-5b90912a48f8",
+        "path": "docs/reviews/cpc3-factual59-20261103/native/flows/12525dde-1d7a-4024-9ea3-5b90912a48f8.json",
+        "sha256": "7bb2ea7cc48b6fc61fce16a95233fafc77c66ce95cf33f5510d5589933b4eac3",
+        "lookup": {
+          "command": "tiangong-lca flow get --id <uuid> --state-code 100 --json",
+          "requested_state_code": 100,
+          "observed_at_utc": "2026-11-03T08:50:53.213Z",
+          "resolved_version": "01.01.001",
+          "resolution": "remote_supabase_latest",
+          "state_code": 100,
+          "modified_at": "2026-08-06T12:56:44.443564+00:00",
+          "original_response_sha256": "a7af5080baf037ee2adc693f5640723777ae5d2d98d2876a58c2829f36d998ad"
+        },
+        "physical_fields_unchanged_from_prior": false
+      },
+      {
+        "uuid": "021fbe67-2b7a-43b4-af09-4c3d62b83e3b",
+        "path": "docs/reviews/cpc3-factual59-20261103/native/flows/021fbe67-2b7a-43b4-af09-4c3d62b83e3b.json",
+        "sha256": "50b3bb04aedc14cf7907a5c07d2d7f752d1cfcf7d70b8a799ae093ac44dfdab2",
+        "lookup": {
+          "command": "tiangong-lca flow get --id <uuid> --state-code 100 --json",
+          "requested_state_code": 100,
+          "observed_at_utc": "2026-11-03T08:50:24.353Z",
+          "resolved_version": "00.00.001",
+          "resolution": "remote_supabase_latest",
+          "state_code": 100,
+          "modified_at": "2026-08-06T15:26:11.689912+00:00",
+          "original_response_sha256": "54e521e9d5f17bee72ba178b821e1e019cdad2246ca18584e7309eed8521d202"
+        },
+        "physical_fields_unchanged_from_prior": false
+      },
+      {
+        "uuid": "b2aa1a35-1823-4b13-96db-d5b89eda2db5",
+        "path": "docs/reviews/cpc3-factual59-20261103/native/flows/b2aa1a35-1823-4b13-96db-d5b89eda2db5.json",
+        "sha256": "de9e4ab91a8e4c5fb054a93839f709f1fcd7ea46ca8ca2cf33b20d4fe3539c91",
+        "lookup": {
+          "command": "tiangong-lca flow get --id <uuid> --state-code 100 --json",
+          "requested_state_code": 100,
+          "observed_at_utc": "2026-11-03T08:52:41.876Z",
+          "resolved_version": "01.01.001",
+          "resolution": "remote_supabase_latest",
+          "state_code": 100,
+          "modified_at": "2026-10-26T09:14:16.444758+00:00",
+          "original_response_sha256": "5b2fe264c13bcd5ce9c9b155709128cc271630bec2982aea6d05a5573a4df9ca"
+        },
+        "physical_fields_unchanged_from_prior": false
+      },
+      {
+        "uuid": "bc2cd1d5-69d5-42d7-818f-38a69ebb18ef",
+        "path": "docs/reviews/cpc3-factual59-20261103/native/flows/bc2cd1d5-69d5-42d7-818f-38a69ebb18ef.json",
+        "sha256": "fa1c5015a229d011751aafba63d03b3d8ea911f6ec8d0c0f12ec6cde1b01d1d5",
+        "lookup": {
+          "command": "tiangong-lca flow get --id <uuid> --state-code 100 --json",
+          "requested_state_code": 100,
+          "observed_at_utc": "2026-11-03T08:52:45.843Z",
+          "resolved_version": "01.01.001",
+          "resolution": "remote_supabase_latest",
+          "state_code": 100,
+          "modified_at": "2026-11-01T08:13:08.962817+00:00",
+          "original_response_sha256": "cd6e3028fb5ce4a4a71ad0c18763faf636bbcb226c3002072e69db93d1d40480"
+        },
+        "physical_fields_unchanged_from_prior": false
+      }
+    ],
+    "remaining_native_lookup_gaps": [],
+    "source_paths": [
+      "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.en-US.md",
+      "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/pcr.zh-CN.md",
+      "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/manifest.yaml",
+      "library/pcrs/other-transportable-goods-except-metal-products-machinery-and-equipment/other-chemical-products-man-made-fibres/paints-and-varnishes/structured.yaml"
+    ]
+  },
+  "related_addenda_and_adjudications": [],
+  "precedence": "Read current report findings and all related addenda. An addendum may supersede an initial no-material-finding narrative; Root final repaired-source ledger remains separately pending."
+}

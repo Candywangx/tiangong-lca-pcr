@@ -138,7 +138,7 @@ test("actual standalone CLI keeps legacy behavior and selects report mode explic
 
 test("Ubuntu CI command preserves failure exit and current complete evidence without stale reports", { skip: process.platform === "win32" }, (t) => {
   const workflow = fs.readFileSync(".github/workflows/validate.yml", "utf8");
-  const command = workflow.split("      - name: Validate complete library contracts\n        run: |\n")[1]
+  const command = workflow.split(/      - name: Validate complete library contracts\n(?:        if: [^\n]+\n)?        run: \|\n/u)[1]
     ?.split("\n      - name:")[0]?.split("\n").map((line) => line.slice(10)).join("\n");
   assert.ok(command);
   assert.match(workflow, /name: Preserve content qualification evidence\n\s+if: always\(\)/u);

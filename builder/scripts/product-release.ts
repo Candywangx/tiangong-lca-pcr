@@ -192,7 +192,7 @@ export async function writeProductWebArchive(root: string, filename: string) {
     }
     yield Buffer.alloc(1024);
   }
-  await pipeline(Readable.from(chunks()), createGzip({ level: 9 }), createWriteStream(filename, { flags: "wx" }));
+  await pipeline(Readable.from(chunks()), createGzip({ level: 1 }), createWriteStream(filename, { flags: "wx" }));
   const after = regularTree(root);
   if (JSON.stringify(after.files) !== JSON.stringify(tree.files.map(({ path, bytes }) => ({ path, bytes })))) throw new Error("Web export tree changed during archive construction.");
   return { files: tree.files.length, uncompressedBytes: tree.files.reduce((bytes, file) => bytes + file.bytes, 0), treeSha256: productTreeSha256(tree.files) };
@@ -411,8 +411,8 @@ function checkWebMetadata(contents: ReadonlyMap<string, Buffer>, identity: Produ
   if (runtime || declaredRuntime) {
     if (!runtime || !declaredRuntime || runtime.length !== declaredRuntime.bytes || productSha256(runtime) !== declaredRuntime.sha256) throw new Error("Archived provider runtime proof differs.");
     const profile=verifyProviderRuntimeInventory(JSON.parse(runtime.toString("utf8")), identity.sourceCommit, files);
-    navigationRuntime=profile.schemaVersion===2;
-    if(profile.schemaVersion===2&&!probes.navigation)throw new Error('Missing sealed navigation proof');
+    navigationRuntime=Object.hasOwn(profile,'navigationBinding');
+    if(Object.hasOwn(profile,'navigationBinding')&&!probes.navigation)throw new Error('Missing sealed navigation proof');
   }
   if(probes.navigation){if(!navigationRuntime)throw new Error('Packed navigation requires provider profile 2');navigationProbeFiles(probes.navigation);const navigation=verifyNavigationInventory(contents,identity.sourceCommit,files);if(!sameJson(navigationWebProof(navigation),probes.navigation))throw new Error('Archived navigation proof differs');}
   else if(files.some(file=>file.path===NAVIGATION_BINDING_FILE||file.path.startsWith('generated/navigation/')))throw new Error('Undeclared archived navigation transport');

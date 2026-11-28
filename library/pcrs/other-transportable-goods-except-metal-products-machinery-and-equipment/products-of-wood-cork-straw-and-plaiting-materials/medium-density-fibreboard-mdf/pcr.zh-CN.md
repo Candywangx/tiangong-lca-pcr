@@ -20,7 +20,7 @@ translation_status: aligned
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.products-of-wood-cork-straw-and-plaiting-materials.medium-density-fibreboard-mdf |
-| classification_refs | CPC 3.0 31441; narrower; 范围及已接受决定见 `classifications/mappings/cpc-3.0-to-pcr.yaml` 和其引用的 ADR |
+| classification_refs | CPC 3.0 31441; narrower |
 | covered_products | 常规干法木质未饰面MDF |
 | excluded_products | 湿法硬板；其他纤维板；非木纤维板；刨花板；OSB；饰面板；特种阻燃/防腐配方 |
 | representative_product | 中密度纤维板 `57c184ac-a2d3-4500-af7b-80609ed89d2f` |
@@ -185,7 +185,7 @@ translation_status: aligned
 
 ###### 脲醛胶黏剂（`binder_uf`）
 
-仅纳入实际使用、独立供给状态与所选树脂身份及真实供方参考相符的树脂。记录供货质量、实测树脂固体、水、供应配方及添加位置。实际购买已配水性或其他复配UF制剂时，使用前须有一项具体完整配方供货行和保留供应方制造/配制/交付的兼容供方；通用树脂UUID本身不证明完整供货。已含树脂、尿素、水和添加剂仅作组成分析。真实独立购入添加物及现场混合用水/公用工程仍为单独交换。树脂固体单列；不将湿制剂kg等同干树脂kg，不再将已含配方水重复计为外购工艺水。
+仅纳入实际使用的树脂。记录配方交付质量、实测固体/载体水及元素组成、供方配方、投加点和库存；交付树脂固体与固化产物分开。按真实配方及实测固化程度确定分子生成/消耗：UF/MUF缩合可产水，pMDI与水反应消耗水并产CO2。不假设完全固化，不规定反应产率，不将配方水重复计为外购工艺水，不把上游树脂合成水重复放入工厂前景。
 
 仅纳入实际使用的树脂。记录配方交付质量、实测固体/载体水及元素组成、供方配方、投加点和库存；交付树脂固体与固化产物分开。按真实配方及实测固化程度确定分子生成/消耗：UF/MUF缩合可产水，pMDI与水反应消耗水并产CO2。不假设完全固化，不规定反应产率，不将配方水重复计为外购工艺水，不把上游树脂合成水重复放入工厂前景。
 
@@ -247,7 +247,7 @@ translation_status: aligned
 
 ###### 石蜡添加（`additive_wax`）
 
-仅在真实独立供给的石油馏分石蜡状态及质量参考与所选身份和供方相符时适用；测定实际供货蜡质量/状态，不规定蜡用量。外购蜡乳液使用前须有一项具体完整乳液供货行及兼容供方，包含供应方制造/乳化/配制/交付；已含蜡、载水和助剂仅留分析分账，不新增采购。真实独立购入的蜡/其他组分及现场乳化或混合用水/公用工程另列交换。不得把完整湿乳液kg赋给石蜡UUID；完整乳液身份未决时保持待解决。
+仅在供应方证实使用石油馏分石蜡时适用。测定蜡质量及乳液载体水；不规定蜡用量。
 
 - 选定流：石蜡 `17bff97f-179d-49d4-9e97-5128bd6020a6`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -262,7 +262,7 @@ translation_status: aligned
 
 ###### 硫酸铵硬化剂（`additive_hardener`）
 
-仅在真实独立采购、供货状态与所选硫酸铵化学身份及供方相符，并由实际配方证明确实现场添加时适用；不得从调查的泛称催化剂推断物种。记录实际化学品供货质量/状态及独立现场加入载水/混合公用工程。外购已配硬化剂溶液或制剂使用前须有自身具体完整产品供货行及兼容供方，保留供应方制造/配制/交付；已含硫酸铵、水和添加剂仅作组成分析。记录实测浓度/载水，不把完整制剂kg赋给组分UUID。其他真实独立供货硬化剂各设原子行。
+仅在供应方配方明确硫酸铵时适用；不得从调查的泛称催化剂推断物种。记录配方浓度和载体水；其他硬化剂应另设原子行。
 
 - 选定流：硫酸铵 `7f128b59-9df7-4b5d-ad0f-00103b916cf7`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66`; 单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
@@ -339,7 +339,7 @@ translation_status: aligned
 
 仅在直接燃烧干燥时适用；测定交付条件已声明的气体体积和燃料组成，本行不含锅炉及氧化器燃料。 保留身份，但与背景m3的数量兼容性待审。记录供应方/背景参考量A、参考温度T、绝对压力P、干/湿组成与压缩因子Z，以及同基准表计条件和组分。核对真实交付/损耗门点，仅以实测/声明条件换算；Volume/m3属性不证明Nm3或标准条件。供应方或背景体积定义未知时链接未完成。
 
-- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：天然气，气态 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
 - 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
@@ -354,7 +354,7 @@ translation_status: aligned
 
 仅在使用燃料燃烧排放治理氧化器时适用；独立计量并绑定末端烟道测试，包括进口有机物的破坏。 保留身份，但与背景m3的数量兼容性待审。记录供应方/背景参考量A、参考温度T、绝对压力P、干/湿组成与压缩因子Z，以及同基准表计条件和组分。核对真实交付/损耗门点，仅以实测/声明条件换算；Volume/m3属性不证明Nm3或标准条件。供应方或背景体积定义未知时链接未完成。
 
-- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：天然气，气态 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
 - 数量规则：按cp_energy采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
@@ -1167,7 +1167,7 @@ translation_status: aligned
 
 将辅助天然气与干燥器及氧化器燃料分别计量。 保留身份，但与背景m3的数量兼容性待审。记录供应方/背景参考量A、参考温度T、绝对压力P、干/湿组成与压缩因子Z，以及同基准表计条件和组分。核对真实交付/损耗门点，仅以实测/声明条件换算；Volume/m3属性不证明Nm3或标准条件。供应方或背景体积定义未知时链接未完成。
 
-- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：天然气，气态 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：体积 `93a60a56-a3c8-22da-a746-0800200c9a66`; 单位组 `93a60a57-a3c8-12da-a746-0800200c9a66` / m3
 - 数量规则：按cp_energy_utilities采集此项实际交换并除以同期间合格MDF净质量；采用对应计算规则；缺失值未决，不采用文献默认。
 - 数值来源模式：计算值 (`calculated_value`)
@@ -1580,7 +1580,7 @@ translation_status: aligned
 | `pm_partition` | all particulate outputs | 相同烟道/测试覆盖且粒径累计相容时：PM2.5行=累计PM2.5；PM2.5–10行=累计PM10-累计PM2.5；>PM10行=总PM-累计PM10。检验非负性；可凝结与可过滤口径不同或分级不足时不可硬拆，保留未决。 | same-basis total PM; cumulative PM10; cumulative PM2.5; cp_air; cp_air_utilities | nonoverlapping particulate masses | `epa-mdf-2002`; `epa-wood-boiler-2022` |
 | `physical_reconciliation` | mdf-line; utilities | 对各阶段及公用能源，总质量和各实际元素采用期初库存+输入=期末库存+输出，包括C/H/O/N/S及有关无机元素。纳入实测燃烧/通风空气、氧/氮、真实燃料/配方组成、产品、残余物、全部气体物种、凝结水及库存。分子H2O及木材/树脂材料组分账则采用期初+输入+有证据的生成=期末+输出+有证据的消耗。化学项按真实配方、固化/燃烧条件及实测反应程度确定；UF/MUF产水、pMDI耗水/产CO2和燃烧/治理转化不是默认产率。交付与固化固体分开，排除上游合成，保留等量内部链接及生物源/化石源碳。未知组成/反应程度保留不确定性；声明残差及测量不确定性，不强制闭合或默认完全固化/燃烧。 | stage flows; stocks; actual elemental/species composition; reaction extents; cp_furnish; cp_recipe; cp_water; cp_thermal; cp_air; cp_fuel; cp_energy; cp_vapour; cp_water_utilities; cp_thermal_utilities; cp_air_utilities; cp_energy_utilities; cp_vapour_utilities | whole-mass/elemental conservation and reaction-aware species ledgers | `corrim-mdf-2024`; `epa-wood-boiler-2022`; `usda-wood-joining-2023`; `doe-condensing-economizer-2012` |
 | `vapour_source_reconciliation` | dryer_water-vapour, press_water-vapour, boiler_water-vapour | 采用emission_mass，以同步且状态相符的H2O浓度、湿烟气量及运行时间确定实际排出气态H2O。以实测原料/配方水、燃料水分、入口空气湿度/数量、蒸汽/凝结水、治理水、库存及实际固化/燃烧程度支持的来源生成/消耗核对。实测H2O总量已含化学反应水；来源分解仅为组分账，不增列排放。环境湿度透过量如需扣除，须有实测进出口覆盖及声明的核算约定，并保留总量。捕集烟气凝结水按真实去向记录，公用蒸汽/回流质量另列。共同烟道只计一次且有依据归属。未知来源份额或反应程度保留不确定性，不设为零或虚构产率补平。 | wet-stack H2O/flow/time; source records and reaction extents; cp_vapour; cp_recipe; cp_water; cp_fuel; cp_air; cp_thermal; cp_output; cp_vapour_utilities; cp_water_utilities; cp_air_utilities; cp_thermal_utilities; cp_energy; cp_energy_utilities | actual emitted H2O and supported source ledger | `usda-wood-joining-2023`; `doe-condensing-economizer-2012`; `epa-stack-moisture-method4`; `epa-wood-boiler-2022` |
-| `nox_compatibility` | dryer_nox, handling_nox, boiler_nox | 核对监测、LCI和所选LCIA映射对NOx的质量定义及NO/NO2覆盖。只有三者同基准才按cp_air生成总参数数量；不假定NO2等效或NO/NO2比例，排除N2O，不叠加分种；未证实则数量未决。 | monitoring mass definition; flow mass definition; LCIA mapping; cp_air; cp_air_utilities | compatible NOx quantity or explicit pending result | `epa-mdf-2002`; `epa-wood-boiler-2022` |
+| `nox_compatibility` | dryer_nox, handling_nox, boiler_nox | 核对监测、LCI和所选LCIA映射对NOx的质量定义及NO/NO2覆盖。只有三者同基准，才按实际排放源所属协议生成总参数数量：mdf_line干燥/搬运源采用cp_air，utilities/锅炉源采用cp_air_utilities；不假定NO2等效或NO/NO2比例，排除N2O，不叠加分种；未证实则数量未决。 | monitoring mass definition; flow mass definition; LCIA mapping; cp_air; cp_air_utilities | compatible NOx quantity or explicit pending result | `epa-mdf-2002`; `epa-wood-boiler-2022` |
 | complete_period_normalization | 所有清单行 | 每项既有工期、批次或批量数量规则及关联采集协议均采用同声明产品、等级、路线、配置、场址和参考状态的单一有记录完整统计期汇总组。验收批次措辞仅限定分母；原生单位原始分子记录保留全部可归属启动、停机、整批失败或零产出批次、废品、在制品和返工。返工参考产品仅在最终验收时计一次。各可归属交换在匹配汇总组内求和，仅除一次同组严格正值、采用声明分母单位的验收参考产品数量，再按声明参考数量缩放。不得平均批次比率、丢弃失败批次、混合无关产品/时期或改变分子原生单位。整个匹配汇总组无验收产出时保留未归一化绝对清单并要求审查，不生成归一化结果或虚构产量。库存/退回及实物交接账与负荷分配独立保留；分配不得删去已经发生的失败/返工活动。 | 全部关联原始采集协议；验收参考产品汇总组；库存及返工链接 | 各原生交换单位每声明参考数量；零产出汇总组保持未归一化 |  |
 
 ### 数据质量要求

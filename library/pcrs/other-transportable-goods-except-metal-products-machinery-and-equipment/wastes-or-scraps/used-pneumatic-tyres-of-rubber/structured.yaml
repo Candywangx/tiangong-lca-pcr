@@ -1,10 +1,776 @@
-schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39260"
-  title: "Used pneumatic tyres of rubber"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+schema_version: 2
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.used-pneumatic-tyres-of-rubber"
+  classification_refs: "CPC 3.0 39260; narrower"
+  covered_products: "Previously used whole commercial truck pneumatic rubber casings individually accepted for retreading"
+  excluded_products: "New and finished retread tyres; definitively unusable scrap; roadworthy tyre retail; separated rubber or tread"
+  representative_product: "One traceable size/grade cohort of unmounted unretreaded truck casings"
+  production_route: "Owner presentation → custody/paired weighing → dry individual inspection and grading → first on-site purchase acceptance/payment/title transfer"
+  market_state: "Retreadable casing at seller handoff, before retreader transport or processing; actual legal/economic state disclosed"
+functional_unit:
+  what: "Supply qualified used truck casings for subsequent retreading"
+  how_much: "1 kg net casing mass first accepted"
+  how_well: "Individual tread/sidewall/bead/internal-condition inspection and documented purchaser retreadability specification; no universal numeric threshold or guaranteed later retreader pass"
+  how_long_or_cycle: "One unique first commercial acceptance; no distance or second-life claim"
+  reference_flow_link: "released_whole_tyres"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete
+      applies_to: "whole_supply"
+      rule: "Include all source preparation/weighing/inspection effort and crew travel through first on-site acceptance. Provider-performed operations remain included by one owned service inventory; contract/payment alone is not proof of physical inspection or coverage. Record both custody and title events."
+      source_ids:
+        - cash-casing-terms
+        - cash-casing-faq
+    - rule_id: boundary_gate
+      applies_to: "released_whole_tyres"
+      rule: "Freeze first acceptance Q at documented inspection plus purchase/title handoff. Subsequent loading, storage, transport to retreader, independent retreader inspection and returns belong to linked post-release service ledgers, not another Q. Buffer/rework before acceptance remains pre-release."
+      source_ids:
+        - cash-casing-terms
+        - jrc-ilcd-attributional-2010
+    - rule_id: boundary_route
+      applies_to: "whole_supply"
+      rule: "Verify no packaging/pallet pool or material transformation in this loose dry route. Any actual packaging requires separate purchase, first non-purchase external receipt (including incoming-load/loan/free-transfer), true same-item return, stock and outlet ledgers and one-time burden attribution before scope acceptance. Scrap/disposal and finished retreading are separate functions."
+      source_ids:
+        - cash-casing-terms
+        - wco-hs2022-rubber
+boundary_abstraction:
+  declared_starting_condition: "Actual used truck casings presented by the lawful holder for dry inspection at source, with custody and inherited history disclosed"
+  starting_condition_role: "Foreground preparation/qualification origin; not manufacture and not automatic zero inherited burden"
+  product_classification_scope: "39260 narrower retreadable casing subset; no claim to whole-leaf coverage"
+  recursive_input_rule: "Trace any previously released casing to its original cohort; link upstream burden once, add only actual incremental services, never create Q from resale"
+  upstream_dataset_requirement: "Actual casing history/burden convention, compatible inspection and crew-visit providers, actual electricity supplier when used; no automatic credit"
+  disclosure: "Sites/period, custody versus ownership, inspection outcomes, rejected lots, provider overlaps, loose route, stock vectors, pending identities and downstream exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Retreadable used commercial truck pneumatic rubber tyre casing"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Actual prior use"
+    - "previous retread history and holder"
+    - "commercial truck class"
+    - size
+    - construction
+    - "condition and inspection specification/results"
+    - "whole rim/tube/flap-free unretreaded state"
+    - "net mass"
+    - "free-water/soil/packaging exclusion"
+    - "legal/economic state and inherited burden"
+    - "source and inspector"
+    - "acceptance/payment/title/custody timestamps"
+    - "first-release lot Q"
+    - "rejected and non-purchased lots"
+    - "WIP/FG stocks and return links"
+    - "geography/period"
+    - "actual equipment/electricity supplier"
+    - "outsourced inspection/travel coverage"
+    - "loose unwrapped route evidence"
+    - "allocation keys"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_reference
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use paired calibrated gross/tare weights and separately measured free water, soil and external articles. Q is unique first-accepted net casing kg; counts require measured lot mass, never generic tyre weight."
+  - id: electric_conversion
+    applies_to: "site_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: "f6811440-ee37-11de-8a39-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Metered kWh × 3.6 = MJ. Energy points to Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 (MJ=1; kWh=3.6). This is metering support only: verify actual supplier native property and coefficient independently; same unit group does not imply Net calorific value."
+  - id: raw_conversion
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row numerator"
+      uuid: ""
+    required_unit: "original unit"
+    rule: "Keep raw units; convert each numerator before attribution and divide by Q once only. Crew vehicle-km is not goods t*km; a bundled service must not also add the same provider electricity/travel."
+process_map:
+  - id: whole_supply
+    name: "Source dry casing qualification"
+    inclusion: "required"
+    inclusion_condition: "Declared first-purchase casing route"
+    role: "foreground"
+    quantitative_reference: "released_whole_tyres"
+process_inventory:
+  - id: whole_supply
+    label: "Source dry casing qualification"
+    inputs:
+      product:
+        - row_id: offered_casing
+          role: "Used commercial truck pneumatic rubber casing awaiting grading"
+          name: "Used commercial truck pneumatic rubber casing awaiting grading"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only real physical custody receipts before grading, separately from owner presentations never taken into custody. Trace actual prior use, unmounted whole state, source burden and legal/economic status. The archived Waste Tire record is typed Product flow, but its waste/pyrolysis description does not qualify a retreadable casing. Retained rubber/steel/textile are constituent subaccounts, not purchases."
+          amount:
+            expression: "Use the single section 8 normalization of this row raw numerator from cp_mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+        - row_id: site_electricity
+          role: "Purchased electricity for casing inspection"
+          name: "Purchased electricity for casing inspection"
+          flow_type: "product"
+          property_unit: "Energy f6811440-ee37-11de-8a39-0800200c9a66 / MJ"
+          description: "Conditional actual meter load including weighing, inspection, idle and cleanup. The flow UUID and native supplier property remain unverified; Energy/MJ records measured demand, not a selected background process or voltage/mix. Manual activity does not imply zero site load."
+          amount:
+            expression: "Use the single section 8 normalization of this row raw numerator from cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+        - row_id: inspection_service
+          role: "Outsourced dry truck-casing inspection service"
+          name: "Outsourced dry truck-casing inspection service"
+          flow_type: "product"
+          property_unit: "Inspection service / inspection event"
+          description: "Conditional actual external inspector service, with lot, specification, measured activity and included resources disclosed. For provider-owned work use its inventory once; do not duplicate included local electricity or travel. In-house work has no fictitious purchased service."
+          amount:
+            expression: "Use the single section 8 normalization of this row raw numerator from cp_services."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+        - row_id: crew_visit
+          role: "Road inspection-crew vehicle visit service"
+          name: "Road inspection-crew vehicle visit service"
+          flow_type: "product"
+          property_unit: "Vehicle travel / vehicle*km"
+          description: "Conditional separate crew visit: actual route including unsuccessful visits and return legs, vehicle class and passengers. This is not goods freight and no payload t*km may be invented. If bundled in inspection_service, retain activity evidence but exclude the duplicate exchange burden."
+          amount:
+            expression: "Use the single section 8 normalization of this row raw numerator from cp_services."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_services
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_whole_tyres
+          role: "Retreadable used commercial truck pneumatic rubber tyre casing"
+          name: "Retreadable used commercial truck pneumatic rubber tyre casing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The sole reference Product row: unretreaded commercial truck casing, inspected and purchased as retreadable at the source gate. Record acceptance/payment/title and actual custody. No verified Product UUID; do not substitute waste, finished retread or new tyre identity. Later retreader suitability and safety need independent testing. Closing accepted stock is already part of Q."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+        - row_id: returned_casing
+          role: "Reusable used commercial truck casing returned without purchase"
+          name: "Reusable used commercial truck casing returned without purchase"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual custody return of a still-reusable casing rejected for commercial/size reasons. Record original intake and reason; a presentation left at the owner location without custody transfer is not a material exchange. True return is not new production or negative purchase."
+          amount:
+            expression: "Use the single section 8 normalization of this row raw numerator from cp_mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+      waste:
+        - row_id: scrap_casing
+          role: "Whole non-retreadable scrap truck tyre casing"
+          name: "Whole non-retreadable scrap truck tyre casing"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only physically transferred definitively unusable tyre scrap from actual custody, with inspected rejection and lawful receiver records. Disposal left with the owner is not our waste transfer. Separate purchased disposal function and its provider/transport burdens; negative disposal price is not a product credit. No verified Waste UUID is claimed. No planned elementary emission is inferred from dry visual inspection. Any actual release requires a separate named chemical species, compartment, measurement method and provider ownership; pollutants already inside a provider inventory are not added again. Unknown actual releases remain a completeness hold."
+          amount:
+            expression: "Use the single section 8 normalization of this row raw numerator from cp_mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - cash-casing-terms
+                - cash-casing-faq
+                - jrc-ilcd-attributional-2010
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_scope
+    applies_to: "whole_supply"
+    rule: "Document actual source-tyre history, prior use and economic/legal state and the study-specific inherited-burden/reuse convention. A low price, waste label or title transfer does not establish a zero burden or avoided new-tyre/rubber/landfill credit."
+    source_ids:
+      - jrc-ilcd-attributional-2010
+  - rule_id: allocation_subdivision
+    applies_to: "whole_supply"
+    rule: "First exclusively attribute and subdivide inspection, rejects, disposal and post-release services. Retain failed visits, zero-output periods and causal rework. Services performed for other functions and owner-retained rejects have explicit activity owners; do not erase common inspection effort."
+    source_ids:
+      - jrc-ilcd-attributional-2010
+  - rule_id: allocation_physical
+    applies_to: "whole_supply"
+    rule: "For each remaining shared exchange demonstrate its determining physical cause. Measured inspection time may support equipment allocation; crew route and visit purpose govern travel. Do not use casing mass, count or price as a universal key. Retain supplier inclusions and reconcile all shares."
+    source_ids:
+      - jrc-ilcd-attributional-2010
+  - rule_id: allocation_residual
+    applies_to: "whole_supply"
+    rule: "Only if subdivision and determining physical causality cannot resolve genuine joint burdens use documented contemporaneous same-gate actual-condition market values for residual economic allocation. Remove later transport/retreading margins and distinguish disposal fees from positive product values. Missing coherent values remain unresolved."
+    source_ids:
+      - jrc-ilcd-attributional-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "whole_supply"
+      flow_role: "Custody/quality/mass"
+      record_type: "Weigh and acceptance ledger"
+      raw_fields: "lot/item; prior use; owner; size; gross/tare; free water/soil/articles; net kg; count; custody time; tread/sidewall/bead/internal results; inspector; decision/spec; payment/title; first release; rejects; returns; opening/closing WIP/FG and burden vectors"
+      collection_method: "Calibrated paired weighing; independent contaminant weights; signed individual inspection and commercial/custody reconciliation; no assumed kg/tyre"
+      unit: "kg; item"
+      frequency: "each custody and decision"
+      temporal_coverage: "full cohort including failed lots and carryover"
+      site_scope: "actual seller and inspection sites"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibration; paired tickets; source history; specifications; signatures; payment/title receipts; full stock balance"
+    - protocol_id: cp_energy
+      process_id: "whole_supply"
+      flow_role: "site_electricity"
+      record_type: "Meter/provider records"
+      raw_fields: "meter start/end; kWh; time; site; voltage; supplier; stage; idle; cleanup; losses; provider inclusions; allocation key"
+      collection_method: "Read calibrated meter difference and reconcile billed/site load; identify the actual native supplier property separately"
+      unit: "kWh; MJ"
+      frequency: "each interval"
+      temporal_coverage: "full same cohort period"
+      site_scope: "actual inspection site/provider"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Meter calibration and primary supply records; overlap reconciliation"
+    - protocol_id: cp_services
+      process_id: "whole_supply"
+      flow_role: "Inspection and crew travel"
+      record_type: "Provider/activity logs"
+      raw_fields: "provider; actual lot; inspection event; equipment/time; service inventory boundary; origin/destination; vehicle; distance; unsuccessful visits; return legs; other functions; payment; inclusions"
+      collection_method: "Match supplier primary inventory to signed physical service and route records; unbundle only verified inclusions"
+      unit: "inspection event; vehicle*km"
+      frequency: "each visit and service"
+      temporal_coverage: "all matched successes/failures and returns"
+      site_scope: "actual source and providers"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Signed inspection records; provider inventories; route logs; justified allocation and no-overlap proof"
+  calculation_rules:
+    - id: acceptance_q
+      applies_to: "released_whole_tyres"
+      rule: "Q = sum of unique first-accepted net casing kg with matched inspection/payment/title evidence. A later resale, transfer, reinspection or return adds no Q. Closing accepted FG is already in Q; opening accepted FG belongs to its historical cohort."
+      inputs:
+        - cp_mass
+      output: "Q"
+      source_ids:
+        - jrc-ilcd-attributional-2010
+        - cash-casing-terms
+    - id: raw_attribution
+      applies_to: "all inventory rows"
+      rule: "Convert raw records to row units, then assign exclusive and justified shared burdens. A_j = attributed current raw load + opening WIP inherited burden vector - closing WIP inherited burden vector. Reconcile rejects/rework and supplied casing history separately; stocks carry every exchange burden, not just casing kg. No Q division here."
+      inputs:
+        - cp_mass
+        - cp_energy
+        - cp_services
+      output: "A_j"
+      source_ids:
+        - jrc-ilcd-attributional-2010
+        - cash-casing-terms
+    - id: single_intensity
+      applies_to: "all inventory rows"
+      rule: "I_j = A_j / Q for Q > 0, once only, in the row numerator unit per 1 kg reference flow. Cards and aggregation consume this same result. Q=0 retains all burdens and provides no unit intensity; the reference output is 1 kg."
+      inputs:
+        - A_j
+        - Q
+      output: "I_j"
+      source_ids:
+        - jrc-ilcd-attributional-2010
+        - cash-casing-terms
+    - id: physical_balance
+      applies_to: "whole_supply"
+      rule: "For one custody control surface: opening physical stocks + actual external receipts = closing stocks + actual external departures + separately measured losses. Unreceived presentations are neither receipt nor departure. First acceptance transfers pre-release stock to FG internally; it is not an extra external departure. Contaminants and constituents are separate non-additive subaccounts. No invented residual output."
+      inputs:
+        - cp_mass
+      output: "physical balance"
+      source_ids:
+        - jrc-ilcd-attributional-2010
+        - cash-casing-terms
+    - id: post_release_service
+      applies_to: "whole_supply"
+      rule: "Keep original cohort Qc fixed; link later storage/loading/transport/returns and opening/closing FG service-burden vectors. Assign actual incremental service to that cohort. A delivered-casing dataset needs its own actual shipment/stock reconciliation. Combine linked raw burdens and cancel internal handoffs; never divide an existing I_j by Q or serviced mass again."
+      inputs:
+        - cp_mass
+        - cp_services
+        - cp_energy
+      output: "cohort service ledger"
+      source_ids:
+        - jrc-ilcd-attributional-2010
+        - cash-casing-terms
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Verify native flow type, bilingual name, physical state, geography, property/reference coefficient and exact unit support. A name or unit-group match is insufficient. Missing product UUID prevents final identity qualification."
+      evidence: "Direct native records and actual lot/provider compatibility"
+    - id: dq_grade
+      applies_to: "released_whole_tyres"
+      requirement: "Keep individual retreadability observations and acceptance specification; no universal tread-depth, age, mass, composition or life default. Commercial purchase does not prove future retreader pass or road safety. General waste-only web wording is not lot-specific grading evidence."
+      evidence: "Signed inspection, actual purchase/custody and local legal documentation"
+    - id: dq_complete
+      applies_to: "whole_supply"
+      requirement: "Distinguish missing data from verified absence; include failed/idle effort, carryovers and all actual physical flows. Resolve material losses or add separately named exchanges before claiming complete LCI."
+      evidence: "Full-period balances, provider reconciliation and uncertainty register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "released_whole_tyres"
+    rule: "Require all qualifiers, one first-acceptance link, actual retreadable grade, payment/title/custody evidence and compatible native Product identity. Do not use definite scrap or a finished retread as the reference."
+    source_ids:
+      - cash-casing-terms
+      - cash-casing-faq
+      - wco-hs2022-rubber
+  - rule_id: validate_balance
+    applies_to: "whole_supply"
+    rule: "Reconcile raw mass/custody, WIP/FG burden vectors, actual suppliers, failed visits, rejected lots and all returns. No duplicate Q, provider load, packaging or constituent burden. Missing data prohibit a complete unit result."
+    source_ids:
+      - jrc-ilcd-attributional-2010
+      - cash-casing-terms
+  - rule_id: validate_normalization
+    applies_to: "all inventory rows"
+    rule: "Check raw conversion and attribution before one A_j/Q division. Schema/projection and finite measurement checks do not establish physical balance, source applicability, native supplier compatibility, scientific/safety approval or translation review."
+    source_ids:
+      - jrc-ilcd-attributional-2010
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Qualified incoming retreadable casing at source purchase gate, with later delivery/retreading modelled separately"
+  allowed_use: "Only matching truck casing grade, dry loose route, source acceptance gate, source burden convention and independently reviewed completed dataset"
+  excluded_use: "Finished retread manufacture; tyre driving life/safety claim; material-recovery scrap; automatic reuse credit; repeated resale as production; whole CPC leaf coverage"
+  required_metadata: "Section 3 qualifiers, raw protocols, cohort/Q and custody links, providers, allocation keys and unresolved identities"
+  required_quality_disclosure: "Missing versus verified zero; inherited burden and stocks; pending native identities; source limits; actual legal/quality evidence and uncertainty"
+  update_trigger: "Changed tyre grade/specification, route/gate, actual packaging, source legal/economic state, provider identity or material evidence"
+data_sources:
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 structure and complete explanatory notes, 30 June 2025, PDF p.202 (39250/39260); current registry https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/39260"
+    used_for: "Current category and adjacent scrap heading; notes provide titles only, not an explicit retreadability threshold. Narrower casing scope is methodological interpretation, not quoted CPC text."
+  - id: "wco-hs2022-rubber"
+    type: "official_guidance"
+    reference: "World Customs Organization, HS Nomenclature 2022, Chapter 40 note 6 and headings 40.04/40.12 (4012.20). https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0740_2022e.pdf?la=en"
+    used_for: "Independent boundary counterevidence: definitely unusable rubber articles are scrap even without cutting. HS2022 is distinct from CPC3; no automatic cross-edition mapping."
+  - id: "cash-casing-terms"
+    type: "extension_guidance"
+    reference: "Cash’s Tire Recycling, Terms of Service §§4.4, 5.1–5.6, 6 and 7. https://cashstirerecycling.com/terms"
+    used_for: "First-party on-site inspection, purchase/payment/title handoff and rejected-casing alternatives. Separate commercial acceptance from later transport/retreading. Texas practice and general waste wording are not local legal authorization, a measured inventory or universal quality specification."
+  - id: "cash-casing-faq"
+    type: "extension_guidance"
+    reference: "Cash’s Tire Recycling, FAQ, Used Commercial Tires & Casings. https://cashstirerecycling.com/faq"
+    used_for: "Actual commercial truck retreadable-casing market and visual/structural inspection dimensions. Same operator as terms, not an independent second source; sizes are examples, not default mass or guaranteed stock."
+  - id: "jrc-ilcd-attributional-2010"
+    type: "official_guidance"
+    reference: "European Commission JRC, ILCD Handbook: General guide for Life Cycle Assessment — Detailed guidance, first edition March 2010, §§7.9.2–7.9.3, printed pp.255–272. https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "Conditional attributional subdivision, determining physical causality and residual same-gate actual-condition market values. Ledger/formula implementation is this PCR synthesis; no automatic tyre cut-off, credit, numeric default or full ILCD conformance."
+normative_context:
+  normalization: "utf8-lf-v1"
+  source_sha256: "sha256:d4e4365cb5ef36103bd396cfa65f825352ab59b8b143f72089a2b3a8fb2379a5"
+  identity_scope: "projection_snapshot"
+  units:
+    - unit_id: "normative_5566"
+      family: "system_boundary"
+      span:
+        start:
+          offset: 5566
+          line: 62
+          column: 1
+        end:
+          offset: 7903
+          line: 83
+          column: 1
+      markdown: "## 5. System Boundary\n\n### Boundary Abstraction\n\n| Field | Value |\n| --- | --- |\n| declared_starting_condition | Actual used truck casings presented by the lawful holder for dry inspection at source, with custody and inherited history disclosed |\n| starting_condition_role | Foreground preparation/qualification origin; not manufacture and not automatic zero inherited burden |\n| product_classification_scope | 39260 narrower retreadable casing subset; no claim to whole-leaf coverage |\n| recursive_input_rule | Trace any previously released casing to its original cohort; link upstream burden once, add only actual incremental services, never create Q from resale |\n| upstream_dataset_requirement | Actual casing history/burden convention, compatible inspection and crew-visit providers, actual electricity supplier when used; no automatic credit |\n| disclosure | Sites/period, custody versus ownership, inspection outcomes, rejected lots, provider overlaps, loose route, stock vectors, pending identities and downstream exclusions |\n\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| boundary_complete | whole_supply | Include all source preparation/weighing/inspection effort and crew travel through first on-site acceptance. Provider-performed operations remain included by one owned service inventory; contract/payment alone is not proof of physical inspection or coverage. Record both custody and title events. | `cash-casing-terms`; `cash-casing-faq` |\n| boundary_gate | released_whole_tyres | Freeze first acceptance Q at documented inspection plus purchase/title handoff. Subsequent loading, storage, transport to retreader, independent retreader inspection and returns belong to linked post-release service ledgers, not another Q. Buffer/rework before acceptance remains pre-release. | `cash-casing-terms`; `jrc-ilcd-attributional-2010` |\n| boundary_route | whole_supply | Verify no packaging/pallet pool or material transformation in this loose dry route. Any actual packaging requires separate purchase, first non-purchase external receipt (including incoming-load/loan/free-transfer), true same-item return, stock and outlet ledgers and one-time burden attribution before scope acceptance. Scrap/disposal and finished retreading are separate functions. | `cash-casing-terms`; `wco-hs2022-rubber` |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 238
+              line: 9
+              column: 1
+            end:
+              offset: 323
+              line: 9
+              column: 86
+          text: "# Retreadable used commercial truck tyre casings at first on-site purchase acceptance"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 5566
+              line: 62
+              column: 1
+            end:
+              offset: 5587
+              line: 62
+              column: 22
+          text: "## 5. System Boundary"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_15203"
+      family: "allocation"
+      span:
+        start:
+          offset: 15203
+          line: 295
+          column: 1
+        end:
+          offset: 16793
+          line: 305
+          column: 1
+      markdown: "## 7. Allocation and Co-product Handling\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| allocation_scope | whole_supply | Document actual source-tyre history, prior use and economic/legal state and the study-specific inherited-burden/reuse convention. A low price, waste label or title transfer does not establish a zero burden or avoided new-tyre/rubber/landfill credit. | `jrc-ilcd-attributional-2010` |\n| allocation_subdivision | whole_supply | First exclusively attribute and subdivide inspection, rejects, disposal and post-release services. Retain failed visits, zero-output periods and causal rework. Services performed for other functions and owner-retained rejects have explicit activity owners; do not erase common inspection effort. | `jrc-ilcd-attributional-2010` |\n| allocation_physical | whole_supply | For each remaining shared exchange demonstrate its determining physical cause. Measured inspection time may support equipment allocation; crew route and visit purpose govern travel. Do not use casing mass, count or price as a universal key. Retain supplier inclusions and reconcile all shares. | `jrc-ilcd-attributional-2010` |\n| allocation_residual | whole_supply | Only if subdivision and determining physical causality cannot resolve genuine joint burdens use documented contemporaneous same-gate actual-condition market values for residual economic allocation. Remove later transport/retreading margins and distinguish disposal fees from positive product values. Missing coherent values remain unresolved. | `jrc-ilcd-attributional-2010` |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 238
+              line: 9
+              column: 1
+            end:
+              offset: 323
+              line: 9
+              column: 86
+          text: "# Retreadable used commercial truck tyre casings at first on-site purchase acceptance"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 15203
+              line: 295
+              column: 1
+            end:
+              offset: 15243
+              line: 295
+              column: 41
+          text: "## 7. Allocation and Co-product Handling"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+    - unit_id: "normative_22838"
+      family: "validation"
+      span:
+        start:
+          offset: 22838
+          line: 338
+          column: 1
+        end:
+          offset: 23907
+          line: 347
+          column: 1
+      markdown: "## 9. Validation Rules\n\n| rule_id | applies_to | rule | source_ids |\n| --- | --- | --- | --- |\n| validate_reference | released_whole_tyres | Require all qualifiers, one first-acceptance link, actual retreadable grade, payment/title/custody evidence and compatible native Product identity. Do not use definite scrap or a finished retread as the reference. | `cash-casing-terms`; `cash-casing-faq`; `wco-hs2022-rubber` |\n| validate_balance | whole_supply | Reconcile raw mass/custody, WIP/FG burden vectors, actual suppliers, failed visits, rejected lots and all returns. No duplicate Q, provider load, packaging or constituent burden. Missing data prohibit a complete unit result. | `jrc-ilcd-attributional-2010`; `cash-casing-terms` |\n| validate_normalization | all inventory rows | Check raw conversion and attribution before one A_j/Q division. Schema/projection and finite measurement checks do not establish physical balance, source applicability, native supplier compatibility, scientific/safety approval or translation review. | `jrc-ilcd-attributional-2010` |\n\n\n"
+      headings:
+        - kind: "heading"
+          span:
+            start:
+              offset: 238
+              line: 9
+              column: 1
+            end:
+              offset: 323
+              line: 9
+              column: 86
+          text: "# Retreadable used commercial truck tyre casings at first on-site purchase acceptance"
+          depth: 1
+        - kind: "heading"
+          span:
+            start:
+              offset: 22838
+              line: 338
+              column: 1
+            end:
+              offset: 22860
+              line: 338
+              column: 23
+          text: "## 9. Validation Rules"
+          depth: 2
+      ancestor_context:
+        - span:
+            start:
+              offset: 0
+              line: 1
+              column: 1
+            end:
+              offset: 4
+              line: 2
+              column: 1
+          markdown: "---\n"
+  bindings:
+    - pointer: "/system_boundary/rules/0"
+      rule_id: "boundary_complete"
+      identity_kind: "explicit"
+      unit_id: "normative_5566"
+      source_span:
+        start:
+          offset: 6674
+          line: 78
+          column: 1
+        end:
+          offset: 7049
+          line: 78
+          column: 376
+    - pointer: "/system_boundary/rules/1"
+      rule_id: "boundary_gate"
+      identity_kind: "explicit"
+      unit_id: "normative_5566"
+      source_span:
+        start:
+          offset: 7050
+          line: 79
+          column: 1
+        end:
+          offset: 7438
+          line: 79
+          column: 389
+    - pointer: "/system_boundary/rules/2"
+      rule_id: "boundary_route"
+      identity_kind: "explicit"
+      unit_id: "normative_5566"
+      source_span:
+        start:
+          offset: 7439
+          line: 80
+          column: 1
+        end:
+          offset: 7900
+          line: 80
+          column: 462
+    - pointer: "/allocation_rules/0"
+      rule_id: "allocation_scope"
+      identity_kind: "explicit"
+      unit_id: "normative_15203"
+      source_span:
+        start:
+          offset: 15316
+          line: 299
+          column: 1
+        end:
+          offset: 15635
+          line: 299
+          column: 320
+    - pointer: "/allocation_rules/1"
+      rule_id: "allocation_subdivision"
+      identity_kind: "explicit"
+      unit_id: "normative_15203"
+      source_span:
+        start:
+          offset: 15636
+          line: 300
+          column: 1
+        end:
+          offset: 16007
+          line: 300
+          column: 372
+    - pointer: "/allocation_rules/2"
+      rule_id: "allocation_physical"
+      identity_kind: "explicit"
+      unit_id: "normative_15203"
+      source_span:
+        start:
+          offset: 16008
+          line: 301
+          column: 1
+        end:
+          offset: 16374
+          line: 301
+          column: 367
+    - pointer: "/allocation_rules/3"
+      rule_id: "allocation_residual"
+      identity_kind: "explicit"
+      unit_id: "normative_15203"
+      source_span:
+        start:
+          offset: 16375
+          line: 302
+          column: 1
+        end:
+          offset: 16790
+          line: 302
+          column: 416
+    - pointer: "/validation_rules/0"
+      rule_id: "validate_reference"
+      identity_kind: "explicit"
+      unit_id: "normative_22838"
+      source_span:
+        start:
+          offset: 22933
+          line: 342
+          column: 1
+        end:
+          offset: 23256
+          line: 342
+          column: 324
+    - pointer: "/validation_rules/1"
+      rule_id: "validate_balance"
+      identity_kind: "explicit"
+      unit_id: "normative_22838"
+      source_span:
+        start:
+          offset: 23257
+          line: 343
+          column: 1
+        end:
+          offset: 23572
+          line: 343
+          column: 316
+    - pointer: "/validation_rules/2"
+      rule_id: "validate_normalization"
+      identity_kind: "explicit"
+      unit_id: "normative_22838"
+      source_span:
+        start:
+          offset: 23573
+          line: 344
+          column: 1
+        end:
+          offset: 23904
+          line: 344
+          column: 332
+  diagnostics:
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_5566"
+      source_span:
+        start:
+          offset: 5566
+          line: 62
+          column: 1
+        end:
+          offset: 5587
+          line: 62
+          column: 22
+    - code: "NON_RULE_TABLE"
+      message: "Table has no rule or requirement column; complete H2 source retained without inferring normative rows."
+      unit_id: "normative_5566"
+      source_span:
+        start:
+          offset: 5615
+          line: 66
+          column: 1
+        end:
+          offset: 6600
+          line: 73
+          column: 185
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_15203"
+      source_span:
+        start:
+          offset: 15203
+          line: 295
+          column: 1
+        end:
+          offset: 15243
+          line: 295
+          column: 41
+    - code: "AMBIGUOUS_PROSE_ATTACHMENT"
+      message: "Ancestor preamble may govern this family; exact structural ancestor source retained separately without inferring applicability. Rule extraction remains scoped to this H2."
+      unit_id: "normative_22838"
+      source_span:
+        start:
+          offset: 22838
+          line: 338
+          column: 1
+        end:
+          offset: 22860
+          line: 338
+          column: 23
+projection_metadata:
+  contract_version: "2"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d4e4365cb5ef36103bd396cfa65f825352ab59b8b143f72089a2b3a8fb2379a5"
+  generated_content_sha256: "sha256:1d3370e9f954bbad297fb5cec28e3d30794bd726a593a709fb177e7acbfef5fc"
